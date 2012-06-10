@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" 
+		xmlns="http://java.sun.com/xml/ns/javaee" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<!--
+    @(#) $Id$
+    2012-03-16: without listener
+	2012-02-06: DTD for 2.4 because Winstone dislikes the 2.5 XSD
+    2011-05-20: Dbat2Servlet replaces DbatServlet
+	2011-05-09: servlet2
+	2010-09-24: 2.5 xsd; DataSource and ServletContextListener
+    2010-03-11: context-parm>s commented out
+    2009-10-11: with <context-parm>s
+    2005-11-25: copied from checkdig
+-->
+<!--
+ * Copyright 2006 Dr. Georg Fischer <punctum at punctum dot kom>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+    <display-name>DBAT</display-name>
+    <description>
+        DataBase Administration Tool
+    </description>
+<!--
+	<listener>
+		<listener-class>org.teherba.dbat.DBCPoolingListener</listener-class>
+	</listener>
+-->	
+    <context-param>
+        <param-name>title</param-name>
+        <param-value>DB Administration Tool</param-value>
+    </context-param>
+
+	<env-entry>
+		<env-entry-name>dataSources</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+		<env-entry-value>worddb,wiki</env-entry-value>
+	</env-entry>
+
+  <resource-ref>
+    <res-ref-name>jdbc/worddb</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+    <res-sharing-scope>Shareable</res-sharing-scope>
+  </resource-ref>
+
+<!-- 
+	
+    <resource-ref>
+        <res-ref-name>dataSources</res-ref-name>
+        <res-type>javax.lang.String</res-type>
+    </resource-ref>
+
+    <resource-ref>
+        <res-ref-name>jdbc/worddb</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
+    </resource-ref>
+
+	If this parameter is omitted, the specifications are found in the 
+	web application context: /dbat/spec/*.xml
+	
+    <context-param>
+        <param-name>specPath</param-name>
+        <param-value>/home/gfis/work/webapps-super/dbat/web/spec</param-value>
+    </context-param>
+-->
+    <!-- Servlets -->
+    <servlet> 
+        <servlet-name>DbatServlet</servlet-name>
+        <servlet-class>org.teherba.dbat.DbatServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping> 
+        <servlet-name>DbatServlet</servlet-name>
+        <url-pattern>/servlet</url-pattern>
+    </servlet-mapping>
+    
+  <!-- Common Gateway Includes (CGI) processing servlet, which supports     -->
+  <!-- execution of external applications that conform to the CGI spec      -->
+  <!-- requirements.  Typically, this servlet is mapped to the URL pattern  -->
+  <!-- "/cgi-bin/*", which means that any CGI applications that are         -->
+  <!-- executed must be present within the web application.  This servlet   -->
+  <!-- supports the following initialization parameters (default values     -->
+  <!-- are in square brackets):                                             -->
+  <!--                                                                      -->
+  <!--   cgiPathPrefix        The CGI search path will start at             -->
+  <!--                        webAppRootDir + File.separator + this prefix. -->
+  <!--                        [WEB-INF/cgi]                                 -->
+  <!--                                                                      -->
+  <!--   debug                Debugging detail level for messages logged    -->
+  <!--                        by this servlet.  [0]                         -->
+  <!--                                                                      -->
+  <!--   executable           Name of the exectuable used to run the        -->
+  <!--                        script. [perl]                                -->
+  <!--                                                                      -->
+  <!--   parameterEncoding    Name of parameter encoding to be used with    -->
+  <!--                        CGI servlet.                                  -->
+  <!--                        [System.getProperty("file.encoding","UTF-8")] -->
+  <!--                                                                      -->
+  <!--   passShellEnvironment Should the shell environment variables (if    -->
+  <!--                        any) be passed to the CGI script? [false]     -->
+
+<!--
+    <servlet>
+        <servlet-name>cgi</servlet-name>
+        <servlet-class>org.apache.catalina.servlets.CGIServlet</servlet-class>
+        <init-param>
+          <param-name>cgiPathPrefix</param-name>
+          <param-value>cgi-bin</param-value>
+        </init-param>
+        <init-param>
+          <param-name>debug</param-name>
+          <param-value>5</param-value>
+        </init-param>
+        <init-param>
+          <param-name>passShellEnvironment</param-name>
+          <param-value>true</param-value>
+        </init-param>
+         <load-on-startup>5</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>cgi</servlet-name>
+        <url-pattern>/cgi-bin/*</url-pattern>
+    </servlet-mapping>
+-->
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.htm</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+</web-app>
