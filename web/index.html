@@ -1,0 +1,77 @@
+<!--
+	Entry page for the web application
+    @(#) $Id: index.html 890 2012-02-22 17:55:03Z gfis $
+    2012-02-10: copied from index.jsp
+    2007-01-08: with metaInf.jsp
+    2007-04-05: more text
+    2006-10-13, Georg Fischer: copied from numword
+-->
+<!--
+ * Copyright 2006 Dr. Georg Fischer <punctum at punctum dot kom>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>DB Administration Tool</title>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+    <h2>Dbat - Database Administration Tool</h2>
+    <p><strong><a href="http://localhost/wiki/index.php/Dbat">Dbat</a></strong> 
+    	is a tool that facilitates the interaction with JDBC-compatible
+        relational databases like mySql, DB2, Oracle, SQLite, ODBC 
+        and - with appropriate JDBC drivers - even Excel sheets and plain text files. 
+        The tool is called on the commandline, in a <em>makefile</em> or an  <em>ant</em> script.
+        It can query tables, issue other SQL statements like CREATE, INSERT, DELETE, and it 
+        exports the SQL definition of a table and its contents. 
+    </p><p>
+        SQL statements can be read from a file. 
+        The output may be plain (tab separated) text,
+        HTML, XML or SQL (INSERT statements, optionally with JDBC escapes). 
+        For common queries like <tt>count(*)</tt>
+        or <tt>x, count(x) ... group by x</tt> there are commandline shortcuts.
+    </p><p>
+        The tool can be called from Java programs for a quick and simple query from
+        a database.
+    </p><p>
+        The servlet bundled with this application reads and interpretes 
+        XML specifications of queries and generates a HTML form that 
+        contains the result table. There are elements for parameter input fields,
+        and for the insert/delete/update features of a simple web-based form application.
+    </p>
+        
+    <ul>
+        <li><strong><a href="servlet?spec=test/index">Test Specifications</a></strong></li>
+        <li><a href="help.jsp?lang=en">Commandline Options</a>
+        </li>
+    <!--
+        <li><a href="spec/">List</a> of available specifications</li>
+        <li><a href="docs/documentation.html">Documentation</a></li>
+        <li><a href="docs/developer.html">Developer Hints</a></li>
+    -->
+        <li><a href="docs/api/index.html">API</a> documentation</li>
+        <li><a href="docs/bugs.html">Bugs</a></li>
+        <li><a href="metaInf.jsp?view=manifest">Manifest</a>, 
+            <a href="metaInf.jsp?view=license" >License</a>, 
+            <a href="metaInf.jsp?view=notice"  >References</a>
+        </li>
+  </ul>
+    <font size="-1">
+    Questions, remarks to: <a href="mailto:punctum@punctum.com">Dr. Georg Fischer</a>
+    </font>
+    </p>
+    
+</body>
+</html>

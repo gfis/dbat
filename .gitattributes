@@ -1,0 +1,8 @@
+*.java	ident
+*.xml	ident
+*.xslt	ident
+*.tst	ident
+*.pl	ident
+makefile	ident
+*.sql	ident
+

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    @(#) $Id$
+    2012-05-25, Dr. Georg Fischer
+-->
+<dbat 	xmlns   ="http://www.teherba.org/2007/dbat" 
+		xmlns:db="http://www.teherba.org/2007/dbat" 
+		xmlns:ht="http://www.w3.org/1999/xhtml" 
+		encoding="UTF-8" 
+		conn="worddb" 
+		lang="en"
+		title="test/ajax02"
+		>
+	<comment lang="en">Data to be retrieved by specification <ht:em>ajax01.xml</ht:em></comment>
+	<comment lang="de">Daten f&#xfc;r          Spezifikation <ht:em>ajax01.xml</ht:em></comment>
+			
+	<ht:h2><ht:a href="servlet?spec=test.index">Test</ht:a> - Data for <ht:em><parm name="name" init="Dorothea" /></ht:em></ht:h2>
+
+<!-- 
+	This query is to be used by the &lt;iv:subquery&gt; element in a DBIV interactive view specification.
+	It is called by an AJAX request with JavaScript (see web/spec/http_request.js, method handleRequest2).
+	It has one parameter, and it returns 2 or 1 resulting rows (in that order):
+	- an optional row if the record to be looked up was found,
+	- a mandatory row with JavaScript property values for the error case.
+	The rows' labels must be dot separated property names which are used to set the value
+	in the corresponding column. 
+	The first partial name is an "id" attribute used to address the proper HTML element
+	with document.getElementById().
+-->
+	<select>
+		<col label="row_no"					>row_no	</col>
+		<col label="b0.firstChild.data"		>p1		</col>
+		<col label="a2.className"			>p2		</col>
+		<from>
+		(
+			( select '0'	as row_no
+			  , place 		as p1
+			  , 'valid'    	as p2
+			  from relatives
+			  where name = '<parm name="name" />'
+			) s1 
+		) union (
+			( select '1'	as row_no
+			  ,'??'  		as p1
+			  , 'invalid'	as p2
+			  from dual
+			) 
+		) 
+		</from>
+		<order by="1" />
+	</select>
+</dbat>

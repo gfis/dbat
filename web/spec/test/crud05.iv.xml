@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+	Interactive view definition for test form crud01.xml, with INT key
+    @(#) $Id$
+    2012-05-21: with help URLs on field names
+    2012-05-02, Dr. Georg Fischer
+-->
+<dbiv	xmlns   ="http://www.teherba.org/2011/dbiv"
+		xmlns:iv="http://www.teherba.org/2011/dbiv"
+		xmlns:db="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang	="en" 
+		conn	="worddb"
+		script	="test.crud05"
+		>
+	<ht:h3><ht:a href="servlet?spec=test.index">Test</ht:a> Form - Relatives (with field references)
+	</ht:h3>
+	<ht:p>
+		You may search for relatives and update / delete / insert their data.
+	</ht:p>
+	<view 	name="relatives" 
+			help="servlet?spec=test.iv_help&amp;NAME="
+			id  ="r"
+			>
+		<title></title>
+	    <counter desc="Person,s" />
+
+	    <action name="ins" label="New Relative"	remark="insert" 	position="middle" />
+	    <action name="upd" label="Upd."			remark="update" 	position="result" />
+	    <action name="del" label="Del."			remark="delete" 	position="result" />
+	    <action name="dat" label="Show"			remark="details" 	position="result" />
+	    
+	    <field ref="name"		key="1"	/>
+	    <field ref="decease"	key="2"	/>
+	    <field ref="family"		key="3"	/>
+	    <field ref="gender"		/>
+	    <text style="wht" align="center" id="or">
+	    	<ht:a href="http://en.wiktionary.org/wiki/origin">Origin</ht:a> of the Person
+	    	</text>
+	    <field ref="birth"		/>
+	    <field ref="place"		/>
+	    <field ref="changed"	show="search" />
+	    <field ref="user"		/>
+	    <where></where>
+	    <order by="1,2" />
+	</view>
+	
+	<ht:h3>Statistics</ht:h3>
+	<db:select>
+		<db:col label="Count"		 align="right">count(*)</db:col>
+		<db:col label="Min. Birth"	 align="center">min(birth)		</db:col>
+		<db:col label="Max. Birth"	 align="center">max(birth)		</db:col>
+		<db:col label="Min. Decease" align="center">min(decease)	</db:col>
+		<db:col label="Max. Decease" align="center">max(decease)	</db:col>
+		<db:from>relatives
+		</db:from>
+	</db:select>
+	
+</dbiv>

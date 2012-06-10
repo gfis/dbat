@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2008-02-11: Dr. Georg Fischer
+-->
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="en" 
+		conn="worddb" 
+		title="column02"
+		>
+	<comment lang="en">Select from test table - same as <ht:em>selec02</ht:em></comment>
+	<comment lang="de">Abfrage der Test-Tabelle - wie <ht:em>selec02</ht:em></comment>
+
+    <ht:h3>Select from test table <ht:em>c01</ht:em> - same as <ht:em>selec02, with &lt;column&gt; elements</ht:em></ht:h3>
+    <ht:form method="get">
+        <ht:input label="Name" name="name" maxsize="20" size="10" init="%" />
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+    
+    <select>
+        <column>
+        	<label>Year</label>
+        	<align>right</align> 
+ 			<href>servlet?spec=test/selec01&amp;name*&amp;year*</href>
+ 			<expr>concat(name, concat('*', cast(year as char)))</expr>
+ 			</column>
+        <column>
+        	<label>Name</label>
+        	<link>test/selec01&amp;year=&amp;name=</link>
+        	<sql>concat(cast(year as char), concat('=', name))</sql>
+ 			</column>
+        <column>
+        	<label>Year</label>
+        	<link>test/selec01&amp;year=&amp;name=</link>
+        	<sql>concat(cast(year as char), concat('=e.', cast(year as char)))</sql>
+	        </column>
+        <column>
+        	<label>Name</label>
+ 			<href>servlet?spec=test/selec01&amp;name=&amp;year=</href>
+       		<sql>concat(name, concat('=f.', name))</sql>
+       		</column>
+        <column>
+        	<label>University</label>
+        	<sql>univ</sql>
+        	</column>
+        <column>
+        	<label>Gender</label>
+        	<align>center</align>
+        	<sql>gender</sql>
+        	</column>
+        <column><label>Birthdate</label>
+        	<sql>birth</sql>
+        	</column>
+        <from>c01
+        	</from>
+        <where>name like '<parm name="name" />'
+        	</where>
+        <counter desc="person,s"/>
+    </select>
+</dbat>

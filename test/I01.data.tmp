@@ -1,0 +1,12 @@
+-- fill table
+	delete from c01;
+	insert into c01 values('Martha'  , 'Freiburg'		, 1999, '&', '1909-11-17');
+	insert into c01 values('Johannes', 'Schramberg'    	, 1992, '<', '1911-06-03');
+	insert into c01 values('Eberhard', 'Groß-Gerau'    	, 1945, '>', '1912-11-17');
+	insert into c01 values('Fritz'	 , 'Waldshut'    	, 1995, '<', '1907-08-08');
+	insert into c01 values('Maria' 	 , 'Hermsdorf'    	, 1999, '#', '1914-09-17');
+	insert into c01 values('Ilse' 	 , 'Lübars'    		, 1983, '$', '1909-02-09');
+	insert into c01 values('Dorothea', 'Lübars'    		, 1985, '$', '1910-02-07');
+	insert into c01 values('Lucie'   , 'Lübars'    		, 1984, '''','1887-07-09');
+	commit;
+	select * from c01;

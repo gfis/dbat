@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="en" 
+		conn="worddb" 
+		title="pivot03"
+		>
+<!--
+    Dbat specification - Pivot test
+    @(#) $Id$
+    2008-02-11: Dr. Georg Fischer
+-->
+	<comment lang="en">Pivot matrix output with linked values</comment>
+	<comment lang="de">Ausgabe einer Pivot-Matrix mit Verweisen auf den Werten</comment>
+
+    <ht:h3>Pivot matrix test - with linked values</ht:h3>
+    <ht:form method="get">
+        <ht:input label="Name" name="name" maxsize="20" size="10" init="%r" />
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+    
+    <select headers="yes" aggregate="sp2" with="pivot">
+        <col label="Anwendung" name="sp1" href="servlet?spec=test/selec01&amp;name=">sp1</col>
+        <col label="sp2" name="sp2">sp2</col>
+        <col label="sp3" name="sp3" align="right" link="test/selec01&amp;alpha=&amp;beta=&amp;sp3=">
+        	concat(sp1, concat('=', concat(sp2, concat('=', sp3))))
+        </col>
+        <from>pivot</from>
+    </select>
+
+</dbat>

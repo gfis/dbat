@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2012-04-17, Dr. Georg Fischer
+-->
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="en"
+		conn="worddb" 
+		title="check_word"
+		>
+	<comment lang="en">Test of AJAX functionality</comment>
+
+    <select headers="false">
+        <col>count(entry)</col>                       
+        <from>words</from>
+        <where>
+        	entry = '<parm name="word" init="" />'
+        </where>
+    </select>                                      
+</dbat>

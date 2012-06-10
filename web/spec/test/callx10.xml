@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dbat conn="worddb"
+	xmlns   ="http://www.teherba.org/2007/dbat"
+	xmlns:ht="http://www.w3.org/1999/xhtml"
+	title="callx10"
+	>
+<!--
+    Dbat specification - test the call of a Stored Procdure, into="parm"
+    @(#) $Id$
+    Copyright 2010 Dr. Georg Fischer <punctum at punctum dot kom>
+    2012-04-02: copied from callproc
+-->
+	<comment lang="en">Activation of a Stored Procedure; results into parameters</comment>
+	<comment lang="de">Aufruf einer Stored Procedure; Ergebnis im Parametersatz</comment>
+
+    <ht:h2>Call of Stored Procedure <ht:em>x07</ht:em></ht:h2>
+    <ht:form method="get">
+        <ht:input label="Name" name="iname0" init="row2"/>
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+
+	<ht:h3>Vertical Result</ht:h3>
+    <call name="x07" limit="vertical"> 
+        <col label="Name"  name="iname0"    type="char"		width="16"	dir="in"  />
+        <col label="Dec1"  name="odec1"		type="decimal" 	width="18" 	dir="out" />
+        <col label="Dec2"  name="odec2"		type="decimal" 	width="18" 	dir="out" />
+        <col label="Date3" name="odate3"	type="date" 		       	dir="out" />
+        <col label="Time4" name="otime4"	type="time" 		       	dir="out" />
+        <col label="TS5"   name="ots5"		type="timestamp"         	dir="out" />
+    </call>
+    
+    <call name="x07" into="parm"> 
+        <col label="Name"  name="iname0"    type="char"		width="16"	dir="in"  />
+        <col label="Dec1"  name="odec1"		type="decimal" 	width="18" 	dir="out" />
+        <col label="Dec2"  name="odec2"		type="decimal" 	width="18" 	dir="out" />
+        <col label="Date3" name="odate3"	type="date" 		       	dir="out" />
+        <col label="Time4" name="otime4"	type="time" 		       	dir="out" />
+        <col label="TS5"   name="ots5"		type="timestamp"         	dir="out" />
+    </call>
+    
+	<ht:h3>Parameter Table</ht:h3>
+	<ht:table>
+		<ht:tr>
+			<ht:td><ht:strong>Name</ht:strong></ht:td>
+			<ht:td><parm name="iname0"	/></ht:td>
+		</ht:tr>
+		<ht:tr>
+			<ht:td><ht:strong>Dec1</ht:strong></ht:td>
+			<ht:td><parm name="odec1"	/></ht:td>
+		</ht:tr>
+		<ht:tr>
+			<ht:td><ht:strong>Dec2</ht:strong></ht:td>
+			<ht:td><parm name="odec2"	/></ht:td>
+		</ht:tr>
+		<ht:tr>
+			<ht:td><ht:strong>Date3</ht:strong></ht:td>
+			<ht:td><parm name="odate3"	/></ht:td>
+		</ht:tr>
+		<ht:tr>
+			<ht:td><ht:strong>Time4</ht:strong></ht:td>
+			<ht:td><parm name="otime4"	/></ht:td>
+		</ht:tr>
+		<ht:tr>
+			<ht:td><ht:strong>TS5</ht:strong></ht:td>
+			<ht:td><parm name="ots5"	/></ht:td>
+		</ht:tr>
+	</ht:table>
+    
+</dbat>

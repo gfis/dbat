@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Dbat specification for infomodel diagram data
+    @(#) $Id$
+    2011-12-02: Dr. Georg Fischer
+-->
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="en" 
+		conn="worddb" 
+		headers="false"
+		title="IM-Diagramm"
+		>
+	<comment lang="en">Query for the image data of an info model</comment>
+	<comment lang="de">Abfrage f&#xfc;r die Diagramm-Daten eines Infomodells</comment>
+	
+    <ht:h3>IM-Diagramm</ht:h3>
+    <ht:form method="get">
+        <ht:input label="IM-Name" name="NAME" maxsize="64" size="32" init="DK-MEMBER" /> &#xa0; &#xa0;
+        <ht:input type="submit" value="Suchen" />
+    </ht:form>
+    
+    <select limit="2048">
+		<col label="infomodell">infomodell</col>
+		<col label="status">status</col>
+		<col label="sid">sid</col>
+		<col label="objklasse">objklasse</col>
+		<col label="text1">text1</col>
+		<col label="text2">text2</col>
+		<col label="text3">text3</col>
+	<!--
+		<col label="text4">text4</col>
+		<col label="text5">text5</col>
+	-->
+		<col label="text6">text6</col>
+		<col label="card">card</col>
+		<col label="coords">coords</col>
+	    <from>uacoolbml</from>
+	    <where>
+	    	rtrim(infomodell) like '<parm name="NAME" />%'
+	    </where>
+	    <order by="1,2,3,4" />
+    </select>
+</dbat>

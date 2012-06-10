@@ -1,0 +1,7 @@
+drop table if exists pivot ;
+  create table pivot
+  ( sp1 varchar(8) 
+  , sp2 varchar(8)
+  , sp3 varchar(8)
+  ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
+  commit;

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dbat xmlns:ht="http://www.w3.org/1999/xhtml" 
+	xmlns   ="http://www.teherba.org/2007/dbat"
+	lang="en"
+	conn="worddb" 
+	title="with_cte"
+	>
+<!--
+    Dbat specification - with listparm element
+    @(#) $Id$
+    Copyright 2010 Dr. Georg Fischer <ht:punctum at punctum dot kom>
+    2011-04-08: for DB2 only
+-->
+	<comment lang="en">test the SQL &amp;lt;with&amp;gt; Syntax for Common Table Expressions
+	</comment>
+	<comment lang="de">testet die SQL-Syntax von &amp;lt;with&amp;gt; f&#xfc;r "Common Table Expressions"
+	</comment>    
+	
+	<ht:h2>DBAT Test - SQL WITH for Common Table Expression</ht:h2>
+    <ht:form>
+        <ht:input label="Prefix" name="prefix" maxsize="20" size="10" init="backe" />
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+
+	<with>cte as
+		( select entry, enrel 
+		  from words
+		  where entry like '<parm name="prefix" />%'
+		)
+	</with>
+    <select>
+        <col label="Word">word</col>
+        <from>(
+        		( select entry as word from cte )
+        	  union
+        	    ( select enrel as word from cte )
+        	  ) as subs
+        </from>
+        <order by="1" />
+    </select>
+</dbat>

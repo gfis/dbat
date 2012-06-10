@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="de" 
+		conn="worddb" 
+		title="im_grafik"
+		>
+<!--
+    @(#) $Id$
+    2011-12-13, Dr. Georg Fischer: copied from listbox.xml
+-->
+	<comment lang="en">Show the graphics for an info model</comment>
+	<comment lang="de">Grafik eines Infomodells anzeigen</comment>
+
+    <ht:h2>Grafik eines Infomodells anzeigen</ht:h2>
+    <ht:form method="get">
+    	<ht:table>
+    	<ht:tr>
+    	<ht:td valign="top" class="nbord">
+    	<ht:input label="Status"   name="STATUS" size="1"  maxsize="1"  init="P" /> &#xa0; &#xa0; 
+    	<ht:input label="Infomodell" name="NAME" size="32" maxsize="64" init="DK-MEMBER" /> &#xa0; &#xa0; 
+    	<ht:select label="Generator" name="proc" init="easy" size="1">
+    		<ht:option value="easy" selected="yes"	>Graph::Easy</ht:option>
+    		<ht:option value="graph"               	>yEd (GraphML)</ht:option>
+    		<ht:option value="svg"               	>SVG (direkt)</ht:option>
+    		<ht:option value="dot"               	>GraphViz</ht:option>
+    	</ht:select> &#xa0;&#xa0;
+    	<ht:select label="Format"     name="format" init="ascii" size="1">
+    		<ht:option value="ascii" selected="yes"	>ASCII</ht:option>
+    		<ht:option value="boxart"               >boxart</ht:option>
+    		<ht:option value="svg"               	>SVG</ht:option>
+    	</ht:select> &#xa0;&#xa0;
+        <ht:input type="submit" value="Anzeigen" />
+        </ht:td>
+        </ht:tr>
+        </ht:table>
+    </ht:form>
+    
+    <select>
+        <col label="Status" 	>status</col>
+        <col label="Infomodell" >infomodell</col>
+        <col label="Grafik" href="/cgi-bin/im_diagram.pl?&amp;proc=&amp;mode=&amp;STATUS=&amp;NAME=&amp;dummy=">
+        	concat(concat('<parm name="proc" />=<parm name="format" />=P=', infomodell), '=anzeigen')
+        </col>
+        <from>uacoolbml</from>
+		<where>	rtrim(infomodell) = '<parm name="NAME" />'
+			and status = '<parm name="STATUS" />'
+			and sid like 'A%'
+		<!--
+http://localhost:8080/cgi-bin/im_diagram.pl&proc=graph&mode=svg&STATUS=P&NAME=DK-MEMBER&dummy=anzeigen
+		-->
+		</where>
+		<order by="1,2" />
+    </select>
+
+</dbat>

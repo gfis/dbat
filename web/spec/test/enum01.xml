@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="en" 
+		conn="worddb" 
+		title="enum01"
+		>
+<!--
+    @(#) $Id$
+    2012-01-25, Dr. Georg Fischer
+-->
+	<comment lang="en">Fetch Enumerations into Parameters</comment>
+	<comment lang="de">Parameter aus einer Enumeration f&#xfc;llen</comment>
+	
+    <ht:h3>Fetch Enumerations into Parameters <ht:em>code = <parm name="code" init="initcode" />,
+    	display = <parm name="display" init="initdisplay" /></ht:em>
+    </ht:h3>
+
+    <select>
+        <col name="seq"		>seq	</col>
+        <col name="code"	>code	</col>
+        <col name="display"	>display</col>
+        <from>en1</from>
+        <where>lang = 'eng'
+        </where>
+        <order by="1" />
+    </select>
+
+    <select into="parm">
+        <col name="seq"		>seq	</col>
+        <col name="code"	>code	</col>
+        <col name="display"	>display</col>
+        <from>en1</from>
+        <where>lang = 'eng'
+        </where>
+        <order by="1" />
+    </select>
+
+	<ht:h3>Parameter Table</ht:h3>
+	<ht:table>
+		<ht:tr>
+			<ht:td><parm name="code"	ix="0" /></ht:td>
+			<ht:td><parm name="display"	ix="0" /></ht:td>
+		</ht:tr>
+		<ht:tr>
+			<ht:td><parm name="code"	ix="1" /></ht:td>
+			<ht:td><parm name="display"	ix="1" /></ht:td>
+		</ht:tr>
+		<ht:tr>
+			<ht:td><parm name="code"	ix="2" /></ht:td>
+			<ht:td><parm name="display"	ix="2" /></ht:td>
+		</ht:tr>
+	</ht:table>
+	Continue with <ht:a href="servlet?spec=enum02">enum02</ht:a>
+</dbat>

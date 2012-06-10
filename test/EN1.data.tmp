@@ -1,0 +1,8 @@
+drop table if exists en1;
+  create table en1 
+  ( seq     INT not null
+  , code    VARCHAR(16) 
+  , lang    CHAR(3)
+  , display VARCHAR(64)
+  ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
+  commit;

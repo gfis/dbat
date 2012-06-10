@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2011-12-05: different column names for -m probe
+    2011-08-08, Dr. Georg Fischer: copied from align01.xml
+-->
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="en" 
+		conn="worddb" 
+		title="align02"
+		>
+	<comment lang="en">Select from test table with right aligned numbers</comment>
+	<comment lang="de">Abfrage der Test-Tabelle mit rechtsb&#xfc;ndigen Zahlen</comment>
+
+    <ht:h3>Select from test table b04 - with alignment</ht:h3>
+    
+    <select limit="8">
+        <col label="&#xa0;">'|' as c1</col>                       
+        <col label="Name" 	align="left"	width="16">name</col>
+        <col label="&#xa0;">'|' as c3</col>                       
+        <col label="left"	align="left"	width="8">len as c4</col> 
+        <col label="&#xa0;">'|' as c5</col>                       
+        <col label="right"	align="right"	width="8">len as c6</col> 
+        <col label="&#xa0;">'|' as c7</col>                       
+        <col label="center"	align="center"	width="8">len as c8</col> 
+        <col label="&#xa0;">'|' as c9</col>                       
+        <from>b04</from>
+    </select>                                      
+</dbat>

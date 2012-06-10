@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2011-10-10: Dr. Georg Fischer
+-->
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="en" 
+		conn="worddb" 
+		title="choose06"
+		>
+	<comment lang="en">Test of Conditional Compilation with "choose"</comment>
+	<comment lang="de">Test der bedingten Compilierung mit "choose"</comment>
+
+    <ht:h3>Test of Conditional Compilation with &lt;choose&gt;</ht:h3>
+    <ht:form method="get">
+        <ht:input label="Switch" name="switch" maxsize="8" size="3" init="yes" />
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+   
+    <select group="loc">
+        <col label="Text">
+        	'This is the test'
+        	<choose>
+        		<when name="switch" match="[tT].*">
+        			, ' when true'
+ 			       	<choose>
+ 			       		<when name="switch" match="[tT].*">
+ 			       			, ' nested tr  true'
+ 			       		</when>
+ 			       		<when name="switch" match="[yY].*">
+ 			       			, ' nested tr  yes'
+ 			       		</when>
+ 			       		<otherwise>
+ 			       			, ' nested tr  otherwise'
+ 			       		</otherwise>
+ 			       	</choose>
+        		</when>
+        		<when name="switch" match="[yY].*">
+        			, ' when yes'
+ 			       	<choose>
+ 			       		<when name="switch" match="[tT].*">
+ 			       			, ' nested yes true'
+ 			       		</when>
+ 			       		<when name="switch" match="[yY].*">
+ 			       			, ' nested yes yes'
+ 			       		</when>
+ 			       		<otherwise>
+ 			       			, ' nested yes otherwise'
+ 			       		</otherwise>
+ 			       	</choose>
+        		</when>
+        		<otherwise>
+        			, ' otherwise'
+ 			       	<choose>
+ 			       		<when name="switch" match="[tT].*">
+ 			       			, ' nested otw true'
+ 			       		</when>
+ 			       		<when name="switch" match="[yY].*">
+ 			       			, ' nested otw yes'
+ 			       		</when>
+ 			       		<otherwise>
+ 			       			, ' nested otw otherwise'
+ 			       		</otherwise>
+ 			       	</choose>
+        		</otherwise>
+        	</choose>
+        <!--
+        -->
+        </col>
+        <col label="Gender"    	>gender</col>
+        <col label="Birthdate" 	>birth</col>
+        <from>c01
+        </from>
+    </select>
+</dbat>

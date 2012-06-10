@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dbat encoding="UTF-8"
+	conn="worddb"
+	lang="de"
+	xmlns   ="http://www.teherba.org/2007/dbat"
+	xmlns:ht="http://www.w3.org/1999/xhtml"
+	title="spec_outline"
+	>
+<!--
+    @(#) $Id$
+    2012-01-18, Dr. Georg Fischer: copied from spec/index.xml
+-->    
+	<comment lang="de">&#xdc;bersicht &#xfc;ber die Spezifikationen mit Links und Parametern
+	</comment>
+	<comment lang="en">Overview of the Specifications with Links and Parameters
+	</comment>
+    
+    <ht:h2>Missing Link Targets</ht:h2>
+	<select distinct="yes">
+		<col label="Target" name="spec"	>spec</col>
+		<col label="referred in"		>file</col>
+		<from>parm_xref a
+		</from>
+		<where>a.spec not in (
+			select file 
+			from   parm_xref b
+			where  element = 'dbat'
+			)
+		</where>
+		<order by="spec,file" />
+		<counter desc="Missing Target,s" />
+	</select>
+
+    <ht:h2>Missing Parameter Usage in Target</ht:h2>
+	<select distinct="yes">
+		<col label="Target"             >spec</col>
+		<col label="Parameter"          >name</col>
+		<col label="referred in"		>file</col>
+		<col label="Element"          	>element</col>
+		<from>parm_xref a
+		</from>
+		<where> a.element in ('link', 'input')
+			and a.spec in (
+				select file 
+				from   parm_xref b
+				where  element = 'dbat'
+				) 
+			and a.name not in (
+				select name 
+				from   parm_xref b
+				where  a.spec    = b.file
+				  and  a.name    = b.name
+				  and  b.element in ('parm', 'when')
+				)
+		</where>
+		<order by="spec,name,file" />
+		<counter desc="Missing Parameter Usage,s" />
+	</select>
+
+    <ht:h2><ht:a href="servlet?spec=index">Dbat</ht:a> - 
+    	Specification Outline</ht:h2>
+	<select group="spec">
+		<col label="Spec" name="spec" style="visible">spec</col>
+		<col label="Name" 	 >name</col>
+		<col label="referred in">file</col>
+		<col label="Element" >element</col>
+		<from>parm_xref
+		</from>
+		<where>1=1
+		</where>
+		<order by="spec,name,element" />
+		<counter desc="Element,s" />
+	</select>	
+	
+</dbat>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="en" 
+		conn="worddb" 
+		title="textarea"
+		>
+<!--
+    @(#) $Id$
+    2011-08-01, Dr. Georg Fischer: copied from listbox.xml
+-->
+	<comment lang="en">Test of an input text area</comment>
+	<comment lang="de">Test eines Eingabe-Textbereichs</comment>
+
+    <ht:h2>Textarea Test</ht:h2>
+    <ht:form method="get">
+        <ht:textarea label="Word List" name="wordlist" cols="20" rows="5" 
+        		init="alpha beta gamma&#xa;delta tau omega"></ht:textarea> &#xa0; &#xa0;
+        <ht:textarea label="UPPER CASE" name="WORDLIST" cols="20" rows="5" 
+        		init="epsilon my ny&#xa;rho zeta chi"></ht:textarea> &#xa0; &#xa0;
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+
+	<ht:h4>Word List:  <parm name="wordlist" /></ht:h4>
+	<ht:h4>UPPER CASE: <parm name="WORDLIST" /></ht:h4>
+
+</dbat>

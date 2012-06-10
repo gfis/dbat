@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+ * Copyright 2006 Dr. Georg Fischer <punctum at punctum dot kom>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<!--
+    ant-buildfile for commandline, web application and web service
+    @(#) $Id$
+    2011-04-05: copy xtrans/XMLTransformer and associated classes
+    2008-04-09: targets run.* renamed to test.*
+    2007-02-16: use ant file build-import.xml
+    2005-11-15: copied from checkdig
+-->
+
+<project name="dbat" default="dist" basedir=".">
+    <property name="app.name"           value="dbat"/>
+    <property name="app.version"        value="5.0"/>
+    <property name="app.main-class"     value="org.teherba.dbat.Dbat"/>
+    <import file="build-import.xml" />
+    
+    <target name="generate">
+        <copy todir="${src.home}/org/teherba/xtrans">
+            <fileset dir="../xtrans/src/main/java/org/teherba/xtrans">
+                <include name="BaseTransformer.java"/>
+                <include name="BaseRecord.java"/>
+                <include name="BasicFactory.java"/>
+                <include name="ByteRecord.java"/><!-- not used, only for javadoc completeness -->
+                <include name="CharRecord.java"/>
+                <include name="CharTransformer.java"/>
+                <include name="Field.java"/>
+                <include name="pseudo/LevelFilter.java"/>
+                <include name="XMLTransformer.java"/>
+                <include name="XtransFactory.java"/>
+            </fileset>
+        </copy>
+        <copy todir="${src.home}/org/teherba/xtrans/general">
+            <fileset dir="../xtrans/src/main/java/org/teherba/xtrans/general">
+                <include name="PYXTransformer.java"/>
+            </fileset>
+        </copy>
+    </target>                                               
+
+    <target name="not_yet_generate">
+	<!-- 
+		generate content.xml and a fragment for web.xml from *.properties, as described in
+		http://stackoverflow.com/questions/162079/how-to-merge-jsp-pre-compiled-web-xml-fragment-with-main-web-xml-using-ant
+	-->
+		<loadfile property="generated.web.xml.fragment" srcFile="${generated.fragment.file}" />
+		<copy file="${orig-web-content.dir}/WEB-INF/web.xml" toFile="${generated-web-content.dir}/WEB-INF/web.xml">
+			<filterset>
+		    	<filter token="JDBC_MAP" value=" --&gt; ${generated.web.xml.fragment} &lt;!-- " />
+		    </filterset>
+		</copy>
+    </target>                                               
+
+    <target name="test" depends="deploy,test.command,test.servlet,test.service" />
+    <target name="test.command"><!-- run the program from the commandline -->
+        <antcall target="run">
+            <param name="class" value="org.teherba.dbat.Dbat" />
+            <param name="args"  value="-c worddb 'select count(*) from words'" />
+        </antcall>
+    </target>
+    <target name="test.xml"><!-- run the program from the commandline -->
+        <antcall target="run">
+            <param name="class" value="org.teherba.dbat.Dbat" />
+            <param name="args"  value="-c worddb -m xml -d words" />
+        </antcall>
+        <antcall target="run">
+            <param name="class" value="org.teherba.dbat.Dbat" />
+            <param name="args"  value="-c worddb -m xml -e ISO-8859-1 -i words" />
+        </antcall>
+    </target>
+    <target name="test.servlet"><!-- call the web page -->
+        <exec executable="lynx">
+            <arg line="-dump http://localhost:8080/dbat/servlet?spec=spec1" />
+        </exec>
+    </target>
+    <target name="test.service"><!-- call the webservice -->
+        <antcall target="run">
+            <param name="class" value="org.teherba.dbat.DbatClient"  />
+            <param name="args"  value="-c worddb.properties -20 words"/>
+        <!--
+            <param name="args"  value="-h"/>
+        -->
+        </antcall>
+    </target>
+
+</project>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2012-05-15, Dr. Georg Fischer: copied from color05.xml
+-->
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="en" 
+		conn="worddb" 
+		title="color08"
+		>
+	<comment lang="en">Select from test table - with colors on rows</comment>
+	<comment lang="de">Abfrage der Test-Tabelle mit farbigen Zeilen</comment>
+
+    <ht:h3>Select from test table c01 - with colors on rows</ht:h3>
+    <ht:form method="get">
+        <ht:input label="Name" name="name" maxsize="20" size="10" init="%r" />% &#xa0; &#xa0;
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+    
+    <select>
+        <col label="Year"  align="right" >year</col>
+        <col label="Name"  		>name</col>
+        <col label="University" >univ</col>
+        <col label="Gender"    	>gender</col>
+        <col label="Birthdate" 	>birth</col>
+    	<col pseudo="style">case when year &lt;= 1990 then 'blu' else 'red' end</col>
+        <from>c01</from>
+        <where> name like '<parm name="name" />%'
+        </where>
+        <counter desc="Person,s"/>
+    </select>
+</dbat>

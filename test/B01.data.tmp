@@ -1,0 +1,6 @@
+drop table if exists b01 ;
+  create table b01 
+  ( name varchar(16) not null
+  , content BLOB
+  ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
+  commit;

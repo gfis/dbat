@@ -1,0 +1,10 @@
+drop table if exists c01 ;
+  create table c01 
+  ( name varchar(16) not null	COMMENT 'Name of the Relative'
+  , univ varchar(16)			COMMENT 'Town'
+  , year int					COMMENT 'Decease Year'
+  , gender char(1)				COMMENT 'some escaped character'
+  , birth  date
+  , primary key (name)
+  ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
+  commit;

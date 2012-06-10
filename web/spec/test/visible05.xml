@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2011-08-24: Dr. Georg Fischer
+-->
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="en" 
+		conn="worddb" 
+		title="visible05"
+		>
+	<comment lang="en">Select from test table - suppress subsequent column values in groups</comment>
+	<comment lang="de">Abfrage der Test-Tabelle mit Unterdr&#xfc;ckung von Werten in einer Gruppe</comment>
+
+    <ht:h3>Select from test table c01 - test of "visible" feature</ht:h3>
+   
+    <select group="loc">
+        <col label="University" name="loc" style="visible">univ</col>
+        <col label="Gender"    	>gender</col>
+        <col label="Birthdate" 	>birth</col>
+        <from>c01
+        	where univ like 'L%'
+        </from>
+    </select>
+</dbat>

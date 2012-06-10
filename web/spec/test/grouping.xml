@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dbat conn="worddb" lang="en" encoding="UTF-8"
+	xmlns   ="http://www.teherba.org/2007/dbat"
+	xmlns:ht="http://www.w3.org/1999/xhtml"
+	title="grouping"
+	>
+<!--
+    @(#) $Id$
+	2011-08-10, Dr. Georg Fischer: for batch_test, like G01, G02
+-->
+	<comment lang="en">Test multiple header lines for control exchanges</comment>
+	<comment lang="de">Test der wiederholten &#xdc;berschriften beim Gruppenwechsel</comment>
+
+    <ht:h3>Grouping Test</ht:h3>
+    <select  group="sp1">
+        <col label="Column 1" name="sp1">sp1</col>
+        <col label="Column 2" name="sp2">sp2</col>
+        <col label="Column 3" name="sp3">sp3</col>
+        <from>pivot</from>
+        <order by="1,2,3" />
+        <counter desc="row,s" />
+    </select>
+</dbat>

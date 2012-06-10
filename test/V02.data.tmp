@@ -1,0 +1,12 @@
+-- fill table
+	DELETE FROM relatives;
+	INSERT INTO relatives VALUES('Martha'  	, 'Fischer'	, '1909-11-17', 'F'	, 'Freiburg'		, 1999, {ts'2012-06-28 19:47:06'}, 'testuser');
+	INSERT INTO relatives VALUES('Johannes'	, 'Fischer'	, '1911-06-03', 'M'	, 'Schramberg'    	, 1992, {ts'2012-06-28 19:47:06'}, 'testuser');
+	INSERT INTO relatives VALUES('Eberhard'	, 'Fischer'	, '1912-11-17', 'M'	, 'Groß-Gerau'    	, 1945, {ts'2012-06-28 19:47:06'}, 'testuser');
+	INSERT INTO relatives VALUES('Fritz'	, 'Fischer'	, '1907-08-08', 'M'	, 'Waldshut'    	, 1995, {ts'2012-06-28 19:47:06'}, 'testuser');
+	INSERT INTO relatives VALUES('Maria' 	, 'Ritter'	, '1914-09-17', 'F'	, 'Hermsdorf'    	, 1999, {ts'2012-06-28 19:47:06'}, 'testuser');
+	INSERT INTO relatives VALUES('Ilse' 	, 'Ritter'	, '1909-02-09', 'F'	, 'Lübars'    		, 1983, {ts'2012-06-28 19:47:06'}, 'testuser');
+	INSERT INTO relatives VALUES('Dorothea'	, 'Fischer'	, '1910-02-07', 'F'	, 'Berlin'   		, 1985, {ts'2012-06-28 19:47:06'}, 'testuser');
+	INSERT INTO relatives VALUES('Lucie'   	, 'Ritter'	, '1887-07-09', 'F'	, 'Lübars'    		, 1984, {ts'2012-06-28 19:47:06'}, 'testuser');
+	COMMIT;
+	SELECT * FROM relatives;

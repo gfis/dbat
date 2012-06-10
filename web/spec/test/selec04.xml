@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Dbat specification - test 1
+    @(#) $Id$
+    2011-09-30: Dr. Georg Fischer
+-->
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="en" 
+		conn="worddb" 
+		title="selec04"
+		>
+	<comment lang="en">Select from a CLOB table</comment>
+	<comment lang="de">Abfrage einer CLOB-Tabelle</comment>
+    <ht:h3>Select from test table b04</ht:h3>
+    <ht:form method="get">
+        <ht:input label="Name" name="name" maxsize="20" size="10" init="%r" />
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+    <select limit="2048">
+        <col label="Name"    remark="key for the CLOB column">name</col>
+        <col label="Length"  remark="size of the CLOB &#xd;&#xa;(number of bytes)" align="right">len</col>
+        <col label="Content" >content</col>
+        <from>b04</from>
+        <where>name like '<parm name="name" />%'
+        </where>
+        <counter desc="Entry,Entries"/>
+    </select>
+
+</dbat>

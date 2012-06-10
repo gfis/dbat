@@ -1,0 +1,797 @@
+#!/usr/bin/perl batch_test.pl
+
+# Collection of all Testcases for Dbat
+# @(#) $Id: all.tca 955 2012-06-05 07:22:59Z gfis $
+# 2012-05-08: V0% pass with method="post"; A01 FAILED, 156 passed tests
+# 2011-10-10: <choose> conditional compilation
+# 2011-08-10, Dr. Georg Fischer: extracted from batch_test.pl
+
+ECHO A00 
+
+TEST A01 parameterized link
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -m html -f ../web/spec/test/parmlink.xml
+
+TEST B01 create table with BLOB
+DATA drop table if exists b01 ;
+  create table b01 
+  ( name varchar(16) not null
+  , content BLOB
+  ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
+  commit;
+JRUN -f B01.data.tmp
+
+TEST B02 insert statements
+DATA -- fill table
+	delete from b01;
+	insert into b01 values('Martha'  , 'This is a BLOB: Martha was born in Freiburg, and she also died in Freiburg in 1999.');
+	select * from b01;
+JRUN -f B02.data.tmp
+
+TEST B03 describe BLOB table
+GREP at (\d{4}\-\d{2}\-\d{2})
+JRUN -d b01
+
+TEST B04 create table with CLOB
+DATA DROP TABLE if exists b04;
+  CREATE TABLE            b04 
+  ( name VARCHAR(16) not null 	COMMENT 'key for the LOB'
+  , len  INT 					COMMENT 'size of the LOB content'
+  , content TEXT 				COMMENT 'character large object (CLOB)'
+  ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
+  COMMIT;
+JRUN -f B04.data.tmp
+
+TEST B05 describe CLOB table
+GREP at (\d{4}\-\d{2}\-\d{2})
+JRUN -d b04
+
+TEST B06 insert from URI into CLOB
+DATA +noversion 194706 ../web/noversion.txt
++B04.data.tmp 2906 B04.data.tmp
++B06.data.tmp 64 B06.data.tmp
+JRUN  -r b04 < B06.data.tmp
+
+TEST B07 select from CLOB
+GREP " gfis "
+JRUN "select * from b04"
+
+TEST B08 insert into CLOB
+DATA -- fill table
+	insert into b04 values('align01' 	, 194706, '../web/spec/test/align01.xml');
+	insert into b04 values('index.jsp'	, 2906, 'http://localhost:8080/dbat/index.jsp');
+JRUN -f B08.data.tmp
+
+TEST B09 select from CLOB
+JRUN "select * from b04"
+#------------------------------
+TEST C01 create table
+DATA drop table if exists c01 ;
+  create table c01 
+  ( name varchar(16) not null	COMMENT 'Name of the Relative'
+  , univ varchar(16)			COMMENT 'Town'
+  , year int					COMMENT 'Decease Year'
+  , gender char(1)				COMMENT 'some escaped character'
+  , birth  date
+  , primary key (name)
+  ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
+  commit;
+JRUN -f C01.data.tmp
+
+TEST H01 help messages
+GREP DataBase A
+JRUN -h
+
+TEST H02 help messages - 0 arguments
+GREP DataBase A
+JRUN 
+
+TEST I01 insert statements
+DATA -- fill table
+	delete from c01;
+	insert into c01 values('Martha'  , 'Freiburg'		, 1999, '&', '1909-11-17');
+	insert into c01 values('Johannes', 'Schramberg'    	, 1992, '<', '1911-06-03');
+	insert into c01 values('Eberhard', 'Groß-Gerau'    	, 1945, '>', '1912-11-17');
+	insert into c01 values('Fritz'	 , 'Waldshut'    	, 1995, '<', '1907-08-08');
+	insert into c01 values('Maria' 	 , 'Hermsdorf'    	, 1999, '#', '1914-09-17');
+	insert into c01 values('Ilse' 	 , 'Lübars'    		, 1983, '$', '1909-02-09');
+	insert into c01 values('Dorothea', 'Lübars'    		, 1985, '$', '1910-02-07');
+	insert into c01 values('Lucie'   , 'Lübars'    		, 1984, '''','1887-07-09');
+	commit;
+	select * from c01;
+JRUN -f I01.data.tmp
+
+TEST I02 include with system entities
+WGET test/includer
+#-------------------------------------------
+TEST DE1 create table with DECIMALs
+DATA 
+  drop table if exists de1;
+  create table de1 
+  ( name0  VARCHAR(16) not null
+  , dec1   DECIMAL(18)
+  , dec2   DECIMAL(18,3)
+  , date3  DATE
+  , time4  TIME
+  , ts5    TIMESTAMP
+  ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
+  commit;
+JRUN -f DE1.data.tmp
+
+TEST DE2 fill table with DECIMALs
+DATA 
+  insert into de1 values('row1', 123456780123456789, 123456.345, {d '2011-08-01'}, {t '23:13:00'}, {ts '2011-08-01 23:13:00.000'}); 
+  insert into de1 values('row2', 194706290530000000, 194706.290, {d '1981-08-09'}, {t '11:30:00'}, {ts '1981-08-09 11:30:00.000'}); 
+  commit;
+  select * from de1 order by name0;
+  commit;
+JRUN -f DE2.data.tmp
+
+TEST DE3 fill table with DECIMALs, verbose output
+DATA 
+  insert into de1 values('row3', 123456780123456789, 123456.345, {d '2011-08-01'}, {t '23:13:00'}, {ts '2011-08-01 23:13:00.000'}); 
+  insert into de1 values('row4', 194706290530000000, 194706.290, {d '1981-08-09'}, {t '11:30:00'}, {ts '1981-08-09 11:30:00.000'}); 
+  commit;
+  select * from de1 order by name0;
+  commit;
+JRUN -v -f DE3.data.tmp
+#-----------------
+TEST X00 create procedure x00
+DATA
+  DROP   PROCEDURE if exists x00 $
+  CREATE PROCEDURE x00 (IN part varchar(20), OUT num int, OUT last varchar(20))
+  BEGIN
+  	SELECT count(*), max(name) 
+  	INTO num, last 
+  	FROM c01 
+  	WHERE name LIKE concat('%', concat(part, '%'));
+  END;
+  $
+JRUN -v -sp "$" -f X00.data.tmp
+
+TEST X01 create procedure x01 with 2 result sets
+DATA
+  DROP   PROCEDURE if exists x01 $
+  CREATE PROCEDURE x01 (IN x CHAR(1))
+  BEGIN
+  	SELECT * 
+  	FROM c01 
+	WHERE name like '%r%' ;
+  	SELECT name, birth
+  	FROM c01 ;
+  END;
+  $
+JRUN -v -sp "$" -f X01.data.tmp
+
+TEST X02 call procedure x01 with 2 result sets
+JRUN -m tsv -call x01 -in 7
+
+TEST X03 call command
+JRUN -m html -call x00 -in i -out:int -out:varchar
+
+TEST X04 call from specification
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -m html -p part=i -f ../web/spec/test/callproc.xml
+
+TEST X05 call by servlet 
+WGET test/callproc 
+
+TEST X06 call by servlet with parameter
+WGET test/callproc part=or
+
+TEST X07 create procedure x07
+DATA
+  DROP   PROCEDURE if exists x07 $
+  CREATE PROCEDURE x07 
+  	( IN  iname0 VARCHAR(16)
+  	, OUT odec1  DECIMAL(18)
+  	, OUT odec2  DECIMAL(18,3)
+  	, OUT odate3 DATE
+  	, OUT otime4 TIME
+  	, OUT ots5   TIMESTAMP
+  	)
+  BEGIN
+  	SELECT dec1, dec2, date3, time4, ts5 
+  	INTO   odec1, odec2, odate3, otime4, ots5
+  	FROM de1 
+  	WHERE name0 = iname0;
+  END;
+  $
+JRUN -v -sp "$" -f X07.data.tmp
+
+TEST X08 call procedure x07 with DECIMALs and TIME fields
+JRUN -m html -call x07 -in row2 -out:DECIMAL -out:DECIMAL -out:DATE -out:TIME -out:TIMESTAMP
+
+TEST X09 describe procedure x07
+GREP at (\d{4}\-\d{2}\-\d{2})
+JRUN -m sql -d x07
+
+TEST X10 call procedure x07 into parm
+WGET test/callx10 iname0=row2
+#------------------------------------------
+TEST XS1 generate an interactive form for native SQL with INT key
+XSLT ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud01.iv.xml
+
+TEST XS2 generate an interactive form for a stored procedure
+XSLT ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud02.iv.xml
+
+TEST XS3 generate an interactive form for native SQL with CHAR keys
+XSLT ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud03.iv.xml
+
+TEST XS4 generate a non-altering search form
+XSLT --stringparam alter 0 ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud01.iv.xml
+#------------------------------------------
+TEST L01 List Box and List Parameters - init values
+WGET test/listbox
+TEST L02 List Box and List Parameters - preset parameters
+WGET test/listbox namebox=J namebox=E birthint=1910 birthchar=1914
+
+TEST LT1 Textarea - init values
+WGET test/textarea
+TEST LT2 Textarea - preset parameters
+WGET test/textarea wordlist=phi+omikron WORDLIST=kappa+lambda
+TEST LT3 Textarea - preset parameters
+WGET test/textarea wordlist=phi+omikron WORDLIST=kappa+lambda
+
+TEST W13 select as Wiki text
+WGET test/selec01 mode=wiki
+TEST S13 select as Wiki text
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -m wiki  -f ../web/spec/test/selec02.xml
+
+TEST W14 select as CSV, separator=semicolon
+WGET test/includer&name=%25r&mode=csv&sep=*
+
+TEST Y01 error message: spec file not found
+WGET test/wrong_spec_file
+
+TEST Y02 error message: spec file not found, in German
+WGET test/wrong_spec_file lang=de
+
+TEST Y03 redirected spec file
+WGET test/select01
+
+TEST Y04 redirected spec file, in German
+WGET test/select01 lang=de
+
+TEST Y05 spec file with dot
+WGET test.selec01
+
+TEST Y06 XML syntax error, CLI
+GREP (\d{4}\-\d{2}\-\d{2})
+JRUN -m html  -f ../web/spec/test/badxml.xml
+
+TEST Y07 XML syntax error, web
+WGET test.badxml
+
+TEST Y08 redirected spec file, wait time 0s
+WGET test.redir0
+
+TEST Y09 redirected spec file, wait time 9s, German
+WGET test.redir9
+
+TEST W12 select with "." in specName
+WGET test.selec01
+
+TEST CT1 tokenizing preprogrammed commandline string
+CRUN CommandTokenizer  
+
+TEST CT2 tokenizing from file
+DATA call -in '2011-07-21 17:39:00'
+	call  my.pr1 -in "2 double quoted" -in:int 29647 -in '3 single quoted';
+CRUN CommandTokenizer -f CT2.data.tmp
+
+TEST CT3 tokenizing from file with SQL syntax
+CRUN CommandTokenizer -sql CT2.data.tmp
+#-------------------------------
+# URIReader schema testing
+TEST U01 http schema
+CRUN URIReader http://localhost:8080/dbat/noversion.txt
+
+# the following works with an Internet connection only
+TEST U02 gopher schema
+# CRUN URIReader gopher://gopher.rbfh.de/0/Fun/500miles.txt
+
+# the following works with an Internet connection only
+TEST U03 ftp schema
+# CRUN URIReader ftp://roland:roland@localhost/../gfis/work/webapps-super/dbat/web/noversion.txt
+
+TEST U04 file schema
+CRUN URIReader file:///home/gfis/work/webapps-super/dbat/web/noversion.txt
+
+TEST U05 relative file
+CRUN URIReader ../web/noversion.txt
+
+TEST U06 data URI
+CRUN URIReader data:this+is%20the+text+to+be+read
+
+# TEST U07 describe tayloring variables
+# JRUN -m taylor -s "{}" -d c01
+
+TEST U08 file tayloring - head+tail
+DATA -- tayloring with surrounding escape
+  {name} was born {birth}.
+  The symbol is {gender}.
+  Died in {univ} in year {year}.
+JRUN -m taylor -s "{}" -u U08.data.tmp "select * from c01" 
+
+TEST U09 file tayloring - head only
+DATA -- tayloring with leading escape
+  [name was born [birth.
+  The symbol is [gender.
+  Died in [univ in year [year.
+JRUN -m taylor -s "[" -u U09.data.tmp "select * from c01" 
+
+TEST U10 file tayloring - with data: URI template
+#JRUN -m taylor -s "$" -u data:%09$name%09$univ+$year%0a "select name, univ, year from c01" 
+JRUN -m taylor -s "ß" -u data:%09%c3%9fname%09in+%c3%9funiv+%c3%9fyear%0a "select name, univ, year from c01" 
+
+TEST W01 select 
+WGET test/selec01
+
+TEST W02 select as HTML
+WGET test/selec01 mode=html
+
+TEST W03 select as XML
+WGET test/selec01 mode=xml
+
+TEST W04 select for JDBC
+GREP at (\d{4}\-\d{2}\-\d{2})T
+WGET test/selec01 mode=jdbc
+
+TEST W05 select tab separated
+WGET test/selec01 mode=tsv
+
+TEST W06 select fixed columns
+WGET test/selec01 mode=fix
+
+TEST W09 echo SELECT SQL 
+WGET test/selec01 mode=echo
+
+TEST W10 show default specification
+WGET test/selec01 mode=spec
+
+TEST W11 select as Excel
+WGET test/selec01 mode=xls
+
+TEST D01 describe table
+GREP at (\d{4}\-\d{2}\-\d{2})T
+JRUN -d c01
+
+TEST D02 describe table in HTML
+GREP at (\d{4}\-\d{2}\-\d{2})T
+JRUN -m html -d c01
+
+TEST D03 describe table in XML
+GREP at (\d{4}\-\d{2}\-\d{2})T
+JRUN -m xml  -d c01
+
+TEST D04 describe table in SQL
+GREP at (\d{4}\-\d{2}\-\d{2})T
+JRUN -m sql  -d c01
+
+TEST D05 describe table tab separated
+JRUN -m tsv  -d c01
+
+TEST D06 describe table in fixed columns
+JRUN -m fix  -d c01
+
+TEST D07 describe in MediaWiki format
+JRUN -m wiki -d c01
+
+TEST D08 describe semicolon separated
+JRUN -m csv -s ";" -d c01
+
+TEST D10 output default specification 
+GREP (\d{4}\-\d{2}\-\d{2})
+JRUN -m spec -d c01
+
+# describe for Excel nyi
+# TEST D11 output Excel 
+# JRUN -m xls  -d c01
+
+TEST D12 web describe with specification 
+WGET describe
+
+TEST S02 select as HTML
+JRUN -m html -29  c01
+
+TEST S03 select as XML
+JRUN -m xml  "select * from c01"
+
+TEST S04 select for JDBC
+GREP at (\d{4}\-\d{2}\-\d{2})T
+JRUN -m jdbc -29 c01
+
+TEST S05 select tab separated
+JRUN -m tsv  -29 c01
+
+TEST S06 select fixed columns
+JRUN -m fix  -29 c01
+
+TEST S07 select fixed columns with widths
+JRUN -m fix -l 12,12,5,2,12 -29 c01
+
+TEST S08 select semicolon separated
+JRUN -m csv -s ";" -29 c01
+
+TEST S09 echo - show SELECT SQL only
+JRUN -m echo -29 c01
+
+TEST E01 echo - show SELECT SQL from XML file
+JRUN -m echo -f ../web/spec/test/selec01.xml
+
+TEST S11 Excel format
+JRUN -m xls  -29 c01
+
+TEST S12 select for SQL UPDATEs
+GREP at (\d{4}\-\d{2}\-\d{2})T
+JRUN -m update -29 c01
+
+TEST S14 select fixed columns with width truncation
+JRUN -m fix -l 4,4 "select name, len from b04"
+
+TEST S15 select fixed columns with alignment
+JRUN -m fix -f ../web/spec/test/align02.xml
+
+TEST S16 multiple tables, Excel format
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -m xls -f ../web/spec/test/selec03.xml
+
+TEST S21 select as HTML with linked values
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -m html -f ../web/spec/test/selec02.xml
+
+TEST S22 select as XML  with linked values
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -m xml  -f ../web/spec/test/selec02.xml
+
+TEST S23 select for JDBC with linked values
+GREP \w\w (\d{4}\-\d{2}\-\d{2})
+JRUN -m jdbc -f ../web/spec/test/selec02.xml
+
+TEST S24 select tab separated with linked values
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -m tsv  -f ../web/spec/test/selec02.xml
+
+TEST S25 echo SELECT SQL with linked values
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -m echo -f ../web/spec/test/selec02.xml
+
+TEST S26 select fixed columns with linked values
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -m fix  -f ../web/spec/test/selec02.xml
+
+TEST S27 Excel format with linked values
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -m xls  -f ../web/spec/test/selec02.xml
+
+TEST S28 select for SQL UPDATEs with linked values
+GREP \w\w (\d{4}\-\d{2}\-\d{2})
+JRUN -m update -f ../web/spec/test/selec02.xml
+
+TEST N01 count(*) test
+JRUN -n c01
+#--------------------------
+# enumerations, fetch into parameterMap
+TEST EN1 create table with enumerations
+DATA drop table if exists en1;
+  create table en1 
+  ( seq     INT not null
+  , code    VARCHAR(16) 
+  , lang    CHAR(3)
+  , display VARCHAR(64)
+  ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
+  commit;
+JRUN -f EN1.data.tmp
+
+TEST EN2 fill table with enumerations
+DATA 
+  insert into en1 values( 1, 'M', 'eng', 'male');
+  insert into en1 values( 2, 'F', 'eng', 'female');
+  insert into en1 values( 3, 'N', 'eng', 'neuter');
+  commit;
+  select * from en1;
+  commit;
+JRUN -f EN2.data.tmp
+
+TEST EN3 enumerations into parameters
+GREP on (\d{4}\-\d{2}\-\d{2})
+WGET test/enum01
+
+TEST EN4 enumerations into listbox
+GREP on (\d{4}\-\d{2}\-\d{2})
+WGET test/enum02
+
+#--------------------------
+# aggregation, pivot and grouping
+TEST C02 create pivot table
+DATA drop table if exists pivot ;
+  create table pivot
+  ( sp1 varchar(8) 
+  , sp2 varchar(8)
+  , sp3 varchar(8)
+  ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
+  commit;
+JRUN -f C02.data.tmp
+
+TEST C03 CLI colors
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -m html -f ../web/spec/test/color04.xml
+
+TEST C04 web colors
+WGET test/color04
+
+TEST C05 web colors, Excel
+WGET test/color04 mode=xls
+
+TEST C06 CLI with column element
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -m html -f ../web/spec/test/column02.xml
+
+TEST C07 web with column element
+WGET test/column02
+
+TEST C08 web with colors on rows
+WGET test/color08
+
+TEST R00 clear pivot table for raw input test
+JRUN "delete from pivot"
+
+TEST R01 raw table input test
+JRUN -r pivot < pivot_test.raw
+
+TEST R02 check raw input
+JRUN "select * from pivot order by 1,2,3;"
+
+TEST G01 CLI grouping test with TSV 
+JRUN -g sp1 -m tsv  "select sp1, sp2      from pivot order by 1, 2"
+
+TEST G02 CLI grouping test with HTML
+JRUN -g sp1 -m html "select sp1, sp2, sp3 from pivot order by 1, 2, 3"
+
+TEST G03 web grouping test 
+GREP on (\d{4}\-\d{2}\-\d{2})
+WGET test/grouping
+
+TEST G04 web grouping test with SQL (error in writeHeader)
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test/grouping mode=sql
+
+TEST O01 Order + parm init
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test/order01 
+
+TEST O02 Order 
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test/order02 
+
+TEST O03 Order probe
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test/order02 mode=probe
+
+TEST P01 aggregation test 
+JRUN -a sp2 -sa "/" -m tsv  "select sp1, sp2 from pivot order by 1, 2"
+
+TEST P02 aggregation test with HTML
+JRUN -a sp2 -sa "+" -m html "select sp1, sp2 from pivot order by 1, 2"
+
+TEST P03 pivot test with HTML
+JRUN -a sp2 -sa "pivot" -m html "select sp1, sp2, sp3 from pivot order by 1, 2"
+
+TEST P04 Web pivot test with HTML
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test/pivot03
+
+TEST P05 Web pivot test with SQL
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test/pivot03 mode=sql
+
+TEST P06 Web pivot test with fixed format
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test/pivot03 mode=fix
+
+TEST P07 Web pivot test with TSV
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test/pivot03 mode=tsv
+
+TEST P08 Web pivot test with XLS
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test/pivot03 mode=xls
+
+TEST P09 Web pivot test with fetchLimit
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test/pivot03 fetch=10
+
+TEST PR1 probe correct SQL
+GREP (\d{4}\-\d{2}\-\d{2})
+JRUN -m probe -f ../web/spec/test/selec02.xml
+
+# TEST PR2 probe wrong SQL (WITH for MySQL)
+# GREP (\d{4}\-\d{2}\-\d{2})
+# JRUN -m probe -f ../web/spec/test/with_cte.xml
+
+TEST VS1 CLI visible grouping test with TSV 
+JRUN -g sp1 -m tsv  -f ../web/spec/test/visible05.xml
+
+TEST VS2 CLI visible grouping test with HTML
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -g sp1 -m html -f ../web/spec/test/visible05.xml
+
+TEST VS3 Web visible grouping test 
+GREP on (\d{4}\-\d{2}\-\d{2})
+WGET test/visible05
+
+TEST CH1 choose conditional compilation, "yes"
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -m csv -s "-" -p switch=yes -f ../web/spec/test/choose06.xml
+
+TEST CH2 choose conditional compilation, "true"
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -m csv -s "-" -p switch=true -f ../web/spec/test/choose06.xml
+
+TEST CH3 choose conditional compilation, "other"
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -m csv -s "-" -p switch=other -f ../web/spec/test/choose06.xml
+
+TEST FK1 create tables with foreign keys 
+DATA
+	-- Foreign key example from MySQL 5 manual, slightly changed such that it
+	-- runs through http://developer.mimer.se/validator/parser99/index.tml#parser
+	-- @(#) $Id: all.tca 955 2012-06-05 07:22:59Z gfis $
+	-- 2011-11-11, Dr. Georg Fischer
+	-- SQL constraints
+	DROP   TABLE if exists product_order;
+	DROP   TABLE if exists product;
+	CREATE TABLE product 
+			( category 	INT NOT NULL
+			, id 		CHAR(8) NOT NULL
+			, price 	DECIMAL
+			, CONSTRAINT PK1 PRIMARY KEY(id, category)
+			, CONSTRAINT UK2 UNIQUE     (id)
+			) Engine=InnoDB;
+	DROP   TABLE if exists customer;
+	CREATE TABLE customer 
+			( id 		CHAR(8) NOT NULL
+			, PRIMARY KEY (id)
+			) Engine=InnoDB;
+	
+	CREATE TABLE product_order 
+			( numb 				INT NOT NULL
+			, product_category 	INT NOT NULL
+	        , product_id 		CHAR(8) NOT NULL DEFAULT '00'
+	        , customer_id 		CHAR(8) NOT NULL DEFAULT '17'
+	        , CONSTRAINT PK2 PRIMARY KEY(numb)
+	        , CONSTRAINT UK3 UNIQUE (product_id, product_category)
+	        , CONSTRAINT FK1 FOREIGN KEY (product_id, product_category)
+	             REFERENCES product(id, category)
+	                 ON UPDATE CASCADE 
+	                 ON DELETE RESTRICT,
+	                 CHECK (customer_id)
+	        , CONSTRAINT FK2 FOREIGN KEY (customer_id)
+	             REFERENCES customer(id)
+			) Engine=InnoDB;
+	
+	COMMIT;
+	CREATE INDEX prodnx ON product
+			( category  ASC
+			);
+	CREATE UNIQUE INDEX produx ON product
+			( id        DESC
+			);
+	COMMIT;
+JRUN -f FK1.data.tmp
+
+TEST FK2 describe with foreign keys
+GREP at (\d{4}\-\d{2}\-\d{2})
+JRUN -d product_order
+
+TEST FK3 Web describe
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET describe table=product_order
+
+TEST VW1 create view
+DATA --
+ create view vw1 as 
+ 	select name 
+ 	, birth
+ 	from c01;
+JRUN -f VW1.data.tmp
+
+TEST VW2 describe view
+GREP at (\d{4}\-\d{2}\-\d{2})
+JRUN -d vw1
+
+# TEST VW3 web describe view
+# GREP at (\d{4}\-\d{2}\-\d{2})
+# WGET describe table=vw1
+
+TEST VW4 drop view
+DATA --
+ drop view vw1;
+JRUN -f VW4.data.tmp
+
+TEST TS1 CLI XML+XSLT - basic function
+GREP at (\d{4}\-\d{2}\-\d{2})
+JRUN -m trans -f ../web/spec/test/xslt_brackets.xml -p xslt=../web/spec/test/brackets.xsl
+
+TEST TS2 CLI XSLT, but with mode=html - no transformation
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -m html -f ../web/spec/test/xslt_brackets.xml
+
+TEST TS3 CLI XSLT with CLI parameter overriding attribute
+GREP at (\d{4}\-\d{2}\-\d{2})
+JRUN -m trans -f ../web/spec/test/xslt_brackets.xml  -p xslt=../web/spec/test/formed.xsl
+
+TEST TW1 Web XML+XSLT - basic function
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test.xslt_brackets mode=trans
+
+TEST TW2 Web XSLT, but with mode=html - no transformation
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test.xslt_brackets mode=html
+
+TEST TW3 Web XSLT with URL parameter overriding attribute
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test.xslt_brackets mode=trans xslt=/var/lib/tomcat/webapps/dbat/spec/test/formed.xsl
+
+TEST V01 create table for DBIV tests
+DATA -- create table
+  DROP TABLE if exists relatives;
+  CREATE TABLE relatives
+  ( name  	VARCHAR(40) NOT NULL	COMMENT 'Christian Name'
+  , family	varchar(40) not null	COMMENT 'Family Name'
+  , birth	DATE
+  , gender	CHAR(1)					COMMENT 'M or F'
+  , place	VARCHAR(40)				COMMENT 'Town'
+  , decease int						COMMENT 'Decease Year'
+  , changed TIMESTAMP	-- DEFAULT NOW()
+  									COMMENT 'last update time'  
+  , user    VARCHAR(8)				COMMENT 'of last change'
+  , PRIMARY KEY (name, family)
+  ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
+  commit;
+JRUN -f V01.data.tmp
+
+TEST V02 initial data for DBIV tests
+DATA -- fill table
+	DELETE FROM relatives;
+	INSERT INTO relatives VALUES('Martha'  	, 'Fischer'	, '1909-11-17', 'F'	, 'Freiburg'		, 1999, {ts'2012-06-28 19:47:06'}, 'testuser');
+	INSERT INTO relatives VALUES('Johannes'	, 'Fischer'	, '1911-06-03', 'M'	, 'Schramberg'    	, 1992, {ts'2012-06-28 19:47:06'}, 'testuser');
+	INSERT INTO relatives VALUES('Eberhard'	, 'Fischer'	, '1912-11-17', 'M'	, 'Groß-Gerau'    	, 1945, {ts'2012-06-28 19:47:06'}, 'testuser');
+	INSERT INTO relatives VALUES('Fritz'	, 'Fischer'	, '1907-08-08', 'M'	, 'Waldshut'    	, 1995, {ts'2012-06-28 19:47:06'}, 'testuser');
+	INSERT INTO relatives VALUES('Maria' 	, 'Ritter'	, '1914-09-17', 'F'	, 'Hermsdorf'    	, 1999, {ts'2012-06-28 19:47:06'}, 'testuser');
+	INSERT INTO relatives VALUES('Ilse' 	, 'Ritter'	, '1909-02-09', 'F'	, 'Lübars'    		, 1983, {ts'2012-06-28 19:47:06'}, 'testuser');
+	INSERT INTO relatives VALUES('Dorothea'	, 'Fischer'	, '1910-02-07', 'F'	, 'Berlin'   		, 1985, {ts'2012-06-28 19:47:06'}, 'testuser');
+	INSERT INTO relatives VALUES('Lucie'   	, 'Ritter'	, '1887-07-09', 'F'	, 'Lübars'    		, 1984, {ts'2012-06-28 19:47:06'}, 'testuser');
+	COMMIT;
+	SELECT * FROM relatives;
+JRUN -f V02.data.tmp
+  
+TEST V03 search for M
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test.crud03 view=sear search_crit_1=M family=Ritter birth= gender=M place= decease=
+
+TEST V04 update Maria's place
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test.crud03 search_value_1=M search_value_2=' name=Maria family=Ritter view=upd
+
+TEST V05 place updated
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test.crud03 view=upd2 search_crit_1= search_crit_2=Ritter name=Maria family=Ritter birth=1914-09-17 gender=F place=Berlin-Hermsdorf decease=1999 changed=current_timestamp user=testuser
+
+TEST V06 insert with Maria's data
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test.crud03 view=ins search_crit_1= family=Ritter birth=1914-09-17 gender=F place=Berlin-Hermsdorf decease=1999 changed=current_timestamp user=testuser
+
+TEST V07 Teherba inserted
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test.crud03 view=ins2 search_crit_1= search_crit_2=Ritter name=Teherba family=Ritter birth=1886-02-04 gender=F place=Oranienburg decease=1968 changed=current_timestamp user=testuser
+
+TEST V08 delete Teherba
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test.crud03 search_value_1= search_value_2=Ritter name=Teherba family=Ritter view=del
+
+TEST V09 Teherba deleted
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test.crud03 view=del2 search_crit_1= search_crit_2=Ritter name=Teherba family=Ritter birth= gender=M place= decease=

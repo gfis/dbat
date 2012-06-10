@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="en" 
+		conn="worddb" 
+		title="enum02"
+		>
+<!--
+    @(#) $Id$
+    2012-04-04, Dr. Georg Fischer
+-->
+	<comment lang="en">Fetch Enumerations and build dynamic listbox</comment>
+	<comment lang="de">Dyn. Listbox mit Parametern einer Enumeration f&#xfc;llen</comment>
+	
+    <ht:h3>Fetch Enumerations and build a dynamic listbox 
+    	with default <ht:em><parm name="gender" init="N" /></ht:em>
+    </ht:h3>
+
+    <select distinct="yes" into="parm">
+        <col name="code"	>code	</col>
+        <col name="display"	>display</col>
+        <from>en1</from>
+        <where>lang = 'eng'
+        </where>
+        <order by="1" />
+    </select>
+
+	<ht:form>
+		<ht:table>
+		<ht:tr><ht:td valign="top"><listbox label="Gender" name="gender" height="3" code="code" display="display" 			  /></ht:td></ht:tr>
+		<ht:tr><ht:td valign="top"><listbox label="Gender" name="gender" height="3" code="code" display="display" empty="(any)" /></ht:td></ht:tr>
+		</ht:table>
+	</ht:form>
+</dbat>

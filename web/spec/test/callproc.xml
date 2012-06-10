@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dbat conn="worddb"
+	xmlns   ="http://www.teherba.org/2007/dbat"
+	xmlns:ht="http://www.w3.org/1999/xhtml"
+	title="callproc"
+	>
+<!--
+    Dbat specification - test the call of a Stored Procdure
+    @(#) $Id$
+    Copyright 2010 Dr. Georg Fischer <punctum at punctum dot kom>
+	2011-08-29: call x00
+    2010-03-11: copied from spec1
+-->
+	<comment lang="en">Activation of a Stored Procedure</comment>
+	<comment lang="de">Aufruf einer Stored Procedure</comment>
+
+    <ht:h2>Call of Stored Procedure <ht:em>x00</ht:em></ht:h2>
+    <ht:form method="get">
+        <ht:input label="Part" name="part" init=""/>
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+
+    <call name="x00">
+        <col label="Name"  name="part" 	    dir="in"  />
+        <col label="Count" type="int"       dir="out" />
+        <col label="Last"  type="varchar"  	dir="out" />
+    </call>
+</dbat>
