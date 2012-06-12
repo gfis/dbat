@@ -30,12 +30,13 @@
     <import file="build-import.xml" />
     
     <target name="generate">
+    <!--
         <copy todir="${src.home}/org/teherba/xtrans">
             <fileset dir="../xtrans/src/main/java/org/teherba/xtrans">
                 <include name="BaseTransformer.java"/>
                 <include name="BaseRecord.java"/>
                 <include name="BasicFactory.java"/>
-                <include name="ByteRecord.java"/><!-- not used, only for javadoc completeness -->
+                <include name="ByteRecord.java"/>
                 <include name="CharRecord.java"/>
                 <include name="CharTransformer.java"/>
                 <include name="Field.java"/>
@@ -49,6 +50,7 @@
                 <include name="PYXTransformer.java"/>
             </fileset>
         </copy>
+    -->
     </target>                                               
 
     <target name="not_yet_generate">

@@ -1,5 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$
+ *	2012-06-12: Javadoc cleaned for github
  *	2012-03-12: DBAN_URI; works for Geronimo, WASCE
  *	2012-01-31: BasicDataSource no longer used
  *	2012-01-25: fallback to dbat.properties if dsMap not filled by DBCPoolingListener
@@ -145,7 +146,7 @@ public class Configuration implements Serializable {
     /** which encodings to use for source [0] and target [1]: ISO-8859-1 (default), UTF-8 and so on */
     private String[] encoding;
     /** Gets the encoding for source or target
-     *	@param side: 0 = source, 1 = target
+     *	@param side 0 = source, 1 = target
      *  @return ISO-8859-1, UTF-8 etc.
      */
     public String getEncoding(int side) {
@@ -153,7 +154,7 @@ public class Configuration implements Serializable {
     } // getEncoding
 
     /** Sets the encoding
-     *	@param side: 0 = source, 1 = target
+     *	@param side 0 = source, 1 = target
      *  @param enc encoding (ISO-8859-1, UTF-8 ...)
      */
     public void setEncoding(int side, String enc) {
@@ -239,8 +240,8 @@ public class Configuration implements Serializable {
     public String getNamespacePrefix() {
     	return this.namespacePrefix;
     } // getNamespacePrefix
-    /** Sets the default schema 
-     *  @param schema schema which is used when none is specified with the table's name 
+    /** Sets the namespace prefix 
+     *  @param namespacePrefix short (lowercase) prefix as defined by xmlns pseudo attribute 
      */
     public void setNamespacePrefix(String namespacePrefix) {
     	this.namespacePrefix = namespacePrefix;
