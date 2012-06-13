@@ -426,7 +426,8 @@ public class Configuration implements Serializable {
 	    // public final static String CVSID = "@(#) $Id$"; // old 942
 	    //                                     0    1    2                  3   4
         String[] vers = CVSID.split("\\s+");
-        return "Dbat V7." + vers[3] + "/" + vers[4];
+        // return "Dbat V7." + vers[3] + "/" + vers[4];
+        return "Dbat V8." + vers[2].substring(0,4);
     } // getVersionString
 
     /** whether to print header and trailer */

@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications 
     @(#) $Id$
+	2012-06-13: <var> for prepared statements in addition to <parm>
     2012-05-03: target="_blank" for Excel, spec
     2012-04-04: listbox
     2012-03-01: pseudo variables remote_user, update_count
@@ -57,6 +58,7 @@ import  java.io.PrintWriter;
 import  java.net.URLEncoder;
 import  java.sql.Types;
 import  java.text.SimpleDateFormat;
+import  java.util.ArrayList;
 import  java.util.HashMap;
 import  java.util.Iterator;
 import  java.util.Map;
@@ -670,6 +672,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     private StringBuffer colBuffer;
     /** buffer for the assembly of other SQL component strings */
     private StringBuffer valBuffer;
+    /** buffer for the types and values of placeholders derived from &lt;var&gt; */
+	private ArrayList/*<1.5*/<String>/*1.5>*/ variables;
     /** number of column elements encountered so far */
     private int columnNo;
 	/** <em>name</em> attribute of start tag (used for &lt;textarea&gt; only)*/
@@ -837,6 +841,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         errorCode		= 0;
         chooseTop 		= 0;
         chooseStack[chooseTop] = CHOOSE_GEN | CHOOSE_THIS; // code generation is active at the beginning
+        variables 		= new ArrayList/*<1.5*/<String>/*1.5>*/ ();
     } // startDocument
     
     /** Receive notification of the end of the XML document.
@@ -1061,6 +1066,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 	            parentStmt = elem; // remember it for closing tag
 		        colBuffer.setLength(0);
 	    	    sqlBuffer.setLength(0); // start a new statement
+	    	    variables.clear();
 				sqlBuffer.append("CALL ");
 				sqlBuffer.append(procName);
 	            columnNo = 0;
@@ -1163,6 +1169,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 	            parentStmt = elem;
 	            colBuffer.setLength(0);
 	            sqlBuffer.setLength(0); // start a new statement
+	            variables.clear();
 	            sqlBuffer.append("DELETE ");
 	            columnNo = 0;
 				initializeAction();
@@ -1172,6 +1179,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 	            parentStmt = elem; // remember it for closing tag
 		        colBuffer.setLength(0);
 	    	    sqlBuffer.setLength(0); 
+	    	    variables.clear();
 				initializeAction();
 	        	currentNameSpace = config.DBAT_URI; // leave HTML, enter specification syntax
 			
@@ -1222,6 +1230,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 	            parentStmt = elem;
 	            colBuffer.setLength(0);
 	            sqlBuffer.setLength(0); // start a new statement
+	    	    variables.clear();
 	            sqlBuffer.append("INSERT ");
 	            columnNo = 0;
 				initializeAction();
@@ -1309,26 +1318,20 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 	            }
 	            // PARM_TAG
 	
-	        } else if (qName.equals(VAR_TAG     )) { // similiar to PARM_TAG, but later it will not have quotes around 
+	        } else if (qName.equals(VAR_TAG     )) { // similiar to PARM_TAG, but for a prepared statement
 				String params = getParameterForSQL(attrs, "name");
 	            if (currentNameSpace.equals(config.HTML_URI)) { // print HTML text unchanged
 	                tbSerializer.writeMarkup(params);
 	            } else { // DBAT_URI
-	            	String varType = attrs.getValue("type");
-	            	if (varType != null) {
-	            		if (false) {
-	            		} else if (varType.startsWith("int")) {
-			                colBuffer.append(params);
-	            		} else { // char
-							colBuffer.append('\'');
-			                colBuffer.append(params);
-							colBuffer.append('\'');
-	            		}
-	            	} else { // no type => char
-							colBuffer.append('\'');
-			                colBuffer.append(params);
-							colBuffer.append('\'');
-		            }
+	            	String typeName = attrs.getValue("type");
+	            	if (typeName != null) {
+	            		typeName = typeName.toUpperCase(); // SQL conventions
+	            	} else {
+	            		typeName = "CHAR";
+	            	} 
+	            	colBuffer.append(" ? "); // append the placeholder = parameter marker
+	            	variables.add(typeName);
+	            	variables.add(params);
 		            // DBAT_URI
 	            }
 	            // VAR_TAG
@@ -1351,6 +1354,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 		            parentStmt = elem; // remember it for closing tag
 		            colBuffer.setLength(0);
 	                // sqlBuffer.setLength(0); not: because of optional previous WITH 
+		    	    // variables.clear();
 	                if (tbSerializer.getOutputFormat().startsWith("probe")) {
 	                	sqlBuffer.append("select * from (\n");
 						probeOpen = true;
@@ -1413,6 +1417,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 	        } else if (qName.equals(UPDATE_TAG  )) { 
 	            parentStmt = elem;
 	            sqlBuffer.setLength(0);
+	    	    variables.clear();
 	            sqlBuffer.append("UPDATE ");
 	            columnNo = 0;
 				initializeAction();
@@ -1436,6 +1441,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 		        if (true) {
 		            colBuffer.setLength(0);
 	    	        sqlBuffer.setLength(0); // start a new statement
+		    	    variables.clear();
 	        	    sqlBuffer.append("WITH ");
 	                currentNameSpace = config.DBAT_URI; // leave HTML, enter specification syntax
 				}
@@ -1611,12 +1617,13 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 	        	// tbSerializer.writeComment("CALL_TAG in SpecificationHandler.endElement: " + sqlBuffer.toString());
 	   	        tbMetaData.setFillState(1);
        			tbMetaData.setAggregateColumn(); // with previously stored parameters
-	   	        sqlAction.execSQLStatement(tbMetaData, sqlBuffer.toString(), parameterMap); 
+	   	        sqlAction.execSQLStatement(tbMetaData, sqlBuffer.toString(), variables, parameterMap); 
 	  	        currentNameSpace = config.HTML_URI; // back to HTML
 				terminateAction();
 	   	        parentStmt = "";
 	   	        colBuffer.setLength(0);
 	   	        sqlBuffer.setLength(0);
+	    	    variables.clear();
 	
 	        } else if (qName.equals(COL_TAG     )) { 
 	            if (false) {
@@ -1685,12 +1692,13 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 	        } else if (qName.equals(DELETE_TAG  )) { 
 	        	// tbSerializer.writeComment("DELETE_TAG in SpecificationHandler.endElement: " + sqlBuffer.toString());
 	   	        tbMetaData.setFillState(1);
-	   	        sqlAction.execSQLStatement(tbMetaData, sqlBuffer.toString(), parameterMap); 
+	   	        sqlAction.execSQLStatement(tbMetaData, sqlBuffer.toString(), variables, parameterMap); 
 	   	        currentNameSpace = config.HTML_URI; // back to HTML
 				terminateAction();
 	   	        parentStmt = "";
 	   	        colBuffer.setLength(0);
 	   	        sqlBuffer.setLength(0);
+	    	    variables.clear();
 	   	        // /DELETE_TAG
 	
 	        } else if (qName.equals(DESCRIBE_TAG  )) { 
@@ -1706,6 +1714,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 	   	        parentStmt = "";
 	   	        colBuffer.setLength(0);
 	   	        sqlBuffer.setLength(0);
+	    	    variables.clear();
 	           
 	        } else if (qName.equals(DIV_TAG		) &&  uri.equals(config.DBAT_URI)) {
 				// ignore
@@ -1723,12 +1732,13 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 	            sqlBuffer.append(valBuffer.toString());
 	            sqlBuffer.append(")");
 	   	        tbMetaData.setFillState(1);
-	   	        sqlAction.execSQLStatement(tbMetaData, sqlBuffer.toString(), parameterMap); 
+	   	        sqlAction.execSQLStatement(tbMetaData, sqlBuffer.toString(), variables, parameterMap); 
 				terminateAction();
 	            currentNameSpace = config.HTML_URI; // back to HTML
 	            parentStmt = "";
 	   	        colBuffer.setLength(0);
 	   	        sqlBuffer.setLength(0);
+	    	    variables.clear();
 	
 	        } else if (qName.equals(INTO_TAG    )) { 
 	            sqlBuffer.append(colBuffer.toString());
@@ -1771,13 +1781,14 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 						if (debug >= 1) {
 							System.err.println("compiled SQL: " + sqlBuffer.toString());
 						}
-			   	        sqlAction.execSQLStatement(tbMetaData, sqlBuffer.toString(), parameterMap); 
+			   	        sqlAction.execSQLStatement(tbMetaData, sqlBuffer.toString(), variables, parameterMap); 
 					}
 					terminateAction();
 	   	   			currentNameSpace = config.HTML_URI; // back to HTML
 	   	   			parentStmt = "";
 	   	   			colBuffer.setLength(0);
 	   	   			sqlBuffer.setLength(0);
+		    	    variables.clear();
 	   	   		} // DBAT
 	
 	        } else if (qName.equals(TEXTAREA_TAG   )) { // similiar to INPUT_TAG
@@ -1799,11 +1810,12 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 	   	        colBuffer.setLength(0);
 	        	// tbSerializer.writeComment("UPDATE_TAG in SpecificationHandler.endElement: " + sqlBuffer.toString());
 	   	        tbMetaData.setFillState(1);
-	   	        sqlAction.execSQLStatement(tbMetaData, sqlBuffer.toString(), parameterMap); 
+	   	        sqlAction.execSQLStatement(tbMetaData, sqlBuffer.toString(), variables, parameterMap); 
 				terminateAction();
 	   	        currentNameSpace = config.HTML_URI; // back to HTML
 	   	        parentStmt = "";
 	   	        sqlBuffer.setLength(0);
+	    	    variables.clear();
 	   	        // /UPDATE_TAG
 	
 	        } else if (qName.equals(VALUES_TAG  )) { 

@@ -797,3 +797,7 @@ WGET test.crud03 search_value_1= search_value_2=Ritter name=Teherba family=Ritte
 TEST V09 Teherba deleted
 GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test.crud03 view=del2 search_crit_1= search_crit_2=Ritter name=Teherba family=Ritter birth= gender=M place= decease=
+
+TEST VA1 var element
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test.var01 name=%25

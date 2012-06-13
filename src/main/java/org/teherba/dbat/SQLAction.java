@@ -1550,7 +1550,7 @@ public class SQLAction implements Serializable {
 		            	setPlaceholders(statement, variables); // set the values of all placeholders
 	    	        } // set placeholders
 					statement.setQueryTimeout(120);
-	                ResultSet stResults = statement.executeQuery(sqlInstruction);
+	                ResultSet stResults = statement.executeQuery();
                     serializeQueryResults(tbMetaData, sqlInstruction, stResults);
 					stResults.close();
 					if (! config.hasAutoCommit()) { // for DB2 on z
@@ -1578,7 +1578,7 @@ public class SQLAction implements Serializable {
 	    	        } // set placeholders
 		        	tbSerializer.writeComment("SQL:\n" + sqlInstruction + "\n:SQL", config.getVerbose()); 
         			// this is needed for EchoSQL, since it is the only action there
-	                updateCount = statement.executeUpdate(sqlInstruction);
+	                updateCount = statement.executeUpdate();
 	    	    	if (parameterMap != null) {
 		    	    	parameterMap.put(config.UPDATE_COUNT, new String[] { String.valueOf(updateCount) });
 	    		    }
