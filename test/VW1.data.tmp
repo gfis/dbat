@@ -1,5 +1,0 @@
---
- create view vw1 as 
- 	select name 
- 	, birth
- 	from c01;

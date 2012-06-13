@@ -34,9 +34,9 @@ WHERE name = 'Teherba'
 
 			<input name="view" type="hidden" value="del2"></input>
 			<input name="opcode" type="hidden" value="del"></input>
-			<input name="search_crit_1" type="hidden" init="" value=""></input>
-			<input name="search_crit_2" type="hidden" init="" value=""></input>
-			<input name="search_crit_3" type="hidden" init="M" value="M"></input>
+			<input name="search_name" type="hidden" init="" value=""></input>
+			<input name="search_family" type="hidden" init="" value=""></input>
+			<input name="search_gender" type="hidden" init="M" value="M"></input>
 			<input name="name" type="hidden" init="" value="Teherba"></input>
 			<input name="family" type="hidden" init="" value="Ritter"></input>
 			<input name="gender" type="hidden" init="M" value="M"></input>
@@ -50,8 +50,8 @@ WHERE name = 'Teherba'
 
 
 
-<br />Output on 2012-06-01 22:51:22.506 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/crud03.xml" type="text/plain">test/crud03</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.crud03&amp;search_crit_2=&amp;birth=&amp;search_crit_3=M&amp;search_crit_1=&amp;lang=en&amp;family=Ritter&amp;name=Teherba&amp;gender=M&amp;search_value_2=Ritter&amp;decease=&amp;search_value_1=&amp;place=&amp;user=">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.crud03&amp;search_crit_2=&amp;birth=&amp;search_crit_3=M&amp;search_crit_1=&amp;lang=en&amp;family=Ritter&amp;name=Teherba&amp;gender=M&amp;search_value_2=Ritter&amp;decease=&amp;search_value_1=&amp;place=&amp;user=">more</a>
+<br />Output on 2012-06-12 18:03:05.475 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/crud03.xml" type="text/plain">test/crud03</a>,
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;lang=en&amp;search_family=&amp;family=Ritter&amp;name=Teherba&amp;gender=M&amp;search_value_2=Ritter&amp;decease=&amp;search_value_1=&amp;place=&amp;user=&amp;search_gender=M">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;lang=en&amp;search_family=&amp;family=Ritter&amp;name=Teherba&amp;gender=M&amp;search_value_2=Ritter&amp;decease=&amp;search_value_1=&amp;place=&amp;user=&amp;search_gender=M">more</a>
 
 </body></html>

@@ -2,6 +2,7 @@
 
 # Collection of all Testcases for Dbat
 # @(#) $Id: all.tca 955 2012-06-05 07:22:59Z gfis $
+# 2012-06-12: all clean again for github
 # 2012-05-08: V0% pass with method="post"; A01 FAILED, 156 passed tests
 # 2011-10-10: <choose> conditional compilation
 # 2011-08-10, Dr. Georg Fischer: extracted from batch_test.pl
@@ -259,6 +260,7 @@ WGET test.selec01
 
 TEST Y06 XML syntax error, CLI
 GREP (\d{4}\-\d{2}\-\d{2})
+GREP org.teherba
 JRUN -m html  -f ../web/spec/test/badxml.xml
 
 TEST Y07 XML syntax error, web

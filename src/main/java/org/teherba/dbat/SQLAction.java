@@ -1,5 +1,6 @@
 /*  SQLAction.java - Properties and methods specific for one elementary sequence of SQL instructions
     @(#) $Id$
+	2012-06-13: prepare PreparedStatements
     2012-05-21: improved setting of update_count and sql_state (for CALL a.o.)
     2012-05-16: describe table is uppercased for DB2
     2012-04-26: TIMESTAMP_FORMAT with ' ' instead of 'T'
@@ -57,6 +58,7 @@ import  java.sql.SQLException;
 import  java.sql.Statement;
 import  java.sql.Types;
 import  java.text.SimpleDateFormat;
+import	java.util.ArrayList;
 import  java.util.HashMap;
 import  java.util.TreeMap;
 import	com.ibm.db2.jcc.DB2Diagnosable;
@@ -1459,22 +1461,41 @@ public class SQLAction implements Serializable {
      */
     public void execSQLStatement(TableMetaData tbMetaData, String sqlInstruction
     		, HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
+		execSQLStatement(tbMetaData, sqlInstruction
+				, new ArrayList/*<1.5*/<String>/*1.5>*/ ()
+				, parameterMap);
+	} // execSQLStatement(3)
+	
+    /** Execute a single SQL statement.
+     *  SQL Comments starting with "--" were removed previously by the caller.
+     *	@param tbMetaData meta data for the table as far as they are alreay known
+     *  @param sqlInstruction text of the SQL statement (SELECT, INSERT, UPDATE ...).
+     *	@param variables pairs of types and values for variables to be filled 
+     *	into any placeholders ("?") in the prepared statement
+     *	@param parameterMap map containing HTTP request or CLI parameter settings
+     */
+    public void execSQLStatement(TableMetaData tbMetaData, String sqlInstruction
+    		, ArrayList/*<1.5*/<String>/*1.5>*/ variables
+    		, HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
 		Connection con 			= config.getConnection();
        	BaseTable  tbSerializer = config.getTableSerializer();
     	int result = 0;
-    	Statement statement = null;
+    	PreparedStatement statement = null;
         try {
             sqlInstruction = sqlInstruction.trim();
             if (sqlInstruction.length() > 0) { // statement non-empty
 	            if (con == null) { // not yet set
     	            con = config.openConnection();			
         	    }
-	            statement = con.createStatement();
                 String[] words = sqlInstruction.split("\\s+", 3); // starts with verb - c.f. the trim() above
                 String verb = words[0].toUpperCase();
                 int updateCount = 0;
                 if (false) {
                 } else if (verb.equals("SELECT") || (verb.equals("WITH") && sqlInstruction.toUpperCase().indexOf("SELECT") >= 0)) {
+		            statement = con.prepareStatement(sqlInstruction);
+		            if (variables.size() > 0) {
+		            	// set the values of all placeholders
+	    	        } // set placeholders
 					statement.setQueryTimeout(120);
 	                ResultSet stResults = statement.executeQuery(sqlInstruction);
                     serializeQueryResults(tbMetaData, sqlInstruction, stResults);
@@ -1482,6 +1503,7 @@ public class SQLAction implements Serializable {
 					if (! config.hasAutoCommit()) { // for DB2 on z
                    		con.commit();
 					}
+		            statement.close();
                 } else if (verb.equals("CALL")) {
                 	String[] args = CommandTokenizer.tokenize(sqlInstruction);
                 	updateCount = callStoredProcedure(con, tbMetaData, 1, args);
@@ -1497,6 +1519,10 @@ public class SQLAction implements Serializable {
 					}
 	                instructionSum --; // will be incremented again below - do not count COMMIT
 				} else { // DDL or DML: UPDATE, INSERT, CREATE ...
+		            statement = con.prepareStatement(sqlInstruction);
+		            if (variables.size() > 0) {
+		            	// set the values of all placeholders
+	    	        } // set placeholders
 		        	tbSerializer.writeComment("SQL:\n" + sqlInstruction + "\n:SQL", config.getVerbose()); 
         			// this is needed for EchoSQL, since it is the only action there
 	                updateCount = statement.executeUpdate(sqlInstruction);
@@ -1504,8 +1530,8 @@ public class SQLAction implements Serializable {
 		    	    	parameterMap.put(config.UPDATE_COUNT, new String[] { String.valueOf(updateCount) });
 	    		    }
 	                result = updateCount;
+		            statement.close();
 	            } // DDL or DML
-	            statement.close ();
 	        	instructionSum ++;
     	    	manipulatedSum += updateCount;
             } // statement non-empty
@@ -1530,7 +1556,7 @@ public class SQLAction implements Serializable {
 	   	    	parameterMap.put(config.SQL_STATE, new String[] { exc.getSQLState() });
 	   	    }
         } catch (Exception exc) {
-            log.error(exc.getMessage()); // ,exc); -  would cause a stack trace - not desired for -m probe
+            log.error(exc.getMessage()); // , exc); // -  would cause a stack trace - not desired for -m probe
             tbSerializer.writeMarkup("<h3 class=\"error\">Error in SQLAction.execSQLStatement: " 
             		+ exc.getMessage() + "</h3><pre class=\"error\">");
             tbSerializer.writeMarkup(sqlInstruction.toString());

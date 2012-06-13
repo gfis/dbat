@@ -1,7 +1,0 @@
-
-  insert into en1 values( 1, 'M', 'eng', 'male');
-  insert into en1 values( 2, 'F', 'eng', 'female');
-  insert into en1 values( 3, 'N', 'eng', 'neuter');
-  commit;
-  select * from en1;
-  commit;

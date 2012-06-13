@@ -31,6 +31,7 @@ Filenames may not contain spaces. '-' is STDIN.
 Included JDBC drivers:
   com.mysql.jdbc.Driver 5.1
   com.ibm.db2.jcc.DB2Driver 4.8
+  org.sqlite.JDBC 3.6
 Implemented output formats (-m):
   html	HTML
   xls	Excel
