@@ -1,12 +1,12 @@
 Test A00 
-echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-13 07:19:40
+echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-13 17:15:07
 *** A00.prev.tst	2012-06-10 21:55:20.000000000 +0200
---- A00.this.tst	2012-06-13 07:19:41.000000000 +0200
+--- A00.this.tst	2012-06-13 17:15:08.000000000 +0200
 ***************
 *** 1 ****
 ! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2011-08-06 21:10:46
 --- 1 ----
-! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-13 07:19:40
+! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-13 17:15:07
 -- FAILED A00 
 Test A01 parameterized link
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/parmlink.xml
@@ -65,3 +65,594 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 Test X00 create procedure x00
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -v -sp "$" -f X00.data.tmp
 ++ passed X00 create procedure x00
+Test X01 create procedure x01 with 2 result sets
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -v -sp "$" -f X01.data.tmp
+++ passed X01 create procedure x01 with 2 result sets
+Test X02 call procedure x01 with 2 result sets
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m tsv -call x01 -in 7
+++ passed X02 call procedure x01 with 2 result sets
+Test X03 call command
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -call x00 -in i -out:int -out:varchar
+++ passed X03 call command
+Test X04 call from specification
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -p part=i -f ../web/spec/test/callproc.xml
+++ passed X04 call from specification
+Test X05 call by servlet
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/callproc"
+++ passed X05 call by servlet
+Test X06 call by servlet with parameter
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/callproc&part=or"
+++ passed X06 call by servlet with parameter
+Test X07 create procedure x07
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -v -sp "$" -f X07.data.tmp
+++ passed X07 create procedure x07
+Test X08 call procedure x07 with DECIMALs and TIME fields
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -call x07 -in row2 -out:DECIMAL -out:DECIMAL -out:DATE -out:TIME -out:TIMESTAMP
+++ passed X08 call procedure x07 with DECIMALs and TIME fields
+Test X09 describe procedure x07
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m sql -d x07
+++ passed X09 describe procedure x07
+Test X10 call procedure x07 into parm
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/callx10&iname0=row2"
+++ passed X10 call procedure x07 into parm
+Test XS1 generate an interactive form for native SQL with INT key
+xsltproc ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud01.iv.xml
+++ passed XS1 generate an interactive form for native SQL with INT key
+Test XS2 generate an interactive form for a stored procedure
+xsltproc ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud02.iv.xml
+++ passed XS2 generate an interactive form for a stored procedure
+Test XS3 generate an interactive form for native SQL with CHAR keys
+xsltproc ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud03.iv.xml
+++ passed XS3 generate an interactive form for native SQL with CHAR keys
+Test XS4 generate a non-altering search form
+xsltproc --stringparam alter 0 ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud01.iv.xml
+++ passed XS4 generate a non-altering search form
+Test L01 List Box and List Parameters - init values
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/listbox"
+++ passed L01 List Box and List Parameters - init values
+Test L02 List Box and List Parameters - preset parameters
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/listbox&namebox=J&namebox=E&birthint=1910&birthchar=1914"
+++ passed L02 List Box and List Parameters - preset parameters
+Test LT1 Textarea - init values
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/textarea"
+++ passed LT1 Textarea - init values
+Test LT2 Textarea - preset parameters
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/textarea&wordlist=phi+omikron&WORDLIST=kappa+lambda"
+++ passed LT2 Textarea - preset parameters
+Test LT3 Textarea - preset parameters
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/textarea&wordlist=phi+omikron&WORDLIST=kappa+lambda"
+++ passed LT3 Textarea - preset parameters
+Test W13 select as Wiki text
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/selec01&mode=wiki"
+++ passed W13 select as Wiki text
+Test S13 select as Wiki text
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m wiki -f ../web/spec/test/selec02.xml
+++ passed S13 select as Wiki text
+Test W14 select as CSV, separator=semicolon
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/includer&name=%25r&mode=csv&sep=*"
+++ passed W14 select as CSV, separator=semicolon
+Test Y01 error message: spec file not found
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/wrong_spec_file"
+++ passed Y01 error message: spec file not found
+Test Y02 error message: spec file not found, in German
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/wrong_spec_file&lang=de"
+++ passed Y02 error message: spec file not found, in German
+Test Y03 redirected spec file
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/select01"
+++ passed Y03 redirected spec file
+Test Y04 redirected spec file, in German
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/select01&lang=de"
+++ passed Y04 redirected spec file, in German
+Test Y05 spec file with dot
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.selec01"
+++ passed Y05 spec file with dot
+Test Y06 XML syntax error, CLI
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/badxml.xml
+++ passed Y06 XML syntax error, CLI
+Test Y07 XML syntax error, web
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.badxml"
+++ passed Y07 XML syntax error, web
+Test Y08 redirected spec file, wait time 0s
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.redir0"
+++ passed Y08 redirected spec file, wait time 0s
+Test Y09 redirected spec file, wait time 9s, German
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.redir9"
+++ passed Y09 redirected spec file, wait time 9s, German
+Test W12 select with "." in specName
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.selec01"
+++ passed W12 select with "." in specName
+Test CT1 tokenizing preprogrammed commandline string
+java -cp ../dist/dbat.jar org.teherba.dbat.CommandTokenizer
+++ passed CT1 tokenizing preprogrammed commandline string
+Test CT2 tokenizing from file
+java -cp ../dist/dbat.jar org.teherba.dbat.CommandTokenizer -f CT2.data.tmp
+++ passed CT2 tokenizing from file
+Test CT3 tokenizing from file with SQL syntax
+java -cp ../dist/dbat.jar org.teherba.dbat.CommandTokenizer -sql CT2.data.tmp
+++ passed CT3 tokenizing from file with SQL syntax
+Test U01 http schema
+java -cp ../dist/dbat.jar org.teherba.dbat.URIReader http://localhost:8080/dbat/noversion.txt
+++ passed U01 http schema
+Test U04 file schema
+java -cp ../dist/dbat.jar org.teherba.dbat.URIReader file:///home/gfis/work/webapps-super/dbat/web/noversion.txt
+++ passed U04 file schema
+Test U05 relative file
+java -cp ../dist/dbat.jar org.teherba.dbat.URIReader ../web/noversion.txt
+++ passed U05 relative file
+Test U06 data URI
+java -cp ../dist/dbat.jar org.teherba.dbat.URIReader data:this+is%20the+text+to+be+read
+++ passed U06 data URI
+Test U08 file tayloring - head+tail
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m taylor -s "{}" -u U08.data.tmp "select * from c01"
+++ passed U08 file tayloring - head+tail
+Test U09 file tayloring - head only
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m taylor -s "[" -u U09.data.tmp "select * from c01"
+++ passed U09 file tayloring - head only
+Test U10 file tayloring - with data: URI template
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m taylor -s "ß" -u data:%09%c3%9fname%09in+%c3%9funiv+%c3%9fyear%0a "select name, univ, year from c01"
+++ passed U10 file tayloring - with data: URI template
+Test W01 select
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/selec01"
+++ passed W01 select
+Test W02 select as HTML
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/selec01&mode=html"
+++ passed W02 select as HTML
+Test W03 select as XML
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/selec01&mode=xml"
+++ passed W03 select as XML
+Test W04 select for JDBC
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/selec01&mode=jdbc"
+++ passed W04 select for JDBC
+Test W05 select tab separated
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/selec01&mode=tsv"
+++ passed W05 select tab separated
+Test W06 select fixed columns
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/selec01&mode=fix"
+++ passed W06 select fixed columns
+Test W09 echo SELECT SQL
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/selec01&mode=echo"
+++ passed W09 echo SELECT SQL
+Test W10 show default specification
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/selec01&mode=spec"
+++ passed W10 show default specification
+Test W11 select as Excel
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/selec01&mode=xls"
+++ passed W11 select as Excel
+Test D01 describe table
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -d c01
+++ passed D01 describe table
+Test D02 describe table in HTML
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -d c01
+++ passed D02 describe table in HTML
+Test D03 describe table in XML
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m xml -d c01
+++ passed D03 describe table in XML
+Test D04 describe table in SQL
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m sql -d c01
+++ passed D04 describe table in SQL
+Test D05 describe table tab separated
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m tsv -d c01
+++ passed D05 describe table tab separated
+Test D06 describe table in fixed columns
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m fix -d c01
+++ passed D06 describe table in fixed columns
+Test D07 describe in MediaWiki format
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m wiki -d c01
+++ passed D07 describe in MediaWiki format
+Test D08 describe semicolon separated
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m csv -s ";" -d c01
+++ passed D08 describe semicolon separated
+Test D10 output default specification
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m spec -d c01
+++ passed D10 output default specification
+Test D12 web describe with specification
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=describe"
+++ passed D12 web describe with specification
+Test S02 select as HTML
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -29 c01
+++ passed S02 select as HTML
+Test S03 select as XML
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m xml "select * from c01"
+++ passed S03 select as XML
+Test S04 select for JDBC
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m jdbc -29 c01
+++ passed S04 select for JDBC
+Test S05 select tab separated
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m tsv -29 c01
+++ passed S05 select tab separated
+Test S06 select fixed columns
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m fix -29 c01
+++ passed S06 select fixed columns
+Test S07 select fixed columns with widths
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m fix -l 12,12,5,2,12 -29 c01
+++ passed S07 select fixed columns with widths
+Test S08 select semicolon separated
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m csv -s ";" -29 c01
+++ passed S08 select semicolon separated
+Test S09 echo - show SELECT SQL only
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m echo -29 c01
+++ passed S09 echo - show SELECT SQL only
+Test E01 echo - show SELECT SQL from XML file
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m echo -f ../web/spec/test/selec01.xml
+++ passed E01 echo - show SELECT SQL from XML file
+Test S11 Excel format
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m xls -29 c01
+++ passed S11 Excel format
+Test S12 select for SQL UPDATEs
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m update -29 c01
+++ passed S12 select for SQL UPDATEs
+Test S14 select fixed columns with width truncation
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m fix -l 4,4 "select name, len from b04"
+++ passed S14 select fixed columns with width truncation
+Test S15 select fixed columns with alignment
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m fix -f ../web/spec/test/align02.xml
+++ passed S15 select fixed columns with alignment
+Test S16 multiple tables, Excel format
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m xls -f ../web/spec/test/selec03.xml
+++ passed S16 multiple tables, Excel format
+Test S21 select as HTML with linked values
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/selec02.xml
+++ passed S21 select as HTML with linked values
+Test S22 select as XML  with linked values
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m xml -f ../web/spec/test/selec02.xml
+++ passed S22 select as XML  with linked values
+Test S23 select for JDBC with linked values
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m jdbc -f ../web/spec/test/selec02.xml
+++ passed S23 select for JDBC with linked values
+Test S24 select tab separated with linked values
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m tsv -f ../web/spec/test/selec02.xml
+++ passed S24 select tab separated with linked values
+Test S25 echo SELECT SQL with linked values
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m echo -f ../web/spec/test/selec02.xml
+++ passed S25 echo SELECT SQL with linked values
+Test S26 select fixed columns with linked values
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m fix -f ../web/spec/test/selec02.xml
+++ passed S26 select fixed columns with linked values
+Test S27 Excel format with linked values
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m xls -f ../web/spec/test/selec02.xml
+++ passed S27 Excel format with linked values
+Test S28 select for SQL UPDATEs with linked values
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m update -f ../web/spec/test/selec02.xml
+++ passed S28 select for SQL UPDATEs with linked values
+Test N01 count(*) test
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -n c01
+++ passed N01 count(*) test
+Test EN1 create table with enumerations
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f EN1.data.tmp
+++ passed EN1 create table with enumerations
+Test EN2 fill table with enumerations
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f EN2.data.tmp
+++ passed EN2 fill table with enumerations
+Test EN3 enumerations into parameters
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/enum01"
+++ passed EN3 enumerations into parameters
+Test EN4 enumerations into listbox
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/enum02"
+++ passed EN4 enumerations into listbox
+Test C02 create pivot table
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f C02.data.tmp
+++ passed C02 create pivot table
+Test C03 CLI colors
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/color04.xml
+++ passed C03 CLI colors
+Test C04 web colors
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/color04"
+++ passed C04 web colors
+Test C05 web colors, Excel
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/color04&mode=xls"
+++ passed C05 web colors, Excel
+Test C06 CLI with column element
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/column02.xml
+++ passed C06 CLI with column element
+Test C07 web with column element
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/column02"
+++ passed C07 web with column element
+Test C08 web with colors on rows
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/color08"
+++ passed C08 web with colors on rows
+Test R00 clear pivot table for raw input test
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 "delete from pivot"
+++ passed R00 clear pivot table for raw input test
+Test R01 raw table input test
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -r pivot < pivot_test.raw
+++ passed R01 raw table input test
+Test R02 check raw input
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 "select * from pivot order by 1,2,3;"
+++ passed R02 check raw input
+Test G01 CLI grouping test with TSV
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -g sp1 -m tsv "select sp1, sp2 from pivot order by 1, 2"
+++ passed G01 CLI grouping test with TSV
+Test G02 CLI grouping test with HTML
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -g sp1 -m html "select sp1, sp2, sp3 from pivot order by 1, 2, 3"
+++ passed G02 CLI grouping test with HTML
+Test G03 web grouping test
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/grouping"
+++ passed G03 web grouping test
+Test G04 web grouping test with SQL (error in writeHeader)
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/grouping&mode=sql"
+++ passed G04 web grouping test with SQL (error in writeHeader)
+Test O01 Order + parm init
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/order01"
+++ passed O01 Order + parm init
+Test O02 Order
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/order02"
+++ passed O02 Order
+Test O03 Order probe
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/order02&mode=probe"
+++ passed O03 Order probe
+Test P01 aggregation test
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -a sp2 -sa "/" -m tsv "select sp1, sp2 from pivot order by 1, 2"
+++ passed P01 aggregation test
+Test P02 aggregation test with HTML
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -a sp2 -sa "+" -m html "select sp1, sp2 from pivot order by 1, 2"
+++ passed P02 aggregation test with HTML
+Test P03 pivot test with HTML
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -a sp2 -sa "pivot" -m html "select sp1, sp2, sp3 from pivot order by 1, 2"
+++ passed P03 pivot test with HTML
+Test P04 Web pivot test with HTML
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/pivot03"
+++ passed P04 Web pivot test with HTML
+Test P05 Web pivot test with SQL
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/pivot03&mode=sql"
+++ passed P05 Web pivot test with SQL
+Test P06 Web pivot test with fixed format
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/pivot03&mode=fix"
+++ passed P06 Web pivot test with fixed format
+Test P07 Web pivot test with TSV
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/pivot03&mode=tsv"
+++ passed P07 Web pivot test with TSV
+Test P08 Web pivot test with XLS
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/pivot03&mode=xls"
+++ passed P08 Web pivot test with XLS
+Test P09 Web pivot test with fetchLimit
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/pivot03&fetch=10"
+++ passed P09 Web pivot test with fetchLimit
+Test PR1 probe correct SQL
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m probe -f ../web/spec/test/selec02.xml
+++ passed PR1 probe correct SQL
+Test VS1 CLI visible grouping test with TSV
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -g sp1 -m tsv -f ../web/spec/test/visible05.xml
+++ passed VS1 CLI visible grouping test with TSV
+Test VS2 CLI visible grouping test with HTML
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -g sp1 -m html -f ../web/spec/test/visible05.xml
+++ passed VS2 CLI visible grouping test with HTML
+Test VS3 Web visible grouping test
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/visible05"
+++ passed VS3 Web visible grouping test
+Test CH1 choose conditional compilation, "yes"
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m csv -s "-" -p switch=yes -f ../web/spec/test/choose06.xml
+++ passed CH1 choose conditional compilation, "yes"
+Test CH2 choose conditional compilation, "true"
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m csv -s "-" -p switch=true -f ../web/spec/test/choose06.xml
+++ passed CH2 choose conditional compilation, "true"
+Test CH3 choose conditional compilation, "other"
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m csv -s "-" -p switch=other -f ../web/spec/test/choose06.xml
+++ passed CH3 choose conditional compilation, "other"
+Test FK1 create tables with foreign keys
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f FK1.data.tmp
+++ passed FK1 create tables with foreign keys
+Test FK2 describe with foreign keys
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -d product_order
+++ passed FK2 describe with foreign keys
+Test FK3 Web describe
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=describe&table=product_order"
+++ passed FK3 Web describe
+Test VW1 create view
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f VW1.data.tmp
+++ passed VW1 create view
+Test VW2 describe view
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -d vw1
+++ passed VW2 describe view
+Test VW4 drop view
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f VW4.data.tmp
+++ passed VW4 drop view
+Test TS1 CLI XML+XSLT - basic function
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m trans -f ../web/spec/test/xslt_brackets.xml -p xslt=../web/spec/test/brackets.xsl
+++ passed TS1 CLI XML+XSLT - basic function
+Test TS2 CLI XSLT, but with mode=html - no transformation
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/xslt_brackets.xml
+++ passed TS2 CLI XSLT, but with mode=html - no transformation
+Test TS3 CLI XSLT with CLI parameter overriding attribute
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m trans -f ../web/spec/test/xslt_brackets.xml -p xslt=../web/spec/test/formed.xsl
+++ passed TS3 CLI XSLT with CLI parameter overriding attribute
+Test TW1 Web XML+XSLT - basic function
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.xslt_brackets&mode=trans"
+++ passed TW1 Web XML+XSLT - basic function
+Test TW2 Web XSLT, but with mode=html - no transformation
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.xslt_brackets&mode=html"
+++ passed TW2 Web XSLT, but with mode=html - no transformation
+Test TW3 Web XSLT with URL parameter overriding attribute
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.xslt_brackets&mode=trans&xslt=/var/lib/tomcat/webapps/dbat/spec/test/formed.xsl"
+++ passed TW3 Web XSLT with URL parameter overriding attribute
+Test V01 create table for DBIV tests
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f V01.data.tmp
+++ passed V01 create table for DBIV tests
+Test V02 initial data for DBIV tests
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f V02.data.tmp
+++ passed V02 initial data for DBIV tests
+Test V03 search for M
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&view=sear&search_crit_1=M&family=Ritter&birth=&gender=M&place=&decease="
+++ passed V03 search for M
+Test V04 update Maria's place
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&search_value_1=M&search_value_2='&name=Maria&family=Ritter&view=upd"
+++ passed V04 update Maria's place
+Test V05 place updated
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&view=upd2&search_crit_1=&search_crit_2=Ritter&name=Maria&family=Ritter&birth=1914-09-17&gender=F&place=Berlin-Hermsdorf&decease=1999&changed=current_timestamp&user=testuser"
+++ passed V05 place updated
+Test V06 insert with Maria's data
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&view=ins&search_crit_1=&family=Ritter&birth=1914-09-17&gender=F&place=Berlin-Hermsdorf&decease=1999&changed=current_timestamp&user=testuser"
+++ passed V06 insert with Maria's data
+Test V07 Teherba inserted
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&view=ins2&search_crit_1=&search_crit_2=Ritter&name=Teherba&family=Ritter&birth=1886-02-04&gender=F&place=Oranienburg&decease=1968&changed=current_timestamp&user=testuser"
+++ passed V07 Teherba inserted
+Test V08 delete Teherba
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&search_value_1=&search_value_2=Ritter&name=Teherba&family=Ritter&view=del"
+++ passed V08 delete Teherba
+Test V09 Teherba deleted
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&view=del2&search_crit_1=&search_crit_2=Ritter&name=Teherba&family=Ritter&birth=&gender=M&place=&decease="
+++ passed V09 Teherba deleted
+==================
+-- FAILED A00 
+++ passed A01 parameterized link
+++ passed B01 create table with BLOB
+++ passed B02 insert statements
+++ passed B03 describe BLOB table
+++ passed B04 create table with CLOB
+++ passed B05 describe CLOB table
+++ passed B06 insert from URI into CLOB
+++ passed B07 select from CLOB
+++ passed B08 insert into CLOB
+++ passed B09 select from CLOB
+++ passed C01 create table
+++ passed H01 help messages
+++ passed H02 help messages - 0 arguments
+++ passed I01 insert statements
+++ passed I02 include with system entities
+++ passed DE1 create table with DECIMALs
+++ passed DE2 fill table with DECIMALs
+++ passed DE3 fill table with DECIMALs, verbose output
+++ passed X00 create procedure x00
+++ passed X01 create procedure x01 with 2 result sets
+++ passed X02 call procedure x01 with 2 result sets
+++ passed X03 call command
+++ passed X04 call from specification
+++ passed X05 call by servlet
+++ passed X06 call by servlet with parameter
+++ passed X07 create procedure x07
+++ passed X08 call procedure x07 with DECIMALs and TIME fields
+++ passed X09 describe procedure x07
+++ passed X10 call procedure x07 into parm
+++ passed XS1 generate an interactive form for native SQL with INT key
+++ passed XS2 generate an interactive form for a stored procedure
+++ passed XS3 generate an interactive form for native SQL with CHAR keys
+++ passed XS4 generate a non-altering search form
+++ passed L01 List Box and List Parameters - init values
+++ passed L02 List Box and List Parameters - preset parameters
+++ passed LT1 Textarea - init values
+++ passed LT2 Textarea - preset parameters
+++ passed LT3 Textarea - preset parameters
+++ passed W13 select as Wiki text
+++ passed S13 select as Wiki text
+++ passed W14 select as CSV, separator=semicolon
+++ passed Y01 error message: spec file not found
+++ passed Y02 error message: spec file not found, in German
+++ passed Y03 redirected spec file
+++ passed Y04 redirected spec file, in German
+++ passed Y05 spec file with dot
+++ passed Y06 XML syntax error, CLI
+++ passed Y07 XML syntax error, web
+++ passed Y08 redirected spec file, wait time 0s
+++ passed Y09 redirected spec file, wait time 9s, German
+++ passed W12 select with "." in specName
+++ passed CT1 tokenizing preprogrammed commandline string
+++ passed CT2 tokenizing from file
+++ passed CT3 tokenizing from file with SQL syntax
+++ passed U01 http schema
+++ passed U04 file schema
+++ passed U05 relative file
+++ passed U06 data URI
+++ passed U08 file tayloring - head+tail
+++ passed U09 file tayloring - head only
+++ passed U10 file tayloring - with data: URI template
+++ passed W01 select
+++ passed W02 select as HTML
+++ passed W03 select as XML
+++ passed W04 select for JDBC
+++ passed W05 select tab separated
+++ passed W06 select fixed columns
+++ passed W09 echo SELECT SQL
+++ passed W10 show default specification
+++ passed W11 select as Excel
+++ passed D01 describe table
+++ passed D02 describe table in HTML
+++ passed D03 describe table in XML
+++ passed D04 describe table in SQL
+++ passed D05 describe table tab separated
+++ passed D06 describe table in fixed columns
+++ passed D07 describe in MediaWiki format
+++ passed D08 describe semicolon separated
+++ passed D10 output default specification
+++ passed D12 web describe with specification
+++ passed S02 select as HTML
+++ passed S03 select as XML
+++ passed S04 select for JDBC
+++ passed S05 select tab separated
+++ passed S06 select fixed columns
+++ passed S07 select fixed columns with widths
+++ passed S08 select semicolon separated
+++ passed S09 echo - show SELECT SQL only
+++ passed E01 echo - show SELECT SQL from XML file
+++ passed S11 Excel format
+++ passed S12 select for SQL UPDATEs
+++ passed S14 select fixed columns with width truncation
+++ passed S15 select fixed columns with alignment
+++ passed S16 multiple tables, Excel format
+++ passed S21 select as HTML with linked values
+++ passed S22 select as XML  with linked values
+++ passed S23 select for JDBC with linked values
+++ passed S24 select tab separated with linked values
+++ passed S25 echo SELECT SQL with linked values
+++ passed S26 select fixed columns with linked values
+++ passed S27 Excel format with linked values
+++ passed S28 select for SQL UPDATEs with linked values
+++ passed N01 count(*) test
+++ passed EN1 create table with enumerations
+++ passed EN2 fill table with enumerations
+++ passed EN3 enumerations into parameters
+++ passed EN4 enumerations into listbox
+++ passed C02 create pivot table
+++ passed C03 CLI colors
+++ passed C04 web colors
+++ passed C05 web colors, Excel
+++ passed C06 CLI with column element
+++ passed C07 web with column element
+++ passed C08 web with colors on rows
+++ passed R00 clear pivot table for raw input test
+++ passed R01 raw table input test
+++ passed R02 check raw input
+++ passed G01 CLI grouping test with TSV
+++ passed G02 CLI grouping test with HTML
+++ passed G03 web grouping test
+++ passed G04 web grouping test with SQL (error in writeHeader)
+++ passed O01 Order + parm init
+++ passed O02 Order
+++ passed O03 Order probe
+++ passed P01 aggregation test
+++ passed P02 aggregation test with HTML
+++ passed P03 pivot test with HTML
+++ passed P04 Web pivot test with HTML
+++ passed P05 Web pivot test with SQL
+++ passed P06 Web pivot test with fixed format
+++ passed P07 Web pivot test with TSV
+++ passed P08 Web pivot test with XLS
+++ passed P09 Web pivot test with fetchLimit
+++ passed PR1 probe correct SQL
+++ passed VS1 CLI visible grouping test with TSV
+++ passed VS2 CLI visible grouping test with HTML
+++ passed VS3 Web visible grouping test
+++ passed CH1 choose conditional compilation, "yes"
+++ passed CH2 choose conditional compilation, "true"
+++ passed CH3 choose conditional compilation, "other"
+++ passed FK1 create tables with foreign keys
+++ passed FK2 describe with foreign keys
+++ passed FK3 Web describe
+++ passed VW1 create view
+++ passed VW2 describe view
+++ passed VW4 drop view
+++ passed TS1 CLI XML+XSLT - basic function
+++ passed TS2 CLI XSLT, but with mode=html - no transformation
+++ passed TS3 CLI XSLT with CLI parameter overriding attribute
+++ passed TW1 Web XML+XSLT - basic function
+++ passed TW2 Web XSLT, but with mode=html - no transformation
+++ passed TW3 Web XSLT with URL parameter overriding attribute
+++ passed V01 create table for DBIV tests
+++ passed V02 initial data for DBIV tests
+++ passed V03 search for M
+++ passed V04 update Maria's place
+++ passed V05 place updated
+++ passed V06 insert with Maria's data
+++ passed V07 Teherba inserted
+++ passed V08 delete Teherba
+++ passed V09 Teherba deleted
+   1 FAILED.tests
+ 161 passed.tests

@@ -1453,6 +1453,59 @@ public class SQLAction implements Serializable {
         }
     } // serializeQueryResults
 
+    /** Set the value for a single placeholder in a prepared or callable statement
+	 *	@param pstmt statement which contains placeholders ("?")
+	 *	@param parameterIndex sequential number of the placeholder, starting at 1 (not 0!)
+	 *	@param typeName SQL type name, for example "VARCHAR", in upper case
+	 *	@param value string representation of the value, will be converted to the correct Java type
+     */
+    private void setPlaceholder(PreparedStatement pstmt, int parameterIndex, String typeName, String value) {
+    	try {
+			if (false) {
+			} else if (typeName.equals    ("CLOB"      )) {
+				// not yet
+			} else if (typeName.equals    ("DATE"      )) {
+				pstmt.setDate(parameterIndex, java.sql.Date.valueOf(value));
+			} else if (typeName.equals    ("DECIMAL"   )) {
+				pstmt.setBigDecimal(parameterIndex, new BigDecimal(value));
+			} else if (typeName.startsWith("INT"       )) {
+				int ivalue = 0;
+				try {
+					ivalue = Integer.parseInt(value);
+				} catch(Exception exc) { // ignore
+				}
+				pstmt.setInt(parameterIndex, ivalue);
+			} else if (typeName.equals    ("TIME"      )) {
+				pstmt.setTime(parameterIndex, java.sql.Time.valueOf(value));
+			} else if (typeName.equals    ("TIMESTAMP" )) {
+				value = value
+						.replaceAll("T", " ")
+						.replaceAll("\\'", "");
+				pstmt.setTimestamp(parameterIndex, java.sql.Timestamp.valueOf(value));
+			} else { // STRING, CHAR etc.
+				typeName = 				   "VARCHAR";
+				pstmt.setString(parameterIndex, value);
+			}
+		} catch(Exception exc) {
+			log.error(exc.getMessage(), exc);
+		}
+	} // setPlaceholder
+	 
+    /** Set the values for all placeholders in a prepared or callable statement
+	 *	@param pstmt statement which contains placeholders (parameter markers, "?")
+	 *	@param variables array of string pairs (typeName, value)
+     */
+    private void setPlaceholders(PreparedStatement pstmt, ArrayList/*<1.5*/<String>/*1.5>*/ variables) {
+    	int parameterIndex = 1;
+    	int ivar = 0;
+    	int vlen = variables.size();
+    	while (ivar < vlen) {
+    		setPlaceholder(pstmt, parameterIndex, variables.get(ivar), variables.get(ivar + 1));
+    		parameterIndex ++;
+    		ivar += 2;
+    	} // while ivar 
+	} // setPlaceholders
+	 
     /** Execute a single SQL statement.
      *  SQL Comments starting with "--" were removed previously by the caller.
      *	@param tbMetaData meta data for the table as far as they are alreay known
@@ -1494,7 +1547,7 @@ public class SQLAction implements Serializable {
                 } else if (verb.equals("SELECT") || (verb.equals("WITH") && sqlInstruction.toUpperCase().indexOf("SELECT") >= 0)) {
 		            statement = con.prepareStatement(sqlInstruction);
 		            if (variables.size() > 0) {
-		            	// set the values of all placeholders
+		            	setPlaceholders(statement, variables); // set the values of all placeholders
 	    	        } // set placeholders
 					statement.setQueryTimeout(120);
 	                ResultSet stResults = statement.executeQuery(sqlInstruction);
@@ -1521,7 +1574,7 @@ public class SQLAction implements Serializable {
 				} else { // DDL or DML: UPDATE, INSERT, CREATE ...
 		            statement = con.prepareStatement(sqlInstruction);
 		            if (variables.size() > 0) {
-		            	// set the values of all placeholders
+		            	setPlaceholders(statement, variables); // set the values of all placeholders
 	    	        } // set placeholders
 		        	tbSerializer.writeComment("SQL:\n" + sqlInstruction + "\n:SQL", config.getVerbose()); 
         			// this is needed for EchoSQL, since it is the only action there
