@@ -1,4 +1,4 @@
-wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&search_value_1=&search_value_2=Ritter&name=Teherba&family=Ritter&view=del"
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&search_name=&search_family=Ritter&name=Teherba&family=Ritter&view=del"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" [
@@ -25,7 +25,7 @@ SELECT name
 FROM relatives 
 WHERE name = 'Teherba'
 				and family = 'Ritter'
-				and gender = ''''
+				and gender = '''';
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
 </table>
@@ -35,7 +35,7 @@ WHERE name = 'Teherba'
 			<input name="view" type="hidden" value="del2"></input>
 			<input name="opcode" type="hidden" value="del"></input>
 			<input name="search_name" type="hidden" init="" value=""></input>
-			<input name="search_family" type="hidden" init="" value=""></input>
+			<input name="search_family" type="hidden" init="" value="Ritter"></input>
 			<input name="search_gender" type="hidden" init="M" value="M"></input>
 			<input name="name" type="hidden" init="" value="Teherba"></input>
 			<input name="family" type="hidden" init="" value="Ritter"></input>
@@ -50,8 +50,8 @@ WHERE name = 'Teherba'
 
 
 
-<br />Output on 2012-06-12 18:03:05.475 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/crud03.xml" type="text/plain">test/crud03</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;lang=en&amp;search_family=&amp;family=Ritter&amp;name=Teherba&amp;gender=M&amp;search_value_2=Ritter&amp;decease=&amp;search_value_1=&amp;place=&amp;user=&amp;search_gender=M">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;lang=en&amp;search_family=&amp;family=Ritter&amp;name=Teherba&amp;gender=M&amp;search_value_2=Ritter&amp;decease=&amp;search_value_1=&amp;place=&amp;user=&amp;search_gender=M">more</a>
+<br />Output on 2012-06-15 08:04:20.211 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/crud03.xml" type="text/plain">test/crud03</a>,
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;lang=en&amp;search_family=Ritter&amp;family=Ritter&amp;name=Teherba&amp;gender=M&amp;decease=&amp;place=&amp;user=&amp;search_gender=M">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;lang=en&amp;search_family=Ritter&amp;family=Ritter&amp;name=Teherba&amp;gender=M&amp;decease=&amp;place=&amp;user=&amp;search_gender=M">more</a>
 
 </body></html>

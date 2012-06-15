@@ -11,7 +11,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/pivot03&mode=xls"
 SELECT sp1
 , sp2
 , concat(sp1, concat('=', concat(sp2, concat('=', sp3)))) 
-FROM pivot
+FROM pivot;
 :SQL -->
 <Worksheet ss:Name="Select1">
 <Table>
@@ -52,6 +52,6 @@ FROM pivot
 </Row>
 </Table>
 </Worksheet>
-<!-- Output on 2011-11-11T08:14:23.868 by <a href="index.jsp">Dbat</a> script test/pivot03
+<!-- Output on 2012-06-15 08:03:11.565 by <a href="index.html">Dbat</a> script test/pivot03,
  -->
 </Workbook>

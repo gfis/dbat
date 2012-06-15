@@ -14,7 +14,7 @@ SELECT name
 , gender
 , birth 
 FROM c01 
-WHERE name like '%r%'
+WHERE name like '%r%';
 :SQL -->
 <Worksheet ss:Name="Select1">
 <Table>
@@ -57,6 +57,6 @@ WHERE name like '%r%'
 <!-- 5 Persons -->
 </Table>
 </Worksheet>
-<!-- Output on 2011-11-08T19:52:18.133 by <a href="index.jsp">Dbat</a> script test/selec01
+<!-- Output on 2012-06-15 07:58:36.144 by <a href="index.html">Dbat</a> script test/selec01,
  -->
 </Workbook>

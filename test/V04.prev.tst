@@ -1,4 +1,4 @@
-wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&search_value_1=M&search_value_2='&name=Maria&family=Ritter&view=upd"
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&search_value_1=M&search_gender='&name=Maria&family=Ritter&view=upd"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" [
@@ -22,7 +22,7 @@ SELECT birth
 FROM relatives 
 WHERE name = 'Maria'
 				and family = 'Ritter'
-				and gender = ''''
+				and gender = '''';
 :SQL -->
 
 		<h4>Update Person</h4>
@@ -32,7 +32,7 @@ WHERE name = 'Maria'
 			<input name="opcode" type="hidden" value="upd"></input>
 			<input name="search_name" type="hidden" init="" value=""></input>
 			<input name="search_family" type="hidden" init="" value=""></input>
-			<input name="search_gender" type="hidden" init="M" value="M"></input>
+			<input name="search_gender" type="hidden" init="M" value="'"></input>
 			<table>
 			<input name="name" type="hidden" init="" value="Maria"></input>
 			<input name="family" type="hidden" init="" value="Ritter"></input>
@@ -62,8 +62,8 @@ WHERE name = 'Maria'
 
 
 
-<br />Output on 2012-06-12 18:03:05.312 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/crud03.xml" type="text/plain">test/crud03</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;lang=en&amp;search_family=&amp;family=Ritter&amp;name=Maria&amp;gender=M&amp;search_value_2=%27&amp;decease=&amp;search_value_1=M&amp;place=&amp;search_gender=M">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;lang=en&amp;search_family=&amp;family=Ritter&amp;name=Maria&amp;gender=M&amp;search_value_2=%27&amp;decease=&amp;search_value_1=M&amp;place=&amp;search_gender=M">more</a>
+<br />Output on 2012-06-15 08:04:20.147 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/crud03.xml" type="text/plain">test/crud03</a>,
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;lang=en&amp;search_family=&amp;family=Ritter&amp;name=Maria&amp;gender=M&amp;search_value_1=M&amp;decease=&amp;place=&amp;search_gender=%27">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;lang=en&amp;search_family=&amp;family=Ritter&amp;name=Maria&amp;gender=M&amp;search_value_1=M&amp;decease=&amp;place=&amp;search_gender=%27">more</a>
 
 </body></html>

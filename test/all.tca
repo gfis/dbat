@@ -8,11 +8,11 @@
 # 2011-08-10, Dr. Georg Fischer: extracted from batch_test.pl
 
 ECHO A00 
-
+#-------------------
 TEST A01 parameterized link
 GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -m html -f ../web/spec/test/parmlink.xml
-
+#-------------------
 TEST B01 create table with BLOB
 DATA drop table if exists b01 ;
   create table b01 
@@ -65,7 +65,7 @@ JRUN -f B08.data.tmp
 
 TEST B09 select from CLOB
 JRUN "select * from b04"
-#------------------------------
+#-------------------
 TEST C01 create table
 DATA drop table if exists c01 ;
   create table c01 
@@ -78,7 +78,7 @@ DATA drop table if exists c01 ;
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
   commit;
 JRUN -f C01.data.tmp
-
+#-------------------
 TEST H01 help messages
 GREP DataBase A
 JRUN -h
@@ -86,7 +86,7 @@ JRUN -h
 TEST H02 help messages - 0 arguments
 GREP DataBase A
 JRUN 
-
+#-------------------
 TEST I01 insert statements
 DATA -- fill table
 	delete from c01;
@@ -104,7 +104,7 @@ JRUN -f I01.data.tmp
 
 TEST I02 include with system entities
 WGET test/includer
-#-------------------------------------------
+#-------------------
 TEST DE1 create table with DECIMALs
 DATA 
   drop table if exists de1;
@@ -136,7 +136,7 @@ DATA
   select * from de1 order by name0;
   commit;
 JRUN -v -f DE3.data.tmp
-#-----------------
+#-------------------
 TEST X00 create procedure x00
 DATA
   DROP   PROCEDURE if exists x00 $
@@ -146,7 +146,7 @@ DATA
   	INTO num, last 
   	FROM c01 
   	WHERE name LIKE concat('%', concat(part, '%'));
-  END;
+  END
   $
 JRUN -v -sp "$" -f X00.data.tmp
 
@@ -160,7 +160,7 @@ DATA
 	WHERE name like '%r%' ;
   	SELECT name, birth
   	FROM c01 ;
-  END;
+  END
   $
 JRUN -v -sp "$" -f X01.data.tmp
 
@@ -196,7 +196,7 @@ DATA
   	INTO   odec1, odec2, odate3, otime4, ots5
   	FROM de1 
   	WHERE name0 = iname0;
-  END;
+  END
   $
 JRUN -v -sp "$" -f X07.data.tmp
 
@@ -209,7 +209,7 @@ JRUN -m sql -d x07
 
 TEST X10 call procedure x07 into parm
 WGET test/callx10 iname0=row2
-#------------------------------------------
+#-------------------
 TEST XS1 generate an interactive form for native SQL with INT key
 XSLT ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud01.iv.xml
 
@@ -221,28 +221,19 @@ XSLT ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud03.iv.xml
 
 TEST XS4 generate a non-altering search form
 XSLT --stringparam alter 0 ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud01.iv.xml
-#------------------------------------------
+#-------------------
 TEST L01 List Box and List Parameters - init values
 WGET test/listbox
 TEST L02 List Box and List Parameters - preset parameters
 WGET test/listbox namebox=J namebox=E birthint=1910 birthchar=1914
-
+#-------------------
 TEST LT1 Textarea - init values
 WGET test/textarea
 TEST LT2 Textarea - preset parameters
 WGET test/textarea wordlist=phi+omikron WORDLIST=kappa+lambda
 TEST LT3 Textarea - preset parameters
 WGET test/textarea wordlist=phi+omikron WORDLIST=kappa+lambda
-
-TEST W13 select as Wiki text
-WGET test/selec01 mode=wiki
-TEST S13 select as Wiki text
-GREP on (\d{4}\-\d{2}\-\d{2})
-JRUN -m wiki  -f ../web/spec/test/selec02.xml
-
-TEST W14 select as CSV, separator=semicolon
-WGET test/includer&name=%25r&mode=csv&sep=*
-
+#-------------------
 TEST Y01 error message: spec file not found
 WGET test/wrong_spec_file
 
@@ -271,10 +262,7 @@ WGET test.redir0
 
 TEST Y09 redirected spec file, wait time 9s, German
 WGET test.redir9
-
-TEST W12 select with "." in specName
-WGET test.selec01
-
+#-------------------
 TEST CT1 tokenizing preprogrammed commandline string
 CRUN CommandTokenizer  
 
@@ -327,7 +315,7 @@ JRUN -m taylor -s "[" -u U09.data.tmp "select * from c01"
 TEST U10 file tayloring - with data: URI template
 #JRUN -m taylor -s "$" -u data:%09$name%09$univ+$year%0a "select name, univ, year from c01" 
 JRUN -m taylor -s "ß" -u data:%09%c3%9fname%09in+%c3%9funiv+%c3%9fyear%0a "select name, univ, year from c01" 
-
+#-------------------
 TEST W01 select 
 WGET test/selec01
 
@@ -356,6 +344,18 @@ WGET test/selec01 mode=spec
 TEST W11 select as Excel
 WGET test/selec01 mode=xls
 
+TEST W12 select with "." in specName
+WGET test.selec01
+
+TEST W13 select as Wiki text
+WGET test/selec01 mode=wiki
+TEST S13 select as Wiki text
+GREP on (\d{4}\-\d{2}\-\d{2})
+JRUN -m wiki  -f ../web/spec/test/selec02.xml
+
+TEST W14 select as CSV, separator=semicolon
+WGET test/includer&name=%25r&mode=csv&sep=*
+#-------------------
 TEST D01 describe table
 GREP at (\d{4}\-\d{2}\-\d{2})T
 JRUN -d c01
@@ -394,7 +394,7 @@ JRUN -m spec -d c01
 
 TEST D12 web describe with specification 
 WGET describe
-
+#-------------------
 TEST S02 select as HTML
 JRUN -m html -29  c01
 
@@ -504,7 +504,6 @@ WGET test/enum01
 TEST EN4 enumerations into listbox
 GREP on (\d{4}\-\d{2}\-\d{2})
 WGET test/enum02
-
 #--------------------------
 # aggregation, pivot and grouping
 TEST C02 create pivot table
@@ -536,7 +535,7 @@ WGET test/column02
 
 TEST C08 web with colors on rows
 WGET test/color08
-
+#-------------------
 TEST R00 clear pivot table for raw input test
 JRUN "delete from pivot"
 
@@ -545,7 +544,7 @@ JRUN -r pivot < pivot_test.raw
 
 TEST R02 check raw input
 JRUN "select * from pivot order by 1,2,3;"
-
+#-------------------
 TEST G01 CLI grouping test with TSV 
 JRUN -g sp1 -m tsv  "select sp1, sp2      from pivot order by 1, 2"
 
@@ -559,7 +558,7 @@ WGET test/grouping
 TEST G04 web grouping test with SQL (error in writeHeader)
 GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test/grouping mode=sql
-
+#-------------------
 TEST O01 Order + parm init
 GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test/order01 
@@ -571,7 +570,7 @@ WGET test/order02
 TEST O03 Order probe
 GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test/order02 mode=probe
-
+#-------------------
 TEST P01 aggregation test 
 JRUN -a sp2 -sa "/" -m tsv  "select sp1, sp2 from pivot order by 1, 2"
 
@@ -604,7 +603,7 @@ WGET test/pivot03 mode=xls
 TEST P09 Web pivot test with fetchLimit
 GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test/pivot03 fetch=10
-
+#-------------------
 TEST PR1 probe correct SQL
 GREP (\d{4}\-\d{2}\-\d{2})
 JRUN -m probe -f ../web/spec/test/selec02.xml
@@ -612,7 +611,7 @@ JRUN -m probe -f ../web/spec/test/selec02.xml
 # TEST PR2 probe wrong SQL (WITH for MySQL)
 # GREP (\d{4}\-\d{2}\-\d{2})
 # JRUN -m probe -f ../web/spec/test/with_cte.xml
-
+#-------------------
 TEST VS1 CLI visible grouping test with TSV 
 JRUN -g sp1 -m tsv  -f ../web/spec/test/visible05.xml
 
@@ -623,7 +622,7 @@ JRUN -g sp1 -m html -f ../web/spec/test/visible05.xml
 TEST VS3 Web visible grouping test 
 GREP on (\d{4}\-\d{2}\-\d{2})
 WGET test/visible05
-
+#-------------------
 TEST CH1 choose conditional compilation, "yes"
 GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -m csv -s "-" -p switch=yes -f ../web/spec/test/choose06.xml
@@ -635,7 +634,7 @@ JRUN -m csv -s "-" -p switch=true -f ../web/spec/test/choose06.xml
 TEST CH3 choose conditional compilation, "other"
 GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -m csv -s "-" -p switch=other -f ../web/spec/test/choose06.xml
-
+#-------------------
 TEST FK1 create tables with foreign keys 
 DATA
 	-- Foreign key example from MySQL 5 manual, slightly changed such that it
@@ -691,7 +690,7 @@ JRUN -d product_order
 TEST FK3 Web describe
 GREP at (\d{4}\-\d{2}\-\d{2})
 WGET describe table=product_order
-
+#-------------------
 TEST VW1 create view
 DATA --
  create view vw1 as 
@@ -712,7 +711,7 @@ TEST VW4 drop view
 DATA --
  drop view vw1;
 JRUN -f VW4.data.tmp
-
+#-------------------
 TEST TS1 CLI XML+XSLT - basic function
 GREP at (\d{4}\-\d{2}\-\d{2})
 JRUN -m trans -f ../web/spec/test/xslt_brackets.xml -p xslt=../web/spec/test/brackets.xsl
@@ -736,7 +735,7 @@ WGET test.xslt_brackets mode=html
 TEST TW3 Web XSLT with URL parameter overriding attribute
 GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test.xslt_brackets mode=trans xslt=/var/lib/tomcat/webapps/dbat/spec/test/formed.xsl
-
+#-------------------
 TEST V01 create table for DBIV tests
 DATA -- create table
   DROP TABLE if exists relatives;
@@ -772,32 +771,41 @@ JRUN -f V02.data.tmp
   
 TEST V03 search for M
 GREP at (\d{4}\-\d{2}\-\d{2})
-WGET test.crud03 view=sear search_crit_1=M family=Ritter birth= gender=M place= decease=
+WGET test.crud03 view=sear search_name=M family=Ritter birth= gender=M place= decease=
 
 TEST V04 update Maria's place
 GREP at (\d{4}\-\d{2}\-\d{2})
-WGET test.crud03 search_value_1=M search_value_2=' name=Maria family=Ritter view=upd
+WGET test.crud03 search_value_1=M search_gender=' name=Maria family=Ritter view=upd
 
 TEST V05 place updated
 GREP at (\d{4}\-\d{2}\-\d{2})
-WGET test.crud03 view=upd2 search_crit_1= search_crit_2=Ritter name=Maria family=Ritter birth=1914-09-17 gender=F place=Berlin-Hermsdorf decease=1999 changed=current_timestamp user=testuser
+WGET test.crud03 view=upd2 search_name= search_family=Ritter name=Maria family=Ritter birth=1914-09-17 gender=F place=Berlin-Hermsdorf decease=1999 changed=current_timestamp user=testuser
 
 TEST V06 insert with Maria's data
 GREP at (\d{4}\-\d{2}\-\d{2})
-WGET test.crud03 view=ins search_crit_1= family=Ritter birth=1914-09-17 gender=F place=Berlin-Hermsdorf decease=1999 changed=current_timestamp user=testuser
+WGET test.crud03 view=ins search_name= family=Ritter birth=1914-09-17 gender=F place=Berlin-Hermsdorf decease=1999 changed=current_timestamp user=testuser
 
 TEST V07 Teherba inserted
 GREP at (\d{4}\-\d{2}\-\d{2})
-WGET test.crud03 view=ins2 search_crit_1= search_crit_2=Ritter name=Teherba family=Ritter birth=1886-02-04 gender=F place=Oranienburg decease=1968 changed=current_timestamp user=testuser
+WGET test.crud03 view=ins2 search_name= search_family=Ritter name=Teherba family=Ritter birth=1886-02-04 gender=F place=Oranienburg decease=1968 changed=current_timestamp user=testuser
 
 TEST V08 delete Teherba
 GREP at (\d{4}\-\d{2}\-\d{2})
-WGET test.crud03 search_value_1= search_value_2=Ritter name=Teherba family=Ritter view=del
+WGET test.crud03 search_name= search_family=Ritter name=Teherba family=Ritter view=del
 
 TEST V09 Teherba deleted
 GREP at (\d{4}\-\d{2}\-\d{2})
-WGET test.crud03 view=del2 search_crit_1= search_crit_2=Ritter name=Teherba family=Ritter birth= gender=M place= decease=
-
+WGET test.crud03 view=del2 search_name= search_family=Ritter name=Teherba family=Ritter birth= gender=M place= decease=
+#-------------------
 TEST VA1 var element
 GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test.var01 name=%25
+
+TEST VA2 var elements with data types
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test.var02 name=M
+
+TEST VA3 echo with var elements
+GREP at (\d{4}\-\d{2}\-\d{2})
+WGET test.var02 mode=echo
+#-------------------

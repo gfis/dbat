@@ -39,7 +39,7 @@ SELECT name
 , birth 
 FROM c01 
 WHERE substr(name, 1, 1) in ('M', 'L') 
-ORDER BY 3
+ORDER BY 3;
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
 <tr><th title="name">Name</th><th title="univ">University</th><th title="birth">Birthdate</th></tr>
@@ -57,7 +57,7 @@ SELECT name
 , birth 
 FROM c01 
 WHERE year(birth) in (1887, 1914) 
-ORDER BY 3
+ORDER BY 3;
 :SQL -->
 <table id="tab2"><!-- table_not_specified -->
 <tr><th title="name">Name</th><th title="univ">University</th><th title="birth">Birthdate</th></tr>
@@ -74,7 +74,7 @@ SELECT name
 , birth 
 FROM c01 
 WHERE cast(year(birth) as char) in ('1910', '1911') 
-ORDER BY 3
+ORDER BY 3;
 :SQL -->
 <table id="tab3"><!-- table_not_specified -->
 <tr><th title="name">Name</th><th title="univ">University</th><th title="birth">Birthdate</th></tr>
@@ -83,7 +83,7 @@ ORDER BY 3
 <tr><td class="counter" colspan="3">2 Persons</td></tr>
 </table>
 
-<br />Output on 2012-05-15 08:00:52.947 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/listbox.xml" type="text/plain">test/listbox</a>,
+<br />Output on 2012-06-15 07:57:07.006 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/listbox.xml" type="text/plain">test/listbox</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Flistbox&amp;birthchar=1910+1911&amp;namebox=M&amp;namebox=L&amp;lang=en&amp;birthint=1887+1914">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Flistbox&amp;birthchar=1910+1911&amp;namebox=M&amp;namebox=L&amp;lang=en&amp;birthint=1887+1914">more</a>
 

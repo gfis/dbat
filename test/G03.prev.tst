@@ -21,7 +21,7 @@ SELECT sp1
 , sp2
 , sp3 
 FROM pivot 
-ORDER BY 1,2,3
+ORDER BY 1,2,3;
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
 <tr><th title="sp1">Column 1</th><th title="sp2">Column 2</th><th title="sp3">Column 3</th></tr>
@@ -57,7 +57,7 @@ ORDER BY 1,2,3
 <tr><td class="counter" colspan="3">25 rows</td></tr>
 </table>
 
-<br />Output on 2012-05-15 08:18:21.678 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/grouping.xml" type="text/plain">test/grouping</a>,
+<br />Output on 2012-06-15 08:02:20.283 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/grouping.xml" type="text/plain">test/grouping</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fgrouping&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fgrouping&amp;lang=en">more</a>
 

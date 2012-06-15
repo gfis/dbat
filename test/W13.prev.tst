@@ -18,7 +18,7 @@ SELECT name
 , gender
 , birth 
 FROM c01 
-WHERE name like '%r%'
+WHERE name like '%r%';
 :SQL -->
 
 {| border="1"
@@ -39,5 +39,5 @@ WHERE name like '%r%'
 |}
 
 
-Output on 2011-11-08T19:52:15.395 by <a href="index.jsp">Dbat</a> script test/selec01
+Output on 2012-06-15 07:58:41.972 by <a href="index.html">Dbat</a> script test/selec01,
 

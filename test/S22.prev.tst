@@ -10,7 +10,7 @@ SELECT concat(name, concat('*', cast(year as char)))
 , gender
 , birth 
 FROM c01 
-WHERE name like '%'
+WHERE name like '%';
 :SQL -->
 <table id="tab1" name="table_not_specified">
 <tr><th>Year</th>
@@ -31,6 +31,6 @@ WHERE name like '%'
 <tr><td>1984</td><td>Lucie</td><td>e.1984</td><td>f.Lucie</td><td>Lübars</td><td>'</td><td>1887-07-09</td></tr>
 <!-- 8 persons -->
 </table>
-<!-- Output on 2012-05-15 08:02:29.260 by <a href="index.html">Dbat</a> script ../web/spec/test/selec02.xml,
+<!-- Output on 2012-06-15 08:00:38.111 by <a href="index.html">Dbat</a> script ../web/spec/test/selec02.xml,
  -->
 </dbat>

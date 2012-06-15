@@ -1,4 +1,4 @@
-wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&view=sear&search_crit_1=M&family=Ritter&birth=&gender=M&place=&decease="
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&view=sear&search_name=M&family=Ritter&birth=&gender=M&place=&decease="
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" [
@@ -23,7 +23,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&view=sear&sear
 			<input name="view" type="hidden" value="sear"></input>
 			<table>
 			<tr><td valign="top" title="name">Name:</td>
-				<td><input name="search_name" size="40" init="" title="[\w\-%]*" onkeyup="this.form.name.className = (this.form.name.value.match('^[\\w\\-%]*$')) ? 'valid': 'invalid'" value=""></input> Letters and "-"
+				<td><input name="search_name" size="40" init="" title="[\w\-%]*" onkeyup="this.form.name.className = (this.form.name.value.match('^[\\w\\-%]*$')) ? 'valid': 'invalid'" value="M"></input> Letters and "-"
 				</td></tr>
 			<tr><td valign="top" title="family">Family:</td>
 				<td><select name="search_family" init="" size="3">
@@ -40,7 +40,7 @@ SELECT DISTINCT gender
 						when gender = 'M' then 'male' 
 						else                   'female' end 
 FROM relatives 
-ORDER BY 1
+ORDER BY 1;
 :SQL -->
 
 				<select name="search_gender" size="3">
@@ -61,7 +61,7 @@ ORDER BY 1
 		<form method="post" action="servlet?spec=test/crud03"><input name="spec" type="hidden" value="test/crud03" />
 
 			<input name="view" type="hidden" value="ins"></input>
-			<input name="search_name" type="hidden" init="" value=""></input>
+			<input name="search_name" type="hidden" init="" value="M"></input>
 			<input name="search_family" type="hidden" init="" value=""></input>
 			<input name="search_gender" type="hidden" init="M" value=""></input>
 			<input name="birth" type="hidden" init="" value=""></input>
@@ -71,13 +71,13 @@ ORDER BY 1
 			<input type="submit" value="New Relative"></input>
 		</form>
 		<!-- SQL:
-SELECT '' || '=' 
+SELECT 'M' || '=' 
 				 || '' || '=' 
 				 || '' || '=' 
 				 || name || '=' 
 				 || family || '=' 
 				 || gender || '=' || 'upd'
-, '' || '=' 
+, 'M' || '=' 
 				 || '' || '=' 
 				 || '' || '=' 
 				 || name || '=' 
@@ -90,30 +90,24 @@ SELECT '' || '='
 , place
 , decease 
 FROM relatives 
-WHERE name like '%'
+WHERE name like 'M%'
 				and family like '%'
 				and gender like '%' 
-ORDER BY 1,2
+ORDER BY 1,2;
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
 <tr><th title="update">Upd.</th><th title="delete">Del.</th><th title="name">Name</th><th title="family">Family</th><th title="gender">Gender</th><th title="birth">Birthdate</th><th title="place">Place</th><th title="decease">Died</th></tr>
-<tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Dorothea&amp;family=Fischer&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Dorothea&amp;family=Fischer&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Dorothea</td><td>Fischer</td><td align="center">F</td><td>1910-02-07</td><td>Berlin</td><td align="right">1985</td></tr>
-<tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Eberhard&amp;family=Fischer&amp;gender=M&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Eberhard&amp;family=Fischer&amp;gender=M&amp;view=del"><img src="img/del.png" /></a></td><td>Eberhard</td><td>Fischer</td><td align="center">M</td><td>1912-11-17</td><td>Groß-Gerau</td><td align="right">1945</td></tr>
-<tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Fritz&amp;family=Fischer&amp;gender=M&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Fritz&amp;family=Fischer&amp;gender=M&amp;view=del"><img src="img/del.png" /></a></td><td>Fritz</td><td>Fischer</td><td align="center">M</td><td>1907-08-08</td><td>Waldshut</td><td align="right">1995</td></tr>
-<tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Ilse&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Ilse&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Ilse</td><td>Ritter</td><td align="center">F</td><td>1909-02-09</td><td>Lübars</td><td align="right">1983</td></tr>
-<tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Johannes&amp;family=Fischer&amp;gender=M&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Johannes&amp;family=Fischer&amp;gender=M&amp;view=del"><img src="img/del.png" /></a></td><td>Johannes</td><td>Fischer</td><td align="center">M</td><td>1911-06-03</td><td>Schramberg</td><td align="right">1992</td></tr>
-<tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Lucie&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Lucie&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Lucie</td><td>Ritter</td><td align="center">F</td><td>1887-07-09</td><td>Lübars</td><td align="right">1984</td></tr>
-<tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Hermsdorf</td><td align="right">1999</td></tr>
-<tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Martha&amp;family=Fischer&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Martha&amp;family=Fischer&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Martha</td><td>Fischer</td><td align="center">F</td><td>1909-11-17</td><td>Freiburg</td><td align="right">1999</td></tr>
-<tr><td class="counter" colspan="8">8 Persons</td></tr>
+<tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=M&amp;search_family=&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=M&amp;search_family=&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Hermsdorf</td><td align="right">1999</td></tr>
+<tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=M&amp;search_family=&amp;search_gender=&amp;name=Martha&amp;family=Fischer&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=M&amp;search_family=&amp;search_gender=&amp;name=Martha&amp;family=Fischer&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Martha</td><td>Fischer</td><td align="center">F</td><td>1909-11-17</td><td>Freiburg</td><td align="right">1999</td></tr>
+<tr><td class="counter" colspan="8">2 Persons</td></tr>
 </table>
 
 	
 		<h3>Help text follows here</h3>
 	
 
-<br />Output on 2012-06-12 18:03:05.285 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/crud03.xml" type="text/plain">test/crud03</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.crud03&amp;birth=&amp;search_crit_1=M&amp;search_name=&amp;display=female&amp;display=male&amp;code=F&amp;code=M&amp;lang=en&amp;search_family=&amp;family=Ritter&amp;gender=M&amp;decease=&amp;place=&amp;user=&amp;search_gender=">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.crud03&amp;birth=&amp;search_crit_1=M&amp;search_name=&amp;display=female&amp;display=male&amp;code=F&amp;code=M&amp;lang=en&amp;search_family=&amp;family=Ritter&amp;gender=M&amp;decease=&amp;place=&amp;user=&amp;search_gender=">more</a>
+<br />Output on 2012-06-15 08:04:20.134 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/crud03.xml" type="text/plain">test/crud03</a>,
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.crud03&amp;birth=&amp;search_name=M&amp;display=female&amp;display=male&amp;code=F&amp;code=M&amp;lang=en&amp;search_family=&amp;family=Ritter&amp;gender=M&amp;decease=&amp;place=&amp;user=&amp;search_gender=">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.crud03&amp;birth=&amp;search_name=M&amp;display=female&amp;display=male&amp;code=F&amp;code=M&amp;lang=en&amp;search_family=&amp;family=Ritter&amp;gender=M&amp;decease=&amp;place=&amp;user=&amp;search_gender=">more</a>
 
 </body></html>

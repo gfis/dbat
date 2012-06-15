@@ -43,21 +43,31 @@ public class EchoSQL extends BaseTable {
 		// setDescription("de", "nur SQL-Ausgabe");
     } // Constructor
 
-    /** Writes a comment line.
-     *  @param line string to be output as a comment line
+    /** Writes the pure SQL, with any placeholders replaced by constant values again.
+     *  @param line string to be output as a comment
+     *	@param separator normal SQL statement separator (";")
+     *	@param verbose level of output detail
+     *	@param variables pairs of types and values for variables to be filled 
+     *	into any placeholders ("?") in the prepared statement  
      */
-    public void writeComment(String line) {
+    public void writeEchoSQL(String line, String separator, int verbose, ArrayList/*<1.5*/<String>/*1.5>*/ variables) {
         try {
-        	if (line != null && line.startsWith("SQL:")) {
-        		if (line.endsWith(":SQL")) {
-        			line = line.substring(0, line.length() - 4);
-        		}
-	            charWriter.println(line.replaceAll("\\A.*\n", ""));
+        	int nvar = variables.size();
+        	if (nvar > 0) { // placeholders must be replaced
+				StringBuffer buffer = new StringBuffer(line);
+				int ivar = 0;
+				while (ivar < nvar) {
+					ivar ++;
+				} // while ivar
+	            charWriter.print(buffer.toString());
+        	} else { // no placeholders
+	            charWriter.print(line);
 	        }
+            charWriter.println(separator);
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
-    } // writeComment
+    } // writeEchoSQL
 
     /** Writes a complete header, data or alternate data row with all tags and cell contents.
      *	Must be redefined here with no action, since the default implementation in {@link BaseTable#writeGenericRow} 

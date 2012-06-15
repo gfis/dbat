@@ -28,7 +28,7 @@ SELECT name
 , gender
 , birth 
 FROM c01 
-WHERE name like '%r%'
+WHERE name like '%r%';
 :SQL -->
 <table id="tab1"><!-- c01 -->
 <tr><th title="name">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
@@ -40,7 +40,7 @@ WHERE name like '%r%'
 <tr><td class="counter" colspan="5">5 Persons</td></tr>
 </table>
 
-<br />Output on 2012-05-15 08:19:43.638 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/xslt_brackets.xml" type="text/plain">test/xslt_brackets</a>,
+<br />Output on 2012-06-15 08:03:51.766 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/xslt_brackets.xml" type="text/plain">test/xslt_brackets</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.xslt_brackets&amp;name=%25r&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.xslt_brackets&amp;name=%25r&amp;lang=en">more</a>
 

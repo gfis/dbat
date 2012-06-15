@@ -16,7 +16,7 @@ SELECT case when year < 1980 then 'gry' else 'wht' end
 , univ
 , gender
 , birth 
-FROM c01
+FROM c01;
 :SQL -->
 <Worksheet ss:Name="Select1">
 <Table>
@@ -77,6 +77,6 @@ FROM c01
 <!-- 8 persons -->
 </Table>
 </Worksheet>
-<!-- Output on 2012-01-16T20:35:05.304 by <a href="index.jsp">Dbat</a> script test/color04
+<!-- Output on 2012-06-15 08:01:39.448 by <a href="index.html">Dbat</a> script test/color04,
  -->
 </Workbook>

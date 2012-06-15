@@ -14,7 +14,7 @@ SELECT name
 , gender
 , birth 
 FROM c01 
-WHERE name like '%r%'
+WHERE name like '%r%';
 :SQL -->
 <Worksheet ss:Name="Select1">
 <Table>
@@ -66,7 +66,7 @@ SELECT concat(name, concat('*', cast(year as char)))
 , gender
 , birth 
 FROM c01 
-WHERE name like '%r%'
+WHERE name like '%r%';
 :SQL -->
 <Worksheet ss:Name="Select2">
 <Table>
@@ -121,6 +121,6 @@ WHERE name like '%r%'
 <!-- 5 Persons -->
 </Table>
 </Worksheet>
-<!-- Output on 2012-04-26 11:27:21.556 by <a href="index.html">Dbat</a> script ../web/spec/test/selec03.xml,
+<!-- Output on 2012-06-15 08:00:19.250 by <a href="index.html">Dbat</a> script ../web/spec/test/selec03.xml,
  -->
 </Workbook>

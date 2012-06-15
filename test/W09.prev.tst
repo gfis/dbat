@@ -5,5 +5,4 @@ SELECT name
 , gender
 , birth 
 FROM c01 
-WHERE name like '%r%'
-
+WHERE name like '%r%';

@@ -7,5 +7,4 @@ SELECT concat(name, concat('*', cast(year as char)))
 , gender
 , birth 
 FROM c01 
-WHERE name like '%'
-
+WHERE name like '%';

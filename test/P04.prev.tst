@@ -26,7 +26,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/pivot03"
 SELECT sp1
 , sp2
 , concat(sp1, concat('=', concat(sp2, concat('=', sp3)))) 
-FROM pivot
+FROM pivot;
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
 <tr><th title="sp1">Anwendung</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">S1</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">S2</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">S3</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">S4</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">S5</th></tr>
@@ -37,7 +37,7 @@ FROM pivot
 </table>
 
 
-<br />Output on 2012-05-15 08:18:57.262 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/pivot03.xml" type="text/plain">test/pivot03</a>,
+<br />Output on 2012-06-15 08:03:03.890 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/pivot03.xml" type="text/plain">test/pivot03</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fpivot03&amp;name=%25r&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fpivot03&amp;name=%25r&amp;lang=en">more</a>
 

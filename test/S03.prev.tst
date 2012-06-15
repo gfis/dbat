@@ -2,7 +2,7 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 <?xml version="1.0" encoding="UTF-8"?>
 <dbat>
 <!-- SQL:
-select * from c01
+select * from c01;
 :SQL -->
 <table id="tab1" name="table_not_specified">
 <tr><th>name</th>

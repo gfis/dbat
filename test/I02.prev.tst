@@ -34,7 +34,7 @@ SELECT name
 , gender
 , birth 
 FROM c01 
-WHERE name like '%'
+WHERE name like '%';
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
 <tr><th title="name">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
@@ -61,7 +61,7 @@ WHERE name like '%'
 SELECT name
 , birth 
 FROM c01 
-WHERE name like '%'
+WHERE name like '%';
 :SQL -->
 <table id="tab2"><!-- table_not_specified -->
 <tr><th title="name">Name</th><th title="birth">Birthdate</th></tr>
@@ -92,7 +92,7 @@ SELECT name
 , gender
 , birth 
 FROM c01 
-WHERE name like '%'
+WHERE name like '%';
 :SQL -->
 <table id="tab3"><!-- table_not_specified -->
 <tr><th title="name">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
@@ -119,7 +119,7 @@ WHERE name like '%'
 SELECT name
 , birth 
 FROM c01 
-WHERE name like '%'
+WHERE name like '%';
 :SQL -->
 <table id="tab4"><!-- table_not_specified -->
 <tr><th title="name">Name</th><th title="birth">Birthdate</th></tr>
@@ -150,7 +150,7 @@ SELECT name
 , gender
 , birth 
 FROM c01 
-WHERE name like '%'
+WHERE name like '%';
 :SQL -->
 <table id="tab5"><!-- table_not_specified -->
 <tr><th title="name">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
@@ -177,7 +177,7 @@ WHERE name like '%'
 SELECT name
 , birth 
 FROM c01 
-WHERE name like '%'
+WHERE name like '%';
 :SQL -->
 <table id="tab6"><!-- table_not_specified -->
 <tr><th title="name">Name</th><th title="birth">Birthdate</th></tr>
@@ -196,7 +196,7 @@ WHERE name like '%'
 
 
 
-<br />Output on 2012-05-15 07:59:39.846 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/includer.xml" type="text/plain">test/includer</a>,
+<br />Output on 2012-06-15 07:56:26.437 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/includer.xml" type="text/plain">test/includer</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fincluder&amp;name=&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fincluder&amp;name=&amp;lang=en">more</a>
 

@@ -30,7 +30,7 @@ SELECT case when year < 1980 then 'gry' else 'wht' end
 , univ
 , gender
 , birth 
-FROM c01
+FROM c01;
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
 <tr><th title="Year of Decease">Year</th><th title="Family Name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
@@ -45,7 +45,7 @@ FROM c01
 <tr><td class="counter" colspan="8">8 persons</td></tr>
 </table>
 
-<br />Output on 2012-05-15 08:17:51.488 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/color04.xml" type="text/plain">test/color04</a>,
+<br />Output on 2012-06-15 08:01:36.613 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/color04.xml" type="text/plain">test/color04</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fcolor04&amp;name=%25r&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fcolor04&amp;name=%25r&amp;lang=en">more</a>
 

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    @(#) $Id$
+    2012-06-13, Dr. Georg Fischer
+-->
+<dbat 	xmlns   ="http://www.teherba.org/2007/dbat" 
+		xmlns:db="http://www.teherba.org/2007/dbat" 
+		xmlns:ht="http://www.w3.org/1999/xhtml" 
+		encoding="UTF-8" 
+		conn="worddb" 
+		lang="en"
+		title="test/var02"
+		>
+	<comment lang="en">Test of a &lt;var&gt; element with data types</comment>
+	<comment lang="de">Test des &lt;var&gt;-Elements mit Datentypen</comment>
+			
+	<ht:h2><ht:a href="servlet?spec=test.index">Test</ht:a> - Test of a &lt;var&gt; element with data types</ht:h2>
+    <ht:form method="get">
+        <ht:input label="Name" 		name="name" 	maxsize="20" size="10" init="A" /><ht:br />
+        <ht:input label="Birthdate"	name="birth" 	maxsize="20" size="10" init="1800-01-01" /><ht:br />
+        <ht:input label="Decease" 	name="decease" 	maxsize="20" size="10" init="1800" /><ht:br />
+        <ht:input label="Changed" 	name="changed" 	maxsize="20" size="10" init="1900-01-01 00:00:00" /><ht:br />
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+
+	<select>
+		<col label="Name"			>name</col>
+		<col label="Family"			>family</col>
+		<col label="Gender"			align="center">gender</col>
+		<col label="Birthdate"		>birth</col>
+		<col label="Decease"		>decease</col>
+		<from> relatives </from>
+		<where>	name 	&gt;= <var name="name" 					/>
+			and birth	&gt;= <var name="birth" 	type="date" 	/>
+			and decease	&gt;= <var name="decease" 	type="int"		/>
+			and changed	&gt;= <var name="changed" 	type="timestamp"/>
+		</where>
+		<order by="1" />
+	</select>
+</dbat>

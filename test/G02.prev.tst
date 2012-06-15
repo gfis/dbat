@@ -11,7 +11,7 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 <link rel="stylesheet" type="text/css" href="stylesheet.css" />
 </head><body>
 <!-- SQL:
-select sp1, sp2, sp3 from pivot order by 1, 2, 3
+select sp1, sp2, sp3 from pivot order by 1, 2, 3;
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
 <tr><th>sp1</th><th>sp2</th><th>sp3</th></tr>

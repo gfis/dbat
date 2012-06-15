@@ -1377,8 +1377,6 @@ public class SQLAction implements Serializable {
 				tbMetaData.setAggregateColumn(aggregateName, tbMetaData.getAggregationSeparator());
 			}
 
-        	tbSerializer.writeComment("SQL:\n" + selectSql + "\n:SQL", config.getVerbose()); 
-        			// this is needed for EchoSQL, since it is the only action there
         	boolean intoParm = tbMetaData.getAggregateIndex() == TableMetaData.AGGR_PARAMS;
         	if (! intoParm) {
             	tbSerializer.startTable(showTableName, tbMetaData);
@@ -1550,6 +1548,8 @@ public class SQLAction implements Serializable {
 		            	setPlaceholders(statement, variables); // set the values of all placeholders
 	    	        } // set placeholders
 					statement.setQueryTimeout(120);
+		        	tbSerializer.writeEchoSQL(sqlInstruction, ";", config.getVerbose(), variables); 
+        					// this is needed for EchoSQL, since it is the only action there
 	                ResultSet stResults = statement.executeQuery();
                     serializeQueryResults(tbMetaData, sqlInstruction, stResults);
 					stResults.close();
@@ -1576,8 +1576,8 @@ public class SQLAction implements Serializable {
 		            if (variables.size() > 0) {
 		            	setPlaceholders(statement, variables); // set the values of all placeholders
 	    	        } // set placeholders
-		        	tbSerializer.writeComment("SQL:\n" + sqlInstruction + "\n:SQL", config.getVerbose()); 
-        			// this is needed for EchoSQL, since it is the only action there
+		        	tbSerializer.writeEchoSQL(sqlInstruction, ";", config.getVerbose(), variables); 
+		        			// this is needed for EchoSQL, since it is the only action there
 	                updateCount = statement.executeUpdate();
 	    	    	if (parameterMap != null) {
 		    	    	parameterMap.put(config.UPDATE_COUNT, new String[] { String.valueOf(updateCount) });

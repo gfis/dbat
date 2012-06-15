@@ -25,7 +25,7 @@ SELECT seq
 , display 
 FROM en1 
 WHERE lang = 'eng' 
-ORDER BY 1
+ORDER BY 1;
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
 <tr><th title="seq">seq</th><th title="code">code</th><th title="display">display</th></tr>
@@ -41,7 +41,7 @@ SELECT seq
 , display 
 FROM en1 
 WHERE lang = 'eng' 
-ORDER BY 1
+ORDER BY 1;
 :SQL -->
 
 
@@ -61,7 +61,7 @@ ORDER BY 1
 		</tr>
 	</table>
 	Continue with <a href="servlet?spec=enum02">enum02</a>
-<br />Output on 2012-05-15 08:17:35.996 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/enum01.xml" type="text/plain">test/enum01</a>,
+<br />Output on 2012-06-15 08:01:08.984 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/enum01.xml" type="text/plain">test/enum01</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fenum01&amp;seq=1&amp;seq=2&amp;seq=3&amp;display=male&amp;display=female&amp;display=neuter&amp;code=M&amp;code=F&amp;code=N&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fenum01&amp;seq=1&amp;seq=2&amp;seq=3&amp;display=male&amp;display=female&amp;display=neuter&amp;code=M&amp;code=F&amp;code=N&amp;lang=en">more</a>
 

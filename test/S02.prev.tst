@@ -11,7 +11,7 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 <link rel="stylesheet" type="text/css" href="stylesheet.css" />
 </head><body>
 <!-- SQL:
-SELECT * FROM c01
+SELECT * FROM c01;
 :SQL -->
 <table id="tab1"><!-- c01 -->
 <tr><th>name</th><th>univ</th><th>year</th><th>gender</th><th>birth</th></tr>

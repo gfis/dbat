@@ -27,7 +27,7 @@ SELECT name
 , birth 
 FROM relatives 
 WHERE name like  ? 
-ORDER BY 1
+ORDER BY 1;
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
 <tr><th title="name">Name</th><th title="family">Family</th><th title="birth">Birthdate</th></tr>
@@ -42,7 +42,7 @@ ORDER BY 1
 <tr><td>Teherba</td><td>Ritter</td><td>1886-02-04</td></tr>
 </table>
 
-<br />Output on 2012-06-13 18:08:43.543 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/var01.xml" type="text/plain">test/var01</a>,
+<br />Output on 2012-06-15 08:04:42.886 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/var01.xml" type="text/plain">test/var01</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.var01&amp;name=%25&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.var01&amp;name=%25&amp;lang=en">more</a>
 

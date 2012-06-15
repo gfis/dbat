@@ -30,7 +30,7 @@ SELECT concat(name, concat('*', cast(year as char)))
 , gender
 , birth 
 FROM c01 
-WHERE name like '%'
+WHERE name like '%';
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
 <tr><th title="concat(name, concat('*', cast(year as char)))">Year</th><th title="concat(cast(year as char), concat('=', name))">Name</th><th title="concat(cast(year as char), concat('=e.', cast(year as char)))">Year</th><th title="concat(name, concat('=f.', name))">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
@@ -45,7 +45,7 @@ WHERE name like '%'
 <tr><td class="counter" colspan="7">8 persons</td></tr>
 </table>
 
-<br />Output on 2012-06-01 22:51:12.936 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/column02.xml" type="text/plain">test/column02</a>,
+<br />Output on 2012-06-15 08:01:56.493 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/column02.xml" type="text/plain">test/column02</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fcolumn02&amp;name=%25&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fcolumn02&amp;name=%25&amp;lang=en">more</a>
 

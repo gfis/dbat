@@ -24,7 +24,7 @@ SELECT DISTINCT code
 , display 
 FROM en1 
 WHERE lang = 'eng' 
-ORDER BY 1
+ORDER BY 1;
 :SQL -->
 
 
@@ -46,7 +46,7 @@ ORDER BY 1
 </td></tr>
 		</table>
 	</form>
-<br />Output on 2012-05-07 18:38:32.607 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/enum02.xml" type="text/plain">test/enum02</a>,
+<br />Output on 2012-06-15 08:01:11.782 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/enum02.xml" type="text/plain">test/enum02</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fenum02&amp;gender=N&amp;display=female&amp;display=male&amp;display=neuter&amp;code=F&amp;code=M&amp;code=N&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fenum02&amp;gender=N&amp;display=female&amp;display=male&amp;display=neuter&amp;code=F&amp;code=M&amp;code=N&amp;lang=en">more</a>
 

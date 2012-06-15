@@ -27,7 +27,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/callproc&part=or"
 <tr><td>or</td><td>1</td><td>Dorothea</td></tr>
 </table>
 
-<br />Output on 2012-05-21 18:53:25.689 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/callproc.xml" type="text/plain">test/callproc</a>,
+<br />Output on 2012-06-15 06:56:59.553 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/callproc.xml" type="text/plain">test/callproc</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fcallproc&amp;part=or&amp;update_count=0&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fcallproc&amp;part=or&amp;update_count=0&amp;lang=en">more</a>
 

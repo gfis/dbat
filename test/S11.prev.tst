@@ -8,7 +8,7 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
    xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
    xmlns:html="http://www.w3.org/TR/REC-html40">
 <!-- SQL:
-SELECT * FROM c01
+SELECT * FROM c01;
 :SQL -->
 <Worksheet ss:Name="c01">
 <Table>

@@ -11,7 +11,7 @@ SELECT name
 , gender
 , birth 
 FROM c01 
-WHERE name like '%r%'
+WHERE name like '%r%';
 :SQL -->
 <table id="tab1" name="table_not_specified">
 <tr><th>Name</th>
@@ -27,6 +27,6 @@ WHERE name like '%r%'
 <tr><td>Dorothea</td><td>Lübars</td><td>1985</td><td>$</td><td>1910-02-07</td></tr>
 <!-- 5 Persons -->
 </table>
-<!-- Output on 2012-05-15 08:01:55.459 by <a href="index.html">Dbat</a> script test/selec01,
+<!-- Output on 2012-06-15 07:58:33.563 by <a href="index.html">Dbat</a> script test/selec01,
  -->
 </dbat>

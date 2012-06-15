@@ -21,7 +21,7 @@ SELECT univ
 , gender
 , birth 
 FROM c01
-        	where univ like 'L%'
+        	where univ like 'L%';
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
 <tr><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
@@ -30,7 +30,7 @@ FROM c01
 <tr><td class="invisible">Lübars</td><td>'</td><td>1887-07-09</td></tr>
 </table>
 
-<br />Output on 2012-05-15 08:19:20.997 by <a href="index.html">Dbat</a> script <a target="_blank" href="./../web/spec/test/visible05.xml.xml" type="text/plain">../web/spec/test/visible05.xml</a>,
+<br />Output on 2012-06-15 08:03:30.902 by <a href="index.html">Dbat</a> script <a target="_blank" href="./../web/spec/test/visible05.xml.xml" type="text/plain">../web/spec/test/visible05.xml</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;lang=en">more</a>
 

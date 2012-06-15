@@ -741,6 +741,17 @@ public abstract class BaseTable {
    		writeComment(line);
     } // writeComment(2)
 
+    /** Writes a comment, but only if the "verbose" level is > 0.
+     *  @param line string to be output as a comment
+     *	@param separator normal SQL statement separator (";")
+     *	@param verbose level of output detail
+     *	@param variables pairs of types and values for variables to be filled 
+     *	into any placeholders ("?") in the prepared statement  
+     */
+    public void writeEchoSQL(String line, String separator, int verbose, ArrayList/*<1.5*/<String>/*1.5>*/ variables) {
+    	writeComment("SQL:\n" + line + separator + "\n:SQL", verbose);
+    } // writeEchoSQL
+
 	/** Tells, for the specific format, the rule to be applied for escaping.
 	 *	The result may optionally depend on the column's attributes and/or the cell value.
 	 *	@return the following escaping rules are currently observed:

@@ -27,7 +27,7 @@ SELECT name
 , gender
 , birth 
 FROM c01 
-WHERE name like '%r%' ORDER by birth limit 2
+WHERE name like '%r%' ORDER by birth limit 2;
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
 <tr><th title="name">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
@@ -35,7 +35,7 @@ WHERE name like '%r%' ORDER by birth limit 2
 <tr><td>Martha</td><td>Freiburg</td><td align="right">1999</td><td>&amp;</td><td>1909-11-17</td></tr>
 </table>
 
-<br />Output on 2012-05-15 08:18:37.362 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/order02.xml" type="text/plain">test/order02</a>,
+<br />Output on 2012-06-15 08:02:38.816 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/order02.xml" type="text/plain">test/order02</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Forder02&amp;name=%25r&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Forder02&amp;name=%25r&amp;lang=en">more</a>
 

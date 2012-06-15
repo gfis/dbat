@@ -29,7 +29,7 @@ SELECT year
 , birth
 , case when year <= 1990 then 'blu' else 'red' end 
 FROM c01 
-WHERE name like '%r%'
+WHERE name like '%r%';
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
@@ -46,7 +46,7 @@ WHERE name like '%r%'
 <tr><td class="counter" colspan="6">5 Persons</td></tr>
 </table>
 
-<br />Output on 2012-05-15 18:50:18.108 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/color08.xml" type="text/plain">test/color08</a>,
+<br />Output on 2012-06-15 08:01:59.658 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/color08.xml" type="text/plain">test/color08</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fcolor08&amp;name=%25r&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fcolor08&amp;name=%25r&amp;lang=en">more</a>
 

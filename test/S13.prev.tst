@@ -21,7 +21,7 @@ SELECT concat(name, concat('*', cast(year as char)))
 , gender
 , birth 
 FROM c01 
-WHERE name like '%'
+WHERE name like '%';
 :SQL -->
 
 {| border="1"
@@ -48,5 +48,5 @@ WHERE name like '%'
 |}
 
 
-Output on 2011-11-08T19:46:18.974 by <a href="index.jsp">Dbat</a> script ../web/spec/test/selec02.xml
+Output on 2012-06-15 07:58:52.428 by <a href="index.html">Dbat</a> script ../web/spec/test/selec02.xml,
 
