@@ -95,7 +95,9 @@ public abstract class BaseTable {
 	protected int tableSeqNo;
 	/** Sequential number of table row: 0, 1 etc. */
 	protected int tableRowNo;
-	
+	/** the string which indicates a placeholder for a host variable in an SQL statement to be prepared */
+	public static final String PARAMETER_MARKER = " ? ";
+		
 	/** Indicates the type of a row to be output by {@link #writeGenericRow} */
 	public static enum RowType 
 			{ HEADER	// header row

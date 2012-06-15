@@ -1329,7 +1329,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 	            	} else {
 	            		typeName = "CHAR";
 	            	} 
-	            	colBuffer.append(" ? "); // append the placeholder = parameter marker
+	            	colBuffer.append(BaseTable.PARAMETER_MARKER); // append the placeholder
 	            	variables.add(typeName);
 	            	variables.add(params);
 		            // DBAT_URI

@@ -1,12 +1,12 @@
 Test A00 
-echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-15 08:04:57
+echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-15 18:52:17
 *** A00.prev.tst	2012-06-10 21:55:20.000000000 +0200
---- A00.this.tst	2012-06-15 08:04:58.000000000 +0200
+--- A00.this.tst	2012-06-15 18:52:18.000000000 +0200
 ***************
 *** 1 ****
 ! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2011-08-06 21:10:46
 --- 1 ----
-! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-15 08:04:57
+! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-15 18:52:17
 -- FAILED A00 
 Test A01 parameterized link
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/parmlink.xml
@@ -61,14 +61,7 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 ++ passed DE2 fill table with DECIMALs
 Test DE3 fill table with DECIMALs, verbose output
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -v -f DE3.data.tmp
-*** DE3.prev.tst	2012-06-15 07:56:53.000000000 +0200
---- DE3.this.tst	2012-06-15 08:05:09.000000000 +0200
-***************
-*** 15,16 ****
-- row3	123456780123456789	123456.345	2011-08-01	23:13:00	2011-08-01 23:13:00.000
-- row4	194706290530000000	194706.290	1981-08-09	11:30:00	1981-08-09 11:30:00.000
---- 14 ----
--- FAILED DE3 fill table with DECIMALs, verbose output
+++ passed DE3 fill table with DECIMALs, verbose output
 Test X00 create procedure x00
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -v -sp "$" -f X00.data.tmp
 ++ passed X00 create procedure x00
@@ -194,17 +187,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/selec01&mode=html"
 ++ passed W02 select as HTML
 Test W03 select as XML
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/selec01&mode=xml"
-*** W03.prev.tst	2012-06-10 21:55:25.000000000 +0200
---- W03.this.tst	2012-06-15 08:05:17.000000000 +0200
-***************
-*** 11 ****
-! WHERE name like '%r%'
---- 11 ----
-! WHERE name like '%r%';
-***************
-*** 27 ****
---- 27 ----
--- FAILED W03 select as XML
+++ passed W03 select as XML
 Test W04 select for JDBC
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/selec01&mode=jdbc"
 ++ passed W04 select for JDBC
@@ -519,8 +502,6 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed VA3 echo with var elements
 ==================
 -- FAILED A00 
--- FAILED DE3 fill table with DECIMALs, verbose output
--- FAILED W03 select as XML
 ++ passed A01 parameterized link
 ++ passed B01 create table with BLOB
 ++ passed B02 insert statements
@@ -538,6 +519,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed I02 include with system entities
 ++ passed DE1 create table with DECIMALs
 ++ passed DE2 fill table with DECIMALs
+++ passed DE3 fill table with DECIMALs, verbose output
 ++ passed X00 create procedure x00
 ++ passed X01 create procedure x01 with 2 result sets
 ++ passed X02 call procedure x01 with 2 result sets
@@ -579,6 +561,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed U10 file tayloring - with data: URI template
 ++ passed W01 select
 ++ passed W02 select as HTML
+++ passed W03 select as XML
 ++ passed W04 select for JDBC
 ++ passed W05 select tab separated
 ++ passed W06 select fixed columns
@@ -683,5 +666,5 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed VA1 var element
 ++ passed VA2 var elements with data types
 ++ passed VA3 echo with var elements
-   3 FAILED.tests
- 162 passed.tests
+   1 FAILED.tests
+ 164 passed.tests

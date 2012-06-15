@@ -33,11 +33,14 @@ import  java.util.ArrayList;
  */
 public class EchoSQL extends BaseTable {
     public final static String CVSID = "@(#) $Id$";
+	/** Debugging switch */
+	private int debug = 0;
 
     /** No-args Constructor
      */
     public EchoSQL() {
         super();
+		debug = 0;
         setFormatCodes("echo");
 		setDescription("en", "Echo SQL");
 		// setDescription("de", "nur SQL-Ausgabe");
@@ -54,11 +57,46 @@ public class EchoSQL extends BaseTable {
         try {
         	int nvar = variables.size();
         	if (nvar > 0) { // placeholders must be replaced
-				StringBuffer buffer = new StringBuffer(line);
+        		int len = line.length();
+				StringBuffer buffer = new StringBuffer(len);
 				int ivar = 0;
-				while (ivar < nvar) {
-					ivar ++;
+				int foundPos = 0; // position of the PARAMETER_MARKER's first char
+				int startPos = 0; // starting position in buffer
+				while (ivar < nvar && startPos < len) {
+					foundPos = line.indexOf(PARAMETER_MARKER, startPos);
+					if (foundPos < 0) { // error - not enough parameter markers
+						foundPos = len;
+					}
+					buffer.append(line.substring(startPos, foundPos + 1)); // copy the left space also
+					startPos = foundPos + PARAMETER_MARKER.length() - 1; // copy the right space also
+					String typeName = variables.get(ivar    ).toUpperCase(); 
+					String value    = variables.get(ivar + 1); 
+					if (debug > 0) {
+						buffer.append('{');
+						buffer.append(String.valueOf(ivar));
+						buffer.append('=');
+						buffer.append(typeName);
+						buffer.append(':');
+						buffer.append(value);
+						buffer.append('}');
+					} // debug
+					ivar += 2;
+					// keep this switch in synch with the code in SQLAction.setPlaceholder 
+					if (false) {
+					} else if (typeName.equals    ("DECIMAL"   )) {
+						buffer.append(value);
+					} else if (typeName.startsWith("INT"       )) {
+						buffer.append(value);
+					} else { // DATE, TIME, STRING, CHAR etc.
+						buffer.append('\'');
+						buffer.append(value);
+						buffer.append('\'');
+					} // switch typeName	
 				} // while ivar
+				foundPos = len;
+				if (startPos < foundPos) { // copy the rest behind the last marker
+					buffer.append(line.substring(startPos, foundPos)); 
+				}
 	            charWriter.print(buffer.toString());
         	} else { // no placeholders
 	            charWriter.print(line);

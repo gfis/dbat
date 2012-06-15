@@ -1459,6 +1459,7 @@ public class SQLAction implements Serializable {
      */
     private void setPlaceholder(PreparedStatement pstmt, int parameterIndex, String typeName, String value) {
     	try {
+			// keep this switch in synch with the code in format.EchoSQL.writeEchoSQL 
 			if (false) {
 			} else if (typeName.equals    ("CLOB"      )) {
 				// not yet
