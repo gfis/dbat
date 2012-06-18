@@ -38,6 +38,21 @@
         <order by="1" />
     </select>
 
+    <select>
+        <col label="Name"                   name="name"     type="char" >name</col>
+        <col label="Family"                 name="family"   type="char" >family</col>
+        <col label="Gender" align="center"  name="gender"   type="char" >gender</col>
+        <col label="Birthdate"              name="birth"    type="date" >birth</col>
+        <col label="Decease"                name="decease"  type="int"  >decease</col>
+        <from> relatives </from>
+        <where> name    &gt;= <var name="name"                  />
+            and birth   &gt;= <var name="birth"     type="date"     />
+            and decease &gt;= <var name="decease"   type="int"      />
+            and changed &gt;= <var name="changed"   type="timestamp"/>
+        </where>
+        <order by="1" />
+    </select>
+
 	<update>relatives
 		<col name="gender"	>'F'			</col>
 		<col name="birth"	>'1909-02-09'	</col>

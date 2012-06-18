@@ -1534,7 +1534,7 @@ public class SQLAction implements Serializable {
         int result = 0;
         PreparedStatement statement = null;
         try {
-            sqlInstruction = sqlInstruction.trim();
+            sqlInstruction = sqlInstruction + " "; // because of trailing PARAMETER_MARKER
             if (sqlInstruction.length() > 0) { // statement non-empty
                 if (con == null) { // not yet set
                     con = config.openConnection();          
