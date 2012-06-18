@@ -24,11 +24,11 @@
     </ht:form>
 
     <select>
-        <col label="Name"           >name</col>
-        <col label="Family"         >family</col>
-        <col label="Gender"         align="center">gender</col>
-        <col label="Birthdate"      >birth</col>
-        <col label="Decease"        >decease</col>
+        <col label="Name"                   name="name"     type="char" >name</col>
+        <col label="Family"                 name="family"   type="char" >family</col>
+        <col label="Gender" align="center"  name="gender"   type="char" >gender</col>
+        <col label="Birthdate"              name="birth"    type="date" >birth</col>
+        <col label="Decease"                name="decease"  type="int"  >decease</col>
         <from> relatives </from>
         <where> name    &gt;= <var name="name"                  />
             and birth   &gt;= <var name="birth"     type="date"     />
@@ -37,4 +37,27 @@
         </where>
         <order by="1" />
     </select>
+
+	<update>relatives
+		<col name="gender"	>'F'			</col>
+		<col name="birth"	>'1909-02-09'	</col>
+		<col name="place"	>'Berlin'		</col>
+		<where> name    = <var name="name"   />
+			and decease = <var name="decease"/>
+			and family  = <var name="family" init="Ritter" />
+		</where>
+	</update>  
+<!--	
+	<insert>
+	    <into>relatives</into>
+	    <values>
+	        <col name="name"    type="char"><var name="name"    type="char" /></col>
+	        <col name="decease" type="int" ><var name="decease" type="int"  /></col>
+	        <col name="family"  type="char"><var name="family"  type="char" /></col>
+	        <col name="gender"  type="char"><var name="gender"  type="char" /></col>
+	        <col name="birth"   type="date"><var name="birth"   type="date" /></col>
+	        <col name="place"   type="char"><var name="place"   type="char" /></col>
+		</values>
+    </insert>
+-->
 </dbat>

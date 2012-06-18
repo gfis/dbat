@@ -1,16 +1,17 @@
 /*  Selects the applicable table generator
     @(#) $Id$
+    2012-06-16: GenerateSQLJ
     2012-05-22: JSONTable for Ajax 
     2011-09-10: TableGenerator, -m gen
     2011-07-27: WikiTable, -m wiki
     2011-07-15: TayloredTable, -m taylor
     2011-04-15: SQLUpdateTable, -m update
-	2011-04-08: TransformedTable
-	2010-07-24: ExcelTable, -m xls
+    2011-04-08: TransformedTable
+    2010-07-24: ExcelTable, -m xls
     2010-06-16: EchoSQL, -m echo
     2010-02-26: default HTML; getTableSerializer in favour of getTableWriter (now deprecated)
     2010-02-23: DefaultSpecTable, -m spec
-	2008-02-07: Sassnitz, Dorothea * 98 Jahre
+    2008-02-07: Sassnitz, Dorothea * 98 Jahre
     2007-01-12: copied from XtransFactory
 */
 /*
@@ -34,6 +35,7 @@ import  org.teherba.dbat.format.DefaultSpecTable; // XML files suitable for proc
 import  org.teherba.dbat.format.EchoSQL;
 import  org.teherba.dbat.format.ExcelTable;
 import  org.teherba.dbat.format.FixedWidthTable;
+import  org.teherba.dbat.format.GenerateSQLJ;
 import  org.teherba.dbat.format.HTMLTable;
 import  org.teherba.dbat.format.JDBCTable;
 import  org.teherba.dbat.format.JSONTable;
@@ -70,10 +72,10 @@ public class TableFactory {
     public TableFactory() {
         log = Logger.getLogger(TableFactory.class.getName());
         allTables = new BaseTable[] { null
-				// the following order is HTML first, then by pleasant descriptions 
-				// this order defines the one in the menue of more.jsp 
-        		, new HTMLTable         ()     // [0] is the default
-        		, new ExcelTable        ()
+                // the following order is HTML first, then by pleasant descriptions 
+                // this order defines the one in the menue of more.jsp 
+                , new HTMLTable         ()     // [0] is the default
+                , new ExcelTable        ()
                 , new XMLTable          () 
                 , new FixedWidthTable   () 
                 , new SeparatedTable    () 
@@ -84,10 +86,11 @@ public class TableFactory {
                 , new DefaultSpecTable  () 
                 , new TayloredTable     () 
                 , new TransformedTable  () 
-        		, new TableGenerator    ()
-        		, new WikiTable         ()
-        		, new EchoSQL           ()
-        		, new ProbeSQL          ()
+                , new TableGenerator    ()
+                , new WikiTable         ()
+                , new EchoSQL           ()
+                , new GenerateSQLJ      ()
+                , new ProbeSQL          ()
                 }; 
     } // Constructor
 
@@ -95,7 +98,7 @@ public class TableFactory {
      *  @return list iterator over <em>allTables</em>
      */
     public Iterator /*<1.5*/<BaseTable>/*1.5>*/ getIterator() {
-    	List /*<1.5*/<BaseTable>/*1.5>*/ list = Arrays.asList(allTables);
+        List /*<1.5*/<BaseTable>/*1.5>*/ list = Arrays.asList(allTables);
         Iterator /*<1.5*/<BaseTable>/*1.5>*/ result = list.iterator();
         result.next(); // skip initial null element
         return result;
@@ -133,7 +136,7 @@ public class TableFactory {
         BaseTable baseTable = allTables[0];
         // determine the applicable BaseTable for 'format'
         int itab = 1;
-		boolean found = false;
+        boolean found = false;
         while (itab < allTables.length) {
             if (isApplicable(allTables[itab], format)) { // found
                 baseTable = allTables[itab];
@@ -143,34 +146,34 @@ public class TableFactory {
             itab ++;
         } //  while itab
         if (! found) {
-        	log.error("unknown format " + format);
-        	format = "html";
-        	baseTable = allTables[1]; // HTML = default
+            log.error("unknown format " + format);
+            format = "html";
+            baseTable = allTables[1]; // HTML = default
         } 
         baseTable.setOutputFormat(format);
         return baseTable;
     } // getTableSerializer
 
     /** Gets a plain text list of formatting codes and
-     *	their descrioption, for help text output
+     *  their descrioption, for help text output
      *  @param language ISO country code: "de", "en"
      *  @return plain text list with one line per format
      */
     public String getHelpList(String language) {
-    	if (language == null) { // safety brake
-    		language = "en";
-    	}
-    	StringBuffer result = new StringBuffer(256);
-		final String SPACE2 = "  ";		
-		Iterator /*<1.5*/<BaseTable>/*1.5>*/ titer = this.getIterator();
-		while (titer.hasNext()) {
-			BaseTable tableFormat = (BaseTable) titer.next();
-			result.append(SPACE2);
-			result.append(tableFormat.getFormatCodes());
-			result.append("\t");
-			result.append(tableFormat.getDescription(language));
-			result.append("\n");
-		} // titer
+        if (language == null) { // safety brake
+            language = "en";
+        }
+        StringBuffer result = new StringBuffer(256);
+        final String SPACE2 = "  ";     
+        Iterator /*<1.5*/<BaseTable>/*1.5>*/ titer = this.getIterator();
+        while (titer.hasNext()) {
+            BaseTable tableFormat = (BaseTable) titer.next();
+            result.append(SPACE2);
+            result.append(tableFormat.getFormatCodes());
+            result.append("\t");
+            result.append(tableFormat.getDescription(language));
+            result.append("\n");
+        } // titer
         return result.toString();
     } // getHelpList
 
