@@ -18,6 +18,7 @@
  * limitations under the License.
  */
 package org.teherba.dbat.format;
+import  org.teherba.dbat.Messages;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.dbat.format.BaseTable;
@@ -97,7 +98,7 @@ public class GenerateSQLJ extends BaseTable {
 
             charWriter.println("/*  Generated SQLJ class " + targetClassName + " - DO NOT EDIT here!                                  ");
             charWriter.println(" *  @(#) $Id$                                                                 ");
-            charWriter.println(" *  " + TIMESTAMP_FORMAT.format(new java.util.Date())
+            charWriter.println(" *  " + Messages.TIMESTAMP_FORMAT.format(new java.util.Date())
                     +              " by " + GenerateSQLJ.class.getName());
             charWriter.println(" */                                                                           ");
             charWriter.println("package " + targetPackageName + ";");

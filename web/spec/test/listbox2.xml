@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="en" 
+		conn="worddb" 
+		title="listbox"
+		>
+<!--
+    @(#) $Id$
+    2011-07-29, Dr. Georg Fischer: copied from color04.xml
+-->
+	<comment lang="en">List Box and List Parameter Test</comment>
+	<comment lang="de">Test von Auswahl- und Parameterlisten</comment>
+
+    <ht:h2>List Box and List Parameter Test</ht:h2>
+    <ht:form method="get">
+    	<ht:select label="Initial" name="namebox" multiple="yes" init="M L" size="7">
+    		<ht:option value="M"               >M</ht:option>
+    		<ht:option value="J"               >J</ht:option>
+    		<ht:option value="E" selected="yes">E</ht:option>
+    		<ht:option value="F"               >F</ht:option>
+    		<ht:option value="L"               >L</ht:option>
+    		<ht:option value="I"               >I</ht:option>
+    		<ht:option value="D" selected="yes">D</ht:option>
+    	</ht:select> &#xa0;&#xa0;
+    	<ht:input label="Int List"  name="birthint"		init="1887 1914" /> &#xa0;&#xa0;
+    	<ht:input label="Char List" name="birthchar"	init="1910 1911" /> &#xa0;&#xa0;
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+    
+	<ht:h3>Test with multiple selected initials</ht:h3>
+    <select>
+        <col label="Name" 		>name</col>
+        <col label="University" >univ</col>
+        <col label="Birthdate" 	>birth</col>
+        <from>c01</from>
+		<where>
+			substr(name, 1, 1) in (<parm name="namebox" list="box" />)
+		</where>
+		<order by="3" />
+        <counter desc="Person,s"/>
+    </select>
+
+	<ht:h3>Test with list of int years</ht:h3>
+    <select>
+        <col label="Name" 		>name</col>
+        <col label="University" >univ</col>
+        <col label="Birthdate" 	>birth</col>
+        <from>c01</from>
+		<where>
+			year(birth) in (<parm name="birthint" list="int" />)
+		</where>
+		<order by="3" />
+        <counter desc="Person,s"/>
+    </select>
+
+	<ht:h3>Test with list of char years</ht:h3>
+    <select>
+        <col label="Name" 		>name</col>
+        <col label="University" >univ</col>
+        <col label="Birthdate" 	>birth</col>
+        <from>c01</from>
+		<where>
+			cast(year(birth) as char) in (<parm name="birthchar" list="char" />)
+		</where>
+		<order by="3" />
+        <counter desc="Person,s"/>
+    </select>
+</dbat>

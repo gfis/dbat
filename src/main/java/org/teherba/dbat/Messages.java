@@ -1,6 +1,6 @@
 /*  Messages.java - Static help texts and other language specific messages for Dbat.
  *  @(#) $Id$
- *  2012-06-16: more modes
+ *  2012-06-19: more modes; TIMESTAMP_FORMAT for humans; trailer line configurable
  *  2012-04-19: try/catch the known JDBC drivers for -h
  *  2012-01-20: refer to index.html instead of index.jsp
  *  2011-08-06: validateFormField, getTrailerText
@@ -27,6 +27,7 @@ import  org.teherba.dbat.TableFactory;
 import  java.io.Serializable;
 import  java.sql.Driver;
 import  java.sql.DriverManager;
+import  java.text.SimpleDateFormat;
 import  java.util.Enumeration;
 import  org.xml.sax.helpers.AttributesImpl;
 
@@ -39,19 +40,19 @@ import  org.xml.sax.helpers.AttributesImpl;
  *  <li>de - German</li>
  *  </ul>
  *  <p />
- *  All methods in this class are not stateful, and therefore are 
+ *  All methods in this class are not stateful, and therefore are
  *  <em>static</em> for easier activation.
  *  @author Dr. Georg Fischer
  */
 public class Messages implements Serializable {
     public final static String CVSID = "@(#) $Id$";
-    
+
     /** No-args Constructor
      */
     public Messages() {
     } // Constructor
 
-    /** Gets the message text for a notice about form field validation errors 
+    /** Gets the message text for a notice about form field validation errors
      *  @param language ISO country code: "de", "en"
      *  @return language specific message text
      */
@@ -63,7 +64,7 @@ public class Messages implements Serializable {
                     + "Bei den rot hinterlegten Eingabefeldern ist ein Validierungsfehler aufgetreten.<br /> "
                     + "Bitte setzen Sie den Mauszeiger auf das Feld oder klicken Sie auf den Stern, um die "
                     + "<a href=\"servlet?view=validate&amp;lang=" + language + "&amp;regex=\" target=\"_blank\">Validierungsregel</a>"
-                    + " anzuzeigen.";       
+                    + " anzuzeigen.";
         } else { // default: en
             result += ""
                     + "There was a validation problem with the input field(s) highlighted in red.<br /> "
@@ -145,7 +146,7 @@ public class Messages implements Serializable {
                 + " eingeschlossen werden. Dateinamen duerfen keine Leerzeichen enthalten. '-' ist STDIN.\n"
                 + "Eingebundene JDBC-Treiber:\n"
                 ;
-                
+
     /** Get the tools version, the explanation of the options and
      *  the available JDBC drivers.
      *  @param language one of "en", "de"
@@ -164,7 +165,7 @@ public class Messages implements Serializable {
         try { Class.forName("com.ibm.db2.jcc.DB2Driver" ).newInstance(); } catch (Exception exc) { }
         try { Class.forName("com.mysql.jdbc.Driver"     ).newInstance(); } catch (Exception exc) { }
         try { Class.forName("org.sqlite.JDBC"           ).newInstance(); } catch (Exception exc) { }
-        try { 
+        try {
             Enumeration/*<1.5*/<Driver>/*1.5>*/ drivers = DriverManager.getDrivers();
             while (drivers.hasMoreElements()) {
                 Driver driver = drivers.nextElement();
@@ -221,21 +222,25 @@ public class Messages implements Serializable {
         return result;
     } // getTimingMessage
 
+    /** ISO timestamp without milliseconds */
+    public static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
+
     /** Gets the markup text for the page trailer.
      *  For HTML, the text contains links to Excel output and the "more" page.
+     *  @param showList a comma (or space) separated list of keywords: none,on,by,script,excel,more
      *  @param language ISO country code: "de", "en"
      *  @param specHref link to the specification source
-     *  @param xlsHref  link to Excel display of the query results, or null for plain, non-HTML formats        
-     *  @param moreTag  link to "more" page                                           
+     *  @param xlsHref  link to Excel display of the query results, or null for plain, non-HTML formats
+     *  @param moreTag  link to "more" page
      *  @return language specific trailer markup text,
      *  for example:
      *  <pre>
         Output on 2011-08-05T21:03:40.419 by script test/align01. Excel, more
      *  </pre>
      */
-    public static String getTrailerText(String language, String specHref, String xlsHref, String moreTag) {
+    public static String getTrailerText(String showList, String language, String specHref, String xlsHref, String moreTag) {
         StringBuffer result = new StringBuffer(128);
-        String timestamp = SQLAction.TIMESTAMP_FORMAT.format(new java.util.Date());
+        String timestamp = TIMESTAMP_FORMAT.format(new java.util.Date());
         String moreWord = "more";
         if (false) {
         } else if (language.startsWith("de")) {
@@ -274,7 +279,7 @@ public class Messages implements Serializable {
      */
     public static int validateFormField(String language, AttributesImpl attrs2, String value, String pattern) {
         int result = 0;
-        int 
+        int
         index = attrs2.getIndex("class");
         if (index >= 0) {
             attrs2.removeAttribute(index);
@@ -308,7 +313,7 @@ public class Messages implements Serializable {
             } else { // default: en
                 title = "Field validation with pattern &quot;";
             }
-        } // valid  
+        } // valid
         attrs2.addAttribute("", "title", "title", "CDATA", title  + escapedPattern + "&quot;");
         return result;
     } // validateFormField
@@ -328,7 +333,7 @@ public class Messages implements Serializable {
     //================
     // Main method
     //================
-    
+
     /** Test driver - shows the Dbat help text.
      *  The result is printed to STDOUT.
      *  @param args language code: "en", "de"

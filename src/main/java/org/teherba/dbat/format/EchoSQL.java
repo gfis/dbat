@@ -21,6 +21,7 @@
  * limitations under the License.
  */
 package org.teherba.dbat.format;
+import  org.teherba.dbat.Messages;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.dbat.format.BaseTable;

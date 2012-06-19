@@ -1,17 +1,17 @@
-/*  Generator for an SQL table 
+/*  Generator for an SQL table (DDL or INSERT statements)
     @(#) $Id$
     2012-04-17: NON_UNIQUE INDEX; error in INSERT header (getLabel -> getName)
-	2011-12-06: CONSTRAINT PRIMARY KEY
-	2011-12-03: writeComment(2)
+    2011-12-06: CONSTRAINT PRIMARY KEY
+    2011-12-03: writeComment(2)
     2011-08-24: writeGenericRow
     2011-08-02: spaces behind escape codes {d, {t, {ts
     2011-07-20: KEY (name) is probably nonstandard, MySQL
     2011-05-04: rowCount incremented locally
-	2011-04-14: writeStart, writeEnd
+    2011-04-14: writeStart, writeEnd
     2011-02-14: writeComment with "--" after all newlines
     2010-02-25: charWriter.write -> .print
- 	2010-02-19: remark on column
-	2009-08-14: care for indexName == null in describeIndexes
+    2010-02-19: remark on column
+    2009-08-14: care for indexName == null in describeIndexes
     2007-01-12: copied from BaseTable
     2006-09-19: copied from numword.BaseSpeller
 */
@@ -32,6 +32,7 @@
  */
 
 package org.teherba.dbat.format;
+import  org.teherba.dbat.Messages;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
@@ -44,8 +45,9 @@ import  java.util.Iterator;
 import  java.util.TreeMap;
 
 /** Generator for an SQL table writing
- *	DROP/CREATE statements of a table or INSERT statements for all rows of a result set.
- *	This class optionally emits JDBC escape sequences for date/time values.
+ *  DROP/CREATE statements of a table or INSERT statements for all rows of a result set.
+ *  Optionally, this class emits JDBC escape sequences for date/time values (when it is
+ *  subclassed from {@link JDBCTable}).
  *  @author Dr. Georg Fischer
  */
 public class SQLTable extends BaseTable {
@@ -57,17 +59,15 @@ public class SQLTable extends BaseTable {
     protected String tableName;
     /** primary   buffer for the assembly of the INSERT statement and its value list */
     protected StringBuffer cellBuffer;
-	/** maximum length of assembled output line */
+    /** maximum length of assembled output line */
     protected int maxLen; 
-	/** current length of assembled output line */
+    /** current length of assembled output line */
     protected int lenCell; 
     /** whether dates and timestamps should be written as JDBC escapes */
     protected boolean isJDBC;
-    /** Readable format for timestamps with milliseconds */
-    protected static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     /** local counter of rows, for insertion of COMMIT statements */
-	protected int rowCount;
-		    
+    protected int rowCount;
+            
     /** No-args Constructor
      */
     public SQLTable() {
@@ -75,7 +75,7 @@ public class SQLTable extends BaseTable {
     } // Constructor()
 
     /** Constructor with format
-     *	@param format either "sql" or "jdbc" (SQL with JDBC escape sequences for dates/times)
+     *  @param format either "sql" or "jdbc" (SQL with JDBC escape sequences for dates/times)
      */
     public SQLTable(String format) {
         super(format);
@@ -87,53 +87,55 @@ public class SQLTable extends BaseTable {
     } // Constructor(format)
 
     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
-     *	@param params array of 0 or more (name, value) string which specify features in the file header.
-     *	@param parameterMap map of request parameters to values
-     *	The following names are interpreted:
-     *	<ul>
-     *	<li>contentType - MIME type for the document content</li>
-     *	<li>encoding - encoding to be used for the output stream</li>
-     *	<li>javaScript - name of the file containing JavaScript functions</li>
-     *	<li>styleSheet - name of the CSS file</li>
-     *	<li>encoding - encoding to be used for the output stream</li>
-     *	<li>target - target of HTML base element, for example "_blank"</li>
-     *	<li>title - title for the HTML head element, and the browser window</li>
-     *	</ul>
+     *  @param params array of 0 or more (name, value) string which specify features in the file header.
+     *  @param parameterMap map of request parameters to values
+     *  The following names are interpreted:
+     *  <ul>
+     *  <li>contentType - MIME type for the document content</li>
+     *  <li>encoding - encoding to be used for the output stream</li>
+     *  <li>javaScript - name of the file containing JavaScript functions</li>
+     *  <li>styleSheet - name of the CSS file</li>
+     *  <li>encoding - encoding to be used for the output stream</li>
+     *  <li>target - target of HTML base element, for example "_blank"</li>
+     *  <li>title - title for the HTML head element, and the browser window</li>
+     *  </ul>
      */
     public void writeStart(String[] params,  HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
-		String encoding		= getTargetEncoding();
-		String title		= "dbat";
+        String encoding     = getTargetEncoding();
+        String title        = "dbat";
         try {
-			int iparam = params.length;
-			while (iparam > 0) {
-				iparam -= 2;
-				if (false) {
-				} else if (params[iparam].equals("encoding")) {
-					encoding 	= params[iparam + 1];
-				} else if (params[iparam].equals("title")) {
-					title		= params[iparam + 1];
-				} else { // "dummy" - skip pair
-				}
-			} // while iparam
-			
-            writeComment("SQL generated by Dbat at " + TIMESTAMP_FORMAT.format(new java.util.Date()));
+            int iparam = params.length;
+            while (iparam > 0) {
+                iparam -= 2;
+                if (false) {
+                } else if (params[iparam].equals("encoding")) {
+                    encoding    = params[iparam + 1];
+                } else if (params[iparam].equals("title")) {
+                    title       = params[iparam + 1];
+                } else { // "dummy" - skip pair
+                }
+            } // while iparam
+            
+            writeComment("SQL generated by Dbat at " + Messages.TIMESTAMP_FORMAT.format(new java.util.Date()));
             // writeComment("encoding: " + encoding + ", title: " + title);
        } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
-			System.err.println("encoding=" 	+ encoding 
-					+ ", title=" 			+ title
-					);
+            System.err.println("encoding="  + encoding 
+                    + ", title="            + title
+                    );
         }
     } // writeStart
 
     /** Ends   a file that may contain several table descriptions and/or a SELECT result sets
      */
     public void writeEnd() {
+    /*
         try {
-    		writeComment("finished at " + TIMESTAMP_FORMAT.format(new java.util.Date()));
+            writeComment("finished at " + Messages.TIMESTAMP_FORMAT.format(new java.util.Date()));
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
+    */
     } // writeEnd
 
     /** Writes a comment line.
@@ -149,17 +151,17 @@ public class SQLTable extends BaseTable {
 
     /** Writes a comment, but only if the "verbose" level is > 0.
      *  @param line string to be output as a comment
-     *	@param verbose level of output detail
+     *  @param verbose level of output detail
      */
     public void writeComment(String line, int verbose) {
-    	if (verbose > 0) {
+        if (verbose > 0) {
             writeComment(line);
-    	}
+        }
     } // writeComment(2)
 
-	//======================================
-	// Table description (DDL)
-	//======================================    
+    //======================================
+    // Table description (DDL)
+    //======================================    
 
     /** Starts the description of a TABLE (or VIEW) with DROP TABLE and CREATE TABLE
      *  @param dbMetaData database metadata 
@@ -171,8 +173,8 @@ public class SQLTable extends BaseTable {
     public void startDescription(DatabaseMetaData dbMetaData, String schema, String tableName, String tableType) {
         try {
             writeComment(dbMetaData.getDatabaseProductName() + " " + dbMetaData.getDatabaseProductVersion()
-            		+ " with " +  dbMetaData.getDriverName() + " " + dbMetaData.getDriverVersion()
-            		);
+                    + " with " +  dbMetaData.getDriverName() + " " + dbMetaData.getDriverVersion()
+                    );
             charWriter.print("DROP   " + tableType + " ");
             if (schema != null && ! schema.equals("")) {
                 charWriter.print(schema + ".");
@@ -213,7 +215,7 @@ public class SQLTable extends BaseTable {
             cellBuffer.append(typeName);
             int width = column.getWidth();
             if (false) {
-            } else if (dataType == Types.CHAR	) {
+            } else if (dataType == Types.CHAR   ) {
                 cellBuffer.append("(" + width + ")");
             } else if (dataType == Types.VARCHAR) {
                 cellBuffer.append("(" + width + ")");
@@ -249,257 +251,257 @@ public class SQLTable extends BaseTable {
      *  <pre>
      *  );
      *  </pre>
-	 *  The individual output format may skip this method, and may output the closing bracket
-	 *	behind the primary key, or even behind all constraints.
+     *  The individual output format may skip this method, and may output the closing bracket
+     *  behind the primary key, or even behind all constraints.
      */
     public void describeColumnsEnd() {
         try {
             if (false) { // is done below in describePrimaryKey
-            	charWriter.println("\t);"); // closes CREATE TABLE
-       		}
+                charWriter.println("\t);"); // closes CREATE TABLE
+            }
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
-	} // describeColumnsEnd
-	
+    } // describeColumnsEnd
+    
     /** Writes the description of any primary key of the table, for example (for SQL):
      *  <pre>
      *  , PRIMARY KEY (COL1, COL2)
      *  );
      *  </pre>
-     *	@param tableName name of the table on which the constraint is defined
+     *  @param tableName name of the table on which the constraint is defined
      *  @param cstRows array for the result set of <em>DatabaseMetaData.getImportedKeys</em>, properly sorted
-     *	by PKNAME and KEY_SEQ,
-     *	with an additional fictitious row for the last group change
+     *  by PKNAME and KEY_SEQ,
+     *  with an additional fictitious row for the last group change
      */
     public void describePrimaryKey(String tableName, TreeMap<String, HashMap<String, String>> cstRows) {
-    	Iterator<String> citer = cstRows.keySet().iterator();
-    	String pkName = "";
-    	String pkColumnNames = null;
-    	String keySeq = "000"; // normalized to 3 digits
-    	HashMap<String, String> oldRow = new HashMap<String, String>();
-    	while (citer.hasNext()) { // process all cstRows
-    		String cstKey = citer.next();
-    		int tabPos = cstKey.indexOf("\t");
-    		String newName = cstKey.substring(0, tabPos); // ignore keySeq behind
-    		keySeq         = cstKey.substring(tabPos + 1);
-    		if (! newName.equals(pkName)) { // control change
-    			if (pkName == null || pkName.equals("PRIMARY")) {
-    				pkName = "PK29"; // replace by some dummy constraint name
-    			}
-    			if (pkName.length() > 0) { // not first control change
-		        	charWriter.println("\t, CONSTRAINT " + pkName      + " PRIMARY KEY (" + pkColumnNames + ")");
-    			} // not first
-    			pkName = newName;
-    		} // controlChange
-    		oldRow = cstRows.get(cstKey);
-    		if (keySeq.equals("001")) {
-				pkColumnNames  =        oldRow.get("COLUMN_NAME");
-			} else {
-				pkColumnNames += ", " + oldRow.get("COLUMN_NAME");
-			}
-    	} // while all rows
-       	charWriter.println("\t);"); // closes CREATE TABLE
+        Iterator<String> citer = cstRows.keySet().iterator();
+        String pkName = "";
+        String pkColumnNames = null;
+        String keySeq = "000"; // normalized to 3 digits
+        HashMap<String, String> oldRow = new HashMap<String, String>();
+        while (citer.hasNext()) { // process all cstRows
+            String cstKey = citer.next();
+            int tabPos = cstKey.indexOf("\t");
+            String newName = cstKey.substring(0, tabPos); // ignore keySeq behind
+            keySeq         = cstKey.substring(tabPos + 1);
+            if (! newName.equals(pkName)) { // control change
+                if (pkName == null || pkName.equals("PRIMARY")) {
+                    pkName = "PK29"; // replace by some dummy constraint name
+                }
+                if (pkName.length() > 0) { // not first control change
+                    charWriter.println("\t, CONSTRAINT " + pkName      + " PRIMARY KEY (" + pkColumnNames + ")");
+                } // not first
+                pkName = newName;
+            } // controlChange
+            oldRow = cstRows.get(cstKey);
+            if (keySeq.equals("001")) {
+                pkColumnNames  =        oldRow.get("COLUMN_NAME");
+            } else {
+                pkColumnNames += ", " + oldRow.get("COLUMN_NAME");
+            }
+        } // while all rows
+        charWriter.println("\t);"); // closes CREATE TABLE
     } // describePrimaryKey
             
     /** Writes the description of all indexes
      *  @param tableName fully qualified name of the table
      *  @param cstRows array for the result set of <em>DatabaseMetaData.getIndexInfo</em>, properly sorted
-     *	by INDEX_NAME and ORDINAL_POSITION,
-     *	with an additional fictitious row for the last group change
+     *  by INDEX_NAME and ORDINAL_POSITION,
+     *  with an additional fictitious row for the last group change
      */
     public void describeIndexes(String tableName, TreeMap<String, HashMap<String, String>> cstRows) {
-    	Iterator<String> citer = cstRows.keySet().iterator();
-    	String ixName = "";
-    	String ixColumnNames = null;
-	   	String keySeq = "000"; // normalized to 3 digits
-    	HashMap<String, String> oldRow = new HashMap<String, String>();
-    	while (citer.hasNext()) { // process all cstRows
-    		String cstKey 	= citer.next();
-    		int tabPos 		= cstKey.indexOf("\t");
-    		String newName 	= cstKey.substring(0, tabPos); // ignore keySeq behind
-    		keySeq         	= cstKey.substring(tabPos + 1);
-    		oldRow 			= cstRows.get(cstKey);
-    		if (! newName.equals(ixName)) { // control change
-    			String unique = oldRow.get("NON_UNIQUE");
-    			if (ixName.length() > 0) { // not first control change
-		            charWriter.println("CREATE " 
-		            		+ (unique == null ? "" : unique)
-		            		+ "INDEX " + ixName + " ON " + tableName);
-		            charWriter.println(ixColumnNames + "\t);");
-    			} // not first
-    			ixName = newName;
-    		} // controlChange
-    		if (keySeq.equals("001")) {
-				ixColumnNames   = "\t( " + oldRow.get("COLUMN_NAME");
-			} else {
-				ixColumnNames  += "\t, " + oldRow.get("COLUMN_NAME");
-			}
-			ixColumnNames += "\t" + oldRow.get("ASC_OR_DESC") + "\n"; // dir may be ""
-    	} // while all rows
+        Iterator<String> citer = cstRows.keySet().iterator();
+        String ixName = "";
+        String ixColumnNames = null;
+        String keySeq = "000"; // normalized to 3 digits
+        HashMap<String, String> oldRow = new HashMap<String, String>();
+        while (citer.hasNext()) { // process all cstRows
+            String cstKey   = citer.next();
+            int tabPos      = cstKey.indexOf("\t");
+            String newName  = cstKey.substring(0, tabPos); // ignore keySeq behind
+            keySeq          = cstKey.substring(tabPos + 1);
+            oldRow          = cstRows.get(cstKey);
+            if (! newName.equals(ixName)) { // control change
+                String unique = oldRow.get("NON_UNIQUE");
+                if (ixName.length() > 0) { // not first control change
+                    charWriter.println("CREATE " 
+                            + (unique == null ? "" : unique)
+                            + "INDEX " + ixName + " ON " + tableName);
+                    charWriter.println(ixColumnNames + "\t);");
+                } // not first
+                ixName = newName;
+            } // controlChange
+            if (keySeq.equals("001")) {
+                ixColumnNames   = "\t( " + oldRow.get("COLUMN_NAME");
+            } else {
+                ixColumnNames  += "\t, " + oldRow.get("COLUMN_NAME");
+            }
+            ixColumnNames += "\t" + oldRow.get("ASC_OR_DESC") + "\n"; // dir may be ""
+        } // while all rows
     } // describeIndexes
     
     /** Writes the descriptions of all imported (foreign) key constraints as SQL of the form
-     *	<pre>
-     *	ALTER TABLE tabname 
-     *		ADD CONSTRAINT fkname1 REFERENCES pkTableName (fkColumnName1, ...)
-     *			ON UPDATE ...
-     *	</pre>
-     *	@param tableName name of the table on which the constraint is defined
+     *  <pre>
+     *  ALTER TABLE tabname 
+     *      ADD CONSTRAINT fkname1 REFERENCES pkTableName (fkColumnName1, ...)
+     *          ON UPDATE ...
+     *  </pre>
+     *  @param tableName name of the table on which the constraint is defined
      *  @param cstRows array for the result set of <em>DatabaseMetaData.getImportedKeys</em>, properly sorted
-     *	by FKNAME and KEY_SEQ,
-     *	with an additional fictitious row for the last group change
+     *  by FKNAME and KEY_SEQ,
+     *  with an additional fictitious row for the last group change
      */
     public void describeConstraints(String tableName, TreeMap<String, HashMap<String, String>> cstRows) {
-    	Iterator<String> citer = cstRows.keySet().iterator();
-    	String fkName = "";
-    	String fkColumnNames = null;
-    	String pkColumnNames = null;
-    	String keySeq = "000"; // normalized to 3 digits
-    	HashMap<String, String> oldRow = new HashMap<String, String>();
-    	while (citer.hasNext()) { // process all cstRows
-    		String cstKey = citer.next();
-    		int tabPos = cstKey.indexOf("\t");
-    		String newName = cstKey.substring(0, tabPos); // ignore keySeq behind
-    		keySeq         = cstKey.substring(tabPos + 1);
-    		if (! newName.equals(fkName)) { // control change
-    			if (fkName.length() > 0) { // not first control change
-		            charWriter.println("ALTER TABLE "    + tableName);
-		            charWriter.println("\tADD CONSTRAINT " + fkName      + " FOREIGN KEY (" + fkColumnNames + ")");
-		            charWriter.println("\t\tREFERENCES " + oldRow.get("PKTABLE_NAME") + "(" + pkColumnNames + ")");
-		            charWriter.println("\t\tON UPDATE "  + oldRow.get("UPDATE_RULE")); // is already converted to String
-		            charWriter.println("\t\tON DELETE "  + oldRow.get("DELETE_RULE")); // is already converted to String
-	            	charWriter.println("\t;");
-    			} // not first
-    			fkName = newName;
-    		} // controlChange
-    		oldRow = cstRows.get(cstKey);
-    		if (keySeq.equals("001")) {
-				fkColumnNames  =        oldRow.get("FKCOLUMN_NAME");
-				pkColumnNames  =        oldRow.get("PKCOLUMN_NAME");
-			} else {
-				fkColumnNames += ", " + oldRow.get("FKCOLUMN_NAME");
-				pkColumnNames += ", " + oldRow.get("PKCOLUMN_NAME");
-			}
-    	} // while all rows
+        Iterator<String> citer = cstRows.keySet().iterator();
+        String fkName = "";
+        String fkColumnNames = null;
+        String pkColumnNames = null;
+        String keySeq = "000"; // normalized to 3 digits
+        HashMap<String, String> oldRow = new HashMap<String, String>();
+        while (citer.hasNext()) { // process all cstRows
+            String cstKey = citer.next();
+            int tabPos = cstKey.indexOf("\t");
+            String newName = cstKey.substring(0, tabPos); // ignore keySeq behind
+            keySeq         = cstKey.substring(tabPos + 1);
+            if (! newName.equals(fkName)) { // control change
+                if (fkName.length() > 0) { // not first control change
+                    charWriter.println("ALTER TABLE "    + tableName);
+                    charWriter.println("\tADD CONSTRAINT " + fkName      + " FOREIGN KEY (" + fkColumnNames + ")");
+                    charWriter.println("\t\tREFERENCES " + oldRow.get("PKTABLE_NAME") + "(" + pkColumnNames + ")");
+                    charWriter.println("\t\tON UPDATE "  + oldRow.get("UPDATE_RULE")); // is already converted to String
+                    charWriter.println("\t\tON DELETE "  + oldRow.get("DELETE_RULE")); // is already converted to String
+                    charWriter.println("\t;");
+                } // not first
+                fkName = newName;
+            } // controlChange
+            oldRow = cstRows.get(cstKey);
+            if (keySeq.equals("001")) {
+                fkColumnNames  =        oldRow.get("FKCOLUMN_NAME");
+                pkColumnNames  =        oldRow.get("PKCOLUMN_NAME");
+            } else {
+                fkColumnNames += ", " + oldRow.get("FKCOLUMN_NAME");
+                pkColumnNames += ", " + oldRow.get("PKCOLUMN_NAME");
+            }
+        } // while all rows
     } // describeConstraints
         
     /** Writes the description of a stored procedure
      *  @param schema             of the procedure
      *  @param procedureName name of the procedure
      *  @param procedureType type of the procedure as returned by <em>DatabaseMetaData.getProcedures</em>
-     *	@param procSeparator string between CREATE PROCEDURE, BEGIN etc.
+     *  @param procSeparator string between CREATE PROCEDURE, BEGIN etc.
      *  @param cstRows array for the result set of <em>DatabaseMetaData.getProcedureColumns</em>, properly sorted
-     *	by ORDINAL_POSITION, that is return value (if any), and parameters in call order
-     *	with an additional fictitious row for the last group change
+     *  by ORDINAL_POSITION, that is return value (if any), and parameters in call order
+     *  with an additional fictitious row for the last group change
      */
     public void describeProcedureColumns(String schema, String procedureName
-    		, short  procedureType
-    		, String procSeparator
-    		, TreeMap<String, HashMap<String, String>> cstRows) {
+            , short  procedureType
+            , String procSeparator
+            , TreeMap<String, HashMap<String, String>> cstRows) {
         charWriter.println("DROP   PROCEDURE " + procedureName + " " + procSeparator);
         charWriter.println("CREATE PROCEDURE " + procedureName                           );
 
-    	Iterator<String> citer = cstRows.keySet().iterator();
-    	int icol = 0;
-    	String keySeq = "000"; // ORDINAL_POSITION, normalized to 3 digits
-    	String value  = null;
-    	String field  = null;
-    	HashMap<String, String> oldRow = new HashMap<String, String>();
-    	while (citer.hasNext()) { // process all cstRows
-	   		String cstKey = citer.next();
-	   		oldRow = cstRows.get(cstKey);
-    		int tabPos = cstKey.indexOf("\t");
-    		String newName = cstKey.substring(0, tabPos); // ignore keySeq behind
-    		if (newName.equals(procedureName)) { // in first group
-		    	StringBuffer colBuffer = new StringBuffer(64);
-	    		if (icol <= 0) {
-					colBuffer.append("\t( ");
-				} else {
-					colBuffer.append("\t, ");
-				};
-				value = oldRow.get("COLUMN_TYPE");
-				if (value != null) {
-					colBuffer.append(value);
-					colBuffer.append("\t");
-				}
-				colBuffer.append(oldRow.get("COLUMN_NAME"));
-				colBuffer.append("\t");
+        Iterator<String> citer = cstRows.keySet().iterator();
+        int icol = 0;
+        String keySeq = "000"; // ORDINAL_POSITION, normalized to 3 digits
+        String value  = null;
+        String field  = null;
+        HashMap<String, String> oldRow = new HashMap<String, String>();
+        while (citer.hasNext()) { // process all cstRows
+            String cstKey = citer.next();
+            oldRow = cstRows.get(cstKey);
+            int tabPos = cstKey.indexOf("\t");
+            String newName = cstKey.substring(0, tabPos); // ignore keySeq behind
+            if (newName.equals(procedureName)) { // in first group
+                StringBuffer colBuffer = new StringBuffer(64);
+                if (icol <= 0) {
+                    colBuffer.append("\t( ");
+                } else {
+                    colBuffer.append("\t, ");
+                };
+                value = oldRow.get("COLUMN_TYPE");
+                if (value != null) {
+                    colBuffer.append(value);
+                    colBuffer.append("\t");
+                }
+                colBuffer.append(oldRow.get("COLUMN_NAME"));
+                colBuffer.append("\t");
 
-				value = oldRow.get("TYPE_NAME");
-				if (value != null) {
-					colBuffer.append(value);
-				}
+                value = oldRow.get("TYPE_NAME");
+                if (value != null) {
+                    colBuffer.append(value);
+                }
 
-	            int    dataType = 0;
-	            int    precision= 0;
-	            short  scale	= 0;
-	            try {
-	             	dataType = Integer.parseInt(oldRow.get("DATA_TYPE"));
-	             	precision= Integer.parseInt(oldRow.get("PRECISION"));
-	             	scale    = Short.parseShort(oldRow.get("SCALE"));
-	            } catch (Exception exc) {
-	            }
-	            switch(dataType) {
-	            	case Types.CHAR:
-		        	case Types.VARCHAR:
-		                colBuffer.append("(");
-		                colBuffer.append(String.valueOf(precision));
-	    	            colBuffer.append(")");
-	    	            break;
-	            	case Types.DECIMAL:
-		                colBuffer.append("(");
-		                colBuffer.append(String.valueOf(precision));
-	    	            if (scale != 0) {
-	        	            colBuffer.append(",");
-	            	        colBuffer.append(String.valueOf(scale));
-	                	}
-	                	colBuffer.append(")");
-	                	break;
-	            } // dataType
-	            colBuffer.append("\t");
+                int    dataType = 0;
+                int    precision= 0;
+                short  scale    = 0;
+                try {
+                    dataType = Integer.parseInt(oldRow.get("DATA_TYPE"));
+                    precision= Integer.parseInt(oldRow.get("PRECISION"));
+                    scale    = Short.parseShort(oldRow.get("SCALE"));
+                } catch (Exception exc) {
+                }
+                switch(dataType) {
+                    case Types.CHAR:
+                    case Types.VARCHAR:
+                        colBuffer.append("(");
+                        colBuffer.append(String.valueOf(precision));
+                        colBuffer.append(")");
+                        break;
+                    case Types.DECIMAL:
+                        colBuffer.append("(");
+                        colBuffer.append(String.valueOf(precision));
+                        if (scale != 0) {
+                            colBuffer.append(",");
+                            colBuffer.append(String.valueOf(scale));
+                        }
+                        colBuffer.append(")");
+                        break;
+                } // dataType
+                colBuffer.append("\t");
                 colBuffer.append(oldRow.get("NULLABLE"));
-	            String remark = oldRow.get("REMARK");
-	            if (remark != null && remark.length() > 0) {
-	                colBuffer.append("\t-- ");
-	                colBuffer.append(remark);
-	            }
-								
-				charWriter.println(colBuffer.toString());
-				icol ++;
-			} // in first group
-    	} // while all column descriptions
-       	charWriter.println("\t)");
-       	charWriter.println("\tBEGIN");
-       	charWriter.println("\tEND;");
-       	charWriter.println("\t" + procSeparator);
+                String remark = oldRow.get("REMARK");
+                if (remark != null && remark.length() > 0) {
+                    colBuffer.append("\t-- ");
+                    colBuffer.append(remark);
+                }
+                                
+                charWriter.println(colBuffer.toString());
+                icol ++;
+            } // in first group
+        } // while all column descriptions
+        charWriter.println("\t)");
+        charWriter.println("\tBEGIN");
+        charWriter.println("\tEND;");
+        charWriter.println("\t" + procSeparator);
     } // describeProcedureColumns
     
     //==========================================
     // Table elements generated for a SELECT
     //==========================================
     
-	/** Appends a string to {@link #cellBuffer}, but inserts a newline before
-	 *	if the maximum line length would be exceeded
-	 *	@param value string to be inserted
-	 */ 
-	protected void appendCell(String value) {
+    /** Appends a string to {@link #cellBuffer}, but inserts a newline before
+     *  if the maximum line length would be exceeded
+     *  @param value string to be inserted
+     */ 
+    protected void appendCell(String value) {
         try {
-			int len = value.length();
-			if (lenCell + len >= maxLen) {
-		        charWriter.println(cellBuffer.toString());
-		        cellBuffer.setLength(0);
-				lenCell = 0;
-			}
-			cellBuffer.append(value);
-			lenCell += len;
+            int len = value.length();
+            if (lenCell + len >= maxLen) {
+                charWriter.println(cellBuffer.toString());
+                cellBuffer.setLength(0);
+                lenCell = 0;
+            }
+            cellBuffer.append(value);
+            lenCell += len;
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
-	} // appendCell
-	
+    } // appendCell
+    
     /** Initializes a table - with meta data, currently only implemented in SQLTable and its subclasses.
-     *	For subclasses which do not override this method, the meta data are ignored.
+     *  For subclasses which do not override this method, the meta data are ignored.
      *  @param name name of the table
      *  @param tbMetaData meta data of the table
      */
@@ -525,19 +527,19 @@ public class SQLTable extends BaseTable {
      *  @param value time value
      */
     protected String getJDBCescape(String escapeTag, String value) {
-		return ((isJDBC ? escapeTag : "") + "\'" + value + "\'"+ (isJDBC ? "}" : ""));
+        return ((isJDBC ? escapeTag : "") + "\'" + value + "\'"+ (isJDBC ? "}" : ""));
     } // getJDBCescape
 
     /** data type of current column */
     protected int currentDataType;
     
     /** Gets the string content of a header or data cell.
-     *	The strings obtained by this method can be aggregated 
-     *	(with some separator) in order to form the contents of an aggregated column.
+     *  The strings obtained by this method can be aggregated 
+     *  (with some separator) in order to form the contents of an aggregated column.
      *  @param column attributes of this column, containing the value also
      */
     public String getContent(TableColumn column) {
-       	String value = column.getValue(); // for many formats it is simply the column's value
+        String value = column.getValue(); // for many formats it is simply the column's value
         StringBuffer result = new StringBuffer(128);
         if (value == null) {
             result.append("NULL");
@@ -570,39 +572,39 @@ public class SQLTable extends BaseTable {
     /** Writes a complete header, data or alternate data row with all tags and cell contents.
      *  @param rowType type of the generic row
      *  @param tbMetaData meta data for the table
-     *	@param columnList contains the row to be written
+     *  @param columnList contains the row to be written
      */
     public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList/*<1.5*/<TableColumn>/*1.5>*/ columnList) {
-    	int ncol = columnList.size();
-    	int icol = 0;
-    	switch (rowType) {
-    		case DATA:
-		        cellBuffer.setLength(0);
-		        lenCell = 0;
-		        appendCell("INSERT INTO "); 
-		        appendCell(tableName);
-		        appendCell(" "); 
-    			while (icol < ncol) {
-    				appendCell(icol > 0 ? "," : "(");
-     				appendCell(columnList.get(icol).getName());
-    				icol ++;
-    			} // while icol
-    			appendCell(")");
-    			charWriter.println(cellBuffer.toString());
-    			break;
-    		case DATA2:
-		        cellBuffer.setLength(0);
-		        lenCell = 0;
-		        appendCell("VALUES "); 
-    			while (icol < ncol) {
-    				appendCell(icol > 0 ? "," : "(");
-     				appendCell(getContent(columnList.get(icol)));
-    				icol ++;
-    			} // while icol
-    			appendCell(");");
-    			charWriter.println(cellBuffer.toString());
-    			break;
-    	} // switch rowType
+        int ncol = columnList.size();
+        int icol = 0;
+        switch (rowType) {
+            case DATA:
+                cellBuffer.setLength(0);
+                lenCell = 0;
+                appendCell("INSERT INTO "); 
+                appendCell(tableName);
+                appendCell(" "); 
+                while (icol < ncol) {
+                    appendCell(icol > 0 ? "," : "(");
+                    appendCell(columnList.get(icol).getName());
+                    icol ++;
+                } // while icol
+                appendCell(")");
+                charWriter.println(cellBuffer.toString());
+                break;
+            case DATA2:
+                cellBuffer.setLength(0);
+                lenCell = 0;
+                appendCell("VALUES "); 
+                while (icol < ncol) {
+                    appendCell(icol > 0 ? "," : "(");
+                    appendCell(getContent(columnList.get(icol)));
+                    icol ++;
+                } // while icol
+                appendCell(");");
+                charWriter.println(cellBuffer.toString());
+                break;
+        } // switch rowType
     } // writeGenericRow
 
 } // SQLTable

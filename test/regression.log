@@ -1,12 +1,12 @@
 Test A00 
-echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-19 13:05:10
+echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-19 20:00:21
 *** A00.prev.tst	2012-06-10 21:55:20.000000000 +0200
---- A00.this.tst	2012-06-19 13:05:11.000000000 +0200
+--- A00.this.tst	2012-06-19 20:00:22.000000000 +0200
 ***************
 *** 1 ****
 ! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2011-08-06 21:10:46
 --- 1 ----
-! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-19 13:05:10
+! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-19 20:00:21
 -- FAILED A00 
 Test A01 parameterized link
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/parmlink.xml
@@ -97,75 +97,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/callx10&iname0=row2"
 ++ passed X10 call procedure x07 into parm
 Test XS1 generate an interactive form for native SQL with INT key
 xsltproc ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud01.iv.xml
-*** XS1.prev.tst	2012-06-12 17:56:00.000000000 +0200
---- XS1.this.tst	2012-06-19 13:05:40.000000000 +0200
-***************
-*** 4 ****
-! 	Interactive view definition for test form crud01.xml, with INT key
---- 4 ----
-!     Interactive view definition for test form crud01.xml, with INT key
-***************
-*** 11 ****
---- 11 ----
-***************
-*** 25,27 ****
-! 	</ht:h3><ht:p>
-! 		You may search for relatives and update / delete / insert their data.
-! 	</ht:p>
---- 25,27 ----
-!     </ht:h3><ht:p>
-!         You may search for relatives and update / delete / insert their data.
-!     </ht:p>
-***************
-*** 123 ****
-! 	    	</ht:td></ht:tr>
---- 123 ----
-!             </ht:td></ht:tr>
-***************
-*** 162,164 ****
-! 						when gender = 'M' then 'male' 
-! 						else                   'female' end 
-! 					</db:col><db:from>relatives</db:from><db:order by="1"/>
---- 162,164 ----
-!                         when gender = 'M' then 'male' 
-!                         else                   'female' end 
-!                     </db:col><db:from>relatives</db:from><db:order by="1"/>
-***************
-*** 170 ****
-! 	    	</ht:td></ht:tr>
---- 170 ----
-!             </ht:td></ht:tr>
-***************
-*** 240,242 ****
-! 						when gender = 'M' then 'male' 
-! 						else                   'female' end 
-! 					</db:col><db:from>relatives</db:from><db:order by="1"/>
---- 240,242 ----
-!                         when gender = 'M' then 'male' 
-!                         else                   'female' end 
-!                     </db:col><db:from>relatives</db:from><db:order by="1"/>
-***************
-*** 248 ****
-! 	    	</ht:td></ht:tr>
---- 248 ----
-!             </ht:td></ht:tr>
-***************
-*** 376,379 ****
-! 				<db:col label="Min. Birth" align="center">min(birth)		</db:col>
-! 				<db:col label="Max. Birth" align="center">max(birth)		</db:col>
-! 				<db:col label="Min. Decease" align="center">min(decease)	</db:col>
-! 				<db:col label="Max. Decease" align="center">max(decease)	</db:col>
---- 376,379 ----
-! 				<db:col label="Min. Birth" align="center">min(birth)      </db:col>
-! 				<db:col label="Max. Birth" align="center">max(birth)      </db:col>
-! 				<db:col label="Min. Decease" align="center">min(decease)    </db:col>
-! 				<db:col label="Max. Decease" align="center">max(decease)    </db:col>
-***************
-*** 381 ****
-! 		</db:from>
---- 381 ----
-!         </db:from>
--- FAILED XS1 generate an interactive form for native SQL with INT key
+++ passed XS1 generate an interactive form for native SQL with INT key
 Test XS2 generate an interactive form for a stored procedure
 xsltproc ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud02.iv.xml
 ++ passed XS2 generate an interactive form for a stored procedure
@@ -343,9 +275,15 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 Test S09 echo - show SELECT SQL only
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m echo -29 c01
 ++ passed S09 echo - show SELECT SQL only
-Test E01 echo - show SELECT SQL from XML file
+Test E01 CLI echo - show SELECT SQL from XML file
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m echo -f ../web/spec/test/selec01.xml
-++ passed E01 echo - show SELECT SQL from XML file
+++ passed E01 CLI echo - show SELECT SQL from XML file
+Test E02 Web echo - show SQL WITH cte SELECT ...
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/with_cte&mode=echo"
+++ passed E02 Web echo - show SQL WITH cte SELECT ...
+Test E03 Web echo - 3 SELECTs
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/listbox&mode=echo"
+++ passed E03 Web echo - 3 SELECTs
 Test S11 Excel format
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m xls -29 c01
 ++ passed S11 Excel format
@@ -543,128 +481,36 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 ++ passed V02 initial data for DBIV tests
 Test V03 search for M
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&view=sear&search_name=M&family=Ritter&birth=&gender=M&place=&decease="
-*** V03.prev.tst	2012-06-15 08:04:20.000000000 +0200
---- V03.this.tst	2012-06-19 13:06:47.000000000 +0200
-***************
-*** 48 ****
-! <option value="F">female</option>
---- 48 ----
-! <option value="F" selected="yes">female</option>
-***************
-*** 109 ****
---- 109 ----
--- FAILED V03 search for M
+++ passed V03 search for M
 Test V04 update Maria's place
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&search_value_1=M&search_gender='&name=Maria&family=Ritter&view=upd"
 ++ passed V04 update Maria's place
 Test V05 place updated
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&view=upd2&search_name=&search_family=Ritter&name=Maria&family=Ritter&birth=1914-09-17&gender=F&place=Berlin-Hermsdorf&decease=1999&changed=current_timestamp&user=testuser"
-*** V05.prev.tst	2012-06-15 08:04:20.000000000 +0200
---- V05.this.tst	2012-06-19 13:06:47.000000000 +0200
-***************
-*** 63 ****
-! <option value="F">female</option>
---- 63 ----
-! <option value="F" selected="yes">female</option>
-***************
-*** 123 ****
---- 123 ----
--- FAILED V05 place updated
+++ passed V05 place updated
 Test V06 insert with Maria's data
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&view=ins&search_name=&family=Ritter&birth=1914-09-17&gender=F&place=Berlin-Hermsdorf&decease=1999&changed=current_timestamp&user=testuser"
 ++ passed V06 insert with Maria's data
 Test V07 Teherba inserted
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&view=ins2&search_name=&search_family=Ritter&name=Teherba&family=Ritter&birth=1886-02-04&gender=F&place=Oranienburg&decease=1968&changed=current_timestamp&user=testuser"
-*** V07.prev.tst	2012-06-15 08:04:20.000000000 +0200
---- V07.this.tst	2012-06-19 13:06:47.000000000 +0200
-***************
-*** 58 ****
-! <option value="F">female</option>
---- 58 ----
-! <option value="F" selected="yes">female</option>
-***************
-*** 119 ****
---- 119 ----
--- FAILED V07 Teherba inserted
+++ passed V07 Teherba inserted
 Test V08 delete Teherba
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&search_name=&search_family=Ritter&name=Teherba&family=Ritter&view=del"
 ++ passed V08 delete Teherba
 Test V09 Teherba deleted
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&view=del2&search_name=&search_family=Ritter&name=Teherba&family=Ritter&birth=&gender=M&place=&decease="
-*** V09.prev.tst	2012-06-15 08:04:20.000000000 +0200
---- V09.this.tst	2012-06-19 13:06:47.000000000 +0200
-***************
-*** 61 ****
-! <option value="F">female</option>
---- 61 ----
-! <option value="F" selected="yes">female</option>
-***************
-*** 122 ****
---- 122 ----
--- FAILED V09 Teherba deleted
+++ passed V09 Teherba deleted
 Test VA1 var element
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var01&name=%25"
 ++ passed VA1 var element
 Test VA2 var elements with data types
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&name=M"
-*** VA2.prev.tst	2012-06-15 08:04:42.000000000 +0200
---- VA2.this.tst	2012-06-19 13:06:47.000000000 +0200
-***************
-*** 14,17 ****
-! 	<!--Test of a <var> element with data types-->
-! 	<!--Test des <var>-Elements mit Datentypen-->
-! 			
-! 	<h2><a href="servlet?spec=test.index">Test</a> - Test of a <var> element with data types</h2>
---- 14,17 ----
-!     <!--Test of a <var> element with data types-->
-!     <!--Test des <var>-Elements mit Datentypen-->
-!             
-!     <h2><a href="servlet?spec=test.index">Test</a> - Test of a <var> element with data types</h2>
-***************
-*** 27 ****
-! 	<!-- SQL:
---- 27 ----
-!     <!-- SQL:
-***************
-*** 34,37 ****
-! WHERE name 	>=  ? 
-! 			and birth	>=  ? 
-! 			and decease	>=  ? 
-! 			and changed	>=  ? 
---- 34,37 ----
-! WHERE name    >=  ? 
-!             and birth   >=  ? 
-!             and decease >=  ? 
-!             and changed >=  ? 
-***************
-*** 47 ****
---- 47 ----
--- FAILED VA2 var elements with data types
+++ passed VA2 var elements with data types
 Test VA3 echo with var elements
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
-*** VA3.prev.tst	2012-06-15 18:50:14.000000000 +0200
---- VA3.this.tst	2012-06-19 13:06:47.000000000 +0200
-***************
-*** 8,11 ****
-! WHERE name 	>=  'A' 
-! 			and birth	>=  '1800-01-01' 
-! 			and decease	>=  1800 
-! 			and changed	>=  '1900-01-01 00:00:00' 
---- 8,11 ----
-! WHERE name    >=  'A' 
-!             and birth   >=  '1800-01-01' 
-!             and decease >=  1800 
-!             and changed >=  '1900-01-01 00:00:00' 
--- FAILED VA3 echo with var elements
+++ passed VA3 echo with var elements
 ==================
 -- FAILED A00 
--- FAILED XS1 generate an interactive form for native SQL with INT key
--- FAILED V03 search for M
--- FAILED V05 place updated
--- FAILED V07 Teherba inserted
--- FAILED V09 Teherba deleted
--- FAILED VA2 var elements with data types
--- FAILED VA3 echo with var elements
 ++ passed A01 parameterized link
 ++ passed B01 create table with BLOB
 ++ passed B02 insert statements
@@ -694,6 +540,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed X08 call procedure x07 with DECIMALs and TIME fields
 ++ passed X09 describe procedure x07
 ++ passed X10 call procedure x07 into parm
+++ passed XS1 generate an interactive form for native SQL with INT key
 ++ passed XS2 generate an interactive form for a stored procedure
 ++ passed XS3 generate an interactive form for native SQL with CHAR keys
 ++ passed XS4 generate an interactive form with AJAX subquery
@@ -753,7 +600,9 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed S07 select fixed columns with widths
 ++ passed S08 select semicolon separated
 ++ passed S09 echo - show SELECT SQL only
-++ passed E01 echo - show SELECT SQL from XML file
+++ passed E01 CLI echo - show SELECT SQL from XML file
+++ passed E02 Web echo - show SQL WITH cte SELECT ...
+++ passed E03 Web echo - 3 SELECTs
 ++ passed S11 Excel format
 ++ passed S12 select for SQL UPDATEs
 ++ passed S14 select fixed columns with width truncation
@@ -819,9 +668,15 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed TW3 Web XSLT with URL parameter overriding attribute
 ++ passed V01 create table for DBIV tests
 ++ passed V02 initial data for DBIV tests
+++ passed V03 search for M
 ++ passed V04 update Maria's place
+++ passed V05 place updated
 ++ passed V06 insert with Maria's data
+++ passed V07 Teherba inserted
 ++ passed V08 delete Teherba
+++ passed V09 Teherba deleted
 ++ passed VA1 var element
-   8 FAILED.tests
- 158 passed.tests
+++ passed VA2 var elements with data types
+++ passed VA3 echo with var elements
+   1 FAILED.tests
+ 167 passed.tests
