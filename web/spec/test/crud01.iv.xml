@@ -1,100 +1,100 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
-	Interactive view definition for test form crud01.xml, with INT key
+    Interactive view definition for test form crud01.xml, with INT key
     @(#) $Id$
     2012-05-21: with help URLs on field names
     2012-05-02, Dr. Georg Fischer
 -->
-<dbiv	xmlns   ="http://www.teherba.org/2011/dbiv"
-		xmlns:iv="http://www.teherba.org/2011/dbiv"
-		xmlns:db="http://www.teherba.org/2007/dbat"
-		xmlns:ht="http://www.w3.org/1999/xhtml"
-		encoding="UTF-8"
-		lang	="en" 
-		conn	="worddb"
-		script	="test/crud01"
-		>
-	<ht:h3><ht:a href="servlet?spec=test.index">Test</ht:a> Form - Relatives (with INT key)
-	</ht:h3>
-	<ht:p>
-		You may search for relatives and update / delete / insert their data.
-	</ht:p>
-	<view 	name="relatives" 
-			help="servlet?spec=test.iv_help&amp;NAME="
-			id  ="r"
-			>
-		<title></title>
-	    <counter desc="Person,s" />
-		
-	    <action name="ins" label="New Relative"	remark="insert" 	position="middle" link="test/crud04" />
-	    <action name="upd" label="Upd."			remark="update" 	position="result" link="test/crud04" />
-	    <action name="del" label="Del."			remark="delete" 	position="result" />
-	    <action name="dat" label="Show"			remark="details" 	position="result" />
-	    
-	    <field name="name" 		label="Name"	key="1"		init=""		type="char"			size="40"	
-	    	id="na" href="servlet?&amp;spec=test.crud03&amp;search_family=&amp;search_name="
-	    	valid="[\w\-%]*"	remark="Letters and &quot;-&quot;">
-	    	<read>family || '=' || name</read>
-	    	</field>
-	    <field name="decease"   label="Died"	key="2"		init=""		type="int"			size="4"
-			valid="\d{4}"		remark="yyyy">
-	    	</field>
-	    <field name="family"	label="Family"	key="3" 	init=""		type="char" 		size="40"	
-	    	valid="Fischer|Ritter"	>
-	    	<enumeration height="2">
-		    	<enum code="Ritter" 	lang="en" display="Ritter Family" 			>Ritter fam.</enum>
-		    	<enum code="Fischer"	lang="en" display="Fischer Family"			>Fischer fam.</enum>
-		    	<enum code="Ritter" 	lang="de" display="Familie Ritter" 			>Fam. Ritter</enum>
-		    	<enum code="Fischer"	lang="de" display="Familie Fischer"			>Fam. Fischer</enum>
-	    	</enumeration>
-	    	</field>
-	    <field name="gender"	label="Gender"				init="M"	type="char"			size="1"	
-	    	valid="M|F"			align="center"	>
-	    	<listbox height="2">
-				<select distinct="yes" into="parm">
-					<db:col name="code">gender</db:col>
-					<db:col name="display">case 
-						when gender = 'M' then 'male' 
-						else                   'female' end 
-					</db:col>
-					<db:from>relatives</db:from>
-					<db:order by="1" />
-				</select>
-	    	</listbox>
-	    	</field>
-	    <text style="wht" align="center" id="or">
-	    	<ht:a href="http://en.wiktionary.org/wiki/origin">Origin</ht:a> of the Person
-	    	</text>
-	    <field name="birth" 	label="Birthdate"						type="char"			size="10"	
-	    	valid="\d{4}\-\d{2}\-\d{2}"	remark="yyyy-mm-dd">
-	    	</field>
-	    <field name="place" 	label="Place"							type="textarea" 	size="20" rows="5" 	
-	    	href="http://de.wikipedia.org/index.php?&amp;title="
-	    	valid="\w[\w \.\-\(\)]*"	remark="Letters space . - ( )">
-	    	</field>
-	    <field name="changed"   label="Changed" 						type="timestamp"	size="19"	show="search"
-	    	style="wht"	
-	    	>
-	    	<write>current_timestamp</write>
-	    	</field>
-	    <field name="user"   	label="User"	 						type="char"			size="8"	
-	    	style="wht"	
-	    	>
-	    	<write>'<parm name="remote_user" />'</write>
-	    	</field>
-	    <where></where>
-	    <order by="1,2" />
-	</view>
-	
-	<ht:h3>Statistics</ht:h3>
-	<db:select>
-		<db:col label="Count"		 align="right">count(*)</db:col>
-		<db:col label="Min. Birth"	 align="center">min(birth)		</db:col>
-		<db:col label="Max. Birth"	 align="center">max(birth)		</db:col>
-		<db:col label="Min. Decease" align="center">min(decease)	</db:col>
-		<db:col label="Max. Decease" align="center">max(decease)	</db:col>
-		<db:from>relatives
-		</db:from>
-	</db:select>
-	
+<dbiv   xmlns   ="http://www.teherba.org/2011/dbiv"
+        xmlns:iv="http://www.teherba.org/2011/dbiv"
+        xmlns:db="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang    ="en" 
+        conn    ="worddb"
+        script  ="test/crud01"
+        >
+    <ht:h3><ht:a href="servlet?spec=test.index">Test</ht:a> Form - Relatives (with INT key)
+    </ht:h3>
+    <ht:p>
+        You may search for relatives and update / delete / insert their data.
+    </ht:p>
+    <view   name="relatives" 
+            help="servlet?spec=test.iv_help&amp;NAME="
+            id  ="r"
+            >
+        <title></title>
+        <counter desc="Person,s" />
+        
+        <action name="ins" label="New Relative" remark="insert"     position="middle" link="test/crud04" />
+        <action name="upd" label="Upd."         remark="update"     position="result" link="test/crud04" />
+        <action name="del" label="Del."         remark="delete"     position="result" />
+        <action name="dat" label="Show"         remark="details"    position="result" />
+        
+        <field name="name"      label="Name"    key="1"     init=""     type="char"         size="40"   
+            id="na" href="servlet?&amp;spec=test.crud03&amp;search_family=&amp;search_name="
+            valid="[\w\-%]*"    remark="Letters and &quot;-&quot;">
+            <read>family || '=' || name</read>
+            </field>
+        <field name="decease"   label="Died"    key="2"     init=""     type="int"          size="4"
+            valid="\d{4}"       remark="yyyy">
+            </field>
+        <field name="family"    label="Family"  key="3"     init=""     type="char"         size="40"   
+            valid="Fischer|Ritter"  >
+            <enumeration height="2">
+                <enum code="Ritter"     lang="en" display="Ritter Family"           >Ritter fam.</enum>
+                <enum code="Fischer"    lang="en" display="Fischer Family"          >Fischer fam.</enum>
+                <enum code="Ritter"     lang="de" display="Familie Ritter"          >Fam. Ritter</enum>
+                <enum code="Fischer"    lang="de" display="Familie Fischer"         >Fam. Fischer</enum>
+            </enumeration>
+            </field>
+        <field name="gender"    label="Gender"              init="M"    type="char"         size="1"    
+            valid="M|F"         align="center"  >
+            <listbox height="2">
+                <select distinct="yes" into="parm">
+                    <db:col name="code">gender</db:col>
+                    <db:col name="display">case 
+                        when gender = 'M' then 'male' 
+                        else                   'female' end 
+                    </db:col>
+                    <db:from>relatives</db:from>
+                    <db:order by="1" />
+                </select>
+            </listbox>
+            </field>
+        <text style="wht" align="center" id="or">
+            <ht:a href="http://en.wiktionary.org/wiki/origin">Origin</ht:a> of the Person
+            </text>
+        <field name="birth"     label="Birthdate"                       type="char"         size="10"   
+            valid="\d{4}\-\d{2}\-\d{2}" remark="yyyy-mm-dd">
+            </field>
+        <field name="place"     label="Place"                           type="textarea"     size="20" rows="5"  
+            href="http://de.wikipedia.org/index.php?&amp;title="
+            valid="\w[\w \.\-\(\)]*"    remark="Letters space . - ( )">
+            </field>
+        <field name="changed"   label="Changed"                         type="timestamp"    size="19"   show="search"
+            style="wht" 
+            >
+            <write>current_timestamp</write>
+            </field>
+        <field name="user"      label="User"                            type="char"         size="8"    
+            style="wht" 
+            >
+            <write>'<parm name="remote_user" />'</write>
+            </field>
+        <where></where>
+        <order by="1,2" />
+    </view>
+    
+    <ht:h3>Statistics</ht:h3>
+    <db:select>
+        <db:col label="Count"        align="right">count(*)</db:col>
+        <db:col label="Min. Birth"   align="center">min(birth)      </db:col>
+        <db:col label="Max. Birth"   align="center">max(birth)      </db:col>
+        <db:col label="Min. Decease" align="center">min(decease)    </db:col>
+        <db:col label="Max. Decease" align="center">max(decease)    </db:col>
+        <db:from>relatives
+        </db:from>
+    </db:select>
+    
 </dbiv>

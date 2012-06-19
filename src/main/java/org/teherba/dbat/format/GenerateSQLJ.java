@@ -198,11 +198,15 @@ public class GenerateSQLJ extends BaseTable {
      *  @param tbMetaData meta data for the table as far as they are already known
      *  @param sqlInstruction a SELECT, CALL, DELETE, INSERT or UPDATE statement
      *  @param action 0 = SELECT, 1 = CALL, 2 = DML instructions
-     *  @param variables triples (type, name, value) for the variables to be filled 
+     *  @param verbose 1 (0) = (not) verbose
+     *  @param variables pairs of types and values for variables to be filled 
      *  into any placeholders ("?") in the prepared statement  
      */
-    public void writeSQLInstruction(TableMetaData tbMetaData, String sqlInstruction, int action, ArrayList/*<1.5*/<String>/*1.5>*/ variables) {
+    public void writeSQLInstruction(TableMetaData tbMetaData, String sqlInstruction
+    		, int action, int verbose
+    		, ArrayList/*<1.5*/<String>/*1.5>*/ variables) {
         try {
+			sqlInstruction = sqlInstruction + " "; // because of trailing PARAMETER_MARKER
             LinkedHashMap<String, String> vars = new LinkedHashMap<String, String>();
             methodNo ++;
             String idAttr = tbMetaData.getIdentifier();
@@ -257,7 +261,7 @@ public class GenerateSQLJ extends BaseTable {
                 cursorBuffer.append("#sql iterator " + iteratorName); // 2 = types only
                 String 
                 separator = "(";
-				int
+                int
                 icol = 0;
                 while (icol < columnCount) { // #1 - print types 
                     column = tbMetaData.getColumn(icol);

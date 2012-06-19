@@ -1,5 +1,5 @@
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -h
-Dbat V7.943/2012-05-23 - DataBase Application Tool
+Dbat V8.5be5 - DataBase Application Tool
 usage:
   java -jar dbat.jar [-acdfghlnrstvx] (table | "sql" | file | - | parameter ...)
   java org.teherba.dbat.Dbat "SELECT entry, morph FROM words"
@@ -15,7 +15,7 @@ usage:
   -i  table       print INSERT statements for "SELECT * FROM table"
   -l  l1,l2,...   define output column widths (for -m fix)
   -m  mode        output mode: tsv (TAB-separated values, default),
-			csv (c.f. -s), echo, fix (c.f. -l), htm(l), jdbc, spec, sql, xls, xml
+			csv (c.f. -s), echo, fix (c.f. -l), htm(l), jdbc, json, probe, spec, sql, sqlj, taylor, trans, xls, xml
   -n  table       SELECT count(*) FROM table
   -p  name=val    optional parameter setting (repeatable)
   -r  table       insert raw ([whitespace] separated) values from STDIN into table
@@ -48,5 +48,6 @@ Implemented output formats (-m):
   gen	generate SAX events
   wiki	MediaWiki Text
   echo	Echo SQL
+  sqlj	Generate SQLJ
   probe	Probe SQL
 

@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications 
     @(#) $Id$
+    2012-06-19: if a parameter value is not found in a <listbox>, then select the first <option>
     2012-06-13: <var> for prepared statements in addition to <parm>
     2012-05-03: target="_blank" for Excel, spec
     2012-04-04: listbox
@@ -576,11 +577,23 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 String[] codeParm       = parameterMap.get(code   );
                 String[] displayParm    = parameterMap.get(display);
                 int len = (codeParm == null) ? 0 : codeParm.length;
-                int ix = 0;
+                boolean notFound = true; // whether 'value' does not occur in the array 'codeParm'
+                int 
+                ix = 0;
+                while (notFound && ix < len) {
+                    if (codeParm[ix].equals(value)) {
+                        notFound = false;
+                    }
+                    ix ++;
+                } // while ix
+                ix = 0;
                 while (ix < len) {
                     tbSerializer.writeMarkup("<option value=\"" 
                             + codeParm[ix] + "\""
-                            + (codeParm[ix].equals(value) ? " selected=\"yes\"" : "")
+                            + ( ( codeParm[ix].equals(value) || (notFound && ix == 0)) // if notFound, then select the first
+                                ? " selected=\"yes\"" 
+                                : ""
+                              )
                             + ">" + displayParm[ix] + "</option>\n");
                     ix ++;
                 } // while ix
@@ -1180,13 +1193,13 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     
             } else if (qName.equals(DELETE_TAG  )) { 
                 parentStmt = elem;
-                tbMetaData.setIdentifier            (attrs.getValue("id")           ); // pass null if feature is not desired
                 colBuffer.setLength(0);
                 sqlBuffer.setLength(0); // start a new statement
                 variables.clear();
                 sqlBuffer.append("DELETE ");
                 columnNo = 0;
                 initializeAction();
+                tbMetaData.setIdentifier            (attrs.getValue("id")           ); // pass null if feature is not desired
                 currentNameSpace = config.DBAT_URI; // leave HTML, enter specification syntax
     
             } else if (qName.equals(DESCRIBE_TAG)) { 
@@ -1242,13 +1255,13 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     
             } else if (qName.equals(INSERT_TAG  )) { 
                 parentStmt = elem;
-                tbMetaData.setIdentifier            (attrs.getValue("id")           ); // pass null if feature is not desired
                 colBuffer.setLength(0);
                 sqlBuffer.setLength(0); // start a new statement
                 variables.clear();
                 sqlBuffer.append("INSERT ");
                 columnNo = 0;
                 initializeAction();
+                tbMetaData.setIdentifier            (attrs.getValue("id")           ); // pass null if feature is not desired
                 currentNameSpace = config.DBAT_URI; // leave HTML, enter specification syntax
     
             } else if (qName.equals(INTO_TAG    )) { 
@@ -1433,12 +1446,12 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     
             } else if (qName.equals(UPDATE_TAG  )) { 
                 parentStmt = elem;
-                tbMetaData.setIdentifier            (attrs.getValue("id")           ); // pass null if feature is not desired
                 sqlBuffer.setLength(0);
                 variables.clear();
                 sqlBuffer.append("UPDATE ");
                 columnNo = 0;
                 initializeAction();
+                tbMetaData.setIdentifier            (attrs.getValue("id")           ); // pass null if feature is not desired
                 currentNameSpace = config.DBAT_URI; // leave HTML, enter specification syntax
     
             } else if (qName.equals(VALUES_TAG  )) { 

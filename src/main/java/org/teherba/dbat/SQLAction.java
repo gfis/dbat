@@ -1534,7 +1534,6 @@ public class SQLAction implements Serializable {
         int result = 0;
         PreparedStatement statement = null;
         try {
-            sqlInstruction = sqlInstruction + " "; // because of trailing PARAMETER_MARKER
             if (sqlInstruction.length() > 0) { // statement non-empty
                 if (con == null) { // not yet set
                     con = config.openConnection();          
@@ -1549,7 +1548,7 @@ public class SQLAction implements Serializable {
                         setPlaceholders(statement, variables); // set the values of all placeholders
                     } // set placeholders
                     statement.setQueryTimeout(120);
-                    tbSerializer.writeSQLInstruction(tbMetaData, sqlInstruction, 0, variables); 
+                    tbSerializer.writeSQLInstruction(tbMetaData, sqlInstruction, 0, config.getVerbose(), variables); 
                     ResultSet stResults = statement.executeQuery();
                     serializeQueryResults(tbMetaData, sqlInstruction, stResults);
                     stResults.close();
@@ -1576,7 +1575,7 @@ public class SQLAction implements Serializable {
                     if (variables.size() > 0) {
                         setPlaceholders(statement, variables); // set the values of all placeholders
                     } // set placeholders
-                    tbSerializer.writeSQLInstruction(tbMetaData, sqlInstruction, 2, variables); 
+                    tbSerializer.writeSQLInstruction(tbMetaData, sqlInstruction, 2, config.getVerbose(), variables); 
                     updateCount = statement.executeUpdate();
                     if (parameterMap != null) {
                         parameterMap.put(config.UPDATE_COUNT, new String[] { String.valueOf(updateCount) });

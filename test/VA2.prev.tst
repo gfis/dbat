@@ -11,10 +11,10 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&name=M"
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
 </head><body>
 
-	<!--Test of a <var> element with data types-->
-	<!--Test des <var>-Elements mit Datentypen-->
-			
-	<h2><a href="servlet?spec=test.index">Test</a> - Test of a <var> element with data types</h2>
+    <!--Test of a <var> element with data types-->
+    <!--Test des <var>-Elements mit Datentypen-->
+            
+    <h2><a href="servlet?spec=test.index">Test</a> - Test of a <var> element with data types</h2>
     <form method="get" action="servlet?spec=test/var02"><input name="spec" type="hidden" value="test/var02" />
 
         Name: <input name="name" maxsize="20" size="10" init="A" value="M"></input><br />
@@ -24,17 +24,17 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&name=M"
         <input type="submit" value="Submit"></input>
     </form>
 
-	<!-- SQL:
+    <!-- SQL:
 SELECT name
 , family
 , gender
 , birth
 , decease 
 FROM relatives 
-WHERE name 	>=  ? 
-			and birth	>=  ? 
-			and decease	>=  ? 
-			and changed	>=  ? 
+WHERE name    >=  ? 
+            and birth   >=  ? 
+            and decease >=  ? 
+            and changed >=  ? 
 ORDER BY 1;
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
@@ -44,7 +44,7 @@ ORDER BY 1;
 <tr><td>Teherba</td><td>Ritter</td><td align="center">F</td><td>1886-02-04</td><td>1968</td></tr>
 </table>
 
-<br />Output on 2012-06-15 08:04:42.898 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/var02.xml" type="text/plain">test/var02</a>,
+<br />Output on 2012-06-19 13:07:45.457 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/var02.xml" type="text/plain">test/var02</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.var02&amp;birth=1800-01-01&amp;name=M&amp;decease=1800&amp;lang=en&amp;changed=1900-01-01+00%3A00%3A00">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.var02&amp;birth=1800-01-01&amp;name=M&amp;decease=1800&amp;lang=en&amp;changed=1900-01-01+00%3A00%3A00">more</a>
 

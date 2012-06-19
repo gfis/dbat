@@ -50,11 +50,14 @@ public class EchoSQL extends BaseTable {
      *  @param tbMetaData meta data for the table as far as they are already known
      *  @param sqlInstruction a SELECT, CALL, DELETE, INSERT or UPDATE statement
      *  @param action 0 = SELECT, 1 = CALL, 2 = DML instructions
-     *  @param variables triples (type, name, value) for the variables to be filled 
-     *  into any placeholders ("?") in the prepared statement  
+     *  @param verbose 1 (0) = (not) verbose
+     *  @param variables pairs of types and values for variables to be filled 
      *  into any placeholders ("?") in the prepared statement  
      */
-    public void writeSQLInstruction(TableMetaData tbMetaData, String sqlInstruction, int action, ArrayList/*<1.5*/<String>/*1.5>*/ variables) {
+    public void writeSQLInstruction(TableMetaData tbMetaData, String sqlInstruction
+    		, int action, int verbose
+    		, ArrayList/*<1.5*/<String>/*1.5>*/ variables) {
+		sqlInstruction = sqlInstruction + " "; // because of trailing PARAMETER_MARKER
         String separator = ";";
         try {
             int len = sqlInstruction.length();
@@ -105,7 +108,7 @@ public class EchoSQL extends BaseTable {
             } else { // no placeholders
                 buffer.append(sqlInstruction);
             }
-            charWriter.print(buffer.toString());
+            charWriter.print(buffer.toString().trim());
             charWriter.println(separator);
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);

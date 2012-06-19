@@ -50,7 +50,7 @@ WHERE name = 'Teherba'
 
 
 
-<br />Output on 2012-06-15 08:04:20.211 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/crud03.xml" type="text/plain">test/crud03</a>,
+<br />Output on 2012-06-19 13:08:46.374 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/crud03.xml" type="text/plain">test/crud03</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;lang=en&amp;search_family=Ritter&amp;family=Ritter&amp;name=Teherba&amp;gender=M&amp;decease=&amp;place=&amp;user=&amp;search_gender=M">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;lang=en&amp;search_family=Ritter&amp;family=Ritter&amp;name=Teherba&amp;gender=M&amp;decease=&amp;place=&amp;user=&amp;search_gender=M">more</a>
 

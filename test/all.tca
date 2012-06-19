@@ -219,7 +219,10 @@ XSLT ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud02.iv.xml
 TEST XS3 generate an interactive form for native SQL with CHAR keys
 XSLT ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud03.iv.xml
 
-TEST XS4 generate a non-altering search form
+TEST XS4 generate an interactive form with AJAX subquery
+XSLT ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud04.iv.xml
+
+TEST XS5 generate a non-altering search form
 XSLT --stringparam alter 0 ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud01.iv.xml
 #-------------------
 TEST L01 List Box and List Parameters - init values
