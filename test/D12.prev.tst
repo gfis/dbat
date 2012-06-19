@@ -15,7 +15,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=describe"
 	<!--Gibt die DDL-Beschreibung einer Tabelle oder View aus-->
 	<!--Shows the DDL Description of a Table or View-->
 
-    <h2>DDL of Table/View(s) <em>''%</em></h2>
+    <h2>DDL of Table/View(s) <em>%</em></h2>
 	<form method="get" action="servlet?spec=describe"><input name="spec" type="hidden" value="describe" />
 
 		Name: <input name="table" maxsize="64" size="32" init="spec_ind" value="spec_ind"></input>%    
@@ -36,7 +36,7 @@ CREATE TABLE spec_index
 COMMIT;
 </pre></td></tr></table>
 
-<br />Output on 2012-05-07 18:37:48.249 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/describe.xml" type="text/plain">describe</a>,
+<br />Output on 2012-06-19 22:11:51 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/describe.xml" type="text/plain">describe</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=describe&amp;table=spec_ind&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=describe&amp;table=spec_ind&amp;lang=en">more</a>
 

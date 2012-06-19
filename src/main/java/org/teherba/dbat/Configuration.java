@@ -1,6 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$
- *  2012-06-16: manner = JDBC or SQLJ
+ *  2012-06-19: manner = JDBC or SQLJ; for DB2: TRANSACTION_READ_UNCOMMITTED
  *  2012-06-12: Javadoc cleaned for github
  *  2012-03-12: DBAN_URI; works for Geronimo, WASCE
  *  2012-01-31: BasicDataSource no longer used
@@ -38,7 +38,7 @@ import  java.util.Iterator;
 import  java.util.Map;
 import  java.util.Properties;
 import  javax.sql.DataSource;
-// import  org.apache.tomcat.dbcp.dbcp.BasicDataSource; 
+// import  org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import  org.apache.log4j.Logger;
 
 /** This bean encapsulates the JDBC database connection, its properties
@@ -53,7 +53,7 @@ public class Configuration implements Serializable {
     //========================
     // Constants
     //========================
-        
+
     /** Namespace URI of old Dbat specifications */
     public static final String DBAT_URI = "http://www.teherba.org/2007/dbat";
     /** Namespace URI of new Dbat specifications */
@@ -66,7 +66,7 @@ public class Configuration implements Serializable {
     public static final String REMOTE_USER = "remote_user";
     /** Name of the pseudo variable parameter for SQL state */
     public static final String SQL_STATE = "sql_state";
-    
+
     //============================================
     // Bean properties, getters and setters
     // Some are overrideable in SQLProcessor.java
@@ -74,7 +74,7 @@ public class Configuration implements Serializable {
 
     /** whether the connection {@link #con} is automatically committed */
     private boolean autoCommit;
-    /** Gets the commit behaviour of connections 
+    /** Gets the commit behaviour of connections
      *  @return whether connections are automatically committed
      */
     public boolean hasAutoCommit() {
@@ -89,7 +89,7 @@ public class Configuration implements Serializable {
 
     /** Opened connection to some database */
     private Connection con;
-    /** Eventually open the connection and return it 
+    /** Eventually open the connection and return it
      *  @return open database connection
      */
     public Connection getConnection() {
@@ -98,32 +98,32 @@ public class Configuration implements Serializable {
         }
         return con;
     } // getConnection
-    
+
     /** Short identifier of the connection to some database */
     private String connectionId;
-    /** Gets the connection id 
+    /** Gets the connection id
      *  @return a short identifier for a database connection
      */
     public String getConnectionId() {
         return this.connectionId;
     } // getConnectionId
-    /** Sets the connection id 
+    /** Sets the connection id
      *  @param connectionId short identifier for a database connection
      */
     public void setConnectionId(String connectionId) {
         this.connectionId = connectionId;
     } // setConnectionId
-    
+
     /** Schema which is used when none is specified with the table's name */
     private String  defaultSchema;
-    /** Gets the default schema 
-     *  @return schema which is used when none is specified with the table's name 
+    /** Gets the default schema
+     *  @return schema which is used when none is specified with the table's name
      */
     public String getDefaultSchema() {
         return this.defaultSchema;
     } // getDefaultSchema
-    /** Sets the default schema 
-     *  @param schema schema which is used when none is specified with the table's name 
+    /** Sets the default schema
+     *  @param schema schema which is used when none is specified with the table's name
      */
     public void setDefaultSchema(String schema) {
         this.defaultSchema = schema;
@@ -131,13 +131,13 @@ public class Configuration implements Serializable {
 
     /** URL of the JDBC driver */
     private String  driverURL;
-    /** Gets the JDBC driver's URL 
+    /** Gets the JDBC driver's URL
      *  @return an URN which identifies the JDBC driver
      */
     public String getDriverURL() {
         return this.driverURL;
     } // getDriverURL
-    /** Sets the JDBC driver's URL 
+    /** Sets the JDBC driver's URL
      *  @param urn a URN which identifies the JDBC driver
      */
     public void setDriverURL(String urn) {
@@ -194,9 +194,9 @@ public class Configuration implements Serializable {
     public void setGenerator(BaseTransformer generator) {
         this.generator = generator;
     } // setGenerator
-    
+
     /** MIME type for HTML output (constant per application) */
-    private String htmlMimeType; 
+    private String htmlMimeType;
     /** Gets the MIME type to be returned for HTML target format
      */
     public String getHtmlMimeType() {
@@ -217,7 +217,7 @@ public class Configuration implements Serializable {
     public void setInputURI(String uri) {
         inputURI = uri;
     } // setInputURI
-        
+
     /** Language to be used for footer and messages */
     private String language;
     /** Gets the language (for messages)
@@ -240,15 +240,15 @@ public class Configuration implements Serializable {
     /** when processing SQL by Stored Procedures */
     public static final int STP_MANNER  = 2;
     /** Remembers the manner of SQL processing */
-    private int manner; 
+    private int manner;
     /** Gets the manner of SQL processing
-     *  @return manner  
+     *  @return manner
      */
     public int getManner() {
         return this.manner;
     } // getManner
     /** Sets the manner of SQL processing
-     *  @param manner 
+     *  @param manner
      */
     public void setManner(int manner) {
         this.manner = manner;
@@ -256,14 +256,14 @@ public class Configuration implements Serializable {
 
     /** Namespace prefix (for XML output) */
     private String  namespacePrefix;
-    /** Gets the namespace prefix 
-     *  @return short (lowercase) prefix as defined by xmlns pseudo attribute 
+    /** Gets the namespace prefix
+     *  @return short (lowercase) prefix as defined by xmlns pseudo attribute
      */
     public String getNamespacePrefix() {
         return this.namespacePrefix;
     } // getNamespacePrefix
-    /** Sets the namespace prefix 
-     *  @param namespacePrefix short (lowercase) prefix as defined by xmlns pseudo attribute 
+    /** Sets the namespace prefix
+     *  @param namespacePrefix short (lowercase) prefix as defined by xmlns pseudo attribute
      */
     public void setNamespacePrefix(String namespacePrefix) {
         this.namespacePrefix = namespacePrefix;
@@ -290,7 +290,7 @@ public class Configuration implements Serializable {
      */
     private HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap;
     /** Gets the parameter (placeholder) map
-     *  @return the locally stored parameter map 
+     *  @return the locally stored parameter map
      */
     public HashMap/*<1.5*/<String, String[]>/*1.5>*/ getParameterMap() {
         return parameterMap;
@@ -339,7 +339,7 @@ public class Configuration implements Serializable {
     public static final int JAVADB  = 5;
     /** the underlying database system, derived from the JDBC driver's URL */
     private int rdbmsId;
-    /** Sets the underlying database system 
+    /** Sets the underlying database system
      *  @param driverURL identifies the DB system
      */
     public void setRdbmsId(String driverURL) {
@@ -363,7 +363,7 @@ public class Configuration implements Serializable {
     public int getRdbmsId() {
         return rdbmsId;
     } // getRdbmsId
-    
+
     /** input/output format separator for tsv, csv modes */
     private String  separator;
     /** Gets the input/output format separator (for csv, tsv)
@@ -417,23 +417,23 @@ public class Configuration implements Serializable {
     public boolean hasTrimVarchar() {
         return trimVarchar;
     } // hasTrimVarchar
-    /** Sets the trimming behaviour 
+    /** Sets the trimming behaviour
      *  @param trimming whether to trim varchars on both sides) for input and output
      */
     public void setTrimVarchar(boolean trimming) {
         this.trimVarchar = trimming;
     } // setTrimVarchar
-    
+
     /** whether to print verbose messages: 0 = none, 1 = some, 2 = many */
     private int verbose;
     /** Sets the level of verbose output
-     *  @param verbose how many messages should be output: 0 = none, 1 = some, 2 = many 
+     *  @param verbose how many messages should be output: 0 = none, 1 = some, 2 = many
      */
     public void setVerbose(int verbose) {
         this.verbose = verbose;
     } // setVerbose
     /** Gets the level of verbose output
-     *  @return how many messages should be output: 0 = none, 1 = some, 2 = many 
+     *  @return how many messages should be output: 0 = none, 1 = some, 2 = many
      */
     public int getVerbose() {
         return this.verbose;
@@ -453,13 +453,13 @@ public class Configuration implements Serializable {
 
     /** whether to print header and trailer */
     private boolean withHeaders;
-    /** Tells whether to output table header rows 
+    /** Tells whether to output table header rows
      *  @return false if no table header rows should be written (default: true)
      */
     public boolean isWithHeaders() {
         return withHeaders;
     } // isWithHeaders
-    /** Defines whether to output table header rows 
+    /** Defines whether to output table header rows
      *  @param withHeaders false if no table header rows should be written  (default: true)
      */
     public void setWithHeaders(boolean withHeaders) {
@@ -490,13 +490,13 @@ public class Configuration implements Serializable {
     /** when called from the commandline - use BasicDataSource */
     // public static final int DSO_CALL  = 3;
     /** Remembers the type of activation (one of the xxx_CALL constants) */
-    private int callType; 
+    private int callType;
 
     /** Maps connection identifiers (short database instance ids) to {@link DataSource Datasources} */
     private HashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap;
 
     //================================
-    // Constructor and initialization 
+    // Constructor and initialization
     //================================
 
     /** No-args Constructor
@@ -545,18 +545,18 @@ public class Configuration implements Serializable {
 
     /** Initializes the class for the 1st (or 2nd, 3rd etc) call.
      *  @param callType whether the class is activated by CLI, WEB or SOAP
-     *  @param dsMap maps connection ids to pre-initialized DataSources, 
+     *  @param dsMap maps connection ids to pre-initialized DataSources,
      *  see {@link DbatServlet} and {@link DBCPoolingListener}.
      */
     public void configure(int callType, HashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap) {
         configure(callType);
         this.dsMap = dsMap;
     } // configure(callType, dsMap)
-    
+
     //========================
-    // Auxiliary methods 
+    // Auxiliary methods
     //========================
-    
+
     /** Evaluates some non-JDBC properties and remembers them in local variables.
      */
     public void evaluateProperties() {
@@ -639,13 +639,12 @@ public class Configuration implements Serializable {
         Connection result = null;
         DataSource ds = null;
         if (false) {
-        } else if (callType == WEB_CALL && dsMap != null) { // assume that dsMap was prefilled by DBCPoolingListener
+        } else if (callType == WEB_CALL && dsMap != null) { // assume that dsMap was prefilled by web container
             try {
                 ds = dsMap.get(connectionId);
                 if (ds != null) { // known connection id
                     result = ds.getConnection();
-                    result.setAutoCommit(autoCommit);
-                } else { 
+                } else {
                     log.error("connection id " + connectionId + " is not known");
                 }
             } catch (Exception exc) {
@@ -681,48 +680,36 @@ public class Configuration implements Serializable {
             if (driverURL != null) {
                 driverURL = driverURL.trim();
             }
-        
-            if (false) {
-        /*
-            } else if (callType == DSO_CALL) {
-                BasicDataSource bds = new BasicDataSource();
-                bds.setDriverClassName  (driver     );
-                bds.setPassword         (password   );
-                bds.setUrl              (driverURL  );
-                bds.setUsername         (user       );
-                bds.setInitialSize      (1); // no real pooling
-                ds = (DataSource) bds;
-                try {
-                    result = ds.getConnection();
-                    result.setAutoCommit(autoCommit);
-                } catch (Exception exc) {
-                    log.error("Dbat.openConnection, DSO_CALL failed: " + exc.getMessage(), exc);
-                    // wasCommitted = true; // avoid a final COMMIT
-                    throw new IllegalArgumentException(exc);
-                }
-                // DSO_CALL
-        */
-            } else { // CLI_CALL or SOAP_CALL
-                try {
-                    Class.forName(driver).newInstance();
-                    result = DriverManager.getConnection(driverURL, user, password);
-                    result.setAutoCommit(autoCommit);
-                } catch (Exception exc) {
-                    log.error("Dbat.openConnection"
-                            + "(user=\""        + user
-                            + "\",driver=\""    + driver
-                            + "\",url=\""       + driverURL
-                            + "\"): " + exc.getMessage()); // , exc);
-                    // wasCommitted = true; // avoid a final COMMIT
-                    throw new IllegalArgumentException(exc);
-                    // System.exit(1); // terminate immediately
-                }
+
+            try {
+                Class.forName(driver).newInstance();
+                result = DriverManager.getConnection(driverURL, user, password);
+            } catch (Exception exc) {
+                log.error("Dbat.openConnection"
+                        + "(user=\""        + user
+                        + "\",driver=\""    + driver
+                        + "\",url=\""       + driverURL
+                        + "\"): " + exc.getMessage()); // , exc);
+                // wasCommitted = true; // avoid a final COMMIT
+                throw new IllegalArgumentException(exc);
+                // System.exit(1); // terminate immediately
             }
         } // switch callType
+        if (result != null) {
+            try {
+                result.setAutoCommit(autoCommit);
+                if (getRdbmsId() == DB2) {
+                    result.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+                }
+            } catch (Exception exc) {
+                log.error(exc.getMessage(), exc);
+                throw new IllegalArgumentException(exc);
+            }
+        }
         return result;
     } // openConnection
 
-    /** Closes the built-in (local) database connection, 
+    /** Closes the built-in (local) database connection,
      *  also if there are previous exceptions
      *  @param parmCon connection to be closed
      */
@@ -730,7 +717,7 @@ public class Configuration implements Serializable {
         con = parmCon;
         closeConnection();
     } // closeConnection()
-    
+
     /** Closes the database connection, also if there are previous exceptions
      */
     public  void closeConnection() {
@@ -750,7 +737,7 @@ public class Configuration implements Serializable {
                 con = null;
             } catch (Exception exc2) { // could not rollback
                 log.error(exc2.getMessage(), exc2);
-                if (con != null) { 
+                if (con != null) {
                     try {
                         con.close();
                     } catch (Exception exc3) {
@@ -766,7 +753,7 @@ public class Configuration implements Serializable {
     //====================
     // Main method (Test)
     //====================
-    
+
     /** Test driver -
      *  call it with -h to display possible options and arguments.
      *  The result is printed to STDOUT.

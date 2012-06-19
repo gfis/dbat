@@ -62,12 +62,12 @@ import  java.util.ArrayList;
 import  java.util.HashMap;
 import  java.util.TreeMap;
 import  com.ibm.db2.jcc.DB2Diagnosable;
-import  com.ibm.db2.jcc.DB2Sqlca; 
+import  com.ibm.db2.jcc.DB2Sqlca;
 import  org.apache.log4j.Logger;
 
 /** This class contains properties and methods closely related to the
  *  JDBC database access layer. Preparation and execution of SQL statements
- *  and the retrieval of result sets is done here, together with 
+ *  and the retrieval of result sets is done here, together with
  *  description generation from metadata.
  *  @author Dr. Georg Fischer
  */
@@ -77,9 +77,9 @@ public class SQLAction implements Serializable {
     private Logger log;
     /** Debugging switch */
     private int debug = 0;
-    
+
     //========================
-    // (almost) Constants 
+    // (almost) Constants
     //========================
 
     /** ISO calendar date format */
@@ -91,7 +91,7 @@ public class SQLAction implements Serializable {
 
     /** whether to use batch INSERTs */
     private boolean batchInsert;
-    
+
     //==========================================
     // Bean properties, getters and setters
     // Some are repeated from Configuration.java,
@@ -115,7 +115,7 @@ public class SQLAction implements Serializable {
 
     /** JDBC configuration with connection, user defineable properties and serializer */
     private Configuration config;
-    /** Sets the configuration. 
+    /** Sets the configuration.
      *  The configuration contains the database connection, user defineable properties and the table serializer.
      *  @param config configuration
      */
@@ -140,34 +140,34 @@ public class SQLAction implements Serializable {
 
     /** number of SQL instructions executed in this action */
     private int instructionSum;
-    /** Gets the number of instructions executed in this action 
+    /** Gets the number of instructions executed in this action
      *  @return number of SQL instructions
      */
     public int getInstructionSum() {
         return  this.instructionSum;
     } // getInstructionSum
-    /** Sets the number of instructions executed in this action 
+    /** Sets the number of instructions executed in this action
      *  @param instructionSum number of SQL instructions
     */
     private void setInstructionSum(int instructionSum) {
         this.instructionSum = instructionSum;
     } // getInstructionSum
-    
+
     /** number of rows affected by a DML statement (UPDATE/INSERT/DELETE) */
     private int manipulatedSum;
-    /** Gets the number of rows affected by this action 
+    /** Gets the number of rows affected by this action
      *  @return number of rows
      */
     public int getManipulatedSum() {
         return  this.manipulatedSum;
     } // getManipulatedSum
-    /** Sets the number of rows affected by this action 
+    /** Sets the number of rows affected by this action
      *  @param manipulatedSum number of rows
     */
     private void setManipulatedSum(int manipulatedSum) {
         this.manipulatedSum = manipulatedSum;
     } // setManipulatedSum
-    
+
     /** Rule how to escape a value, from {@link BaseTable}.
      *  The following escaping rules are currently observed:
      *  <ul>
@@ -185,21 +185,21 @@ public class SQLAction implements Serializable {
 
     /** whether to print header and trailer */
     private boolean withHeaders;
-    /** Tells whether to output table header rows 
+    /** Tells whether to output table header rows
      *  @return false if no table header rows should be written (default: true)
      */
     public boolean isWithHeaders() {
         return withHeaders;
     } // isWithHeaders
-    /** Defines whether to output table header rows 
+    /** Defines whether to output table header rows
      *  @param withHeaders false if no table header rows should be written  (default: true)
      */
     public void setWithHeaders(boolean withHeaders) {
         this.withHeaders = withHeaders;
     } // setWithHeaders
-    
+
     //===================================================
-    // Constructor, class initialization and finalization 
+    // Constructor, class initialization and finalization
     //===================================================
 
     /** No-args Constructor
@@ -209,7 +209,7 @@ public class SQLAction implements Serializable {
         batchInsert         = false;        // -b
     } // Constructor
 
-    /** Constructor from configuration 
+    /** Constructor from configuration
      *  @param config overall configuration of a session
      */
     public SQLAction(Configuration config) {
@@ -219,7 +219,7 @@ public class SQLAction implements Serializable {
         setWithHeaders(config.isWithHeaders());
     } // Constructor
 
-    /** Terminates the processing of SQL statements, 
+    /** Terminates the processing of SQL statements,
      *  clean-up for the next invocation
      */
     public void terminate() {
@@ -228,12 +228,12 @@ public class SQLAction implements Serializable {
         }
         config.closeConnection();
     } // terminate
-    
+
     //========================================
     // Auxilliary methods, for LOBs and other
     //========================================
-    
-    /** Fetches the character content of a Clob (SQL Character Large OBject, LONG VARCHAR) column 
+
+    /** Fetches the character content of a Clob (SQL Character Large OBject, LONG VARCHAR) column
      *  and writes it somewhere with a Writer.
      *  @param writer where to write the character content
      *  @param clob CLBO to be fetched
@@ -245,7 +245,7 @@ public class SQLAction implements Serializable {
         try {
             Reader reader = clob.getCharacterStream();
             while ((len = reader.read(chunk, 0, chunkLen)) > 0) {
-                writer.write(chunk, 0, len); 
+                writer.write(chunk, 0, len);
             } // while substrings
             clob.free();
         } catch (Exception exc) {
@@ -254,8 +254,8 @@ public class SQLAction implements Serializable {
         }
     } // fetchClob
 
-    /** Reads character content with a Reader 
-     *  and store it into a Clob (SQL Character Large OBject, LONG VARCHAR) column 
+    /** Reads character content with a Reader
+     *  and store it into a Clob (SQL Character Large OBject, LONG VARCHAR) column
      *  @param reader from where to read the character content
      *  @param clob store into this Clob
      */
@@ -276,7 +276,7 @@ public class SQLAction implements Serializable {
         }
     } // storeClob
 
-    /** Fetches the byte content of a Blob (SQL Binary Large OBject) column, 
+    /** Fetches the byte content of a Blob (SQL Binary Large OBject) column,
      *  and writes it to an OutputStream
      *  @param outputStream where to write the byte content
      *  @param blob fetch the content of this column
@@ -297,9 +297,9 @@ public class SQLAction implements Serializable {
             printSQLError(exc);
         }
     } // fetchBlob
-    
-    /** Reads character content with a Reader 
-     *  and store it into a Blob (SQL Binary Large OBject, LONG VARBINARY) column 
+
+    /** Reads character content with a Reader
+     *  and store it into a Blob (SQL Binary Large OBject, LONG VARBINARY) column
      *  @param inputStream from where to read the byte content
      *  @param blob store the content into this column
      */
@@ -319,7 +319,7 @@ public class SQLAction implements Serializable {
             printSQLError(exc);
         }
     } // storeBlob
-    
+
     /** Escapes single quotes (duplicates them) in a value read from the
      *  input file or table column
      *  @param value raw value to be escaped
@@ -333,12 +333,12 @@ public class SQLAction implements Serializable {
             result.append(value.substring(qpos1, qpos2 + 1)); // including the quote
             result.append('\''); // the 2nd quote
             qpos1 = qpos2 + 1; // behind the current quote
-            qpos2 = value.indexOf('\'', qpos1); 
+            qpos2 = value.indexOf('\'', qpos1);
         } // while single quotes
         result.append(value.substring(qpos1));
         return result.toString();
     } // escapeSQLValue
-    
+
     /** Converts the codes for UPDATE_RULE and DELETE_RULE to strings
      *  @param ruleCode = results.getShort("UPDATE_RULE"    );
      *  @return SQL keyword(s) for "ON UPDATE|DELETE"
@@ -368,28 +368,28 @@ public class SQLAction implements Serializable {
 
     /** Processes a DB2 specific SQLException
      *  @param sqle SQLException to be processed
-     */ 
-    public void printSQLError(Exception sqle) { 
+     */
+    public void printSQLError(Exception sqle) {
         while (sqle != null && (sqle instanceof SQLException)) { // Check whether there are more SQLExceptions to process
             if (sqle instanceof DB2Diagnosable) { // Check if DB2-only information exists
                 DB2Diagnosable diagnosable = (DB2Diagnosable) sqle;
-                // diagnosable.printTrace(printWriter, ""); 
+                // diagnosable.printTrace(printWriter, "");
                 Throwable throwable = diagnosable.getThrowable();
                 if (throwable != null) {
-                    // Extract java.lang.Throwable information 
+                    // Extract java.lang.Throwable information
                     // such as message or stack trace.
                 } // process Throwable
-                DB2Sqlca sqlca = diagnosable.getSqlca(); 
+                DB2Sqlca sqlca = diagnosable.getSqlca();
                 try  {
-                    if (sqlca != null) { 
-                        int sqlCode         = sqlca.getSqlCode(); 
-                        String sqlErrmc     = sqlca.getSqlErrmc();                 
+                    if (sqlca != null) {
+                        int sqlCode         = sqlca.getSqlCode();
+                        String sqlErrmc     = sqlca.getSqlErrmc();
                         String[] sqlErrmcTokens = sqlca.getSqlErrmcTokens();
-                        String sqlErrp      = sqlca.getSqlErrp();                   
-                        int[] sqlErrd       = sqlca.getSqlErrd();                    
-                        char[] sqlWarn      = sqlca.getSqlWarn();                   
-                        String sqlState     = sqlca.getSqlState();                 
-                        String errMessage   = sqlca.getMessage();                 
+                        String sqlErrp      = sqlca.getSqlErrp();
+                        int[] sqlErrd       = sqlca.getSqlErrd();
+                        char[] sqlWarn      = sqlca.getSqlWarn();
+                        String sqlState     = sqlca.getSqlState();
+                        String errMessage   = sqlca.getMessage();
                         System.err.println ("Server error message: " + errMessage);
                         System.err.println ("--------------- SQLCA ---------------");
                         System.err.println ("Error code: " + sqlCode);
@@ -397,7 +397,7 @@ public class SQLAction implements Serializable {
                         for (int i = 0; i < sqlErrmcTokens.length; i ++) {
                             System.err.println ("  token " + i + ": " + sqlErrmcTokens[i]);
                         }
-                        
+
                         System.err.println ( "SQLERRP: " + sqlErrp );
                         System.err.println (
                           "SQLERRD(1): " + sqlErrd[0] + "\n" +
@@ -412,7 +412,7 @@ public class SQLAction implements Serializable {
                           "SQLWARN3: " + sqlWarn[2] + "\n" +
                           "SQLWARN4: " + sqlWarn[3] + "\n" +
                           "SQLWARN5: " + sqlWarn[4] + "\n" +
-                          "SQLWARN6: " + sqlWarn[5] + "\n" +  
+                          "SQLWARN6: " + sqlWarn[5] + "\n" +
                           "SQLWARN7: " + sqlWarn[6] + "\n" +
                           "SQLWARN8: " + sqlWarn[7] + "\n" +
                           "SQLWARN9: " + sqlWarn[8] + "\n" +
@@ -425,10 +425,10 @@ public class SQLAction implements Serializable {
                     log.error(exc.getMessage(), exc);
                 }
             } // sqle instanceof DB2Diagnosable
-            sqle=((SQLException) sqle).getNextException();     // Retrieve next SQLException    
+            sqle=((SQLException) sqle).getNextException();     // Retrieve next SQLException
         } // while (sqle != null)
     } // printSQLError
-    
+
     //===================
     // Workhorse Actions
     //===================
@@ -441,9 +441,9 @@ public class SQLAction implements Serializable {
     private void describeProcedure(DatabaseMetaData dbMetaData, String schema, String procedureName, short procedureType) {
         BaseTable     tbSerializer = config.getTableSerializer();
         ResultSet results = null;
-        try { 
+        try {
             TreeMap<String, HashMap<String, String>> cstRows = new TreeMap<String, HashMap<String, String>>();
-            String cstKey = null;       
+            String cstKey = null;
             String value  = null;
             String field  = null;
             short sval = 0;
@@ -451,7 +451,7 @@ public class SQLAction implements Serializable {
             int   icol = 0;
             results = dbMetaData.getProcedureColumns(null, schema, procedureName, "%");
             while (results.next()) { // get all index info rows
-                field = "COLUMN_NAME";          
+                field = "COLUMN_NAME";
                 value = results.getString(field);
                 cstKey = procedureName;
                 if (true) {
@@ -474,22 +474,22 @@ public class SQLAction implements Serializable {
                             break;
                     } // switch
 
-                    field = "TYPE_NAME";        
+                    field = "TYPE_NAME";
                     cstRow.put(field, results.getString(field));
 
-                    field = "DATA_TYPE";        
+                    field = "DATA_TYPE";
                     value = String.valueOf(results.getInt(field));
                     cstRow.put(field, value);
 
-                    field = "PRECISION";    
+                    field = "PRECISION";
                     value = String.valueOf(results.getInt(field));
                     cstRow.put(field, value);
 
-                    field = "SCALE";    
+                    field = "SCALE";
                     value = String.valueOf(results.getShort(field));
                     cstRow.put(field, value);
 
-                    field = "NULLABLE"; 
+                    field = "NULLABLE";
                     sval  = results.getShort(field);
                     switch (sval) {
                         case DatabaseMetaData.procedureNoNulls:
@@ -503,14 +503,14 @@ public class SQLAction implements Serializable {
                             break;
                     } // switch
 
-                    field = "REMARKS";      
+                    field = "REMARKS";
                     value = results.getString(field);
                     if (value != null) {
                         cstRow.put(field, value);
                     }
 
                 /* MySQL does not know these:
-                    field = "COLUMN_DEF";       
+                    field = "COLUMN_DEF";
                     value = results.getString(field);
                     if (value != null) {
                         cstRow.put(field, value);
@@ -531,7 +531,7 @@ public class SQLAction implements Serializable {
                 procSeparator = "$";
             }
             tbSerializer.describeProcedureColumns(schema, procedureName, procedureType, procSeparator, cstRows);
-        } catch (Exception exc) {   
+        } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
             printSQLError(exc);
             // setCommitted(true); // avoid a final COMMIT
@@ -568,28 +568,28 @@ public class SQLAction implements Serializable {
 
         try { // any primary key constraints
             TreeMap<String, HashMap<String, String>> cstRows = new TreeMap<String, HashMap<String, String>>();
-            String cstKey = null;       
+            String cstKey = null;
             String value  = null;
             String field  = null;
             results = dbMetaData.getPrimaryKeys(null, schema, tableBaseName);
             while (results.next()) { // get all imported keys
-                field = "PK_NAME";          
+                field = "PK_NAME";
                 value = results.getString(field);
                 if (value == null || value.equals("PRIMARY")) { // patch for MySQL defect
                     value = "PK29";
                 } // MySQL
                 if (true) {
                     HashMap<String, String> cstRow = new HashMap<String, String>();
-                    cstKey = value;             
+                    cstKey = value;
                     cstRow.put(field, value);
-                    field = "COLUMN_NAME";      
+                    field = "COLUMN_NAME";
                     cstRow.put(field, results.getString(field));
-                    field = "KEY_SEQ";          
+                    field = "KEY_SEQ";
                     value = String.valueOf(1000 + results.getShort(field)).substring(1);
-                    cstKey += "\t" + value;     
+                    cstKey += "\t" + value;
                     cstRow.put(field, value);
                     cstRows.put(cstKey, cstRow);
-                } 
+                }
             } // while results
             results.close();
             HashMap<String, String> cstRow = new HashMap<String, String>();
@@ -604,29 +604,29 @@ public class SQLAction implements Serializable {
 
         try { // any indexes
             TreeMap<String, HashMap<String, String>> cstRows = new TreeMap<String, HashMap<String, String>>();
-            String cstKey = null;       
+            String cstKey = null;
             String value  = null;
             String field  = null;
             results = dbMetaData.getIndexInfo(null, schema, tableBaseName, false, true);
             while (results.next()) { // get all index info rows
-                field = "INDEX_NAME";       
+                field = "INDEX_NAME";
                 value = results.getString(field);
                 if (results.getShort("TYPE") != DatabaseMetaData.tableIndexStatistic && ! value.equals("PRIMARY")) {
                     HashMap<String, String> cstRow = new HashMap<String, String>();
-                    field = "INDEX_NAME";       
+                    field = "INDEX_NAME";
                     value = results.getString(field);
-                    cstKey = value;             
+                    cstKey = value;
                     cstRow.put(field, value);
-                    
-                    field = "COLUMN_NAME";      
+
+                    field = "COLUMN_NAME";
                     cstRow.put(field, results.getString(field));
-                    
-                    field = "ORDINAL_POSITION"; 
+
+                    field = "ORDINAL_POSITION";
                     value = String.valueOf(1000 + results.getShort(field)).substring(1);
-                    cstKey += "\t" + value;     
+                    cstKey += "\t" + value;
                     cstRow.put(field, value);
-                    
-                    field = "ASC_OR_DESC";      
+
+                    field = "ASC_OR_DESC";
                     value = results.getString(field);
                     if (value == null) {
                         value = "";
@@ -637,10 +637,10 @@ public class SQLAction implements Serializable {
                     }
                     cstRow.put(field, value);
 
-                    field = "NON_UNIQUE";   
+                    field = "NON_UNIQUE";
                     value = results.getBoolean(field) ? "" : "UNIQUE ";
                     cstRow.put(field, value);
-                    
+
                     cstRows.put(cstKey, cstRow);
                 } // no statistic, not PRIMARY
             } // while results
@@ -657,30 +657,30 @@ public class SQLAction implements Serializable {
 
         try { // the foreign key constraints
             TreeMap<String, HashMap<String, String>> cstRows = new TreeMap<String, HashMap<String, String>>();
-            String cstKey = null;       
+            String cstKey = null;
             String value  = null;
             String field  = null;
             results = dbMetaData.getImportedKeys(null, schema, tableBaseName);
             while (results.next()) { // get all imported keys
-                field = "FK_NAME";          
+                field = "FK_NAME";
                 value = results.getString(field);
                 if (true) {
                     HashMap<String, String> cstRow = new HashMap<String, String>();
-                    cstKey = value;             
+                    cstKey = value;
                     cstRow.put(field, value);
-                    field = "FKCOLUMN_NAME";    
+                    field = "FKCOLUMN_NAME";
                     cstRow.put(field, results.getString(field));
-                    field = "PKCOLUMN_NAME";    
+                    field = "PKCOLUMN_NAME";
                     cstRow.put(field, results.getString(field));
-                    field = "PKTABLE_NAME";     
+                    field = "PKTABLE_NAME";
                     cstRow.put(field, results.getString(field));
-                    field = "KEY_SEQ";          
+                    field = "KEY_SEQ";
                     value = String.valueOf(1000 + results.getShort(field)).substring(1);
-                    cstKey += "\t" + value;     
+                    cstKey += "\t" + value;
                     cstRow.put(field, value);
-                    field = "UPDATE_RULE";      
+                    field = "UPDATE_RULE";
                     cstRow.put(field, getRuleString(results.getShort(field)));
-                    field = "DELETE_RULE";      
+                    field = "DELETE_RULE";
                     cstRow.put(field, getRuleString(results.getShort(field)));
                     // field = "DEFERRABILITY"; cstRow.put(field, String.valueOf(1000 + results.getShort(field)).substring(1));
                     cstRows.put(cstKey, cstRow);
@@ -761,7 +761,7 @@ public class SQLAction implements Serializable {
                             + ", DEFERRABILITY="    + deferrability2
                             , verbose);
                 } // while imported keys
-                
+
                 results = dbMetaData.getPrimaryKeys(null, schema, tableBaseName);
                 while (results.next()) { // get all indexes = keys
                     String pkTable      = results.getString("TABLE_NAME"    );
@@ -834,7 +834,7 @@ public class SQLAction implements Serializable {
                     String schema           = results.getString("TABLE_SCHEM");
                     if (schema != null && schema.equals(config.getDefaultSchema())) {
                         schema = null; // omit it
-                    } 
+                    }
                     String tableBaseName    = results.getString("TABLE_NAME");
                     String tableType        = results.getString("TABLE_TYPE");
                     describeTable(dbMetaData, schema, tableBaseName, tableType);
@@ -853,7 +853,7 @@ public class SQLAction implements Serializable {
                     String schema           = results.getString("PROCEDURE_SCHEM");
                     if (schema != null && schema.equals(config.getDefaultSchema())) {
                         schema = null; // omit it
-                    } 
+                    }
                     String procedureName    = results.getString("PROCEDURE_NAME");
                     short  procedureType    = results.getShort ("PROCEDURE_TYPE");
                     describeProcedure(dbMetaData, schema, procedureName, procedureType);
@@ -884,7 +884,7 @@ public class SQLAction implements Serializable {
         int parameterIndex = 0;
         int carg = karg;
         char sep = '(';
-        BaseTable tbSerializer = config.getTableSerializer(); 
+        BaseTable tbSerializer = config.getTableSerializer();
         TableColumn column = null;
         String procedureName = args[karg];
         try {
@@ -988,7 +988,7 @@ public class SQLAction implements Serializable {
                 } // out
                 column.setTypeName(typeName);
             } // while counting parameters
-            
+
             boolean moreResults = cstmt.execute();
             // log.info("callSql=" + callSql.toString() + "\ncarg=" + carg + ", karg=" + karg + ", args.length=" + args.length + ", procedureName=" + procedureName);
 
@@ -1023,7 +1023,7 @@ public class SQLAction implements Serializable {
                     }
                     if (opt.startsWith("-out") || opt.startsWith("-inout")) { // -out
                         if (false) {
-                        } else if (typeName.equals    ("BLOB"      )) { 
+                        } else if (typeName.equals    ("BLOB"      )) {
                             // ???
                         } else if (typeName.equals    ("CLOB"      )) {
                             Clob clob = cstmt.getClob(parameterIndex);
@@ -1058,15 +1058,15 @@ public class SQLAction implements Serializable {
                         } // withHeaders
                         tbSerializer.writeGenericRow(BaseTable.RowType.DATA , tbMetaData, tbMetaData.columnList);
                         tbSerializer.writeGenericRow(BaseTable.RowType.DATA2, tbMetaData, tbMetaData.columnList);
-                        htmlRowCount ++;            
+                        htmlRowCount ++;
                         break;
                     case TableMetaData.AGGR_VERTICAL: // 1 row vertical, with headers prefixed
                         tbSerializer.writeGenericRow(BaseTable.RowType.ROW1 , tbMetaData, tbMetaData.columnList);
-                        htmlRowCount ++;            
+                        htmlRowCount ++;
                         break;
                     case TableMetaData.AGGR_PARAMS:   // append column values to corresponding parameter arrays
                         tbSerializer.appendToParameters(htmlRowCount        , tbMetaData, tbMetaData.columnList);
-                        htmlRowCount ++;            
+                        htmlRowCount ++;
                         break;
                     default: // >= 0, no change in non-aggregate columns, must aggregate
                         // ignore - will not be reached
@@ -1094,7 +1094,7 @@ public class SQLAction implements Serializable {
             log.error(mess);
             log.error(exc.getMessage(), exc);
             printSQLError(exc);
-            tbSerializer.writeMarkup("<h3 class=\"error\">SQL Error in SQLAction.callStoredProcdure: " 
+            tbSerializer.writeMarkup("<h3 class=\"error\">SQL Error in SQLAction.callStoredProcdure: "
                     + exc.getSQLState() + " "
                     + exc.getMessage() + "</h3><pre class=\"error\">");
             tbSerializer.writeMarkup(callSql.toString());
@@ -1108,7 +1108,7 @@ public class SQLAction implements Serializable {
         } catch (Exception exc) {
             result = 0;
             log.error(exc.getMessage(), exc);
-            tbSerializer.writeMarkup("<h3 class=\"error\">Error in SQLAction.callStoredProcdure: " 
+            tbSerializer.writeMarkup("<h3 class=\"error\">Error in SQLAction.callStoredProcdure: "
                     + exc.getMessage() + "</h3><pre class=\"error\">");
             tbSerializer.writeMarkup(callSql.toString());
             int iarg = 0;
@@ -1126,7 +1126,7 @@ public class SQLAction implements Serializable {
         return result;
     } // callStoredProcedure
 
-    /** Takes a column's attributes and an SQL SELECT column value which may be a 
+    /** Takes a column's attributes and an SQL SELECT column value which may be a
      *  concatenated list of parameters,
      *  and stores into the column
      *  <ol>
@@ -1137,13 +1137,13 @@ public class SQLAction implements Serializable {
      *  @param values content of the data cell (from SQL SELECT), maybe a concatenation
      *  of parameters separated by some separator character.
      *
-     *  A (relative) link to another specification with parameter(s) must be specified as 
+     *  A (relative) link to another specification with parameter(s) must be specified as
      *  <pre>
      *      spec=basename&amp;name1[sep1&name2[sep2[&name3...]]]
      *  </pre>
      *  If there is more than one parameter, non-word separator strings <em>sepi</em> must be noted
      *  between the parameter names. A trailing "=" is ignored for compatibility reasons.
-     *  The <em>values</em> string is split with the aid of the separator string(s) 
+     *  The <em>values</em> string is split with the aid of the separator string(s)
      *  specified in the <em>link</em> string.
      *
      *  Only the last value is put into the output cell (if the column has no "pseudo" attribute),
@@ -1166,7 +1166,7 @@ public class SQLAction implements Serializable {
                 link = href; // cannot be null
             }
             if (debug >= 1) System.err.println("link=\"" + link + "\", values=\"" + values + "\"");
-            int lampos1 = link.indexOf('&'); // leading ampersand introduces first parameter 
+            int lampos1 = link.indexOf('&'); // leading ampersand introduces first parameter
             if (lampos1 < 0) { // no parameters
                 urlBuffer.append(link); // copy whole link to URL, remove whitespace
                 displayValue = values;
@@ -1183,17 +1183,17 @@ public class SQLAction implements Serializable {
                     int eqpos = parm.indexOf('=');
                     int plast = parm.length() - 1;
                     if (plast <= 0) { // single '&' - ignore
-                    } else if (eqpos >= 0 && eqpos < plast) { 
+                    } else if (eqpos >= 0 && eqpos < plast) {
                         // foreign "&name=value" pair - copy it unchanged
                         urlBuffer.append('&');
                         urlBuffer.append(parm);
                     } else {
-                        while (plast >= 0 && ! Character.isLetterOrDigit(parm.charAt(plast))) { 
+                        while (plast >= 0 && ! Character.isLetterOrDigit(parm.charAt(plast))) {
                             // backspace over non-word characters
                             plast --;
                         } // while backspacing over separator
                         if (plast < 0) {
-                            IllegalArgumentException exc = 
+                            IllegalArgumentException exc =
                                     new IllegalArgumentException("empty parameter name at " + (lampos1 + 1));
                             log.error(exc.getMessage(), exc);
                             plast = parm.length();
@@ -1207,9 +1207,9 @@ public class SQLAction implements Serializable {
                             if (values != null) {
                                 int vsepos = values.indexOf(sep, vstart);
                                 if (vsepos < 0) { // sep not found
-                                    vsepos = values.length(); // ignore that problem, eat the rest of the string 
+                                    vsepos = values.length(); // ignore that problem, eat the rest of the string
                                     sep = ""; // because of " + sep.length()" below
-                                } 
+                                }
                                 displayValue = values.substring(vstart, vsepos)
                                         .trim()
                                         ;
@@ -1221,7 +1221,7 @@ public class SQLAction implements Serializable {
                                     urlBuffer.append(URLEncoder.encode(displayValue, targetEncoding)
                                             .replaceAll("%C2%", "%") // this is a crude patch for Unicode problems
                                             );
-                                } catch (Exception exc) { 
+                                } catch (Exception exc) {
                                     urlBuffer.append(displayValue); // accept a bad URL
                                 }
                             } else { // values == null
@@ -1284,7 +1284,7 @@ public class SQLAction implements Serializable {
      *  together with the href value if the column has a href or link attribute.
      *  @param column the table column with its properties
      *  @param stResults result set of a query
-     *  @param icol column number in the table meta data, starting at 0; 
+     *  @param icol column number in the table meta data, starting at 0;
      *  column numbers in the result set start at 1
      */
     private void setColumnResult(TableColumn column, ResultSet stResults, int icol) {
@@ -1362,8 +1362,8 @@ public class SQLAction implements Serializable {
         String value = "";
         TableColumn column = null;
         BaseTable tbSerializer  = config.getTableSerializer();
-        escapingRule    = tbSerializer.getEscapingRule(); 
-        targetEncoding  = tbSerializer.getTargetEncoding(); 
+        escapingRule    = tbSerializer.getEscapingRule();
+        targetEncoding  = tbSerializer.getTargetEncoding();
         try {
             tbMetaData.putAttributes(stResults);
             int columnCount      = tbMetaData.getColumnCount();
@@ -1385,7 +1385,7 @@ public class SQLAction implements Serializable {
             int sqlRowCount  = 0; // aggregated, SQL  data rows only
             while (sqlRowCount < fetchLimit && stResults.next()) {
                 sqlRowCount ++;
-                int icol = 0; 
+                int icol = 0;
                 while (icol < columnCount) { // #1
                     // we count from 0, but JDBC counts from 1 (c.f. "icol + 1" below)
                     setColumnResult(tbMetaData.getColumn(icol), stResults, icol);
@@ -1410,15 +1410,15 @@ public class SQLAction implements Serializable {
                         } // withHeaders
                         tbSerializer.writeGenericRow(BaseTable.RowType.DATA , tbMetaData, tbMetaData.columnList);
                         tbSerializer.writeGenericRow(BaseTable.RowType.DATA2, tbMetaData, tbMetaData.columnList);
-                        htmlRowCount ++;            
+                        htmlRowCount ++;
                         break;
                     case TableMetaData.AGGR_VERTICAL: // 1 row vertical, with headers prefixed
                         tbSerializer.writeGenericRow(BaseTable.RowType.ROW1 , tbMetaData, tbMetaData.columnList);
-                        htmlRowCount ++;            
+                        htmlRowCount ++;
                         break;
                     case TableMetaData.AGGR_PARAMS:   // append column values to corresponding parameter arrays
                         tbSerializer.appendToParameters(htmlRowCount        , tbMetaData, tbMetaData.columnList);
-                        htmlRowCount ++;            
+                        htmlRowCount ++;
                         break;
                     default: // >= 0, no change in non-aggregate columns, must aggregate
                         if (tbMetaData.isPivot()) {
@@ -1430,14 +1430,14 @@ public class SQLAction implements Serializable {
                 } // switch aggregateChange
                 tbMetaData.rememberRow();
             } // while results
-            
+
             if (tbMetaData.getAggregateChange() > -3) { // don't forget last row
                 tbMetaData.writePreviousRow(tbSerializer, this.isWithHeaders(), htmlRowCount, columnCount);
                 htmlRowCount ++;
             } // last row
             if (this.isWithHeaders()) { // print row count
                 if (tbMetaData.isPivot()) {
-                    htmlRowCount --; // first data row was really the header row 
+                    htmlRowCount --; // first data row was really the header row
                 }
                 tbSerializer.writeTableFooter(htmlRowCount, sqlRowCount >= fetchLimit, tbMetaData);
             } // withHeaders
@@ -1459,7 +1459,7 @@ public class SQLAction implements Serializable {
      */
     private void setPlaceholder(PreparedStatement pstmt, int parameterIndex, String typeName, String value) {
         try {
-            // keep this switch in synch with the code in format.EchoSQL.writeEchoSQL 
+            // keep this switch in synch with the code in format.EchoSQL.writeEchoSQL
             if (false) {
             } else if (typeName.equals    ("CLOB"      )) {
                 // not yet
@@ -1489,7 +1489,7 @@ public class SQLAction implements Serializable {
             log.error(exc.getMessage(), exc);
         }
     } // setPlaceholder
-     
+
     /** Set the values for all placeholders in a prepared or callable statement
      *  @param pstmt statement which contains placeholders (parameter markers, "?")
      *  @param variables array of string pairs (typeName, value)
@@ -1502,9 +1502,9 @@ public class SQLAction implements Serializable {
             setPlaceholder(pstmt, parameterIndex, variables.get(ivar + 1), variables.get(ivar + 2));
             parameterIndex ++;
             ivar += 3;
-        } // while ivar 
+        } // while ivar
     } // setPlaceholders
-     
+
     /** Execute a single SQL statement.
      *  SQL Comments starting with "--" were removed previously by the caller.
      *  @param tbMetaData meta data for the table as far as they are alreay known
@@ -1517,12 +1517,12 @@ public class SQLAction implements Serializable {
                 , new ArrayList/*<1.5*/<String>/*1.5>*/ () // empty variables' list
                 , parameterMap);
     } // execSQLStatement(3)
-    
+
     /** Execute a single SQL statement.
      *  SQL Comments starting with "--" were removed previously by the caller.
      *  @param tbMetaData meta data for the table as far as they are already known
      *  @param sqlInstruction text of the SQL statement (SELECT, INSERT, UPDATE ...).
-     *  @param variables pairs of types and values for variables to be filled 
+     *  @param variables pairs of types and values for variables to be filled
      *  into any placeholders ("?") in the prepared statement
      *  @param parameterMap map containing HTTP request or CLI parameter settings
      */
@@ -1536,7 +1536,7 @@ public class SQLAction implements Serializable {
         try {
             if (sqlInstruction.length() > 0) { // statement non-empty
                 if (con == null) { // not yet set
-                    con = config.openConnection();          
+                    con = config.openConnection();
                 }
                 String[] words = sqlInstruction.split("\\s+", 3); // starts with verb - c.f. the trim() above
                 String verb = words[0].toUpperCase();
@@ -1548,7 +1548,7 @@ public class SQLAction implements Serializable {
                         setPlaceholders(statement, variables); // set the values of all placeholders
                     } // set placeholders
                     statement.setQueryTimeout(120);
-                    tbSerializer.writeSQLInstruction(tbMetaData, sqlInstruction, 0, config.getVerbose(), variables); 
+                    tbSerializer.writeSQLInstruction(tbMetaData, sqlInstruction, 0, config.getVerbose(), variables);
                     ResultSet stResults = statement.executeQuery();
                     serializeQueryResults(tbMetaData, sqlInstruction, stResults);
                     stResults.close();
@@ -1575,7 +1575,7 @@ public class SQLAction implements Serializable {
                     if (variables.size() > 0) {
                         setPlaceholders(statement, variables); // set the values of all placeholders
                     } // set placeholders
-                    tbSerializer.writeSQLInstruction(tbMetaData, sqlInstruction, 2, config.getVerbose(), variables); 
+                    tbSerializer.writeSQLInstruction(tbMetaData, sqlInstruction, 2, config.getVerbose(), variables);
                     updateCount = statement.executeUpdate();
                     if (parameterMap != null) {
                         parameterMap.put(config.UPDATE_COUNT, new String[] { String.valueOf(updateCount) });
@@ -1589,7 +1589,7 @@ public class SQLAction implements Serializable {
         } catch (SQLException exc) {
             log.error(exc.getMessage(), exc);
             printSQLError(exc);
-            tbSerializer.writeMarkup("<h3 class=\"error\">SQL Error in SQLAction.execSQLStatement: " 
+            tbSerializer.writeMarkup("<h3 class=\"error\">SQL Error in SQLAction.execSQLStatement: "
                     + exc.getSQLState() + " "
                     + exc.getMessage() + "</h3><pre class=\"error\">");
             tbSerializer.writeMarkup(sqlInstruction.toString());
@@ -1608,7 +1608,7 @@ public class SQLAction implements Serializable {
             }
         } catch (Exception exc) {
             log.error(exc.getMessage()); // , exc); // -  would cause a stack trace - not desired for -m probe
-            tbSerializer.writeMarkup("<h3 class=\"error\">Error in SQLAction.execSQLStatement: " 
+            tbSerializer.writeMarkup("<h3 class=\"error\">Error in SQLAction.execSQLStatement: "
                     + exc.getMessage() + "</h3><pre class=\"error\">");
             tbSerializer.writeMarkup(sqlInstruction.toString());
             tbSerializer.writeMarkup("</pre>");
@@ -1630,7 +1630,7 @@ public class SQLAction implements Serializable {
         execSQLStatement(null, "COMMIT", null);
         setCommitted(true); // avoid a final COMMIT
     } // execCommitStatement
-    
+
     /** Execute the stored batch, and commit it.
      *  @param statement statement for database operations
      */
@@ -1650,7 +1650,7 @@ public class SQLAction implements Serializable {
             // setCommitted(true); // avoid a final COMMIT
         }
     } // putBatch
-    
+
     /** Read SQL statements from a file, and execute them.
      *  CALL statements have a proprietary, non-SQL syntax.
      *  SQL comments (starting with "--") at the end of any input line are handled ,
@@ -1661,7 +1661,7 @@ public class SQLAction implements Serializable {
      *  @param parameterMap map containing HTTP request or CLI parameter settings
      */
     public void execSQLfromURI(TableMetaData tbMetaData, String uri
-            , HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {    
+            , HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
         String stmtSeparator = config.getProcSeparator();
         if (stmtSeparator == null) {
             stmtSeparator = ";";
@@ -1714,7 +1714,7 @@ public class SQLAction implements Serializable {
     /** Load a table's rows from an URI (-r action).
      *  Lines may have fixed column widths (option -l),
      *  or they may be separated by a string (option -s) or
-     *  by whitespace (no -s and no -l). 
+     *  by whitespace (no -s and no -l).
      *  <blockquote>
      *      Caution, other input formats are not yet implemented!
      *  </blockquote>
@@ -1726,7 +1726,7 @@ public class SQLAction implements Serializable {
      *      <ol>
      *      <li>Clear Parameters.</li>
      *      <li>Set all values read into the prepared statement.</li>
-     *      <li>If the column is a LOB, the value must be another URI for the content: 
+     *      <li>If the column is a LOB, the value must be another URI for the content:
      *          read that URI, store it in the LOB, and set that in the prepared statement.</li>
      *      <li>When the whole input row is read, execute the prepared statement.</li>
      *      <li>COMMIT after a predefined number of rows.</li>
@@ -1761,7 +1761,7 @@ public class SQLAction implements Serializable {
             TableColumn column = null;
             int rowCount = 0; // number of rows, for COMMIT insertion
             String columnValues[] = new String[columnCount]; // columns' values
-            
+
             URIReader lineReader = new URIReader(uri, config.getEncoding(0));
             while ((line = lineReader.readLine()) != null) { // read and process lines
                 insertStmt.clearParameters();
@@ -1796,11 +1796,11 @@ public class SQLAction implements Serializable {
                 }
                 if (rawCount > 0) { // insert row only if line contained some field
                     icol = 0;
-                    int scol = 1; // column number for SQL, starting at 1, not incremented for pseudo columns 
+                    int scol = 1; // column number for SQL, starting at 1, not incremented for pseudo columns
                     while (icol < columnCount) {
                         // we count from 0, but JDBC counts from 1 (c.f. "icol + 1" below)
                         // process those from the 'line' (at most 'columnCount')
-                        String value = icol < rawCount 
+                        String value = icol < rawCount
                                 ? escapeSQLValue(columnValues[icol])
                                 : null;
                         column = tbMetaData.getColumn(icol);
@@ -1814,18 +1814,18 @@ public class SQLAction implements Serializable {
                             switch (dataType) {
                         // special
                                 case Types.BOOLEAN:
-                                    insertStmt.setBoolean       
+                                    insertStmt.setBoolean
                                             (scol ++, ! value.matches("[nNfF\\-\\?].*")); // indicators for "no", "false"
                                     break;
                         // character
                                 case Types.CHAR:
                                 case Types.VARCHAR:
-                                    insertStmt.setString        
+                                    insertStmt.setString
                                             (scol ++, value);
                                     break;
                         // numeric
                                 case Types.DECIMAL:
-                                    insertStmt.setBigDecimal    
+                                    insertStmt.setBigDecimal
                                             (scol ++, new BigDecimal(value));
                                     break;
                         // time
@@ -1834,11 +1834,11 @@ public class SQLAction implements Serializable {
                                             (scol ++, java.sql.Date     .valueOf("{d \'"  + value + "\'}"));
                                     break;
                                 case Types.TIME:
-                                    insertStmt.setTime          
+                                    insertStmt.setTime
                                             (scol ++, java.sql.Time     .valueOf("{t \'"  + value + "\'}"));
                                     break;
                                 case Types.TIMESTAMP:
-                                    insertStmt.setTimestamp         
+                                    insertStmt.setTimestamp
                                             (scol ++, java.sql.Timestamp.valueOf("{ts \'"  + value + "\'}"));
                                     break;
                         // LOBs
@@ -1847,16 +1847,16 @@ public class SQLAction implements Serializable {
                                     if (debug >= 2) {
                                         System.err.println("insertFromURI, uri " + value);
                                     }
-                                    insertStmt.setClob // set CharacterStream           
+                                    insertStmt.setClob // set CharacterStream
                                             (scol ++, (new URIReader(value)).getCharReader());
                                     break;
                                 case Types.BLOB:
                                 case Types.JAVA_OBJECT:
-                                case Types.LONGVARBINARY: 
+                                case Types.LONGVARBINARY:
                                     break;
-                        // all others                                
+                        // all others
                                 default:
-                                    insertStmt.setObject        
+                                    insertStmt.setObject
                                             (scol ++, value);
                                     break;
                             } // switch getDataType
@@ -1867,7 +1867,7 @@ public class SQLAction implements Serializable {
                         } // not pseudo
                         icol ++;
                     } // while those from 'line'
-  
+
                     int inserted = insertStmt.executeUpdate();
 
                     rowCount ++;
@@ -1898,7 +1898,7 @@ public class SQLAction implements Serializable {
     //====================
     // Main method - Test
     //====================
-    
+
     /** Test driver -
      *  call it with -h to display possible options and arguments.
      *  The result is printed to STDOUT.

@@ -1,6 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
-    2012-06-19: if a parameter value is not found in a <listbox>, then select the first <option>
+    2012-06-19: parameter not found in <listbox> => select 1st <option>; <choose> not for static formats
     2012-06-13: <var> for prepared statements in addition to <parm>
     2012-05-03: target="_blank" for Excel, spec
     2012-04-04: listbox
@@ -52,7 +52,10 @@ import  org.teherba.dbat.SQLAction;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.dbat.format.BaseTable;
+import  org.teherba.dbat.format.EchoSQL;
+import  org.teherba.dbat.format.GenerateSQLJ;
 import  org.teherba.dbat.format.HTMLTable;
+import  org.teherba.dbat.format.ProbeSQL;
 import  org.teherba.xtrans.BaseTransformer;
 import  java.io.IOException;
 import  java.io.PrintWriter;
@@ -282,6 +285,13 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         this.specName   = name;
     } // setSpecPathAndName
 
+    /** Abbreviation for a complicated test during parsing:
+     *  this variable is normally 0, but -1 for the static serializers which
+     *  should not depend on &lt;choose&gt; elements.
+     *  Look at the 'if' statement where this variable is used.
+     */
+    private int zeroAndNotEcho;
+
     /** Generates the mode-dependant representation of the result table */
     private BaseTable tbSerializer;
     /** Sets the mode-dependant table serializer
@@ -291,6 +301,12 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         this.tbSerializer = tbSerializer; // remember it locally
         this.tbSerializer.setWriter(charWriter);
         this.tbSerializer.setTargetEncoding(targetEncoding);
+        if (        tbSerializer instanceof EchoSQL
+                ||  tbSerializer instanceof GenerateSQLJ
+                ||  tbSerializer instanceof ProbeSQL
+                ) {
+            zeroAndNotEcho = -1; // c.f. the 'if' at the start of the big switches in 'startElement' and 'endElement'
+        }
     } // setSerializer
 
     /** Writer for all output */
@@ -316,6 +332,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
      */
     private SpecificationHandler() {
         log = Logger.getLogger(SpecificationHandler.class.getName());
+        zeroAndNotEcho  = 0; // normal output serializer
         realPath        = "/not_found";
         urlPath         = "spec/";
         specName        = "index";
@@ -477,7 +494,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         if (obj == null) {
             String initValue = attrs.getValue("init");
             if (initValue == null) {
-                result = "\'\'";
+                // result = "\'\'";
+                result = "";
             } else {
                 result = initValue;
                 setParameter(name, initValue);
@@ -929,8 +947,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             /*..................................................
                 now the remaining start tags
             */
-            if ((chooseStack[chooseTop] & CHOOSE_THIS) == 0) {
-                // ignore all normal start tags
+            if ((chooseStack[chooseTop] & CHOOSE_THIS) == zeroAndNotEcho) { // ignore all normal start tags
                 if (debug >= 2) {
                     System.err.println("ignore <" + qName + "> [" + chooseTop + "] top=" + chooseStack[chooseTop]);
                 }
@@ -1548,8 +1565,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             /*..................................................
                 now the remaining end tags
             */
-            if ((chooseStack[chooseTop] & CHOOSE_THIS) == 0) {
-                // ignore all normal end tags
+            if ((chooseStack[chooseTop] & CHOOSE_THIS) == zeroAndNotEcho) { // ignore all normal end tags
                 if (debug >= 2) {
                     System.err.println("ignore </" + qName + "> [" + chooseTop + "] top=" + chooseStack[chooseTop]);
                 }
