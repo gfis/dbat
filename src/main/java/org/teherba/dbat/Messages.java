@@ -226,46 +226,108 @@ public class Messages implements Serializable {
     public static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
 
     /** Gets the markup text for the page trailer.
-     *  For HTML, the text contains links to Excel output and the "more" page.
-     *  @param showList a comma (or space) separated list of keywords: none,on,by,script,excel,more
+     *  For HTML and XML, the text contains links.
+     *  @param trailerSelect a comma delimited list of keywords: ",none,out,time,dbat,script,xls,more,plain"
      *  @param language ISO country code: "de", "en"
-     *  @param specHref link to the specification source
-     *  @param xlsHref  link to Excel display of the query results, or null for plain, non-HTML formats
-     *  @param moreTag  link to "more" page
+     *  @param specUrl  link to the specification source
+     *  @param specName base name (with subdirectory, without ".xml") of the Dbat specification file
+     *  @param xlsUrl   link to Excel display of the query results
+     *  @param moreUrl  link to "more" page
      *  @return language specific trailer markup text,
      *  for example:
      *  <pre>
-        Output on 2011-08-05T21:03:40.419 by script test/align01. Excel, more
+        Output on 2011-08-05T21:03:40.419 by script test/align01, Excel, more
      *  </pre>
      */
-    public static String getTrailerText(String showList, String language, String specHref, String xlsHref, String moreTag) {
-        StringBuffer result = new StringBuffer(128);
-        String timestamp = TIMESTAMP_FORMAT.format(new java.util.Date());
-        String moreWord = "more";
+    public static String getTrailerText(String trailerSelect, String language, String specUrl, String specName, String xlsUrl, String moreUrl) {
+        StringBuffer result = new StringBuffer
+        		(128);
+        		// ("<!-- " + trailerSelect + "-->"); 
+        boolean withLink = ! trailerSelect.contains(",plain");  
+        boolean comma = false; // whether to prefix a part with a comma
+        String  outPart     = "Output";
+        String  timePart    = " on ";
+        String  dbatPart    = " by ";
+        String  scriptPart  = " script ";
+        String  xlsPart     = "Excel";
+        String  morePart    = "more";
         if (false) {
         } else if (language.startsWith("de")) {
-            result  .append("Ausgabe am ")
-                    .append(timestamp)
-                    .append(" durch <a href=\"index.html\">Dbat</a>-Skript ")
-                    .append(specHref)
-                    ;
-            moreWord = "mehr";
+                outPart     = "Ausgabe";
+                timePart    = " am ";
+                dbatPart    = " durch ";
+                scriptPart  = "-Skript ";
+                xlsPart     = "Excel";
+                morePart    = "mehr";
         } else { // default: en
-            result  .append("Output on ")
-                    .append(timestamp)
-                    .append(" by <a href=\"index.html\">Dbat</a> script ")
-                    .append(specHref)
-                    ;
         }
-        result      .append(",\n");
-        if (xlsHref != null) {
-            result  .append(xlsHref)
-                    .append(",\n")
-                    .append(moreTag)
-                    .append(moreWord)
-                    .append("</a>\n")
-                    ;
-        }
+        if (trailerSelect.contains(",out")) {
+            result.append(outPart);
+        } // out
+        if (trailerSelect.contains(",time")) {
+            result.append(timePart);
+            result.append(TIMESTAMP_FORMAT.format(new java.util.Date()));
+            comma = true;
+        } // time
+        if (trailerSelect.contains(",dbat")) {
+            result.append(dbatPart);
+            if (withLink) {
+                result.append("<a href=\"index.html\">");
+            }
+            result.append("Dbat");
+            if (withLink) {
+                result.append("</a>");
+            }
+            comma = true;
+        } // dbat
+        if (trailerSelect.contains(",script")) {
+            result.append(scriptPart);
+            if (withLink) {
+                result.append("<a target=\"_blank\" href=\"");
+                result.append(specUrl);
+                result.append("\" type=\"text/plain\">");
+            }
+            result.append(specName);
+            if (withLink) {
+                result.append("</a>");
+            }
+            comma = true;
+        } // script
+        if (trailerSelect.contains(",xls")) {
+            if (comma) {
+                result.append(',');
+                result.append(withLink ? '\n' : ' ');
+            }
+            if (withLink) {
+                result.append("<a target=\"_blank\" href=\"");
+                result.append(xlsUrl);
+                result.append("\">");
+            }
+            result.append(xlsPart);
+            if (withLink) {
+                result.append("</a>");
+            }
+            comma = true;
+        } // xls       
+        if (trailerSelect.contains(",more")) {
+            if (comma) {
+                result.append(',');
+                result.append(withLink ? '\n' : ' ');
+            }
+            if (withLink) {
+                result.append("<a href=\"");
+                result.append(moreUrl);
+                result.append("\">");
+            }
+            result.append(morePart);
+            if (withLink) {
+                result.append("</a>");
+            }
+            comma = true;
+        } // more
+        if (comma) {
+            result.append('\n');
+ 		}
         return result.toString();
     } // getTrailerText
 

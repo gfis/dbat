@@ -340,6 +340,7 @@ TEST W06 select fixed columns
 WGET test/selec01 mode=fix
 
 TEST W09 echo SELECT SQL
+GREP EchoSQL (\d{4}\-\d{2}\-\d{2})
 WGET test/selec01 mode=echo
 
 TEST W10 show default specification
@@ -422,15 +423,19 @@ TEST S08 select semicolon separated
 JRUN -m csv -s ";" -29 c01
 
 TEST S09 echo - show SELECT SQL only
+GREP EchoSQL (\d{4}\-\d{2}\-\d{2})
 JRUN -m echo -29 c01
 
 TEST E01 CLI echo - show SELECT SQL from XML file
+GREP dbat.format.EchoSQL
 JRUN -m echo -f ../web/spec/test/selec01.xml
 
 TEST E02 Web echo - show SQL WITH cte SELECT ...
+GREP dbat.format.EchoSQL
 WGET test/with_cte mode=echo
 
 TEST E03 Web echo - 3 SELECTs
+GREP dbat.format.EchoSQL
 WGET test/listbox mode=echo
 
 TEST S11 Excel format
@@ -467,7 +472,7 @@ GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -m tsv  -f ../web/spec/test/selec02.xml
 
 TEST S25 echo SELECT SQL with linked values
-GREP on (\d{4}\-\d{2}\-\d{2})
+GREP (\d{4}\-\d{2}\-\d{2})
 JRUN -m echo -f ../web/spec/test/selec02.xml
 
 TEST S26 select fixed columns with linked values
@@ -722,6 +727,24 @@ DATA --
  drop view vw1;
 JRUN -f VW4.data.tmp
 #-------------------
+TEST TR1 web trailer none
+WGET test/trail01 
+
+TEST TR2 web trailer out,dbat
+WGET test/trail02 
+
+TEST TR3 web trailer out,dbat,script
+WGET test/trail03 
+
+TEST TR4 web trailer out,dbat,script,xls
+WGET test/trail04 
+
+TEST TR5 web trailer out,dbat,script,xls,more
+WGET test/trail05 
+
+TEST TR6 web trailer out,dbat,more
+WGET test/trail06
+#-------------------
 TEST TS1 CLI XML+XSLT - basic function
 GREP at (\d{4}\-\d{2}\-\d{2})
 JRUN -m trans -f ../web/spec/test/xslt_brackets.xml -p xslt=../web/spec/test/brackets.xsl
@@ -816,6 +839,6 @@ GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test.var02 name=M
 
 TEST VA3 echo with var elements
-GREP at (\d{4}\-\d{2}\-\d{2})
+GREP EchoSQL (\d{4}\-\d{2}\-\d{2})
 WGET test.var02 mode=echo
 #-------------------

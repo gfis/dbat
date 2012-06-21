@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2012-06-21: Dr. Georg Fischer
+-->
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang="en" 
+        conn="worddb" 
+        title="trail01"
+        >
+    <comment lang="en">No Trailer</comment>
+    
+    <ht:h3>Select from test table c01</ht:h3>
+    <select limit="2048">
+        <col label="Name"       >name</col>
+        <col label="Year"  align="right">year</col>
+        <from>c01</from>
+        <counter desc="Person,s"/>
+    </select>
+    <trailer select="out,dbat" />
+</dbat>

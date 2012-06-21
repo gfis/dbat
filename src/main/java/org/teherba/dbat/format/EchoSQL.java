@@ -1,4 +1,4 @@
-/*  Pseudo format which only echoes the SQL statement for the row select  
+/*  Pseudo format which only echoes the SQL statement for the row select
     @(#) $Id$
     2011-11-08: end comment better parseable
     2011-08-24: writeGenericRow
@@ -25,10 +25,13 @@ import  org.teherba.dbat.Messages;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.dbat.format.BaseTable;
+import  java.text.SimpleDateFormat;
 import  java.util.ArrayList;
+import  java.util.Date;
+import  java.util.HashMap;
 
 /** This class is only a tiny implementation of {@link org.teherba.dbat.format.BaseTable};
- *  it simply echoes the SQL which would have been executed 
+ *  it simply echoes the SQL which would have been executed
  *  (instead of showing the results of the SQL execution).
  *  @author Dr. Georg Fischer
  */
@@ -36,6 +39,8 @@ public class EchoSQL extends BaseTable {
     public final static String CVSID = "@(#) $Id$";
     /** Debugging switch */
     private int debug = 0;
+    /** a sequential number for SQL statements */
+    private int stmtNo;
 
     /** No-args Constructor
      */
@@ -47,20 +52,51 @@ public class EchoSQL extends BaseTable {
         // setDescription("de", "nur SQL-Ausgabe");
     } // Constructor
 
-    /** Writes the pure SQL instruction, with any placeholders replaced by constant values again.
+     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
+     *  @param params array of 0 or more (name, value) strings which specify features in the file header.
+     *  @param parameterMap map of request parameters to values
+     *  The following names are interpreted:
+     *  <ul>
+     *  <li>specname - name of the parent spec, which is turned into a suitable Java class name
+     *  </ul>
+     */
+    public void writeStart(String[] params,  HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
+        stmtNo = 0;
+        try {
+            charWriter.println("--[01]--dbat.format.EchoSQL " + Messages.TIMESTAMP_FORMAT.format(new java.util.Date()) + "----");
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+    } // writeStart
+
+    /** Ends a file that may contain several table descriptions and/or a SELECT result sets
+     */
+    public void writeEnd() {
+        try {
+            charWriter.println("--[99]----------------------------");
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+    } // writeEnd
+
+   /** Writes the pure SQL instruction, with any placeholders replaced by constant values again.
      *  @param tbMetaData meta data for the table as far as they are already known
      *  @param sqlInstruction a SELECT, CALL, DELETE, INSERT or UPDATE statement
      *  @param action 0 = SELECT, 1 = CALL, 2 = DML instructions
      *  @param verbose 1 (0) = (not) verbose
-     *  @param variables pairs of types and values for variables to be filled 
-     *  into any placeholders ("?") in the prepared statement  
+     *  @param variables pairs of types and values for variables to be filled
+     *  into any placeholders ("?") in the prepared statement
      */
     public void writeSQLInstruction(TableMetaData tbMetaData, String sqlInstruction
     		, int action, int verbose
     		, ArrayList/*<1.5*/<String>/*1.5>*/ variables) {
+        stmtNo ++;
 		sqlInstruction = sqlInstruction + " "; // because of trailing PARAMETER_MARKER
         String separator = ";";
         try {
+            if (stmtNo >= 2) {
+                charWriter.println("--[" + String.valueOf(stmtNo + 1000).substring(2) + "]----------------------------");
+            }
             int len = sqlInstruction.length();
             StringBuffer buffer = new StringBuffer(len);
             int nvar = variables.size();
@@ -75,9 +111,9 @@ public class EchoSQL extends BaseTable {
                     }
                     buffer.append(sqlInstruction.substring(startPos, foundPos + 1)); // copy the left space also
                     startPos = foundPos + PARAMETER_MARKER.length() - 1; // copy the right space also
-                    String varName  = variables.get(ivar + 0).toUpperCase(); 
-                    String typeName = variables.get(ivar + 1).toUpperCase(); 
-                    String value    = variables.get(ivar + 2); 
+                    String varName  = variables.get(ivar + 0).toUpperCase();
+                    String typeName = variables.get(ivar + 1).toUpperCase();
+                    String value    = variables.get(ivar + 2);
                     if (debug > 0) {
                         buffer.append('{');
                         buffer.append(String.valueOf(ivar));
@@ -90,7 +126,7 @@ public class EchoSQL extends BaseTable {
                         buffer.append('}');
                     } // debug
                     ivar += 3;
-                    // keep this switch in synch with the code in SQLAction.setPlaceholder 
+                    // keep this switch in synch with the code in SQLAction.setPlaceholder
                     if (false) {
                     } else if (typeName.equals    ("DECIMAL"   )) {
                         buffer.append(value);
@@ -100,11 +136,11 @@ public class EchoSQL extends BaseTable {
                         buffer.append('\'');
                         buffer.append(value);
                         buffer.append('\'');
-                    } // switch typeName    
+                    } // switch typeName
                 } // while ivar
                 foundPos = len;
                 if (startPos < foundPos) { // copy the rest behind the last marker
-                    buffer.append(sqlInstruction.substring(startPos, foundPos)); 
+                    buffer.append(sqlInstruction.substring(startPos, foundPos));
                 }
             } else { // no placeholders
                 buffer.append(sqlInstruction);
@@ -117,7 +153,7 @@ public class EchoSQL extends BaseTable {
     } // writeSQLInstruction
 
     /** Writes a complete header, data or alternate data row with all tags and cell contents.
-     *  Must be redefined here with no action, since the default implementation in {@link BaseTable#writeGenericRow} 
+     *  Must be redefined here with no action, since the default implementation in {@link BaseTable#writeGenericRow}
      *  would output the query results.
      *  @param rowType type of the generic row
      *  @param tbMetaData meta data for the table

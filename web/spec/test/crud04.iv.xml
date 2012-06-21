@@ -77,6 +77,9 @@
         <text style="wht" align="center" id="or">
             <ht:a href="http://en.wiktionary.org/wiki/origin">Origin</ht:a> of the Person
             </text>
+        <text style="wht" label="Place" id="pl">
+            <ht:a href="servlet?spec=test.crud01&amp;name=M">Berlin</ht:a>
+            </text>
         <field name="birth"     label="Birthdate"                       type="char"         size="10"   
             valid="\d{4}\-\d{2}\-\d{2}" remark="yyyy-mm-dd">
             </field>

@@ -285,6 +285,13 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         this.specName   = name;
     } // setSpecPathAndName
 
+    /** comma separated list of keywords: 
+     *	none,plain,on,by,script,xls,more
+     */
+    private String trailerSelect;
+    /** default value for {@link #trailerSelect} */
+    private static final String TRAILER_ALL = ",out,time,dbat,script,xls,more";
+
     /** Abbreviation for a complicated test during parsing:
      *  this variable is normally 0, but -1 for the static serializers which
      *  should not depend on &lt;choose&gt; elements.
@@ -359,7 +366,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
      *  @param specName name of the specification
      *  @return formatted trailer
      */
-    public String getTrailer(String language, String specName) {
+/*
+    public String getTrailer2(String language, String specName) {
         String outputFormat = tbSerializer.getOutputFormat();
         String specHref = specName;
         String xlsHref  = null; // remains null if no linking to Excel, more
@@ -375,8 +383,41 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     + repeatURLParameters() + "\">";
         }
         return Messages.getTrailerText("", language, specHref, xlsHref, moreTag);
-    } // getTrailer
+    } // getTrailer2
+*/
 
+    /** Gets the optional trailer with timestamp and links.
+     *	This is the language-independant code. 
+     *	Language-specific words are added in {@link Messages#getTrailerText}.
+     *  @param trailerSelect a comma (or space) separated list of keywords: 
+     *	all,none,plain,out,time,dbat,script,xls,more
+     *  @param language ISO country code "en", "de"
+     *  @param specName base name of the specification with subdirectory, without ".xml"
+     *  @return formatted trailer line or empty string if trailer is suppressed by <code>select="none"</code>
+     */
+    private String getTrailer(String trailerSelect, String language, String specName) {
+    	String result = "";
+		if (trailerSelect == null) { // missing => all, empty => none, separated by ","
+		    trailerSelect = TRAILER_ALL;
+		} else if (trailerSelect.length() == 0) {
+		    trailerSelect = ",none";
+		} else {
+		    trailerSelect = "," + trailerSelect.toLowerCase().replaceAll("\\W+", ","); // \\W+ = sequences of non-word characters
+		}
+		if (! trailerSelect.contains(",none")) { // trailer is not suppressed
+	        if (! (tbSerializer instanceof HTMLTable)) {
+	            trailerSelect += ",plain";
+	        }
+	        String specUrl 	= urlPath + specName + ".xml";                                  
+	        String xlsUrl  	= "servlet?&amp;mode=xls" 
+	        				+ repeatURLParameters();
+	        String moreUrl 	= "servlet?&amp;view=more&amp;mode=" + tbSerializer.getOutputFormat()	
+	        				+ repeatURLParameters();
+	        result = Messages.getTrailerText(trailerSelect, language, specUrl, specName, xlsUrl, moreUrl);
+    	} // not suppressed
+        return result;
+    } // getTrailer
+    
     /** Returns all form parameters (except <em>view, mode</em>)
      *  as URL encoded name=value pairs separated by ampersands.
      */
@@ -457,7 +498,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         return values;
     } // getParameterList
 
-    /** Get the value(s) of a named parameter.
+    /** Get the value(s) of a named parameter or host variable.
      *  If the parameter name is all uppercase, the values will be uppercased, too.
      *  @param attrs attribute list which should contain a "name=" attribute
      *  A "ix=" attribute gives an index of the parameter, 0 (first), 1, 2 etc.
@@ -495,7 +536,17 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             String initValue = attrs.getValue("init");
             if (initValue == null) {
                 // result = "\'\'";
-                result = "";
+                String typeName = attrs.getValue("type");
+                if (typeName == null) {
+                    typeName = "char";
+                } else {
+                    typeName = typeName.toLowerCase();
+                }
+                if (typeName.startsWith("int") || typeName.startsWith("dec")) {
+                    result = "0";
+                } else {
+                    result = "";
+                }
             } else {
                 result = initValue;
                 setParameter(name, initValue);
@@ -787,6 +838,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     private static final String UPDATE_TAG  = "update"  ; // ... <where>
     /** textarea field element tag */
     private static final String TEXTAREA_TAG= "textarea"; // label=, init=, and HTML attrs
+    /** TRAILER element tag */
+    private static final String TRAILER_TAG = "trailer" ; // select=
     /** VALUES element tag */
     private static final String VALUES_TAG  = "values"  ;
     /** var element tag (c.f. parm), for prepared statements, without quotes */
@@ -955,6 +1008,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 colBuffer.setLength(0); // start character assembly for all subordinate elements
 
             } else if (qName.equals(ROOT_TAG    )) {
+		        trailerSelect   	= TRAILER_ALL; // assume that there will be no <trailer /> element
                 //--------
                 String encAttr      = attrs.getValue("encoding");
                 if (encAttr         != null) {
@@ -1351,7 +1405,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 }
                 colBuffer.setLength(0);
 
-            } else if (qName.equals(PARM_TAG    )) { // deprecated, with quotes around, not suitable for PreparedStatement
+            } else if (qName.equals(PARM_TAG    )) { // deprecated, with single quotes around, not suitable for PreparedStatement
                 String params = getParameterForSQL(attrs, "name");
                 if (currentNameSpace.equals(config.HTML_URI)) { // print HTML text unchanged
                     tbSerializer.writeMarkup(params);
@@ -1360,7 +1414,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 }
                 // PARM_TAG
 
-            } else if (qName.equals(VAR_TAG     )) { // similiar to PARM_TAG, but for a prepared statement
+            } else if (qName.equals(VAR_TAG     )) { // recommended, similiar to PARM_TAG, but for a prepared statement
                 String params = getParameterForSQL(attrs, "name");
                 if (currentNameSpace.equals(config.HTML_URI)) { // print HTML text unchanged
                     tbSerializer.writeMarkup(params);
@@ -1454,9 +1508,13 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     }
                 } // SELECT_TAG, our variant: DB table query
 
-            } else if (qName.equals(TEXTAREA_TAG   )) { // similiar to INPUT_TAG
+            } else if (qName.equals(TEXTAREA_TAG)) { // similiar to INPUT_TAG
                 startFormField(qName, attrs);
                 startName  = attrs.getValue("name");
+
+            } else if (qName.equals(TRAILER_TAG )) {
+                trailerSelect = attrs.getValue("select");
+				// additional reasoning in getTrailer
 
             } else if (qName.equals(UPDATE_TAG  )) {
                 parentStmt = elem;
@@ -1641,7 +1699,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 if (! isSuccessful()) {
                     tbSerializer.writeMarkup(Messages.getErrorNotice(config.getLanguage()));
                 } // with errors
-                tbSerializer.writeTrailer(getTrailer(config.getLanguage(), specName));
+                tbSerializer.writeTrailer(getTrailer(trailerSelect, config.getLanguage(), specName));
                 tbSerializer.writeEnd();
                 // </dbat>
 
@@ -1862,6 +1920,9 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 variables.clear();
                 // /UPDATE_TAG
 
+            } else if (qName.equals(TRAILER_TAG )) {
+                // ignore - empty element
+
             } else if (qName.equals(VALUES_TAG  )) {
                 // ignore - INSERT processing is done by </insert>
 
@@ -1906,7 +1967,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         if (disabled) {
         } else
         try { // if there is any exception, further SAX event processing will be disabled
-            if ((chooseStack[chooseTop] & CHOOSE_THIS) == 0) {
+            if ((chooseStack[chooseTop] & CHOOSE_THIS) == zeroAndNotEcho) {
                 // ignore all normal characters
                 if (debug >= 2) {
                     System.err.println("ignore chars " + new String(ch, start, length)

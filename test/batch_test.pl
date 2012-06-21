@@ -2,6 +2,7 @@
 
 # Test Dbat functions with MySQL
 # @(#) $Id$
+# 2012-06-20:  . "\" 2>\&1"; after all commands
 # 2012-04-25: XSLT command 
 # 2012-04-02: diff --strip-trailing-cr
 # 2011-11-15: general filtering of "-- MySQL 5."
@@ -95,6 +96,7 @@
 use strict;
 
 	my $version = ""; # fixed, was "1" in an intermediate state 
+	my $err_redir = ""; # or  " 2>\&1";
 	my $action = "comp"; # default - is harmless, but "fill" destroys the test history 
 	my $only = ".*"; # run all tests, otherwise a pattern for a subset; "%" works like ".*"
     my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime (time);
@@ -149,7 +151,7 @@ use strict;
 			if (0) {
 			} elsif ($verb =~ m/CRUN/i) { # java -cp dist/dbat.jar classname ...
 				my @args = split(/\s+/, $options);
-				$command = "$crun." . join(' ', @args);
+				$command = "$crun." . join(' ', @args) . $err_redir;
 				$default_grep = qr/Output\s+on\s+\d{4}\-\d{2}\-\d{2}/;
 				&execute_test($command);
 			} elsif ($verb =~ m/DATA/i) {
@@ -157,7 +159,7 @@ use strict;
 				$file_extension = "tmp";
 			} elsif ($verb =~ m/JRUN/i) {
 				my @args = split(/\s+/, $options);
-				$command = "$jrun " . join(" ", @args);
+				$command = "$jrun " . join(" ", @args) . $err_redir;
 				$default_grep = "\A\Z";
 				&execute_test($command);
 			} elsif ($verb =~ m/ECHO/i) {
@@ -177,7 +179,7 @@ use strict;
 				$testcase = uc($testcase);
 			} elsif ($verb =~ m/WGET/i) {
 				my @args = split(/\s+/, $options);
-				$command = "$wget" . join('&', @args) . "\"";
+				$command = "$wget" . join('&', @args) . "\"$err_redir";
 				$default_grep = qr/Output\s+on\s+\d{4}\-\d{2}\-\d{2}/;
 				&execute_test($command);
 			} elsif ($verb =~ m/XML/i) {
@@ -185,7 +187,7 @@ use strict;
 				$file_extension = lc($verb);
 			} elsif ($verb =~ m/XSLT/i) {
 				my @args = split(/\s+/, $options);
-				$command = $xslt . join(" ", @args);
+				$command = $xslt . join(" ", @args) . $err_redir;
 				$default_grep = qr/\s+at\s+\d{4}\-\d{2}\-\d{2}/;
 				&execute_test($command);
 			} else {
@@ -216,7 +218,7 @@ sub execute_test {
 	print THIS $this_result;
 	close(THIS);
 	my @diff2 = ();
-	my @diff = split(/\r?\n/, `diff -C0 --strip-trailing-cr $prev_name $this_name`);
+	my @diff = split(/\r?\n/, `diff -C0 --strip-trailing-cr $prev_name $this_name 2>\&1`);
 	if (1) { # regular filter expression was specified
 		my $empty = 1;
 		@diff2 = map { 
