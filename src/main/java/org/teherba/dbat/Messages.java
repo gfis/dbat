@@ -244,7 +244,7 @@ public class Messages implements Serializable {
         StringBuffer result = new StringBuffer
         		(128);
         		// ("<!-- " + trailerSelect + "-->"); 
-        boolean withLink = ! trailerSelect.contains(",plain");  
+        boolean withLink = ! trailerSelect.contains(" plain");  
         boolean comma = false; // whether to prefix a part with a comma
         String  outPart     = "Output";
         String  timePart    = " on ";

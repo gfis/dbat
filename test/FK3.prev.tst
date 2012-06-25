@@ -7,21 +7,23 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=describe&table=product_ord
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
-<title>DDL einer Tabelle</title>
+<title>DDL of a Table/View</title>
 <link rel="stylesheet" type="text/css" href="spec/stylesheet.css" />
 </head><body>
 
     
-	<!--Gibt die DDL-Beschreibung einer Tabelle oder View aus-->
-	<!--Shows the DDL Description of a Table or View-->
+    <!--Gibt die DDL-Beschreibung einer Tabelle oder View aus-->
+    <!--Shows the DDL Description of a Table or View-->
 
     <h2>DDL of Table/View(s) <em>product_order%</em></h2>
-	<form method="get" action="servlet?spec=describe"><input name="spec" type="hidden" value="describe" />
+    
+    <form method="get" action="servlet?spec=describe"><input name="spec" type="hidden" value="describe" />
 
-		Name: <input name="table" maxsize="64" size="32" init="spec_ind" value="product_order"></input>%    
+        Name: <input name="table" maxsize="64" size="32" init="spec_ind" value="product_order"></input>%    
         <input type="submit" value="Show DDL"></input> 
-	</form>
-	
+    </form>
+    
+    
 <table><tr><td><pre>-- MySQL 5.1.62-0ubuntu0.11.10.1 with MySQL-AB JDBC Driver mysql-connector-java-5.1.11 ( Revision: ${svn.Revision} )
 DROP   TABLE product_order;
 CREATE TABLE product_order
@@ -53,7 +55,7 @@ ALTER TABLE product_order
 COMMIT;
 </pre></td></tr></table>
 
-<br />Output on 2012-05-07 18:41:13.090 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/describe.xml" type="text/plain">describe</a>,
+<br />Output on 2012-06-25 20:47:08 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/describe.xml" type="text/plain">describe</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=describe&amp;table=product_order&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=describe&amp;table=product_order&amp;lang=en">more</a>
 

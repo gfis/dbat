@@ -1,12 +1,12 @@
 Test A00 
-echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-21 19:25:44
+echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-25 20:47:16
 *** A00.prev.tst	2012-06-10 21:55:20.000000000 +0200
---- A00.this.tst	2012-06-21 19:25:45.000000000 +0200
+--- A00.this.tst	2012-06-25 20:47:17.000000000 +0200
 ***************
 *** 1 ****
 ! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2011-08-06 21:10:46
 --- 1 ----
-! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-21 19:25:44
+! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-25 20:47:16
 -- FAILED A00 
 Test A01 parameterized link
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/parmlink.xml
@@ -455,24 +455,24 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 Test VW4 drop view
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f VW4.data.tmp
 ++ passed VW4 drop view
-Test TR1 web trailer none
+Test TR1 web trailer "none"
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/trail01"
-++ passed TR1 web trailer none
-Test TR2 web trailer out,dbat
+++ passed TR1 web trailer "none"
+Test TR2 web trailer "out dbat"
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/trail02"
-++ passed TR2 web trailer out,dbat
-Test TR3 web trailer out,dbat,script
+++ passed TR2 web trailer "out dbat"
+Test TR3 web trailer "out dbat script"
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/trail03"
-++ passed TR3 web trailer out,dbat,script
-Test TR4 web trailer out,dbat,script,xls
+++ passed TR3 web trailer "out dbat script"
+Test TR4 web trailer "out dbat script xls"
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/trail04"
-++ passed TR4 web trailer out,dbat,script,xls
-Test TR5 web trailer out,dbat,script,xls,more
+++ passed TR4 web trailer "out dbat script xls"
+Test TR5 web trailer "out dbat script xls more"
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/trail05"
-++ passed TR5 web trailer out,dbat,script,xls,more
-Test TR6 web trailer out,dbat,more
+++ passed TR5 web trailer "out dbat script xls more"
+Test TR6 web trailer "out dbat more"
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/trail06"
-++ passed TR6 web trailer out,dbat,more
+++ passed TR6 web trailer "out dbat more"
 Test TS1 CLI XML+XSLT - basic function
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m trans -f ../web/spec/test/xslt_brackets.xml -p xslt=../web/spec/test/brackets.xsl
 ++ passed TS1 CLI XML+XSLT - basic function
@@ -678,12 +678,12 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed VW1 create view
 ++ passed VW2 describe view
 ++ passed VW4 drop view
-++ passed TR1 web trailer none
-++ passed TR2 web trailer out,dbat
-++ passed TR3 web trailer out,dbat,script
-++ passed TR4 web trailer out,dbat,script,xls
-++ passed TR5 web trailer out,dbat,script,xls,more
-++ passed TR6 web trailer out,dbat,more
+++ passed TR1 web trailer "none"
+++ passed TR2 web trailer "out dbat"
+++ passed TR3 web trailer "out dbat script"
+++ passed TR4 web trailer "out dbat script xls"
+++ passed TR5 web trailer "out dbat script xls more"
+++ passed TR6 web trailer "out dbat more"
 ++ passed TS1 CLI XML+XSLT - basic function
 ++ passed TS2 CLI XSLT, but with mode=html - no transformation
 ++ passed TS3 CLI XSLT with CLI parameter overriding attribute

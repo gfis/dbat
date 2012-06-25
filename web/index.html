@@ -1,6 +1,7 @@
 <!--
 	Entry page for the web application
     @(#) $Id: index.html 890 2012-02-22 17:55:03Z gfis $
+    2012-06-25: all JSPs replaced by servlet URLs
     2012-02-10: copied from index.jsp
     2007-01-08: with metaInf.jsp
     2007-04-05: more text
@@ -54,7 +55,7 @@
         
     <ul>
         <li><strong><a href="servlet?spec=test/index">Test Specifications</a></strong></li>
-        <li><a href="help.jsp?lang=en">Commandline Options</a>
+        <li><a href="servlet?view=help&lang=en">Commandline Options</a>
         </li>
     <!--
         <li><a href="spec/">List</a> of available specifications</li>
@@ -63,9 +64,9 @@
     -->
         <li><a href="docs/api/index.html">API</a> documentation</li>
         <li><a href="docs/bugs.html">Bugs</a></li>
-        <li><a href="metaInf.jsp?view=manifest">Manifest</a>, 
-            <a href="metaInf.jsp?view=license" >License</a>, 
-            <a href="metaInf.jsp?view=notice"  >References</a>
+        <li><a href="servlet?view=manifest">Manifest</a>, 
+            <a href="servlet?view=license" >License</a>, 
+            <a href="servlet?view=notice"  >References</a>
         </li>
   </ul>
     <font size="-1">
