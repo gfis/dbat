@@ -2,6 +2,7 @@
 <!--
 	ant-buildfile for commandline, web application and web service
 	@(#) $Id$
+	2012-06-25: .ear contains .war and META-INF only
 	2012-03-08: with .ear and WEB-INF/application.xml; copy JSPs, but do not compile them
 	2012-01-28: addWebXmlMappings="true" includes generated_web.xml in web.xml; don't copy JSPs to target
 	2011-09-09: delete SUN_MICR.* in clean task
@@ -301,7 +302,7 @@
 		</copy>
 	<!--
 	-->
-		<ear destfile="${dist.home}/${ant.project.name}.ear" basedir="${build.home}" 
+		<ear destfile="${dist.home}/${ant.project.name}.ear" basedir="${etc.home}/META-INF" 
 		  		excludes="**/application.xml,dependencies.txt"
 				appxml="${etc.home}/META-INF/application.xml"
 	  			>

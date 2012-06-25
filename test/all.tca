@@ -727,22 +727,22 @@ DATA --
  drop view vw1;
 JRUN -f VW4.data.tmp
 #-------------------
-TEST TR1 web trailer none
+TEST TR1 web trailer "none"
 WGET test/trail01 
 
-TEST TR2 web trailer out,dbat
+TEST TR2 web trailer "out dbat"
 WGET test/trail02 
 
-TEST TR3 web trailer out,dbat,script
+TEST TR3 web trailer "out dbat script"
 WGET test/trail03 
 
-TEST TR4 web trailer out,dbat,script,xls
+TEST TR4 web trailer "out dbat script xls"
 WGET test/trail04 
 
-TEST TR5 web trailer out,dbat,script,xls,more
+TEST TR5 web trailer "out dbat script xls more"
 WGET test/trail05 
 
-TEST TR6 web trailer out,dbat,more
+TEST TR6 web trailer "out dbat more"
 WGET test/trail06
 #-------------------
 TEST TS1 CLI XML+XSLT - basic function

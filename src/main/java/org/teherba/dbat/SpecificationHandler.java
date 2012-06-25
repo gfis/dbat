@@ -285,12 +285,12 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         this.specName   = name;
     } // setSpecPathAndName
 
-    /** comma separated list of keywords: 
-     *	none,plain,on,by,script,xls,more
+    /** whitespace separated list of keywords: 
+     *	"none out time dbat script xls more plain"
      */
     private String trailerSelect;
     /** default value for {@link #trailerSelect} */
-    private static final String TRAILER_ALL = ",out,time,dbat,script,xls,more";
+    private static final String TRAILER_ALL = " out time dbat script xls more";
 
     /** Abbreviation for a complicated test during parsing:
      *  this variable is normally 0, but -1 for the static serializers which
@@ -361,36 +361,11 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     // Auxiliary methods
     //====================
 
-    /** Gets the trailer with timestamp and links
-     *  @param language ISO country code "en", "de"
-     *  @param specName name of the specification
-     *  @return formatted trailer
-     */
-/*
-    public String getTrailer2(String language, String specName) {
-        String outputFormat = tbSerializer.getOutputFormat();
-        String specHref = specName;
-        String xlsHref  = null; // remains null if no linking to Excel, more
-        String moreTag  = null; // dito
-        if (outputFormat != null && outputFormat.startsWith("htm")) {
-            specHref= "<a target=\"_blank\" href=\"" + urlPath + specName
-                    + ".xml\" type=\"text/plain\">" + specName + "</a>";
-            xlsHref = "<a target=\"_blank\" href=\"servlet?&amp;mode=xls"
-                    + repeatURLParameters() + "\">Excel</a>";
-            moreTag = "<a href=\"servlet?"
-                    + "&amp;view=more"
-                    + "&amp;mode=" + outputFormat
-                    + repeatURLParameters() + "\">";
-        }
-        return Messages.getTrailerText("", language, specHref, xlsHref, moreTag);
-    } // getTrailer2
-*/
-
     /** Gets the optional trailer with timestamp and links.
      *	This is the language-independant code. 
      *	Language-specific words are added in {@link Messages#getTrailerText}.
-     *  @param trailerSelect a comma (or space) separated list of keywords: 
-     *	all,none,plain,out,time,dbat,script,xls,more
+     *  @param trailerSelect a whitespace (or comma) separated list of keywords: 
+     *	"none plain out time dbat script xls more"
      *  @param language ISO country code "en", "de"
      *  @param specName base name of the specification with subdirectory, without ".xml"
      *  @return formatted trailer line or empty string if trailer is suppressed by <code>select="none"</code>
@@ -400,13 +375,13 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 		if (trailerSelect == null) { // missing => all, empty => none, separated by ","
 		    trailerSelect = TRAILER_ALL;
 		} else if (trailerSelect.length() == 0) {
-		    trailerSelect = ",none";
+		    trailerSelect = " none";
 		} else {
-		    trailerSelect = "," + trailerSelect.toLowerCase().replaceAll("\\W+", ","); // \\W+ = sequences of non-word characters
+		    trailerSelect = " " + trailerSelect.toLowerCase().replaceAll("\\W+", " "); // \\W+ = sequences of non-word characters
 		}
-		if (! trailerSelect.contains(",none")) { // trailer is not suppressed
+		if (! trailerSelect.contains(" none")) { // trailer is not suppressed
 	        if (! (tbSerializer instanceof HTMLTable)) {
-	            trailerSelect += ",plain";
+	            trailerSelect += " plain";
 	        }
 	        String specUrl 	= urlPath + specName + ".xml";                                  
 	        String xlsUrl  	= "servlet?&amp;mode=xls" 

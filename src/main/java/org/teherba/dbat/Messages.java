@@ -227,7 +227,8 @@ public class Messages implements Serializable {
 
     /** Gets the markup text for the page trailer.
      *  For HTML and XML, the text contains links.
-     *  @param trailerSelect a comma delimited list of keywords: ",none,out,time,dbat,script,xls,more,plain"
+     *  @param trailerSelect a space separated list of keywords, with a leading space, in any order:
+     *	" none plain out time dbat script xls more"
      *  @param language ISO country code: "de", "en"
      *  @param specUrl  link to the specification source
      *  @param specName base name (with subdirectory, without ".xml") of the Dbat specification file
@@ -261,15 +262,15 @@ public class Messages implements Serializable {
                 morePart    = "mehr";
         } else { // default: en
         }
-        if (trailerSelect.contains(",out")) {
+        if (trailerSelect.contains(" out")) {
             result.append(outPart);
         } // out
-        if (trailerSelect.contains(",time")) {
+        if (trailerSelect.contains(" time")) {
             result.append(timePart);
             result.append(TIMESTAMP_FORMAT.format(new java.util.Date()));
             comma = true;
         } // time
-        if (trailerSelect.contains(",dbat")) {
+        if (trailerSelect.contains(" dbat")) {
             result.append(dbatPart);
             if (withLink) {
                 result.append("<a href=\"index.html\">");
@@ -280,7 +281,7 @@ public class Messages implements Serializable {
             }
             comma = true;
         } // dbat
-        if (trailerSelect.contains(",script")) {
+        if (trailerSelect.contains(" script")) {
             result.append(scriptPart);
             if (withLink) {
                 result.append("<a target=\"_blank\" href=\"");
@@ -293,7 +294,7 @@ public class Messages implements Serializable {
             }
             comma = true;
         } // script
-        if (trailerSelect.contains(",xls")) {
+        if (trailerSelect.contains(" xls")) {
             if (comma) {
                 result.append(',');
                 result.append(withLink ? '\n' : ' ');
@@ -309,7 +310,7 @@ public class Messages implements Serializable {
             }
             comma = true;
         } // xls       
-        if (trailerSelect.contains(",more")) {
+        if (trailerSelect.contains(" more")) {
             if (comma) {
                 result.append(',');
                 result.append(withLink ? '\n' : ' ');

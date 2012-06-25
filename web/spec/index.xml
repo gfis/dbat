@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dbat encoding="UTF-8"
-	conn="worddb"
-	lang="de"
-	xmlns   ="http://www.teherba.org/2007/dbat"
-	xmlns:ht="http://www.w3.org/1999/xhtml"
-	title="Allgemeine Datenbank-Abfragen"
-	>
+    conn="worddb"
+    lang="en"
+    xmlns   ="http://www.teherba.org/2007/dbat"
+    xmlns:ht="http://www.w3.org/1999/xhtml"
+    title="General Queries"
+    >
 <!--
     @(#) $Id$
+    2012-06-22: lang=en
     2011-02-01: Dr. Georg Fischer
 -->    
-	<comment lang="de">Abfragen, die keinem besonderen Teilbereich zugeordnet sind
-	</comment>
-    <ht:h2>Dbat - Verf&#xfc;gbare Datenbank-Abfragen</ht:h2>
-	<select group="subdir">
-		<col name="subdir" label="Bereich" style="visible">subdir</col>
-		<col label="Skript" href="servlet?&amp;spec=">
-			concat(concat(subdir, '.'), name)
-		</col>
-		<col pseudo="style">case when idx = '1' then 'bold' else 'normal' end</col>
-		<col label="Beschreibung">descr</col>
-		<col label="Parameter" style="visible">params</col>
-		<from>(
-				( select  subdir, name, '1' as idx, title   as descr, params from spec_index 
-					where subdir like '<parm name="subdir" />%' 
-				)
-			union
-				( select  subdir, name, '2' as idx, comment as descr, params from spec_index 
-					where subdir like '<parm name="subdir" />%' 
-				)
-			) z
-		</from>
-		<order by="1, 2, 3" />
-		<counter desc="Skript,e" />
-	</select>
+    <comment lang="en">in no specific application area</comment>
+    <comment lang="de">Abfragen, die keinem besonderen Teilbereich zugeordnet sind</comment>
+    
+    <ht:h2><ht:a href="index.html">Dbat</ht:a> - General Queries</ht:h2>
+    
+    <select group="subdir">
+        <col name="subdir" label="Area" style="visible">subdir</col>
+        <col label="Script" href="servlet?&amp;spec=">
+            concat(concat(subdir, '.'), name)
+        </col>
+        <col pseudo="style">case when idx = '1' then 'bold' else 'normal' end</col>
+        <col label="Description">descr</col>
+        <col label="Parameter" style="visible">params</col>
+        <from>(
+                ( select  subdir, name, '1' as idx, title   as descr, params from spec_index 
+                    where subdir like '<parm name="subdir" />%' 
+                )
+            union
+                ( select  subdir, name, '2' as idx, comment as descr, params from spec_index 
+                    where subdir like '<parm name="subdir" />%' 
+                )
+            ) z
+        </from>
+        <order by="1, 2, 3" />
+        <counter desc="Script,s" />
+    </select>
 </dbat>

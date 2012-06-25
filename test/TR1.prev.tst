@@ -29,7 +29,6 @@ FROM c01;
 <tr><td>Ilse</td><td align="right">1983</td></tr>
 <tr><td>Dorothea</td><td align="right">1985</td></tr>
 <tr><td>Lucie</td><td align="right">1984</td></tr>
-<tr><td class="counter" colspan="2">8 Persons</td></tr>
 </table>
 
     

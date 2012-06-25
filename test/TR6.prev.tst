@@ -11,7 +11,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/trail06"
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
 </head><body>
 
-    <!--Trailer with out,dbat,more-->
+    <!--Trailer with "out dbat more"-->
     
     <h3>Select from test table c01</h3>
     <!-- SQL:
@@ -29,7 +29,6 @@ FROM c01;
 <tr><td>Ilse</td><td align="right">1983</td></tr>
 <tr><td>Dorothea</td><td align="right">1985</td></tr>
 <tr><td>Lucie</td><td align="right">1984</td></tr>
-<tr><td class="counter" colspan="2">8 Persons</td></tr>
 </table>
 
     

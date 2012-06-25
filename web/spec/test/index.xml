@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dbat encoding="UTF-8"
-		conn="worddb"
-		lang="en"
-		xmlns   ="http://www.teherba.org/2007/dbat"
-		xmlns:ht="http://www.w3.org/1999/xhtml"
-		title="Test Specifications"
-		>
+        conn="worddb"
+        lang="en"
+        xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        title="Test Specifications"
+        >
 <!--
     @(#) $Id$
     2012-02-10: in English
     2011-07-29, Dr. Georg Fischer: copied from spec/index.xml
 -->    
-	<comment lang="de">Liste der Spezifikationen f&#xfc;r die Dbat-Testf&#xe4;lle
-	</comment>
-	<comment lang="en">List of the Specifications for Dbat Test Cases
-	</comment>
+    <comment lang="de">Liste der Spezifikationen f&#xfc;r die Dbat-Testf&#xe4;lle
+    </comment>
+    <comment lang="en">List of the Specifications for Dbat Test Cases
+    </comment>
     
     <ht:h2><ht:a href="index.html">Dbat</ht:a> - Test Specifications</ht:h2>
-	<select group="subdir">
-		<col name="subdir" label="Area" style="visible">subdir</col>
-		<col label="Script" href="servlet?&amp;spec=">concat(concat(subdir, '.'), name)</col>
-		<col label="Description">concat(concat(concat('<ht:strong>', title), '</ht:strong> &amp;mdash; '), comment)</col>
-		<col label="Parameter(s)">params</col>
-		<from>spec_index
-		</from>
-		<where>subdir = 'test'
-			and lang = 'en'
-		</where>
-		<order by="1,2" />
-		<counter desc="Script,s" />
-	</select>
+    <select group="subdir">
+        <col name="subdir" label="Area" style="visible">subdir</col>
+        <col label="Script" href="servlet?&amp;spec=">concat(concat(subdir, '.'), name)</col>
+        <col label="Description">concat(concat(concat('<ht:strong>', title), '</ht:strong> &amp;mdash; '), comment)</col>
+        <col label="Parameter(s)">params</col>
+        <from>spec_index
+        </from>
+        <where>subdir = 'test'
+            and lang = 'en'
+        </where>
+        <order by="1,2" />
+        <counter desc="Script,s" />
+    </select>
 </dbat>

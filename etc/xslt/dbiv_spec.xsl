@@ -2,6 +2,7 @@
 <!--
     Generates a Dbat specification for an interactive view (C/R/U/D) äöü
     @(#) $Id: dbiv_spec.xsl 958 2012-06-06 06:02:39Z gfis $
+    2012-06-25: without sql_state and update_count
     2012-06-21: <text label="..." /> generates 2 <ht:td /> elements; &#9; => &#32;&#x20;
     2012-06-06: '.' => '/' in dbiv/@script
     2012-06-05: wrap_xxx for field catalog
@@ -707,12 +708,12 @@
         <xsl:attribute name="name"><xsl:value-of select="/iv:dbiv/iv:view/@proc" /></xsl:attribute> 
         <xsl:value-of  select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
         <col dir="in"  name="opcode" type="char" />
-        
+<!--        
         <xsl:value-of  select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
         <col dir="out" name="sql_state" type="char" />
         <xsl:value-of  select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
         <col dir="out" name="update_count" type="int" />
-        
+-->        
         <xsl:for-each  select="iv:field[(string-length(@show) = 0 or @show != 'search')]">
             <xsl:call-template name="wrap_callColumn">
                 <xsl:with-param name="field" select="." />
