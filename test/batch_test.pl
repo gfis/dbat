@@ -152,7 +152,7 @@ use strict;
 			} elsif ($verb =~ m/CRUN/i) { # java -cp dist/dbat.jar classname ...
 				my @args = split(/\s+/, $options);
 				$command = "$crun." . join(' ', @args) . $err_redir;
-				$default_grep = qr/Output\s+on\s+\d{4}\-\d{2}\-\d{2}/;
+			#	$default_grep = qr/Output\s+on\s+\d{4}\-\d{2}\-\d{2}/;
 				&execute_test($command);
 			} elsif ($verb =~ m/DATA/i) {
 				$buffer = "$options\n";
@@ -168,19 +168,17 @@ use strict;
 				$command = "echo $jrun $wget $timestamp";
 				sleep(1); # in order to force a change of the timestamp
 				&execute_test($command);
-		#	} elsif ($verb =~ m/EXIT/i) {
-		#		last;
 			} elsif ($verb =~ m/GREP/i) {
 				$grep = $options;
 			} elsif ($verb =~ m/TEST/i) {
 				$grep = "";
-				$default_grep = qr/Output\s+on\s+\d{4}\-\d{2}\-\d{2}/;
+				$default_grep = qr/on\s+\d{4}\-\d{2}\-\d{2}/;
 				($testcase, $description) = split(/\s+/, $options, 2);
 				$testcase = uc($testcase);
 			} elsif ($verb =~ m/WGET/i) {
 				my @args = split(/\s+/, $options);
 				$command = "$wget" . join('&', @args) . "\"$err_redir";
-				$default_grep = qr/Output\s+on\s+\d{4}\-\d{2}\-\d{2}/;
+			#	$default_grep = qr/Output\s+on\s+\d{4}\-\d{2}\-\d{2}/;
 				&execute_test($command);
 			} elsif ($verb =~ m/XML/i) {
 				$buffer = "$options\n";
@@ -212,8 +210,6 @@ sub execute_test {
 	my $prev_name = $this_name;
 	$prev_name =~ s/\.this\./.prev./;
 	open(THIS, ">", $this_name) || die "cannot write $this_name";
-	$command =~ s{\.Dbat1}   {\.Dbat};
-	$command =~ s{\/servlet1}{\/servlet};
 	print THIS "$command\n";
 	print THIS $this_result;
 	close(THIS);

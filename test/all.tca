@@ -55,7 +55,6 @@ DATA +noversion 194706 ../web/noversion.txt
 JRUN  -r b04 < B06.data.tmp
 
 TEST B07 select from CLOB
-GREP " gfis "
 JRUN "select * from b04"
 
 TEST B08 insert into CLOB
@@ -354,6 +353,7 @@ WGET test.selec01
 
 TEST W13 select as Wiki text
 WGET test/selec01 mode=wiki
+
 TEST S13 select as Wiki text
 GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -m wiki  -f ../web/spec/test/selec02.xml
@@ -366,11 +366,9 @@ GREP at (\d{4}\-\d{2}\-\d{2})
 JRUN -d c01
 
 TEST D02 describe table in HTML
-GREP at (\d{4}\-\d{2}\-\d{2})
 JRUN -m html -d c01
 
 TEST D03 describe table in XML
-GREP at (\d{4}\-\d{2}\-\d{2})
 JRUN -m xml  -d c01
 
 TEST D04 describe table in SQL
@@ -468,7 +466,7 @@ GREP \w\w (\d{4}\-\d{2}\-\d{2})
 JRUN -m jdbc -f ../web/spec/test/selec02.xml
 
 TEST S24 select tab separated with linked values
-GREP on (\d{4}\-\d{2}\-\d{2})
+# GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -m tsv  -f ../web/spec/test/selec02.xml
 
 TEST S25 echo SELECT SQL with linked values
@@ -476,7 +474,7 @@ GREP (\d{4}\-\d{2}\-\d{2})
 JRUN -m echo -f ../web/spec/test/selec02.xml
 
 TEST S26 select fixed columns with linked values
-GREP on (\d{4}\-\d{2}\-\d{2})
+# GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -m fix  -f ../web/spec/test/selec02.xml
 
 TEST S27 Excel format with linked values
@@ -513,11 +511,11 @@ DATA
 JRUN -f EN2.data.tmp
 
 TEST EN3 enumerations into parameters
-GREP on (\d{4}\-\d{2}\-\d{2})
+# GREP on (\d{4}\-\d{2}\-\d{2})
 WGET test/enum01
 
 TEST EN4 enumerations into listbox
-GREP on (\d{4}\-\d{2}\-\d{2})
+# GREP on (\d{4}\-\d{2}\-\d{2})
 WGET test/enum02
 #--------------------------
 # aggregation, pivot and grouping
@@ -567,7 +565,7 @@ TEST G02 CLI grouping test with HTML
 JRUN -g sp1 -m html "select sp1, sp2, sp3 from pivot order by 1, 2, 3"
 
 TEST G03 web grouping test
-GREP on (\d{4}\-\d{2}\-\d{2})
+# GREP on (\d{4}\-\d{2}\-\d{2})
 WGET test/grouping
 
 TEST G04 web grouping test with SQL (error in writeHeader)
@@ -575,15 +573,12 @@ GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test/grouping mode=sql
 #-------------------
 TEST O01 Order + parm init
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test/order01
 
 TEST O02 Order
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test/order02
 
 TEST O03 Order probe
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test/order02 mode=probe
 #-------------------
 TEST P01 aggregation test
@@ -596,7 +591,6 @@ TEST P03 pivot test with HTML
 JRUN -a sp2 -sa "pivot" -m html "select sp1, sp2, sp3 from pivot order by 1, 2"
 
 TEST P04 Web pivot test with HTML
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test/pivot03
 
 TEST P05 Web pivot test with SQL
@@ -604,19 +598,15 @@ GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test/pivot03 mode=sql
 
 TEST P06 Web pivot test with fixed format
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test/pivot03 mode=fix
 
 TEST P07 Web pivot test with TSV
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test/pivot03 mode=tsv
 
 TEST P08 Web pivot test with XLS
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test/pivot03 mode=xls
 
 TEST P09 Web pivot test with fetchLimit
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test/pivot03 fetch=10
 #-------------------
 TEST PR1 probe correct SQL
@@ -624,7 +614,7 @@ GREP (\d{4}\-\d{2}\-\d{2})
 JRUN -m probe -f ../web/spec/test/selec02.xml
 
 # TEST PR2 probe wrong SQL (WITH for MySQL)
-# GREP (\d{4}\-\d{2}\-\d{2})
+# GREP at (\d{4}\-\d{2}\-\d{2})
 # JRUN -m probe -f ../web/spec/test/with_cte.xml
 #-------------------
 TEST VS1 CLI visible grouping test with TSV
@@ -635,19 +625,19 @@ GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -g sp1 -m html -f ../web/spec/test/visible05.xml
 
 TEST VS3 Web visible grouping test
-GREP on (\d{4}\-\d{2}\-\d{2})
+# GREP on (\d{4}\-\d{2}\-\d{2})
 WGET test/visible05
 #-------------------
 TEST CH1 choose conditional compilation, "yes"
-GREP on (\d{4}\-\d{2}\-\d{2})
+# GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -m csv -s "-" -p switch=yes -f ../web/spec/test/choose06.xml
 
 TEST CH2 choose conditional compilation, "true"
-GREP on (\d{4}\-\d{2}\-\d{2})
+# GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -m csv -s "-" -p switch=true -f ../web/spec/test/choose06.xml
 
 TEST CH3 choose conditional compilation, "other"
-GREP on (\d{4}\-\d{2}\-\d{2})
+# GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -m csv -s "-" -p switch=other -f ../web/spec/test/choose06.xml
 #-------------------
 TEST FK1 create tables with foreign keys
@@ -703,7 +693,6 @@ GREP at (\d{4}\-\d{2}\-\d{2})
 JRUN -d product_order
 
 TEST FK3 Web describe
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET describe table=product_order
 #-------------------
 TEST VW1 create view
@@ -717,10 +706,6 @@ JRUN -f VW1.data.tmp
 TEST VW2 describe view
 GREP at (\d{4}\-\d{2}\-\d{2})
 JRUN -d vw1
-
-# TEST VW3 web describe view
-# GREP at (\d{4}\-\d{2}\-\d{2})
-# WGET describe table=vw1
 
 TEST VW4 drop view
 DATA --
@@ -746,7 +731,6 @@ TEST TR6 web trailer "out dbat more"
 WGET test/trail06
 #-------------------
 TEST TS1 CLI XML+XSLT - basic function
-GREP at (\d{4}\-\d{2}\-\d{2})
 JRUN -m trans -f ../web/spec/test/xslt_brackets.xml -p xslt=../web/spec/test/brackets.xsl
 
 TEST TS2 CLI XSLT, but with mode=html - no transformation
@@ -754,19 +738,15 @@ GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -m html -f ../web/spec/test/xslt_brackets.xml
 
 TEST TS3 CLI XSLT with CLI parameter overriding attribute
-GREP at (\d{4}\-\d{2}\-\d{2})
 JRUN -m trans -f ../web/spec/test/xslt_brackets.xml  -p xslt=../web/spec/test/formed.xsl
 
 TEST TW1 Web XML+XSLT - basic function
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test.xslt_brackets mode=trans
 
 TEST TW2 Web XSLT, but with mode=html - no transformation
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test.xslt_brackets mode=html
 
 TEST TW3 Web XSLT with URL parameter overriding attribute
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test.xslt_brackets mode=trans xslt=/var/lib/tomcat/webapps/dbat/spec/test/formed.xsl
 #-------------------
 TEST V01 create table for DBIV tests
@@ -803,39 +783,31 @@ DATA -- fill table
 JRUN -f V02.data.tmp
 
 TEST V03 search for M
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test.crud03 view=sear search_name=M family=Ritter birth= gender=M place= decease=
 
 TEST V04 update Maria's place
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test.crud03 search_value_1=M search_gender=' name=Maria family=Ritter view=upd
 
 TEST V05 place updated
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test.crud03 view=upd2 search_name= search_family=Ritter name=Maria family=Ritter birth=1914-09-17 gender=F place=Berlin-Hermsdorf decease=1999 changed=current_timestamp user=testuser
 
 TEST V06 insert with Maria's data
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test.crud03 view=ins search_name= family=Ritter birth=1914-09-17 gender=F place=Berlin-Hermsdorf decease=1999 changed=current_timestamp user=testuser
 
 TEST V07 Teherba inserted
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test.crud03 view=ins2 search_name= search_family=Ritter name=Teherba family=Ritter birth=1886-02-04 gender=F place=Oranienburg decease=1968 changed=current_timestamp user=testuser
 
 TEST V08 delete Teherba
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test.crud03 search_name= search_family=Ritter name=Teherba family=Ritter view=del
 
 TEST V09 Teherba deleted
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test.crud03 view=del2 search_name= search_family=Ritter name=Teherba family=Ritter birth= gender=M place= decease=
 #-------------------
 TEST VA1 var element
-GREP at (\d{4}\-\d{2}\-\d{2})
+GREP at2 (\d{4}\-\d{2}\-\d{2})
 WGET test.var01 name=%25
 
 TEST VA2 var elements with data types
-GREP at (\d{4}\-\d{2}\-\d{2})
 WGET test.var02 name=M
 
 TEST VA3 echo with var elements

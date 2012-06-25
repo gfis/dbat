@@ -1,1 +1,1 @@
-echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2011-08-06 21:10:46
+echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-25 21:32:08

@@ -383,7 +383,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 	        if (! (tbSerializer instanceof HTMLTable)) {
 	            trailerSelect += " plain";
 	        }
-	        String specUrl 	= urlPath + specName + ".xml";                                  
+	        String specUrl 	= urlPath + specName + (config.getCallType() == Configuration.CLI_CALL ? "" : ".xml");                                  
 	        String xlsUrl  	= "servlet?&amp;mode=xls" 
 	        				+ repeatURLParameters();
 	        String moreUrl 	= "servlet?&amp;view=more&amp;mode=" + tbSerializer.getOutputFormat()	

@@ -491,6 +491,12 @@ public class Configuration implements Serializable {
     // public static final int DSO_CALL  = 3;
     /** Remembers the type of activation (one of the xxx_CALL constants) */
     private int callType;
+    /** Gets the type of activation.
+     *  @return one of the constants *_CALL
+     */
+    public int getCallType() {
+        return callType;
+    } // getCallType
 
     /** Maps connection identifiers (short database instance ids) to {@link DataSource Datasources} */
     private HashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap;

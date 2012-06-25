@@ -45,7 +45,7 @@ FROM c01;
 <tr><td class="counter" colspan="8">8 persons</td></tr>
 </table>
 
-<br />Output on 2012-06-15 08:01:33.173 by <a href="index.html">Dbat</a> script <a target="_blank" href="./../web/spec/test/color04.xml.xml" type="text/plain">../web/spec/test/color04.xml</a>,
+<br />Output on 2012-06-25 21:49:40 by <a href="index.html">Dbat</a> script <a target="_blank" href="./../web/spec/test/color04.xml" type="text/plain">../web/spec/test/color04.xml</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;name=%25r&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;name=%25r&amp;lang=en">more</a>
 

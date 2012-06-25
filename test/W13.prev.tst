@@ -38,6 +38,5 @@ WHERE name like '%r%';
 |-
 |}
 
-
-Output on 2012-06-15 07:58:41.972 by <a href="index.html">Dbat</a> script test/selec01,
-
+<!-- Output on 2012-06-25 21:57:41 by Dbat script test/selec01, Excel, more
+ -->

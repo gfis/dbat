@@ -27,7 +27,7 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 <tr><td>i</td><td>3</td><td>Maria</td></tr>
 </table>
 
-<br />Output on 2012-06-15 06:56:59.497 by <a href="index.html">Dbat</a> script <a target="_blank" href="./../web/spec/test/callproc.xml.xml" type="text/plain">../web/spec/test/callproc.xml</a>,
+<br />Output on 2012-06-25 21:56:35 by <a href="index.html">Dbat</a> script <a target="_blank" href="./../web/spec/test/callproc.xml" type="text/plain">../web/spec/test/callproc.xml</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;part=i&amp;update_count=0&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;part=i&amp;update_count=0&amp;lang=en">more</a>
 

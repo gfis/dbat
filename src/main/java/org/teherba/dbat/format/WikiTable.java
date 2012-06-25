@@ -1,5 +1,6 @@
 /*  Generator for a MediaWiki table 
     @(#) $Id$
+    2012-06-25: writeTrailer removed
     2011-08-24: writeGenericRow
 	2011-08-12: remove old methods write*
 	2011-07-27: copied from WikiTable
@@ -49,7 +50,7 @@ Eine &Uuml;bersicht vergleichbarer Werkzeuge findet man auch bei [http://java-so
 </pre>
  *  @author Dr. Georg Fischer
  */
-public class WikiTable extends BaseTable { // 'writeComment' is copied from XMLTable
+public class WikiTable extends BaseTable { 
     public final static String CVSID = "@(#) $Id$";
     
 	/** Prefix for relative path in link, to make it absolute with "http://" */
@@ -64,8 +65,6 @@ public class WikiTable extends BaseTable { // 'writeComment' is copied from XMLT
 		setDescription("de", "MediaWiki-Text");
     	protocolContext = "http://localhost:8080/dbat/";
     } // Constructor
-
-	// method 'writeComment' 	is inherited from XMLTable
 
     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
      *	@param params array of 0 or more (name, value) string which specify features in the file header.
@@ -115,17 +114,6 @@ public class WikiTable extends BaseTable { // 'writeComment' is copied from XMLT
         }
     } // writeEnd
     
-    /** Writes trailer information
-     *  @param trailer trailing elements with links to spec file, Excel output, timestamp etc.
-     */
-    public void writeTrailer(String trailer) {
-        try {
-	        charWriter.println("\n" + trailer);
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-        }
-    } // writeTrailer
-
     /** Initializes a table
      *  @param tableName name of the table
      */
