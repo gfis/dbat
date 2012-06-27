@@ -7,12 +7,17 @@
    This product includes software developed by:
    
    * The Apache Software Foundation (http://www.apache.org/), especially
-     log4j.jar
-   
-   * MySQL AB, especially the  Connector/J (mysql-connector-java-5.1.11-bin.jar JDBC driver)
-   
+     activation.jar
+	 log4j-1.2.15.jar
+	 serializer.jar
+	 tomcat-dbcp.jar
+  
+   * MySQL AB, especially the  Connector/J (JDBC driver)
+   	 mysql-connector-java-5.1.11-bin.jar
+	 
    * http://www.sqlite.org/
-   * http://www.xerial.org/trac/Xerial/wiki/SQLiteJDBC: sqlite-jdbc-3.6.20.1.jar
+   * http://www.xerial.org/trac/Xerial/wiki/SQLiteJDBC
+	 sqlite-jdbc-3.6.20.1.jar
    * http://www.zentus.com/
 
    Please read the different LICENSE files present in the root directory of

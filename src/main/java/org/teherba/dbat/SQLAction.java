@@ -1,5 +1,6 @@
 /*  SQLAction.java - Properties and methods specific for one elementary sequence of SQL instructions
     @(#) $Id$
+    2012-06-27: without references to com.ibm.db2.jcc.*; printSQLError commented out
     2012-06-13: prepare PreparedStatements
     2012-05-21: improved setting of update_count and sql_state (for CALL a.o.)
     2012-05-16: describe table is uppercased for DB2
@@ -14,7 +15,6 @@
     2011-07-21: cope with timestamps in CALL statement
     2011-05-04, Dr. Georg Fischer: extracted from Dbat.java
 */
-
 /*
  * Copyright 2006 Dr. Georg Fischer <punctum at punctum dot kom>
  *
@@ -61,8 +61,8 @@ import  java.text.SimpleDateFormat;
 import  java.util.ArrayList;
 import  java.util.HashMap;
 import  java.util.TreeMap;
-import  com.ibm.db2.jcc.DB2Diagnosable;
-import  com.ibm.db2.jcc.DB2Sqlca;
+// import  com.ibm.db2.jcc.DB2Diagnosable;
+// import  com.ibm.db2.jcc.DB2Sqlca;
 import  org.apache.log4j.Logger;
 
 /** This class contains properties and methods closely related to the
@@ -370,6 +370,7 @@ public class SQLAction implements Serializable {
      *  @param sqle SQLException to be processed
      */
     public void printSQLError(Exception sqle) {
+    /*
         while (sqle != null && (sqle instanceof SQLException)) { // Check whether there are more SQLExceptions to process
             if (sqle instanceof DB2Diagnosable) { // Check if DB2-only information exists
                 DB2Diagnosable diagnosable = (DB2Diagnosable) sqle;
@@ -427,6 +428,7 @@ public class SQLAction implements Serializable {
             } // sqle instanceof DB2Diagnosable
             sqle=((SQLException) sqle).getNextException();     // Retrieve next SQLException
         } // while (sqle != null)
+    */
     } // printSQLError
 
     //===================
