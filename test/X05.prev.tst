@@ -27,7 +27,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/callproc"
 <tr><td></td><td>8</td><td>Martha</td></tr>
 </table>
 
-<br />Output on 2012-06-15 06:56:59.541 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/callproc.xml" type="text/plain">test/callproc</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/callproc.xml" type="text/plain">test/callproc</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fcallproc&amp;part=&amp;update_count=0&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fcallproc&amp;part=&amp;update_count=0&amp;lang=en">more</a>
 

@@ -83,7 +83,7 @@ ORDER BY 3;
 <tr><td class="counter" colspan="3">2 Persons</td></tr>
 </table>
 
-<br />Output on 2012-06-15 07:57:07.006 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/listbox.xml" type="text/plain">test/listbox</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/listbox.xml" type="text/plain">test/listbox</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Flistbox&amp;birthchar=1910+1911&amp;namebox=M&amp;namebox=L&amp;lang=en&amp;birthint=1887+1914">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Flistbox&amp;birthchar=1910+1911&amp;namebox=M&amp;namebox=L&amp;lang=en&amp;birthint=1887+1914">more</a>
 

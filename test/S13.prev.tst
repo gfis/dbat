@@ -47,5 +47,5 @@ WHERE name like '%';
 |-
 |}
 
-<!-- Output on 2012-06-25 21:45:13 by Dbat script ../web/spec/test/selec02.xml, Excel, more
+<!-- Output on yyyy-mm-dd hh:mm:ss by Dbat script ../web/spec/test/selec02.xml, Excel, more
  -->

@@ -55,7 +55,7 @@ ALTER TABLE product_order
 COMMIT;
 </pre></td></tr></table>
 
-<br />Output on 2012-06-25 20:47:08 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/describe.xml" type="text/plain">describe</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/describe.xml" type="text/plain">describe</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=describe&amp;table=product_order&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=describe&amp;table=product_order&amp;lang=en">more</a>
 

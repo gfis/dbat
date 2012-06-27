@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+	2012-06-27: Windows drive letter in relative file entity declaration
     2012-06-19: parameter not found in <listbox> => select 1st <option>; <choose> not for static formats
     2012-06-13: <var> for prepared statements in addition to <parm>
     2012-05-03: target="_blank" for Excel, spec
@@ -1987,10 +1988,14 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             } else if (systemId.startsWith("file://")) {
             } else if (systemId.startsWith("ftp://" )) {
             } else { // when no schema, interpret URL as relative to realPath
-                url = "file://" + realPath + systemId;
+            	if (realPath.matches("\\w\\:.*")) { // Windows drive letter 
+            		realPath = "/" + realPath.substring(0, 1) +  "|/" + realPath.substring(2);
+            		// file://e:/webapps... => file:///e|/webapps ... is understood by IE also
+            	} // Windows
+                url = "file://" + (realPath + systemId).replaceAll("//", "/");
                 result = new InputSource(url);
             }
-            log.error("resolveEntity(\"" + publicId + "\", \"" + systemId + "\") -> " + url);
+            log.info("resolveEntity(\"" + publicId + "\", \"" + systemId + "\") -> " + url);
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }

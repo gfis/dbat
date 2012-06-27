@@ -39,7 +39,7 @@ WHERE name like '%r%';
 <tr><td class="counter" colspan="5">5 Persons</td></tr>
 </table>
 
-<br />Output on 2012-06-15 07:57:58.903 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/selec01.xml" type="text/plain">test/selec01</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/selec01.xml" type="text/plain">test/selec01</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fselec01&amp;name=%25r&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fselec01&amp;name=%25r&amp;lang=en">more</a>
 

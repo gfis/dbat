@@ -52,6 +52,6 @@ FROM pivot;
 </Row>
 </Table>
 </Worksheet>
-<!-- Output on 2012-06-15 08:03:11.565 by <a href="index.html">Dbat</a> script test/pivot03,
+<!-- Output on yyyy-mm-dd hh:mm:ss by Dbat script test/pivot03, Excel, more
  -->
 </Workbook>

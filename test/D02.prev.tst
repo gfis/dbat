@@ -11,7 +11,7 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 <link rel="stylesheet" type="text/css" href="stylesheet.css" />
 </head><body>
 
-<table><tr><td><pre>-- MySQL 5.1.58-1ubuntu1 with MySQL-AB JDBC Driver mysql-connector-java-5.1.11 ( Revision: ${svn.Revision} )
+<table><tr><td><pre>-- MySQL 5.1.62-0ubuntu0.11.10.1 with MySQL-AB JDBC Driver mysql-connector-java-5.1.11 ( Revision: ${svn.Revision} )
 DROP   TABLE c01;
 CREATE TABLE c01
 	( name	VARCHAR(16) NOT NULL -- Name of the Relative

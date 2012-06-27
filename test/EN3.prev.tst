@@ -61,7 +61,7 @@ ORDER BY 1;
 		</tr>
 	</table>
 	Continue with <a href="servlet?spec=enum02">enum02</a>
-<br />Output on 2012-06-20 21:58:51 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/enum01.xml" type="text/plain">test/enum01</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/enum01.xml" type="text/plain">test/enum01</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fenum01&amp;seq=1&amp;seq=2&amp;seq=3&amp;display=male&amp;display=female&amp;display=neuter&amp;code=M&amp;code=F&amp;code=N&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fenum01&amp;seq=1&amp;seq=2&amp;seq=3&amp;display=male&amp;display=female&amp;display=neuter&amp;code=M&amp;code=F&amp;code=N&amp;lang=en">more</a>
 

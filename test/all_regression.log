@@ -1,12 +1,12 @@
 Test A00 
-echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-25 21:58:55
-*** A00.prev.tst	2012-06-25 21:32:09.000000000 +0200
---- A00.this.tst	2012-06-25 21:58:56.000000000 +0200
+echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-27 21:27:47
+*** A00.prev.tst	2012-06-27 21:24:35.000000000 +0200
+--- A00.this.tst	2012-06-27 21:27:48.000000000 +0200
 ***************
 *** 1 ****
-! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-25 21:32:08
+! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-27 21:24:34
 --- 1 ----
-! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-25 21:58:55
+! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-27 21:27:47
 -- FAILED A00 
 Test A01 parameterized link
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/parmlink.xml
@@ -142,7 +142,24 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.selec01"
 ++ passed Y05 spec file with dot
 Test Y06 XML syntax error, CLI
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/badxml.xml
-++ passed Y06 XML syntax error, CLI
+*** Y06.prev.tst	2012-06-27 21:24:53.000000000 +0200
+--- Y06.this.tst	2012-06-27 21:28:04.000000000 +0200
+***************
+*** 13 ****
+! 2012-06-27 21:24:53,405 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
+--- 13 ----
+! 2012-06-27 21:28:04,459 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
+***************
+*** 26 ****
+! 2012-06-27 21:24:53,408 3    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+--- 26 ----
+! 2012-06-27 21:28:04,463 4    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+***************
+*** 36 ****
+! 2012-06-27 21:24:53,409 4    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+--- 36 ----
+! 2012-06-27 21:28:04,471 12   [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+-- FAILED Y06 XML syntax error, CLI
 Test Y07 XML syntax error, web
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.badxml"
 ++ passed Y07 XML syntax error, web
@@ -529,6 +546,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed VA3 echo with var elements
 ==================
 -- FAILED A00 
+-- FAILED Y06 XML syntax error, CLI
 ++ passed A01 parameterized link
 ++ passed B01 create table with BLOB
 ++ passed B02 insert statements
@@ -573,7 +591,6 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed Y03 redirected spec file
 ++ passed Y04 redirected spec file, in German
 ++ passed Y05 spec file with dot
-++ passed Y06 XML syntax error, CLI
 ++ passed Y07 XML syntax error, web
 ++ passed Y08 redirected spec file, wait time 0s
 ++ passed Y09 redirected spec file, wait time 9s, German
@@ -702,5 +719,5 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed VA1 var element
 ++ passed VA2 var elements with data types
 ++ passed VA3 echo with var elements
-   1 FAILED.tests
- 173 passed.tests
+   2 FAILED.tests
+ 172 passed.tests

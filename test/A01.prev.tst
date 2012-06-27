@@ -25,7 +25,7 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
     
     <h3><a href="servlet?spec=test.align01&amp;name=M&amp;year=1995">1995</a>
     </h3>
-<br />Output on 2012-06-25 21:55:16 by <a href="index.html">Dbat</a> script <a target="_blank" href="./../web/spec/test/parmlink.xml" type="text/plain">../web/spec/test/parmlink.xml</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./../web/spec/test/parmlink.xml" type="text/plain">../web/spec/test/parmlink.xml</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;name=M&amp;year=1995&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;name=M&amp;year=1995&amp;lang=en">more</a>
 

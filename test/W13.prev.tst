@@ -38,5 +38,5 @@ WHERE name like '%r%';
 |-
 |}
 
-<!-- Output on 2012-06-25 21:57:41 by Dbat script test/selec01, Excel, more
+<!-- Output on yyyy-mm-dd hh:mm:ss by Dbat script test/selec01, Excel, more
  -->

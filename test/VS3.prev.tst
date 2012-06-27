@@ -30,7 +30,7 @@ FROM c01
 <tr><td class="invisible">Lübars</td><td>'</td><td>1887-07-09</td></tr>
 </table>
 
-<br />Output on 2012-06-15 08:03:33.932 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/visible05.xml" type="text/plain">test/visible05</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/visible05.xml" type="text/plain">test/visible05</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fvisible05&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fvisible05&amp;lang=en">more</a>
 

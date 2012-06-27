@@ -63,7 +63,7 @@ public class EchoSQL extends BaseTable {
     public void writeStart(String[] params,  HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
         stmtNo = 0;
         try {
-            charWriter.println("--[01]--dbat.format.EchoSQL " + Messages.TIMESTAMP_FORMAT.format(new java.util.Date()) + "----");
+            charWriter.println("--[01]--dbat.format.EchoSQL on " + Messages.TIMESTAMP_FORMAT.format(new java.util.Date()) + "----");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }

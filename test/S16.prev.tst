@@ -121,6 +121,6 @@ WHERE name like '%r%';
 <!-- 5 Persons -->
 </Table>
 </Worksheet>
-<!-- Output on 2012-06-25 21:33:11 by Dbat script ../web/spec/test/selec03.xml, Excel, more
+<!-- Output on yyyy-mm-dd hh:mm:ss by Dbat script ../web/spec/test/selec03.xml, Excel, more
  -->
 </Workbook>

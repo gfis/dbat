@@ -38,7 +38,7 @@ CREATE TABLE spec_index
 COMMIT;
 </pre></td></tr></table>
 
-<br />Output on 2012-06-25 20:45:28 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/describe.xml" type="text/plain">describe</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/describe.xml" type="text/plain">describe</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=describe&amp;table=spec_ind&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=describe&amp;table=spec_ind&amp;lang=en">more</a>
 

@@ -42,7 +42,7 @@ ORDER BY 1;
 <tr><td>Teherba</td><td>Ritter</td><td>1886-02-04</td></tr>
 </table>
 
-<br />Output on 2012-06-15 08:04:42.886 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/var01.xml" type="text/plain">test/var01</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/var01.xml" type="text/plain">test/var01</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.var01&amp;name=%25&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.var01&amp;name=%25&amp;lang=en">more</a>
 

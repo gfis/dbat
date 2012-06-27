@@ -1,5 +1,5 @@
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/listbox&mode=echo"
---[01]--dbat.format.EchoSQL 2012-06-20 22:24:59----
+--[01]--dbat.format.EchoSQL on yyyy-mm-dd hh:mm:ss----
 SELECT name
 , univ
 , birth 

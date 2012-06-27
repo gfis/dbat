@@ -57,7 +57,7 @@ ORDER BY 1,2,3;
 <tr><td class="counter" colspan="3">25 rows</td></tr>
 </table>
 
-<br />Output on 2012-06-15 08:02:20.283 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/grouping.xml" type="text/plain">test/grouping</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/grouping.xml" type="text/plain">test/grouping</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fgrouping&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fgrouping&amp;lang=en">more</a>
 

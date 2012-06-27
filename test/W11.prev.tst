@@ -57,6 +57,6 @@ WHERE name like '%r%';
 <!-- 5 Persons -->
 </Table>
 </Worksheet>
-<!-- Output on 2012-06-15 07:58:36.144 by <a href="index.html">Dbat</a> script test/selec01,
+<!-- Output on yyyy-mm-dd hh:mm:ss by Dbat script test/selec01, Excel, more
  -->
 </Workbook>

@@ -45,7 +45,7 @@ WHERE name like '%';
 <tr><td class="counter" colspan="7">8 persons</td></tr>
 </table>
 
-<br />Output on 2012-06-25 21:50:31 by <a href="index.html">Dbat</a> script <a target="_blank" href="./../web/spec/test/column02.xml" type="text/plain">../web/spec/test/column02.xml</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./../web/spec/test/column02.xml" type="text/plain">../web/spec/test/column02.xml</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;name=%25&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;name=%25&amp;lang=en">more</a>
 

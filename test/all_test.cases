@@ -80,11 +80,11 @@ DATA drop table if exists c01 ;
 JRUN -f C01.data.tmp
 #-------------------
 TEST H01 help messages
-GREP DataBase A
+GREP Dbat V(\d+\.\w+)\s
 JRUN -h
 
 TEST H02 help messages - 0 arguments
-GREP DataBase A
+GREP Dbat V(\d+\.\w+)\s
 JRUN
 #-------------------
 TEST I01 insert statements
@@ -255,7 +255,7 @@ WGET test.selec01
 TEST Y06 XML syntax error, CLI
 GREP (\d{4}\-\d{2}\-\d{2})
 GREP org.teherba
-JRUN -m html  -f ../web/spec/test/badxml.xml
+JRUN -m html  -f ../web/spec/test/badxml.xml 2> nul
 
 TEST Y07 XML syntax error, web
 WGET test.badxml
@@ -425,15 +425,15 @@ GREP EchoSQL (\d{4}\-\d{2}\-\d{2})
 JRUN -m echo -29 c01
 
 TEST E01 CLI echo - show SELECT SQL from XML file
-GREP dbat.format.EchoSQL
+GREP EchoSQL (\d{4}\-\d{2}\-\d{2})
 JRUN -m echo -f ../web/spec/test/selec01.xml
 
 TEST E02 Web echo - show SQL WITH cte SELECT ...
-GREP dbat.format.EchoSQL
+GREP EchoSQL (\d{4}\-\d{2}\-\d{2})
 WGET test/with_cte mode=echo
 
 TEST E03 Web echo - 3 SELECTs
-GREP dbat.format.EchoSQL
+GREP EchoSQL (\d{4}\-\d{2}\-\d{2})
 WGET test/listbox mode=echo
 
 TEST S11 Excel format
@@ -466,7 +466,6 @@ GREP \w\w (\d{4}\-\d{2}\-\d{2})
 JRUN -m jdbc -f ../web/spec/test/selec02.xml
 
 TEST S24 select tab separated with linked values
-# GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -m tsv  -f ../web/spec/test/selec02.xml
 
 TEST S25 echo SELECT SQL with linked values
@@ -474,7 +473,6 @@ GREP (\d{4}\-\d{2}\-\d{2})
 JRUN -m echo -f ../web/spec/test/selec02.xml
 
 TEST S26 select fixed columns with linked values
-# GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -m fix  -f ../web/spec/test/selec02.xml
 
 TEST S27 Excel format with linked values
@@ -511,11 +509,9 @@ DATA
 JRUN -f EN2.data.tmp
 
 TEST EN3 enumerations into parameters
-# GREP on (\d{4}\-\d{2}\-\d{2})
 WGET test/enum01
 
 TEST EN4 enumerations into listbox
-# GREP on (\d{4}\-\d{2}\-\d{2})
 WGET test/enum02
 #--------------------------
 # aggregation, pivot and grouping
@@ -565,7 +561,6 @@ TEST G02 CLI grouping test with HTML
 JRUN -g sp1 -m html "select sp1, sp2, sp3 from pivot order by 1, 2, 3"
 
 TEST G03 web grouping test
-# GREP on (\d{4}\-\d{2}\-\d{2})
 WGET test/grouping
 
 TEST G04 web grouping test with SQL (error in writeHeader)
@@ -625,19 +620,15 @@ GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -g sp1 -m html -f ../web/spec/test/visible05.xml
 
 TEST VS3 Web visible grouping test
-# GREP on (\d{4}\-\d{2}\-\d{2})
 WGET test/visible05
 #-------------------
 TEST CH1 choose conditional compilation, "yes"
-# GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -m csv -s "-" -p switch=yes -f ../web/spec/test/choose06.xml
 
 TEST CH2 choose conditional compilation, "true"
-# GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -m csv -s "-" -p switch=true -f ../web/spec/test/choose06.xml
 
 TEST CH3 choose conditional compilation, "other"
-# GREP on (\d{4}\-\d{2}\-\d{2})
 JRUN -m csv -s "-" -p switch=other -f ../web/spec/test/choose06.xml
 #-------------------
 TEST FK1 create tables with foreign keys
@@ -804,7 +795,6 @@ TEST V09 Teherba deleted
 WGET test.crud03 view=del2 search_name= search_family=Ritter name=Teherba family=Ritter birth= gender=M place= decease=
 #-------------------
 TEST VA1 var element
-GREP at2 (\d{4}\-\d{2}\-\d{2})
 WGET test.var01 name=%25
 
 TEST VA2 var elements with data types

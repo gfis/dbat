@@ -62,7 +62,7 @@ WHERE name = 'Maria'
 
 
 
-<br />Output on 2012-06-19 22:12:20 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/crud03.xml" type="text/plain">test/crud03</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/crud03.xml" type="text/plain">test/crud03</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;lang=en&amp;search_family=&amp;family=Ritter&amp;name=Maria&amp;gender=M&amp;search_value_1=M&amp;decease=&amp;place=&amp;search_gender=%27">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;lang=en&amp;search_family=&amp;family=Ritter&amp;name=Maria&amp;gender=M&amp;search_value_1=M&amp;decease=&amp;place=&amp;search_gender=%27">more</a>
 

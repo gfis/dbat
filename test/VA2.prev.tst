@@ -44,7 +44,7 @@ ORDER BY 1;
 <tr><td>Teherba</td><td>Ritter</td><td align="center">F</td><td>1886-02-04</td><td>1968</td></tr>
 </table>
 
-<br />Output on 2012-06-19 13:07:45.457 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/var02.xml" type="text/plain">test/var02</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/var02.xml" type="text/plain">test/var02</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.var02&amp;birth=1800-01-01&amp;name=M&amp;decease=1800&amp;lang=en&amp;changed=1900-01-01+00%3A00%3A00">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.var02&amp;birth=1800-01-01&amp;name=M&amp;decease=1800&amp;lang=en&amp;changed=1900-01-01+00%3A00%3A00">more</a>
 

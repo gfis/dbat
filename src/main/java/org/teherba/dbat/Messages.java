@@ -237,7 +237,7 @@ public class Messages implements Serializable {
      *  @return language specific trailer markup text,
      *  for example:
      *  <pre>
-        Output on 2011-08-05T21:03:40.419 by script test/align01, Excel, more
+        Output on 2011-08-05 21:03:40 by Dbat script test/align01, Excel, more
      *  </pre>
      */
     public static String getTrailerText(String trailerSelect, String language, String specUrl, String specName, String xlsUrl, String moreUrl) {

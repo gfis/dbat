@@ -28,7 +28,7 @@ rho zeta chi" value="kappa lambda">kappa lambda</textarea>    
 	<h4>Word List:  phi omikron</h4>
 	<h4>UPPER CASE: KAPPA LAMBDA</h4>
 
-<br />Output on 2012-05-07 18:36:24.165 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/textarea.xml" type="text/plain">test/textarea</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/textarea.xml" type="text/plain">test/textarea</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Ftextarea&amp;WORDLIST=kappa+lambda&amp;lang=en&amp;wordlist=phi+omikron">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Ftextarea&amp;WORDLIST=kappa+lambda&amp;lang=en&amp;wordlist=phi+omikron">more</a>
 

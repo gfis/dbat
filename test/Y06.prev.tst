@@ -10,7 +10,7 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 <title>crud01</title>
 <link rel="stylesheet" type="text/css" href="./../web/spec/test/stylesheet.css" />
 </head><body>
-2012-03-04 09:24:38,105 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
+2012-06-27 21:24:53,405 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
  
 	<!--Show entries for editing-->
 	<!--Anzeige der editierbaren Einträge-->
@@ -23,23 +23,23 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
         <a href="servlet?spec=test.ins1">Neuer Eintrag</a>
     </form>
     <h3 class="error">XML SAX parsing error: The content of elements must consist of well-formed character data or markup. in Dbat specification, line 29, column 10, cause: null</h3></body></html>
-2012-03-04 09:24:38,109 4    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+2012-06-27 21:24:53,408 3    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
  org.xml.sax.SAXParseException; lineNumber: 29; columnNumber: 10; The content of elements must consist of well-formed character data or markup.
 	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1234)
 	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:525)
 	at javax.xml.parsers.SAXParser.parse(SAXParser.java:392)
 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:228)
 	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:271)
-	at org.teherba.dbat.Dbat.process(Dbat.java:597)
-	at org.teherba.dbat.Dbat.processArguments(Dbat.java:677)
-	at org.teherba.dbat.Dbat.main(Dbat.java:697)
-2012-03-04 09:24:38,110 5    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+	at org.teherba.dbat.Dbat.process(Dbat.java:606)
+	at org.teherba.dbat.Dbat.processArguments(Dbat.java:694)
+	at org.teherba.dbat.Dbat.main(Dbat.java:714)
+2012-06-27 21:24:53,409 4    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
  org.xml.sax.SAXParseException; lineNumber: 29; columnNumber: 10; The content of elements must consist of well-formed character data or markup.
 	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1234)
 	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:525)
 	at javax.xml.parsers.SAXParser.parse(SAXParser.java:392)
 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:228)
 	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:271)
-	at org.teherba.dbat.Dbat.process(Dbat.java:597)
-	at org.teherba.dbat.Dbat.processArguments(Dbat.java:677)
-	at org.teherba.dbat.Dbat.main(Dbat.java:697)
+	at org.teherba.dbat.Dbat.process(Dbat.java:606)
+	at org.teherba.dbat.Dbat.processArguments(Dbat.java:694)
+	at org.teherba.dbat.Dbat.main(Dbat.java:714)

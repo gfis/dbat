@@ -77,6 +77,6 @@ FROM c01;
 <!-- 8 persons -->
 </Table>
 </Worksheet>
-<!-- Output on 2012-06-15 08:01:39.448 by <a href="index.html">Dbat</a> script test/color04,
+<!-- Output on yyyy-mm-dd hh:mm:ss by Dbat script test/color04, Excel, more
  -->
 </Workbook>

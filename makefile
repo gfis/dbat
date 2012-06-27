@@ -2,6 +2,7 @@
 
 # test dbat functions with SQLite and MySQL
 # @(#) $Id$
+# 2012-06-27: all_tester.pl replaces batch_test.pl; etc/schema
 # 2012-01-20: parm_xref
 # 2011-07-27: target only
 # 2011-07-21: comp is default target; make fill must be called explicitely
@@ -17,32 +18,35 @@ SRC=src/main/java/org/teherba/dbat
 TOMC=/var/lib/tomcat/webapps/dbat
 METHOD=get
 TAB=relatives
+TESTER=batch_test.pl
+TESTER=all_tester.pl
+TESTDIR=test
 
 all: new_regression
 #------------------------------------------------
 new_regression: comp eval
 fill:
-	cd test ; perl batch_test.pl -fill all.tca
+	cd $(TESTDIR) ; perl $(TESTER) -fill all_test.cases
 comp:
-	cd test ; perl batch_test.pl -comp all.tca | tee regression.log 
+	cd $(TESTDIR) ; perl $(TESTER) -comp all_test.cases | tee all_regression.log 
 eval:
 	rm -f [pF]*[dD].tests
-	grep -E "FAILED" 			test/regression.log
-	grep -E "passed" 			test/regression.log > passed.tests
-	grep -E "FAILED" 			test/regression.log > FAILED.tests
-	echo ================== >>  test/regression.log
-	cat *.tests 	   		>>	test/regression.log
-	wc -l *.tests | head -2 >> 	test/regression.log
+	grep -E "FAILED" 			$(TESTDIR)/all_regression.log
+	grep -E "passed" 			$(TESTDIR)/all_regression.log > passed.tests
+	grep -E "FAILED" 			$(TESTDIR)/all_regression.log > FAILED.tests
+	echo ================== >>  $(TESTDIR)/all_regression.log
+	cat *.tests 	   		>>	$(TESTDIR)/all_regression.log
+	wc -l *.tests | head -2 >> 	$(TESTDIR)/all_regression.log
 	wc -l *.tests | head -2
 fill_only:
-	cd test ; perl batch_test.pl -fill -only $(TEST) all.tca
+	cd $(TESTDIR) ; perl $(TESTER) -fill -only $(TEST) all_test.cases
 only: 
-	cd test ; perl batch_test.pl -comp -only $(TEST) all.tca
+	cd $(TESTDIR) ; perl $(TESTER) -comp -only $(TEST) all_test.cases
 show:
 	make -i show1 TEST=$(TEST) | less
 show1:
-	diff -C0 test/$(TEST).prev.tst test/$(TEST).this.tst | cat -vET
-	head -2000 test/$(TEST).*.tst
+	diff -C0 $(TESTDIR)/$(TEST).prev.tst $(TESTDIR)/$(TEST).this.tst | cat -vET
+	head -2000 $(TESTDIR)/$(TEST).*.tst
 nosvn:
 	echo nosvn.txt: Test file for URIReader tests 						>  web/nosvn.txt
 	echo This file contains no SVN Id keyword for better comparision.	>> web/nosvn.txt
@@ -74,9 +78,9 @@ exit1:
 	java -jar dist/dbat.jar -c dbat -n user_groups
 #---------------------------------------------------
 clean_spec:
-	perl test/get_scripts.pl test/all.tca | sort | uniq > test/used.tmp
-	find web/spec -iname "*.xml" -printf "%P\n" | sort  > test/found.tmp
-	diff -y --suppress-common-lines test/used.tmp test/found.tmp
+	perl $(TESTDIR)/get_scripts.pl $(TESTDIR)/all.tca | sort | uniq > $(TESTDIR)/used.tmp
+	find web/spec -iname "*.xml" -printf "%P\n" | sort  > $(TESTDIR)/found.tmp
+	diff -y --suppress-common-lines $(TESTDIR)/used.tmp $(TESTDIR)/found.tmp
 #---------------------------------------------------
 # generate all entries for the parameter/link check table
 parm_xref: parm_xref_gen parm_xref_cre parm_xref_ins
@@ -148,10 +152,10 @@ valid_dbat:
 	| grep -v ".iv.xml"\
 	| grep -v "/incl"\
 	| grep -v "/bad"\
-	| xargs -l xmllint --noout --schema etc/xslt/dbat.2007.xsd 2>&1 
+	| xargs -l xmllint --noout --schema etc/schema/dbat.2007.xsd 2>&1 
 valid_dbiv:
 	find web/spec -iname "*.iv.xml"\
-	| xargs -l xmllint --noout --schema etc/xslt/dbiv.2011.xsd 2>&1 
+	| xargs -l xmllint --noout --schema etc/schema/dbiv.2011.xsd 2>&1 
 #--------------------------------------
 form_gen_xalan:
 	xalan -in web/spec/test/crud03.iv.xml -xsl etc/xslt/dbiv_spec.xsl\
@@ -230,7 +234,7 @@ zipart:
 	src/main/java/org/teherba/dbat/SpecificationHandler.java \
 	etc/xslt/dbiv_spec.xsl \
 	etc/xslt/dbiv_sproc.xsl \
-	test/all.tca \
+	$(TESTDIR)/all.tca \
 	web/spec/test/crud0*.xml \
 	makefile
 #--------------------------------------

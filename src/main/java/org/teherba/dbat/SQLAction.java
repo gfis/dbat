@@ -1547,7 +1547,7 @@ public class SQLAction implements Serializable {
                     if (variables.size() > 0) {
                         setPlaceholders(statement, variables); // set the values of all placeholders
                     } // set placeholders
-                    statement.setQueryTimeout(120);
+                    // statement.setQueryTimeout(120); // not supported by DB2 JDBC driver
                     tbSerializer.writeSQLInstruction(tbMetaData, sqlInstruction, 0, config.getVerbose(), variables);
                     ResultSet stResults = statement.executeQuery();
                     serializeQueryResults(tbMetaData, sqlInstruction, stResults);
