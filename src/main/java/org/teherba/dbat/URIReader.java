@@ -40,6 +40,7 @@ import  org.apache.log4j.Logger;
  *		<li>ftp: - File transfer protocol</li>
  *		<li>gopher: - predecessor of http</li>
  *		</ul>
+ *	</li>
  *	<li>data: - data content within an Uniform Resource Identfier (URI) itself</li>
  *	</ol>
  *	A data URI has the following format:<br />

@@ -29,7 +29,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.teherba.dbat;
+package org.teherba.dbat.format;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.DefaultSpecTable; // XML files suitable for processing by SpecificationHandler
 import  org.teherba.dbat.format.EchoSQL;

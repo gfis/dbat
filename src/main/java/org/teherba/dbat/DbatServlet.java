@@ -1,5 +1,6 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *	2012-07-01: subpackage view; ConsolePage
  *	2012-03-16: dsMap filled only here, DBCPoolingListener abandonned
  *	2012-02-11: all JSPs replaced by View*.java
  *	2011-12-14: response.setContentType("text/comma-separated-values");
@@ -35,13 +36,14 @@ package org.teherba.dbat;
 import  org.teherba.dbat.Dbat;
 import  org.teherba.dbat.Configuration;
 import  org.teherba.dbat.SpecificationHandler;
-import  org.teherba.dbat.TableFactory;
-import  org.teherba.dbat.ViewHelp;
-import  org.teherba.dbat.ViewMessage;
-import  org.teherba.dbat.ViewMetaInf;
-import  org.teherba.dbat.ViewMore;
-import  org.teherba.dbat.ViewValidate;
 import  org.teherba.dbat.format.BaseTable;
+import  org.teherba.dbat.format.TableFactory;
+import  org.teherba.dbat.view.ConsolePage;
+import  org.teherba.dbat.view.HelpPage;
+import  org.teherba.dbat.view.MessagePage;
+import  org.teherba.dbat.view.MetaInfPage;
+import  org.teherba.dbat.view.MorePage;
+import  org.teherba.dbat.view.ValidatePage;
 import  java.io.BufferedReader;
 import  java.io.Reader;
 import  java.io.File;
@@ -354,7 +356,7 @@ public class DbatServlet extends HttpServlet {
 	    	        } else { // 404 - really not found
 		                session.setAttribute("messno", "404"); // spec not found
 	            	} // 404
-       				(new ViewMessage	()).forward(request, response);
+       				(new MessagePage	()).forward(request, response);
 				} // not found 
 	
 	        	if (found)  { 
@@ -387,17 +389,19 @@ public class DbatServlet extends HttpServlet {
 	            log.error(exc.getMessage(), exc);
 			} finally {
 	        }
+		} else if (view.equals("console")) {
+			(new ConsolePage	()).forward(request, response);
 		} else if (view.equals("help")) {
-			(new ViewHelp		()).forward(request, response);
+			(new HelpPage		()).forward(request, response);
 		} else if (view.equals("license")
 				|| view.equals("manifest")
 				|| view.equals("notice")
 				) {
-			(new ViewMetaInf	()).forward(request, response);
+			(new MetaInfPage	()).forward(request, response);
 		} else if (view.equals("more")) {
-			(new ViewMore		()).forward(request, response);
+			(new MorePage		()).forward(request, response);
 		} else if (view.equals("validate")) {
-			(new ViewValidate	()).forward(request, response);
+			(new ValidatePage	()).forward(request, response);
 		} else {
 			// unknown view
 		}

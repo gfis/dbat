@@ -27,9 +27,7 @@ import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  java.util.ArrayList;
 
-/** Generator for an SQL table writing
- *	DROP/CREATE statements of a table or INSERT statements for all rows of a result set.
- *	This class optionally emits JDBC escape sequences for date/time values.
+/** Generator for SQL UPDATE statements for the rows of a result set. 
  *  @author Dr. Georg Fischer
  */
 public class SQLUpdateTable extends SQLTable {

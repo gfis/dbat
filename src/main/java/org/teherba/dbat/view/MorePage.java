@@ -1,5 +1,6 @@
-/*  ViewMore.java - replacement for more.jsp: input form with all parameters
+/*  MorePage.java - replacement for more.jsp: input form with all parameters
  *  @(#) $Id$
+ *	2012-07-01: subpackage view
  *  2012-02-11, Georg Fischer: copied from more.jsp
  */
 /*
@@ -17,9 +18,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.teherba.dbat;
-import  org.teherba.dbat.TableFactory;
+package org.teherba.dbat.view;
 import  org.teherba.dbat.format.BaseTable;
+import  org.teherba.dbat.format.TableFactory;
 import  java.io.PrintWriter;
 import	java.util.Iterator;
 import  java.util.Map;
@@ -31,15 +32,9 @@ import  org.apache.log4j.Logger;
  *	and options for table output, together with links to 
  *  overview, API, notices and other documentation.
  *	The code is extracted from the former <em>more.jsp</em>.
- *	JSPs were banned from Dbat in Feb. 2012 because:
- *	<ul>
- *	<li>they need 5 Tomcat libraries when the .war file is to be included in Winstone,
- *		even though they are precompiled</li>
- *	<li>they do not properly decode URLs which contain encoded UTF-8 characters</li>
- *	</ul>
  *  @author Dr. Georg Fischer
  */
-public class ViewMore {
+public class MorePage {
 	public final static String CVSID = "@(#) $Id$";
 	public final static long serialVersionUID = 19470629;
 
@@ -48,8 +43,8 @@ public class ViewMore {
 
 	/** No-argument constructor
 	 */
-	public ViewMore() {
-		log = Logger.getLogger(ViewMore.class.getName());
+	public MorePage() {
+		log = Logger.getLogger(MorePage.class.getName());
 	} // constructor()
 	
 	/** Processes an http GET request
@@ -318,4 +313,4 @@ public class ViewMore {
 		}
 	} // forward
 
-} // ViewMore
+} // MorePage

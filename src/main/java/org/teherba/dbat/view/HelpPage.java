@@ -1,5 +1,6 @@
-/*  ViewHelp.java - show the language specific commandline help text
+/*  HelpPage.java - show the language specific commandline help text
  *  @(#) $Id$
+ *	2012-07-01: subpackage view
  *  2012-02-11, Georg Fischer: copied from help.jsp
  */
 /*
@@ -17,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.teherba.dbat;
+package org.teherba.dbat.view;
 import  org.teherba.dbat.Messages;
 import  java.io.PrintWriter;
 import  java.util.Enumeration;
@@ -34,7 +35,7 @@ import  org.apache.log4j.Logger;
  *	The code is extracted from the former <em>help.jsp</em>.
  *  @author Dr. Georg Fischer
  */
-public class ViewHelp {
+public class HelpPage {
 	public final static String CVSID = "@(#) $Id$";
 	public final static long serialVersionUID = 19470629;
 
@@ -43,8 +44,8 @@ public class ViewHelp {
 
 	/** No-argument constructor
 	 */
-	public ViewHelp() {
-		log = Logger.getLogger(ViewHelp.class.getName());
+	public HelpPage() {
+		log = Logger.getLogger(HelpPage.class.getName());
 	} // constructor()
 	
 	/** Processes an http GET request
@@ -149,4 +150,4 @@ public class ViewHelp {
 		}
 	} // forward
 
-} // ViewHelp
+} // HelpPage

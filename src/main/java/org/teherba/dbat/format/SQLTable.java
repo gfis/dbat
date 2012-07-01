@@ -44,8 +44,8 @@ import  java.util.HashMap;
 import  java.util.Iterator;
 import  java.util.TreeMap;
 
-/** Generator for an SQL table writing
- *  DROP/CREATE statements of a table or INSERT statements for all rows of a result set.
+/** Generator for SQL INSERT ... INTO ... VALUES statements for the rows of a result set. 
+ *  In the <em>describe</em> mode it generates DROP/CREATE statements for a table.
  *  Optionally, this class emits JDBC escape sequences for date/time values (when it is
  *  subclassed from {@link JDBCTable}).
  *  @author Dr. Georg Fischer

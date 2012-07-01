@@ -1,5 +1,6 @@
-/*  ViewValidate.java - test form for regular expressions
+/*  ValidatePage.java - test form for regular expressions
  *  @(#) $Id$
+ *	2012-07-01: subpackage view
  *  2012-02-11, Georg Fischer: copied from help.jsp
  */
 /*
@@ -17,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.teherba.dbat;
+package org.teherba.dbat.view;
 import  org.teherba.dbat.Messages;
 import  java.io.PrintWriter;
 import	java.util.Iterator;
@@ -31,7 +32,7 @@ import  org.apache.log4j.Logger;
  *	The code is extracted from the former <em>validate.jsp</em>.
  *  @author Dr. Georg Fischer
  */
-public class ViewValidate {
+public class ValidatePage {
 	public final static String CVSID = "@(#) $Id$";
 	public final static long serialVersionUID = 19470629;
 
@@ -40,8 +41,8 @@ public class ViewValidate {
 
 	/** No-argument constructor
 	 */
-	public ViewValidate() {
-		log = Logger.getLogger(ViewValidate.class.getName());
+	public ValidatePage() {
+		log = Logger.getLogger(ValidatePage.class.getName());
 	} // constructor()
 	
 	/** Processes an http GET request
@@ -180,4 +181,4 @@ public class ViewValidate {
 		}
 	} // forward
 
-} // ViewValidate
+} // ValidatePage

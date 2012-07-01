@@ -23,7 +23,7 @@
  */
 package org.teherba.dbat;
 import  org.teherba.dbat.Configuration;
-import  org.teherba.dbat.TableFactory;
+import  org.teherba.dbat.format.TableFactory;
 import  java.io.Serializable;
 import  java.sql.Driver;
 import  java.sql.DriverManager;
