@@ -182,7 +182,7 @@ public class Dbat implements Serializable {
 	} // terminate
 	
 	//========================
-	// Auxilliary methods 
+	// Auxiliary methods 
 	//========================
 	
 	/** Removes optional quotes around a string

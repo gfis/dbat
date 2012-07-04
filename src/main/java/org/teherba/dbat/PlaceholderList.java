@@ -73,7 +73,7 @@ public class PlaceholderList {
     } // add(2)
     
 	//========================
-	// Auxilliary methods
+	// Auxiliary methods
 	//========================
     
     /** Remove all columns - not used

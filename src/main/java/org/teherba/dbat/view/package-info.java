@@ -1,4 +1,4 @@
-/** Contains Java classes for auxilliary pages in a Dbat web application.
+/** Contains Java classes for auxiliary pages in a Dbat web application.
  *  Previously, these were realized by Java Server Pages (JSPs), but
  *  JSPs were banned from Dbat in February 2012 because:
  *  <ul>

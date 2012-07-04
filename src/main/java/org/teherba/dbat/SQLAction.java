@@ -230,7 +230,7 @@ public class SQLAction implements Serializable {
     } // terminate
 
     //========================================
-    // Auxilliary methods, for LOBs and other
+    // Auxiliary methods, for LOBs and other
     //========================================
 
     /** Fetches the character content of a Clob (SQL Character Large OBject, LONG VARCHAR) column
