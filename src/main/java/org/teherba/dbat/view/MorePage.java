@@ -50,9 +50,10 @@ public class MorePage {
 	/** Processes an http GET request
 	 *  @param request request with header fields
 	 *  @param response response with writer
+	 *	@param tableFactory factory for table serializers
 	 *  @throws IOException
 	 */
-	public void forward(HttpServletRequest request, HttpServletResponse response) {
+	public void forward(HttpServletRequest request, HttpServletResponse response, TableFactory tableFactory) {
 		try {
 			PrintWriter out = response.getWriter();
 			request.setCharacterEncoding("UTF-8");
@@ -90,7 +91,6 @@ public class MorePage {
 			String mode         = "html";
 			String language     = "en";
 			String specName     = "?";
-			TableFactory factory = new TableFactory();
 			Map parameterMap = request.getParameterMap(); // do not! use /*<1.5*/<String, String[]>/*1.5>*/
 			Iterator /*<1.5*<String>*1.5>*/ parmIter = parameterMap.keySet().iterator();
 			StringBuffer inputFields = new StringBuffer(256);
@@ -203,9 +203,9 @@ public class MorePage {
 				index ++;
 			} // while index
 			out.write("</select>\n</td>\n<td>\n<select name=\"mode\" size=\"");
-			out.write(String.valueOf(factory.getCount()));
+			out.write(String.valueOf(tableFactory.getCount()));
 			out.write("\">\n");
-			Iterator /*<1.5*/<BaseTable>/*1.5>*/ iter = factory.getIterator();
+			Iterator /*<1.5*/<BaseTable>/*1.5>*/ iter = tableFactory.getIterator();
 			while (iter.hasNext()) {
 				BaseTable tableFormat = (BaseTable) iter.next();
 				String code = tableFormat.getFirstFormatCode();
@@ -215,7 +215,18 @@ public class MorePage {
 						  + code + " - " + tableFormat.getDescription(language) + "</option>\n");
 			} // while iter
 			out.write("</select><p />&nbsp;\n</td><td>");
-			out.write("<ul>\n<li><a href=\"index.html\">");
+			out.write("<ul>\n");
+
+			out.write("<li><a href=\"servlet?view=con\">");
+			if (false) {
+			} else if (language.startsWith("de")) {
+				out.write("SQL-Konsole");
+			} else {
+				out.write("SQL Console");
+			}
+			out.write("\n</li>\n");
+
+			out.write("<li><a href=\"index.html\">");
 			if (false) {
 			} else if (language.startsWith("de")) {
 				out.write("&Uuml;bersicht");
@@ -229,7 +240,9 @@ public class MorePage {
 			} else {
 				out.write("Regex Validation</a>");
 			}
-			out.write("\n</li>\n<li><a href=\"servlet?spec=describe\">");
+			out.write("\n</li>\n");
+
+			out.write("<li><a href=\"servlet?spec=describe\">");
 			if (false) {
 			} else if (language.startsWith("de")) {
 				out.write("DDL</a> einer Tabelle oder View");

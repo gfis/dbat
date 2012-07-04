@@ -1034,6 +1034,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 if (connectionId    != null) {
                     config.addProperties(connectionId + ".properties");
                     config.setConnectionId(connectionId);
+                } else {
+                	config.setConnectionId(); // default: take first in list
                 }
                 int lastSlashPos = specName.lastIndexOf("/");
                 String subDirectory = urlPath + (lastSlashPos < 0 ? "" : specName.substring(0, lastSlashPos + 1));

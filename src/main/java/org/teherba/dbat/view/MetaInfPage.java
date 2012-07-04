@@ -28,11 +28,10 @@ import  org.apache.log4j.Logger;
 
 /** This class prints the metadata for the application:
  *	<ul>
- *	<li>License</li>
- *	<li>JAR Manifest</li>
+ *	<li>License,</li>
+ *	<li>JAR Manifest, and</li>
  *	<li>Notices for included software packages</li>
  *	</ul>
- *	The code is extracted from the former <em>metaInf.jsp</em>.
  *  @author Dr. Georg Fischer
  */
 public class MetaInfPage {
@@ -108,7 +107,7 @@ public class MetaInfPage {
                     out.println(line);
                 } // while
             } // not "package"
-            out.write("</pre>\n</tt>\n<p>\nBack to the <a href=\"index.html\">DBAT input form</a>\n");
+            out.write("</pre>\n</tt>\n<p>\nBack to the <a href=\"index.html\">Dbat input form</a>\n");
             out.write("<br />\nQuestions, remarks to: <a href=\"mailto:punctum@punctum.com\">Dr. Georg Fischer</a></p>");
             out.write("</body></html>\n");
 		} catch (Exception exc) {

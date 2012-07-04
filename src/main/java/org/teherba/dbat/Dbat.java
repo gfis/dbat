@@ -68,7 +68,7 @@ import  java.io.Reader;
 import  java.nio.channels.Channels;
 import  java.nio.channels.ReadableByteChannel;
 import  java.nio.channels.WritableByteChannel;
-import  java.util.HashMap;
+import  java.util.LinkedHashMap;
 import  java.util.regex.Pattern;
 import	javax.sql.DataSource;
 import  javax.xml.parsers.SAXParser;
@@ -135,7 +135,7 @@ public class Dbat implements Serializable {
     private PrintWriter tableWriter;
 
     /** Delivers <em>SomeTable</em>s */
-    private TableFactory 	factory;
+    private TableFactory 	tableFactory;
 
     /** Properties and methods specific for one elementary sequence of SQL instructions */
     private SQLAction 		sqlAction;
@@ -160,7 +160,7 @@ public class Dbat implements Serializable {
         config.setSeparator		("\t");         // -s
         config.setDefaultSchema	("");
         verbose         		= 0;			// -v
-        factory         		= new TableFactory();
+        tableFactory      		= new TableFactory();
     } // initialize
 
     /** Initializes the class for the 1st (or 2nd, 3rd etc) call of {@link #processArguments} et al.
@@ -168,7 +168,7 @@ public class Dbat implements Serializable {
      *	@param dsMap maps connection ids to pre-initialized DataSources, 
      *	see {@link DbatServlet} and {@link DBCPoolingListener}.
      */
-    public void initialize(int callType, HashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap) {
+    public void initialize(int callType, LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap) {
     	initialize(callType);
     	config					= new Configuration();
     	config.configure		(callType, dsMap);
@@ -542,7 +542,7 @@ public class Dbat implements Serializable {
                 config.setSeparator("");
             }
             config.setOutputFormat(outputFormat);
-            BaseTable tableSerializer = factory.getTableSerializer(outputFormat);
+            BaseTable tableSerializer = tableFactory.getTableSerializer(outputFormat);
             tableSerializer.setTargetEncoding(config.getEncoding(1));
             tableSerializer.setSeparator     (config.getSeparator());
             tableSerializer.setInputURI      (config.getInputURI());
@@ -613,7 +613,8 @@ public class Dbat implements Serializable {
                 default:
                 case '?':
                 case 'h':
-                    Messages.usage(config.getLanguage());
+                    // Messages.usage(config.getLanguage());
+		            System.out.println(Messages.getHelpText(config.getLanguage(), tableFactory));
                     break;
                 case 'n':
                     sqlAction.setWithHeaders(false);

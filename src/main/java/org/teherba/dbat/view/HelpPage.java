@@ -20,6 +20,7 @@
  */
 package org.teherba.dbat.view;
 import  org.teherba.dbat.Messages;
+import  org.teherba.dbat.format.TableFactory;
 import  java.io.PrintWriter;
 import  java.util.Enumeration;
 import  java.util.Iterator;
@@ -51,9 +52,10 @@ public class HelpPage {
 	/** Processes an http GET request
 	 *  @param request request with header fields
 	 *  @param response response with writer
+	 *	@param tableFactory factory for table serializers
 	 *  @throws IOException
 	 */
-	public void forward(HttpServletRequest request, HttpServletResponse response) {
+	public void forward(HttpServletRequest request, HttpServletResponse response, TableFactory tableFactory) {
 		try {
 			PrintWriter out = response.getWriter();
 			response.setCharacterEncoding("UTF-8");
@@ -100,7 +102,7 @@ public class HelpPage {
                 out.write(" Commandline Options");
             }
             out.write("</h3>\n<pre>\n");
-            out.write(Messages.getHelpText(language));
+            out.write(Messages.getHelpText(language, tableFactory));
             out.write("\n</pre>\n<p><a href=\"servlet?view=more&lang=");
             out.write(language);
             out.write("\">");

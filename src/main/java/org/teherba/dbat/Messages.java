@@ -150,9 +150,10 @@ public class Messages implements Serializable {
     /** Get the tools version, the explanation of the options and
      *  the available JDBC drivers.
      *  @param language one of "en", "de"
+	 *	@param tableFactory factory for table serializers
      *  @return a block of plain text
      */
-    public static String getHelpText(String language) {
+    public static String getHelpText(String language, TableFactory tableFactory) {
         StringBuffer help = new StringBuffer(2048);
         final String SPACE2 = "  ";
         help.append(Configuration.getVersionString() + " - DataBase Application Tool" + "\n");
@@ -191,7 +192,7 @@ public class Messages implements Serializable {
         } else {
             help.append("Implemented output formats (-m):\n");
         }
-        help.append((new TableFactory()).getHelpList(language));
+        help.append(tableFactory.getHelpList(language));
         return help.toString();
     } // getHelpText
 
@@ -384,6 +385,7 @@ public class Messages implements Serializable {
     /** Display help: commandline options and arguments
      *  @param language language to be used for text output
      */
+/*
     public static void usage(String language) {
         try {
             System.out.println(getHelpText(language));
@@ -392,7 +394,7 @@ public class Messages implements Serializable {
             // log.error(exc.getMessage(), exc);
         }
     } // usage
-
+*/
     //================
     // Main method
     //================
@@ -407,7 +409,7 @@ public class Messages implements Serializable {
         if (args.length > 0) {
             language = args[0];
         }
-        help.usage(language);
+        System.out.println(Messages.getHelpText(language, new TableFactory()));
     } // main
 
 } // Messages

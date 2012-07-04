@@ -35,6 +35,7 @@ import  java.sql.Connection;
 import  java.sql.DriverManager;
 import  java.util.HashMap;
 import  java.util.Iterator;
+import  java.util.LinkedHashMap;
 import  java.util.Map;
 import  java.util.Properties;
 import  javax.sql.DataSource;
@@ -112,7 +113,19 @@ public class Configuration implements Serializable {
      */
     public void setConnectionId(String connectionId) {
         this.connectionId = connectionId;
-    } // setConnectionId
+    } // setConnectionId(1)
+    /** Sets the connection id to the default: take first key in {@link #dsMap}
+     */
+    public void setConnectionId() {
+    	if (dsMap != null) {
+	    	boolean busy = true;
+    		Iterator/*<1.5*/<String>/*1.5>*/ miter = dsMap.keySet().iterator();
+    		while (busy && miter.hasNext()) {
+    			this.connectionId = miter.next();
+	    		busy = false; // take first only
+    		} // while busy
+    	} // dsMap != null
+    } // setConnectionId(0)
 
     /** Schema which is used when none is specified with the table's name */
     private String  defaultSchema;
@@ -300,7 +313,7 @@ public class Configuration implements Serializable {
      */
     public void setParameterMap(Map/*<1.5*/<String, String[]>/*1.5>*/  map) {
         parameterMap = new HashMap/*<1.5*/<String, String[]>/*1.5>*/();
-        Iterator<String> piter = map.keySet().iterator();
+        Iterator/*<1.5*/<String>/*1.5>*/ piter = map.keySet().iterator();
         while (piter.hasNext()) {
             String key = piter.next();
             if (key.startsWith("amp;")) {
@@ -499,7 +512,7 @@ public class Configuration implements Serializable {
     } // getCallType
 
     /** Maps connection identifiers (short database instance ids) to {@link DataSource Datasources} */
-    private HashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap;
+    private LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap;
 
     //================================
     // Constructor and initialization
@@ -529,7 +542,7 @@ public class Configuration implements Serializable {
         setNamespacePrefix("");
         setWithHeaders  (true);
         setFetchLimit   (1947062906); // very high
-        encoding        = new String[2];
+        encoding        = new String[2]; // [0] = input, [1] = output
         setEncoding     (0, "ISO-8859-1"); // -e default for input and output
         setInputURI     (null); // no default
         setLanguage     ("en");
@@ -554,7 +567,7 @@ public class Configuration implements Serializable {
      *  @param dsMap maps connection ids to pre-initialized DataSources,
      *  see {@link DbatServlet} and {@link DBCPoolingListener}.
      */
-    public void configure(int callType, HashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap) {
+    public void configure(int callType, LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap) {
         configure(callType);
         this.dsMap = dsMap;
     } // configure(callType, dsMap)
