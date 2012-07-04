@@ -114,7 +114,7 @@ public class DbatServlet extends HttpServlet {
             int ipair = 0;
             while (ipair < pairs.length) {
                 String[] parts = pairs[ipair].split("\\:");
-                String connectionId = "worddb";
+                String connectionId = "mysql";
                 String dsName       = connectionId;
                 if (false) {
                 } else if (parts.length == 0) {
@@ -388,6 +388,7 @@ public class DbatServlet extends HttpServlet {
                 String language = getInputField(request, "lang"     , "en"      );
                 String separator= getInputField(request, "sep"      , ";"       );
                 String intext   = getInputField(request, "intext"   , ";"       );
+                String connectionId = request.getParameter("conn"); // maybe null = not set
                 int fetchLimit  = getInputField(request, "fetch"    , 64        );
                 if (mode.compareToIgnoreCase("tsv") == 0) {
                     separator   = "\t";
@@ -403,6 +404,12 @@ public class DbatServlet extends HttpServlet {
                 config.setLanguage(language);
                 config.setFetchLimit(fetchLimit);
                 config.setTableSerializer(tbSerializer);   
+                if (connectionId    != null) {
+                    config.addProperties(connectionId + ".properties");
+                    config.setConnectionId(connectionId);
+                } else {
+                	config.setConnectionId(); // default: take first in list
+                }
                 /* initializeAction */
                 SQLAction sqlAction  = new SQLAction(config);
                 TableMetaData tbMetaData = new TableMetaData(config);

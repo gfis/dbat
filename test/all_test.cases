@@ -266,6 +266,12 @@ WGET test.redir0
 TEST Y09 redirected spec file, wait time 9s, German
 WGET test.redir9
 #-------------------
+TEST SC1 show SQL console page
+WGET test/index view=con
+
+TEST SC2 submit SQL from console
+WGET test/index view=con2 enc=ISO-8859-1 lang=en mode=html conn=worddb intext=select+*+from+de1
+#-------------------
 TEST CT1 tokenizing preprogrammed commandline string
 CRUN CommandTokenizer
 

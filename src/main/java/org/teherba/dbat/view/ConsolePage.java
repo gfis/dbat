@@ -97,7 +97,7 @@ public class ConsolePage {
             String encoding     = "ISO-8859-1";
             String mode         = "html";
             String language     = "en";
-            String connectionId = "worddb";
+            String connectionId = "mysql";
             if (dsMap != null && ! dsMap.isEmpty()) {
 	            Iterator /*<1.5*/<String>/*1.5>*/ citer = dsMap.keySet().iterator();
 	            boolean busy = true;
@@ -128,10 +128,10 @@ public class ConsolePage {
                 } else if (name.equals("conn"       )) {
                     connectionId = values[0];
                 } else if (name.equals("intext"     )) {
-                    intext   = values[0];
+                    intext   = values[0].trim();
                 } else if (name.equals("fetch"      )) {
                     try {
-                    	fetchLimit = Integer.parseInt(values[0]);
+                    	fetchLimit = Integer.parseInt(values[0].trim());
                     } catch (Exception exc) {
                     	fetchLimit = 64;
                     }
