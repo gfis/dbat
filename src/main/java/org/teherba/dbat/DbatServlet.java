@@ -106,9 +106,8 @@ public class DbatServlet extends HttpServlet {
         try {
             envContext = (Context) new InitialContext().lookup("java:comp/env"); // get the environment naming context
             dsMap = new LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/(4);
-            String dsList = ((String) envContext.lookup("dataSources"));
-            log.info("Dbat.Servlet.init.dsList=" + dsList);
-            String[] connectionIds = dsList.split("\\W+");
+            String dsList = ((String) envContext.lookup("dataSources")).replaceAll("\\s+", "");
+            log.info("DbatServlet: dsList=\"" + dsList + "\"");
         
             String[] pairs = dsList.split("\\,");
             int ipair = 0;
@@ -138,7 +137,7 @@ public class DbatServlet extends HttpServlet {
                 } else { // more than one ":"
                     // ignore
                 }
-                log.info("create connectionId=" + connectionId + " mapped to " + dsName);
+                log.info("DbatServlet: connectionId=\"" + connectionId + "\" mapped to \"" + dsName + "\"");
                 dsMap.put(connectionId, (DataSource) envContext.lookup("jdbc/" + dsName));
                 ipair ++;
             } // while ipair
@@ -408,7 +407,7 @@ public class DbatServlet extends HttpServlet {
                     config.addProperties(connectionId + ".properties");
                     config.setConnectionId(connectionId);
                 } else {
-                	config.setConnectionId(); // default: take first in list
+                    config.setConnectionId(); // default: take first in list
                 }
                 /* initializeAction */
                 SQLAction sqlAction  = new SQLAction(config);

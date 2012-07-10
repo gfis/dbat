@@ -1,6 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
-	2012-06-27: Windows drive letter in relative file entity declaration
+    2012-06-27: Windows drive letter in relative file entity declaration
     2012-06-19: parameter not found in <listbox> => select 1st <option>; <choose> not for static formats
     2012-06-13: <var> for prepared statements in addition to <parm>
     2012-05-03: target="_blank" for Excel, spec
@@ -287,7 +287,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     } // setSpecPathAndName
 
     /** whitespace separated list of keywords: 
-     *	"none out time dbat script xls more plain"
+     *  "none out time dbat script xls more plain"
      */
     private String trailerSelect;
     /** default value for {@link #trailerSelect} */
@@ -363,34 +363,34 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     //====================
 
     /** Gets the optional trailer with timestamp and links.
-     *	This is the language-independant code. 
-     *	Language-specific words are added in {@link Messages#getTrailerText}.
+     *  This is the language-independant code. 
+     *  Language-specific words are added in {@link Messages#getTrailerText}.
      *  @param trailerSelect a whitespace (or comma) separated list of keywords: 
-     *	"none plain out time dbat script xls more"
+     *  "none plain out time dbat script xls more"
      *  @param language ISO country code "en", "de"
      *  @param specName base name of the specification with subdirectory, without ".xml"
      *  @return formatted trailer line or empty string if trailer is suppressed by <code>select="none"</code>
      */
     private String getTrailer(String trailerSelect, String language, String specName) {
-    	String result = "";
-		if (trailerSelect == null) { // missing => all, empty => none, separated by ","
-		    trailerSelect = TRAILER_ALL;
-		} else if (trailerSelect.length() == 0) {
-		    trailerSelect = " none";
-		} else {
-		    trailerSelect = " " + trailerSelect.toLowerCase().replaceAll("\\W+", " "); // \\W+ = sequences of non-word characters
-		}
-		if (! trailerSelect.contains(" none")) { // trailer is not suppressed
-	        if (! (tbSerializer instanceof HTMLTable)) {
-	            trailerSelect += " plain";
-	        }
-	        String specUrl 	= urlPath + specName + (config.getCallType() == Configuration.CLI_CALL ? "" : ".xml");                                  
-	        String xlsUrl  	= "servlet?&amp;mode=xls" 
-	        				+ repeatURLParameters();
-	        String moreUrl 	= "servlet?&amp;view=more&amp;mode=" + tbSerializer.getOutputFormat()	
-	        				+ repeatURLParameters();
-	        result = Messages.getTrailerText(trailerSelect, language, specUrl, specName, xlsUrl, moreUrl);
-    	} // not suppressed
+        String result = "";
+        if (trailerSelect == null) { // missing => all, empty => none, separated by ","
+            trailerSelect = TRAILER_ALL;
+        } else if (trailerSelect.length() == 0) {
+            trailerSelect = " none";
+        } else {
+            trailerSelect = " " + trailerSelect.toLowerCase().replaceAll("\\W+", " "); // \\W+ = sequences of non-word characters
+        }
+        if (! trailerSelect.contains(" none")) { // trailer is not suppressed
+            if (! (tbSerializer instanceof HTMLTable)) {
+                trailerSelect += " plain";
+            }
+            String specUrl  = urlPath + specName + (config.getCallType() == Configuration.CLI_CALL ? "" : ".xml");                                  
+            String xlsUrl   = "servlet?&amp;mode=xls" 
+                            + repeatURLParameters();
+            String moreUrl  = "servlet?&amp;view=more&amp;mode=" + tbSerializer.getOutputFormat()   
+                            + repeatURLParameters();
+            result = Messages.getTrailerText(trailerSelect, language, specUrl, specName, xlsUrl, moreUrl);
+        } // not suppressed
         return result;
     } // getTrailer
     
@@ -984,7 +984,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 colBuffer.setLength(0); // start character assembly for all subordinate elements
 
             } else if (qName.equals(ROOT_TAG    )) {
-		        trailerSelect   	= TRAILER_ALL; // assume that there will be no <trailer /> element
+                trailerSelect       = TRAILER_ALL; // assume that there will be no <trailer /> element
                 //--------
                 String encAttr      = attrs.getValue("encoding");
                 if (encAttr         != null) {
@@ -1035,7 +1035,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     config.addProperties(connectionId + ".properties");
                     config.setConnectionId(connectionId);
                 } else {
-                	config.setConnectionId(); // default: take first in list
+                    config.setConnectionId(); // default: take first in list
                 }
                 int lastSlashPos = specName.lastIndexOf("/");
                 String subDirectory = urlPath + (lastSlashPos < 0 ? "" : specName.substring(0, lastSlashPos + 1));
@@ -1492,7 +1492,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 
             } else if (qName.equals(TRAILER_TAG )) {
                 trailerSelect = attrs.getValue("select");
-				// additional reasoning in getTrailer
+                // additional reasoning in getTrailer
 
             } else if (qName.equals(UPDATE_TAG  )) {
                 parentStmt = elem;
@@ -1990,10 +1990,10 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             } else if (systemId.startsWith("file://")) {
             } else if (systemId.startsWith("ftp://" )) {
             } else { // when no schema, interpret URL as relative to realPath
-            	if (realPath.matches("\\w\\:.*")) { // Windows drive letter 
-            		realPath = "/" + realPath.substring(0, 1) +  "|/" + realPath.substring(2);
-            		// file://e:/webapps... => file:///e|/webapps ... is understood by IE also
-            	} // Windows
+                if (realPath.matches("\\w\\:.*")) { // Windows drive letter 
+                    realPath = "/" + realPath.substring(0, 1) +  "|/" + realPath.substring(2);
+                    // file://e:/webapps... => file:///e|/webapps ... is understood by IE also
+                } // Windows
                 url = "file://" + (realPath + systemId).replaceAll("//", "/");
                 result = new InputSource(url);
             }

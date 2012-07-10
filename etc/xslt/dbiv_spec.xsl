@@ -2,6 +2,7 @@
 <!--
     Generates a Dbat specification for an interactive view (C/R/U/D) äöü
     @(#) $Id: dbiv_spec.xsl 958 2012-06-06 06:02:39Z gfis $
+    2012-07-10: copy <where> condition with <parm>
     2012-06-27: timestamp(19) with space
     2012-06-25: without sql_state and update_count
     2012-06-21: <text label="..." /> generates 2 <ht:td /> elements; &#9; => &#32;&#x20;
@@ -802,7 +803,13 @@
     <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
     <where>
         <xsl:if test="string-length($view/iv:where) &gt; 0">
-            <xsl:value-of select="concat('(', $view/iv:where, ') ')" />
+            <xsl:value-of select="'('" />
+            <xsl:for-each select="$view/iv:where/node()">
+                <xsl:copy>
+                    <xsl:apply-templates select="@*|node()" />
+                </xsl:copy>
+            </xsl:for-each>
+            <xsl:value-of select="') '" />
         </xsl:if>
         <xsl:for-each select="$view/iv:field[string-length(@key) &gt; 0]">
             <xsl:if test="position() &gt; 1 or string-length($view/iv:where) &gt; 0">

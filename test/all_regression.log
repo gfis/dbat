@@ -1,12 +1,12 @@
 Test A00 
-echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-07-04 18:15:06
+echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-07-10 21:50:05
 *** A00.prev.tst	2012-06-27 21:24:35.000000000 +0200
---- A00.this.tst	2012-07-04 18:15:07.000000000 +0200
+--- A00.this.tst	2012-07-10 21:50:06.000000000 +0200
 ***************
 *** 1 ****
 ! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-27 21:24:34
 --- 1 ----
-! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-07-04 18:15:06
+! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-07-10 21:50:05
 -- FAILED A00 
 Test A01 parameterized link
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/parmlink.xml
@@ -110,6 +110,9 @@ xsltproc ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud04.iv.xml
 Test XS5 generate a non-altering search form
 xsltproc --stringparam alter 0 ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud01.iv.xml
 ++ passed XS5 generate a non-altering search form
+Test XS6 whereClause copied with parm
+xsltproc --stringparam ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud05.iv.xml
+++ passed XS6 whereClause copied with parm
 Test L01 List Box and List Parameters - init values
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/listbox"
 ++ passed L01 List Box and List Parameters - init values
@@ -143,7 +146,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.selec01"
 Test Y06 XML syntax error, CLI
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/badxml.xml 2> nul
 *** Y06.prev.tst	2012-06-27 21:24:53.000000000 +0200
---- Y06.this.tst	2012-07-04 18:15:23.000000000 +0200
+--- Y06.this.tst	2012-07-10 21:50:25.000000000 +0200
 ***************
 *** 1 ****
 ! java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/badxml.xml
@@ -153,12 +156,12 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 *** 13 ****
 ! 2012-06-27 21:24:53,405 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
 --- 13 ----
-! 2012-07-04 18:15:23,628 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
+! 2012-07-10 21:50:25,293 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
 ***************
 *** 26 ****
 ! 2012-06-27 21:24:53,408 3    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 --- 26 ----
-! 2012-07-04 18:15:23,632 4    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+! 2012-07-10 21:50:25,296 3    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 ***************
 *** 34,36 ****
 ! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:694)
@@ -167,7 +170,7 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 --- 34,36 ----
 ! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:695)
 ! 	at org.teherba.dbat.Dbat.main(Dbat.java:715)
-! 2012-07-04 18:15:23,633 5    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+! 2012-07-10 21:50:25,297 4    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 ***************
 *** 44,45 ****
 ! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:694)
@@ -191,6 +194,9 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/index&view=con"
 Test SC2 submit SQL from console
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/index&view=con2&enc=ISO-8859-1&lang=en&mode=html&conn=worddb&intext=select+*+from+de1"
 ++ passed SC2 submit SQL from console
+Test SC3 submit SQL from console with limit 8
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/index&view=con2&enc=ISO-8859-1&lang=en&mode=html&conn=worddb&intext=select+*+from+de1&fetch=8"
+++ passed SC3 submit SQL from console with limit 8
 Test CT1 tokenizing preprogrammed commandline string
 java -cp ../dist/dbat.jar org.teherba.dbat.CommandTokenizer
 ++ passed CT1 tokenizing preprogrammed commandline string
@@ -603,6 +609,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed XS3 generate an interactive form for native SQL with CHAR keys
 ++ passed XS4 generate an interactive form with AJAX subquery
 ++ passed XS5 generate a non-altering search form
+++ passed XS6 whereClause copied with parm
 ++ passed L01 List Box and List Parameters - init values
 ++ passed L02 List Box and List Parameters - preset parameters
 ++ passed LT1 Textarea - init values
@@ -618,6 +625,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed Y09 redirected spec file, wait time 9s, German
 ++ passed SC1 show SQL console page
 ++ passed SC2 submit SQL from console
+++ passed SC3 submit SQL from console with limit 8
 ++ passed CT1 tokenizing preprogrammed commandline string
 ++ passed CT2 tokenizing from file
 ++ passed CT3 tokenizing from file with SQL syntax
@@ -744,4 +752,4 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed VA2 var elements with data types
 ++ passed VA3 echo with var elements
    2 FAILED.tests
- 174 passed.tests
+ 176 passed.tests

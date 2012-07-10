@@ -37,7 +37,7 @@ Output Format</td>
 <option value="UTF-8">UTF-8</option>
 </select>
 <p /><span class="bold">Fetch Limit</span><br />
-<input type="text" size="4" value="64" />
+<input type="text" name="fetch" size="8" value="64" />
 </td>
 <td>
 <select name="lang" size="2">

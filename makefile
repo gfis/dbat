@@ -18,7 +18,6 @@ SRC=src/main/java/org/teherba/dbat
 TOMC=/var/lib/tomcat/webapps/dbat
 METHOD=get
 TAB=relatives
-TESTER=batch_test.pl
 TESTER=all_tester.pl
 TESTDIR=test
 
@@ -78,7 +77,7 @@ exit1:
 	java -jar dist/dbat.jar -c dbat -n user_groups
 #---------------------------------------------------
 clean_spec:
-	perl $(TESTDIR)/get_scripts.pl $(TESTDIR)/all.tca | sort | uniq > $(TESTDIR)/used.tmp
+	perl $(TESTDIR)/get_scripts.pl $(TESTDIR)/all_test.cases | sort | uniq > $(TESTDIR)/used.tmp
 	find web/spec -iname "*.xml" -printf "%P\n" | sort  > $(TESTDIR)/found.tmp
 	diff -y --suppress-common-lines $(TESTDIR)/used.tmp $(TESTDIR)/found.tmp
 #---------------------------------------------------
@@ -90,6 +89,8 @@ parm_xref_gen:
 									>  etc/sql/parm_xref_insert.sql
 	find web/spec -iname "*.xml" -printf "%P\n" \
 	| grep -v badxml \
+	| grep -v '.iv.xml' \
+	| grep -vE "incl" \
 	| sed -e "s/.xml$$//" \
 	| xargs -l -iqqq xsltproc --novalid \
 	--stringparam file qqq \
@@ -234,7 +235,7 @@ zipart:
 	src/main/java/org/teherba/dbat/SpecificationHandler.java \
 	etc/xslt/dbiv_spec.xsl \
 	etc/xslt/dbiv_sproc.xsl \
-	$(TESTDIR)/all.tca \
+	$(TESTDIR)/all_test.cases \
 	web/spec/test/crud0*.xml \
 	makefile
 #--------------------------------------

@@ -224,6 +224,9 @@ XSLT ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud04.iv.xml
 
 TEST XS5 generate a non-altering search form
 XSLT --stringparam alter 0 ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud01.iv.xml
+
+TEST XS6 whereClause copied with parm
+XSLT --stringparam  ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud05.iv.xml
 #-------------------
 TEST L01 List Box and List Parameters - init values
 WGET test/listbox
@@ -271,6 +274,9 @@ WGET test/index view=con
 
 TEST SC2 submit SQL from console
 WGET test/index view=con2 enc=ISO-8859-1 lang=en mode=html conn=worddb intext=select+*+from+de1
+
+TEST SC3 submit SQL from console with limit 8
+WGET test/index view=con2 enc=ISO-8859-1 lang=en mode=html conn=worddb intext=select+*+from+de1 fetch=8
 #-------------------
 TEST CT1 tokenizing preprogrammed commandline string
 CRUN CommandTokenizer

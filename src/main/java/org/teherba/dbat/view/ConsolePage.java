@@ -34,6 +34,7 @@ import  org.apache.log4j.Logger;
  *  <li>a language,</li>
  *  <li>an encoding, </li>
  *  <li>an output format (mode),</li>
+ *  <li>the maximum number of rows to be fetched,</li>
  *  <li>the database connection id to be used,</li>
  *  <li>a text area where an SQL statement can be input.</li>
  *  </ul>
@@ -99,15 +100,15 @@ public class ConsolePage {
             String language     = "en";
             String connectionId = "mysql";
             if (dsMap != null && ! dsMap.isEmpty()) {
-	            Iterator /*<1.5*/<String>/*1.5>*/ citer = dsMap.keySet().iterator();
-	            boolean busy = true;
-	            while (busy && citer.hasNext()) {
-	                connectionId = (String) citer.next();
-	                busy = false; // take first only
-	            } // while citer
+                Iterator /*<1.5*/<String>/*1.5>*/ citer = dsMap.keySet().iterator();
+                boolean busy = true;
+                while (busy && citer.hasNext()) {
+                    connectionId = (String) citer.next();
+                    busy = false; // take first only
+                } // while citer
             }
             String intext       = "";
-            int fetchLimit		= 64;
+            int fetchLimit      = 64;
             
             Map parameterMap = request.getParameterMap(); // do not! use /*<1.5*/<String, String[]>/*1.5>*/
             Iterator /*<1.5*<String>*1.5>*/ parmIter = parameterMap.keySet().iterator();
@@ -131,9 +132,9 @@ public class ConsolePage {
                     intext   = values[0].trim();
                 } else if (name.equals("fetch"      )) {
                     try {
-                    	fetchLimit = Integer.parseInt(values[0].trim());
+                        fetchLimit = Integer.parseInt(values[0].trim());
                     } catch (Exception exc) {
-                    	fetchLimit = 64;
+                        fetchLimit = 64;
                     }
                 } else { // unknown parameter name - ignore
                 } // unknown
@@ -220,7 +221,7 @@ public class ConsolePage {
                 out.write("Fetch Limit");
             }
             out.write("</span><br />\n");
-            out.write("<input type=\"text\" size=\"4\" value=\"");
+            out.write("<input type=\"text\" name=\"fetch\" size=\"8\" value=\"");
             out.write(String.valueOf(fetchLimit));
             out.write("\" />\n");
 

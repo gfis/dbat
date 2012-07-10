@@ -17,8 +17,8 @@
     
     <ht:h2>Missing Link Targets</ht:h2>
 	<select distinct="yes">
-		<col label="Target" name="spec"	>spec</col>
-		<col label="referred in"		>file</col>
+		<col label="Target" name="spec"	href="servlet?&amp;spec=">spec</col>
+		<col label="referred in"		href="servlet?&amp;spec=">file</col>
 		<from>parm_xref a
 		</from>
 		<where>a.spec not in (
@@ -28,14 +28,14 @@
 			)
 		</where>
 		<order by="spec,file" />
-		<counter desc="Missing Target,s" />
+		<counter desc="Missing Targets" />
 	</select>
 
     <ht:h2>Missing Parameter Usage in Target</ht:h2>
 	<select distinct="yes">
-		<col label="Target"             >spec</col>
+		<col label="Target"             href="servlet?&amp;spec=">spec</col>
 		<col label="Parameter"          >name</col>
-		<col label="referred in"		>file</col>
+		<col label="referred in"		href="servlet?&amp;spec=">file</col>
 		<col label="Element"          	>element</col>
 		<from>parm_xref a
 		</from>
@@ -60,10 +60,10 @@
     <ht:h2><ht:a href="servlet?spec=index">Dbat</ht:a> - 
     	Specification Outline</ht:h2>
 	<select group="spec">
-		<col label="Spec" name="spec" style="visible">spec</col>
-		<col label="Name" 	 >name</col>
-		<col label="referred in">file</col>
-		<col label="Element" >element</col>
+		<col label="Specification" name="spec" style="visible" href="servlet?&amp;spec=">spec</col>
+		<col label="Parameter Name" >name</col>
+		<col label="referred in" href="servlet?&amp;spec=">file</col>
+		<col label="XML-Element" >element</col>
 		<from>parm_xref
 		</from>
 		<where>1=1

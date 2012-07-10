@@ -1,27 +1,27 @@
 /*  Dbat.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
- *	2012-01-10: XML parsing error message with line+column numbers
+ *  2012-01-10: XML parsing error message with line+column numbers
  *  2011-11-11: set|getVerbose; Martini
- *	2011-09-13: prepareSeparator with \n, \t replacement
- *	2011-08-24: -m fix implies -s ""
+ *  2011-09-13: prepareSeparator with \n, \t replacement
+ *  2011-08-24: -m fix implies -s ""
  *  2011-08-02: -sp is procedure statement separator
- *	2011-07-19: "-s" will no longer imply "-m csv" because of "-m taylor" 
+ *  2011-07-19: "-s" will no longer imply "-m csv" because of "-m taylor" 
  *  2011-05-31: formalized tests with test/batch_test.pl
- *	2011-04-07: remove schema/catalog comment output
- *	2011-03-29: set/getWithHeaders
+ *  2011-04-07: remove schema/catalog comment output
+ *  2011-03-29: set/getWithHeaders
  *  2011-03-23: getTableName
  *  2011-02-16: <describe> element
- *	2010-10-18: public openConnection for gramword
- *	2010-09-21: better HTML error messages
+ *  2010-10-18: public openConnection for gramword
+ *  2010-09-21: better HTML error messages
  *  2010-09-16: subpackage format, most methods public, Version 4, setDescription used in more/help.jsp
  *  2010-09-15: -a = aggregation and -g = group change / new heading
  *  2010-03-17: major revision with TableMetaData instead of ColumnList
- *	2010-03-08: callStoredProcedure
- * 	2010-02-18: trim() for CHAR also
+ *  2010-03-08: callStoredProcedure
+ *  2010-02-18: trim() for CHAR also
  *  2010-02-02: property values separated by ';'; token instead of password
  *  2009-08-11: commit always (even SELECT) for DB2
  *  2009-08-06: trap MalformedInputException
- *	2008-02-13: Java 1.5 types, completeColumns
+ *  2008-02-13: Java 1.5 types, completeColumns
  *  2007-02-28: -r didn't know current_column
  *  2007-01-17: use methods derived from BaseTable
  *  2007-01-10: maybe used from 'SpecHandler'; log4j; 'columns' for all column properties
@@ -32,8 +32,8 @@
  *  2006-05-27: for mysql
  *  2003-05-21, Dr. Georg Fischer: yet another implementation
  *
- *	to do:
- *	Manifest implementation version from SVN revision number, and not from build.number
+ *  to do:
+ *  Manifest implementation version from SVN revision number, and not from build.number
  *  batch insert 
  */
 /*
@@ -70,7 +70,7 @@ import  java.nio.channels.ReadableByteChannel;
 import  java.nio.channels.WritableByteChannel;
 import  java.util.LinkedHashMap;
 import  java.util.regex.Pattern;
-import	javax.sql.DataSource;
+import  javax.sql.DataSource;
 import  javax.xml.parsers.SAXParser;
 import  javax.xml.parsers.SAXParserFactory;
 import  org.xml.sax.InputSource;
@@ -90,44 +90,44 @@ public class Dbat implements Serializable {
     public final static String CVSID = "@(#) $Id$";
     /** log4j logger (category) */
     private Logger log;
-	/** Debugging switch */
-	private int debug = 0;
-	
+    /** Debugging switch */
+    private int debug = 0;
+    
     /** No-args Constructor
      */
     public Dbat() {
         log = Logger.getLogger(Dbat.class.getName());
     } // Constructor
 
-	//======================================
-	// Bean properties, getters and setters
-	//======================================
+    //======================================
+    // Bean properties, getters and setters
+    //======================================
     /** -f: name of file containing SQL statements */
     private String  srcFileName;
     /** Gets the source filename
      *  @return name of the file to be read
      */
     private String getSourceName() {
-    	return srcFileName;
+        return srcFileName;
     } // getSourceName
     /** Determines whether the source filename has some specified extension
-     *	@param extension desired file extension, for example ".xml" (with the dot)
+     *  @param extension desired file extension, for example ".xml" (with the dot)
      *  @return whether the filename ends with this extension
      */
     private boolean isSourceType(String extension) {
-    	return srcFileName.toLowerCase().endsWith(extension);
+        return srcFileName.toLowerCase().endsWith(extension);
     } // isSourceType
     /** Sets the source filename
      *  @param name name of the file to be read
      */
     private void setSourceName(String name) {
-    	srcFileName = name;
+        srcFileName = name;
     } // setSourceName
     
-	/** Code for main action to be performed */
-	private char    mainAction;
-	/** SQL on the commandline to be executed */
-	private String  argsSql;
+    /** Code for main action to be performed */
+    private char    mainAction;
+    /** SQL on the commandline to be executed */
+    private String  argsSql;
     /** -v: whether to print verbose remarks */
     private int verbose;
 
@@ -135,132 +135,132 @@ public class Dbat implements Serializable {
     private PrintWriter tableWriter;
 
     /** Delivers <em>SomeTable</em>s */
-    private TableFactory 	tableFactory;
+    private TableFactory    tableFactory;
 
     /** Properties and methods specific for one elementary sequence of SQL instructions */
-    private SQLAction 		sqlAction;
+    private SQLAction       sqlAction;
 
-	/** User defineable properties and the connection for the JDBC database */
-	private Configuration config;
+    /** User defineable properties and the connection for the JDBC database */
+    private Configuration config;
 
-	/** Get the configuration (for example in order to open a DB connection)
-	 *	@return configuration
-	 */
-	public Configuration getConfiguration() {
-		return config;
-	} // getConfiguration
-	
+    /** Get the configuration (for example in order to open a DB connection)
+     *  @return configuration
+     */
+    public Configuration getConfiguration() {
+        return config;
+    } // getConfiguration
+    
     /** Initializes the class for the 1st (or 2nd, 3rd etc) call of {@link #processArguments} et al.
-     *	@param callType whether the class is activated by CLI, WEB or SOAP
+     *  @param callType whether the class is activated by CLI, WEB or SOAP
      */
     public void initialize(int callType) {
-    	config					= new Configuration();
-    	config.configure		(callType);
-        config.setOutputFormat	("def");        // -m, will be changed to tsv below
-        config.setSeparator		("\t");         // -s
-        config.setDefaultSchema	("");
-        verbose         		= 0;			// -v
-        tableFactory      		= new TableFactory();
+        config                  = new Configuration();
+        config.configure        (callType);
+        config.setOutputFormat  ("def");        // -m, will be changed to tsv below
+        config.setSeparator     ("\t");         // -s
+        config.setDefaultSchema ("");
+        verbose                 = 0;            // -v
+        tableFactory            = new TableFactory();
     } // initialize
 
     /** Initializes the class for the 1st (or 2nd, 3rd etc) call of {@link #processArguments} et al.
-     *	@param callType whether the class is activated by CLI, WEB or SOAP
-     *	@param dsMap maps connection ids to pre-initialized DataSources, 
-     *	see {@link DbatServlet} and {@link DBCPoolingListener}.
+     *  @param callType whether the class is activated by CLI, WEB or SOAP
+     *  @param dsMap maps connection ids to pre-initialized DataSources, 
+     *  see {@link DbatServlet} and {@link DBCPoolingListener}.
      */
     public void initialize(int callType, LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap) {
-    	initialize(callType);
-    	config					= new Configuration();
-    	config.configure		(callType, dsMap);
-	} // initialize(2)
-	
-	/** Terminates the processing of SQL statements, 
-	 *	clean-up for the next invocation
-	 */
-	public void terminate() {
-		config.closeConnection();
-	} // terminate
-	
-	//========================
-	// Auxiliary methods 
-	//========================
-	
-	/** Removes optional quotes around a string
-	 *	@param quoted string with optional single or double quotes
-	 *	@return string content (without surrounding quotes)
-	 */
-	private String prepareSeparator(String quoted) {
-		String result = quoted;
-		int len = quoted.length();
+        initialize(callType);
+        config                  = new Configuration();
+        config.configure        (callType, dsMap);
+    } // initialize(2)
+    
+    /** Terminates the processing of SQL statements, 
+     *  clean-up for the next invocation
+     */
+    public void terminate() {
+        config.closeConnection();
+    } // terminate
+    
+    //========================
+    // Auxiliary methods 
+    //========================
+    
+    /** Removes optional quotes around a string
+     *  @param quoted string with optional single or double quotes
+     *  @return string content (without surrounding quotes)
+     */
+    private String prepareSeparator(String quoted) {
+        String result = quoted;
+        int len = quoted.length();
         if (len >= 2 && (quoted.startsWith("\"") || quoted.startsWith("\'"))) {
-        	if (quoted.charAt(0) == quoted.charAt(len - 1)) {
-				result = quoted.substring(1, len - 1);
+            if (quoted.charAt(0) == quoted.charAt(len - 1)) {
+                result = quoted.substring(1, len - 1);
             }
         }
         return result
-	        	.replaceAll("\\\\n", "\n")
-    	    	.replaceAll("\\\\r", "\r")
-        		.replaceAll("\\\\t", "\t")
-        		.replaceAll("\\\\\\\\", "\\")
-        		;
- 	} // prepareSeparator
-	  
-	//====================================================================
-	// The following 2 methods correspond to the Web interface
-	//====================================================================
-	
-	/** Parses an XML with a character reader and a SAX handler, and
-	 *	executes the generated SQL against the database
-	 *	@param charReader reader for input, already opened
-	 *	@param handler SAX handler for Dbat specifications, must be already configured
-	 *	@param tableSerializer serializer for output format
-	 */
-	public void parseXML(Reader charReader, SpecificationHandler handler, BaseTable tableSerializer) 
-			throws Exception {
-		try {
+                .replaceAll("\\\\n", "\n")
+                .replaceAll("\\\\r", "\r")
+                .replaceAll("\\\\t", "\t")
+                .replaceAll("\\\\\\\\", "\\")
+                ;
+    } // prepareSeparator
+      
+    //====================================================================
+    // The following 2 methods correspond to the Web interface
+    //====================================================================
+    
+    /** Parses an XML with a character reader and a SAX handler, and
+     *  executes the generated SQL against the database
+     *  @param charReader reader for input, already opened
+     *  @param handler SAX handler for Dbat specifications, must be already configured
+     *  @param tableSerializer serializer for output format
+     */
+    public void parseXML(Reader charReader, SpecificationHandler handler, BaseTable tableSerializer) 
+            throws Exception {
+        try {
             SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
             XMLReader xmlReader = saxParser.getXMLReader();
-            xmlReader.setFeature("http://xml.org/sax/features/namespaces"			, true);
-            xmlReader.setFeature("http://xml.org/sax/features/validation"			, true);
-            xmlReader.setFeature("http://xml.org/sax/features/use-entity-resolver2"	, true);
+            xmlReader.setFeature("http://xml.org/sax/features/namespaces"           , true);
+            xmlReader.setFeature("http://xml.org/sax/features/validation"           , true);
+            xmlReader.setFeature("http://xml.org/sax/features/use-entity-resolver2" , true);
             xmlReader.setEntityResolver(handler.getEntityResolver());
-			try { // protect against XML errors
-            	saxParser.parse(new InputSource(charReader), handler);
-	        } catch (SAXParseException exc) { // XML errors
-	        	tableSerializer.writeMarkup("<h3 class=\"error\">XML SAX parsing error: " 
-	        			+ exc.getMessage() 
-	        			+ " in Dbat specification, line " + exc.getLineNumber()
-	        			+ ", column " + exc.getColumnNumber()
-	        			+ ", cause: " + exc.getCause()
-	        			+  "</h3>");
-	        	// exc.printStackTrace();
-	        	tableSerializer.writeEnd();
-	        	throw exc;
-	        } catch (Exception exc) { // XML errors
-	        	tableSerializer.writeMarkup("<h3 class=\"error\">XML processing error: " 
-	        			+ exc.getMessage() 
-	        	//		+ " in Dbat specification, line " + exc.getLineNumber()
-	        	//		+ ", column " + exc.getColumnNumber()
-	        			+ ", cause: " + exc.getCause()
-	        			+  "</h3>");
-	        	// exc.printStackTrace();
-	        	tableSerializer.writeEnd();
-	        	throw exc;
-     		} // catch XML errors
+            try { // protect against XML errors
+                saxParser.parse(new InputSource(charReader), handler);
+            } catch (SAXParseException exc) { // XML errors
+                tableSerializer.writeMarkup("<h3 class=\"error\">XML SAX parsing error: " 
+                        + exc.getMessage() 
+                        + " in Dbat specification, line " + exc.getLineNumber()
+                        + ", column " + exc.getColumnNumber()
+                        + ", cause: " + exc.getCause()
+                        +  "</h3>");
+                // exc.printStackTrace();
+                tableSerializer.writeEnd();
+                throw exc;
+            } catch (Exception exc) { // XML errors
+                tableSerializer.writeMarkup("<h3 class=\"error\">XML processing error: " 
+                        + exc.getMessage() 
+                //      + " in Dbat specification, line " + exc.getLineNumber()
+                //      + ", column " + exc.getColumnNumber()
+                        + ", cause: " + exc.getCause()
+                        +  "</h3>");
+                // exc.printStackTrace();
+                tableSerializer.writeEnd();
+                throw exc;
+            } // catch XML errors
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
             throw exc;
         }
-	} // parseXML
+    } // parseXML
 
-	/** Parses an XML specification (-f name.xml) with {@link SpecificationHandler} and 
-	 *	executes the generated SQL against the database
-	 *	@param specFileName filename of the XML specification
-	 *	@param outputFormat output format, for example "html", "tsv"
-	 */
-	public void processXMLFile(String specFileName, String outputFormat) {
-		try {
-       		SpecificationHandler handler = new SpecificationHandler(config);
+    /** Parses an XML specification (-f name.xml) with {@link SpecificationHandler} and 
+     *  executes the generated SQL against the database
+     *  @param specFileName filename of the XML specification
+     *  @param outputFormat output format, for example "html", "tsv"
+     */
+    public void processXMLFile(String specFileName, String outputFormat) {
+        try {
+            SpecificationHandler handler = new SpecificationHandler(config);
             handler.setParameterMap(config.getParameterMap());
             handler.setEncoding(config.getEncoding(1));
             handler.setWriter(tableWriter);
@@ -268,28 +268,28 @@ public class Dbat implements Serializable {
             handler.setSpecPaths("./", "./", specFileName);
             ReadableByteChannel channel = (new FileInputStream (specFileName)).getChannel();
             BufferedReader charReader = new BufferedReader(Channels.newReader(channel, config.getEncoding(0)));
-			parseXML(charReader, handler, config.getTableSerializer());
+            parseXML(charReader, handler, config.getTableSerializer());
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
-	} // processXMLFile
+    } // processXMLFile
 
-	//==============================================================
-	// Methods dealing with the commandline arguments
-	//==============================================================
-	 
+    //==============================================================
+    // Methods dealing with the commandline arguments
+    //==============================================================
+     
     /** Configures the class from commandline arguments
      *  @param args command line arguments: options, strings, table- or filenames
-     *	@param config configuration properties to be set for this session
-     *	@param tbMetaData properties to be set for one SQL action
-	 *	@return index of procedure name in <em>args</em> behind <em>-call</em>
+     *  @param config configuration properties to be set for this session
+     *  @param tbMetaData properties to be set for one SQL action
+     *  @return index of procedure name in <em>args</em> behind <em>-call</em>
      */
     private int evaluateOptions(String[] args, Configuration config, TableMetaData tbMetaData) {
-    	String outputFormat = "def";
-    	String propFileName = "dbat.properties";
-    	String defaultSchema = config.getDefaultSchema();
-		argsSql = "";
-		mainAction = '?'; // undefined so far
+        String outputFormat = "def";
+        String propFileName = "dbat.properties";
+        String defaultSchema = config.getDefaultSchema();
+        argsSql = "";
+        mainAction = '?'; // undefined so far
         int ienc = 0;
         int iarg = 0; // argument index
         int karg = 0; // where arguments for stored procedure start: name -in:type1 value1 ...
@@ -311,31 +311,31 @@ public class Dbat implements Serializable {
                     }
                     
                     if (opt.startsWith("call")) { // call of stored procedure, all remaining arguments are special
-                    	mainAction = 'c';
-                    	karg = iarg;
-                    	iarg = args.length; // break args loop
-                    	// call
+                        mainAction = 'c';
+                        karg = iarg;
+                        iarg = args.length; // break args loop
+                        // call
                     } else // important, and -call must be tested first
                     if (opt.startsWith("c")) { // explicit connection id
                         if (iarg < args.length) {
-							String connId = args[iarg ++];
-							if (! connId.endsWith(".properties")) {
-                            	propFileName = connId + ".properties";
+                            String connId = args[iarg ++];
+                            if (! connId.endsWith(".properties")) {
+                                propFileName = connId + ".properties";
                             } else {
-                            	propFileName = connId;
+                                propFileName = connId;
                             }
                             config.addProperties(propFileName);
                         } else {
                             log.error("Option -c and no following connection id");
                         }
-						defaultSchema = config.getDefaultSchema();
+                        defaultSchema = config.getDefaultSchema();
                     } // c
                     
                     if (opt.startsWith("e")) { // character encoding for input or output
                         if (iarg < args.length) {
                             config.setEncoding(ienc ++, args[iarg ++]);
                             if (ienc >= 2) {
-                            	ienc = 1; // fix on output format
+                                ienc = 1; // fix on output format
                             }
                         } else {
                             log.error("Option -e and no following encoding");
@@ -351,12 +351,12 @@ public class Dbat implements Serializable {
                     }
                     
                     if (opt.startsWith("h")) { // help - show usage
-                    	mainAction = 'h';
+                        mainAction = 'h';
                     } // h
                     
                     if (opt.startsWith("l")) { // column lengths
                         if (iarg < args.length) {
-							tbMetaData.fillColumnWidths(args[iarg ++]);
+                            tbMetaData.fillColumnWidths(args[iarg ++]);
                         } else {
                             log.error("Option -l and no following column lengths");
                         }
@@ -365,7 +365,7 @@ public class Dbat implements Serializable {
                     if (opt.startsWith("m")) { // input/output mode
                         if (iarg < args.length) {
                             outputFormat = args[iarg ++].toLowerCase();
- 		               		config.setOutputFormat(outputFormat);
+                            config.setOutputFormat(outputFormat);
                         } else {
                             log.error("Option -m and no following output mode");
                         }
@@ -373,21 +373,21 @@ public class Dbat implements Serializable {
                     
                     if (opt.startsWith("nsp")) { // namespace prefix
                         if (iarg < args.length) {
- 		               		config.setNamespacePrefix(args[iarg ++].toLowerCase());
+                            config.setNamespacePrefix(args[iarg ++].toLowerCase());
                         } else {
                             log.error("Option -nsp and no following namespace prefix");
                         }
                     } // m
                     
                     if (opt.startsWith("p")) {
-                    	// optional parameter setting: "-p name=value" or "-p name" (implies "name=true")
+                        // optional parameter setting: "-p name=value" or "-p name" (implies "name=true")
                         if (iarg < args.length) {
                             String pair = args[iarg ++];
- 							int eqPos = pair.indexOf("=");
+                            int eqPos = pair.indexOf("=");
                             if (eqPos >= 0) {
                                 config.getParameterMap().put(pair.substring(0, eqPos), new String[]{pair.substring(eqPos + 1)});
                             } else {
-                            	config.getParameterMap().put(pair, new String[]{"true"});
+                                config.getParameterMap().put(pair, new String[]{"true"});
                             }
                         } else {
                             log.error("Option -p and no following parameter");
@@ -400,7 +400,7 @@ public class Dbat implements Serializable {
                         } else {
                             log.error("Option -sa and no following separator");
                         }
-                    	// sa
+                        // sa
                     } else
                     if (opt.startsWith("sp")) { // stored procedure text separator string 
                         if (iarg < args.length) {
@@ -408,7 +408,7 @@ public class Dbat implements Serializable {
                         } else {
                             log.error("Option -sp and no following separator");
                         }
-                    	// sp
+                        // sp
                     } else // important, and -sa, -sp must be checked first  
                     if (opt.startsWith("s")) { // separator string
                         if (iarg < args.length) {
@@ -420,7 +420,7 @@ public class Dbat implements Serializable {
                     
                     if (opt.startsWith("v")) { // verbose remarks
                         verbose = 1;
-						config.setVerbose(verbose);
+                        config.setVerbose(verbose);
                     } // v
 
                     if (opt.startsWith("x")) { // no headers
@@ -435,9 +435,9 @@ public class Dbat implements Serializable {
                         mainAction = 't';
                         try {
                             int flimit = Integer.parseInt(opt);
-	                        config.setFetchLimit(flimit);
+                            config.setFetchLimit(flimit);
                         } catch (NumberFormatException exc) {
-                        	// ignore, leave configured default value
+                            // ignore, leave configured default value
                         }
                     } // 29
                     if (opt.startsWith("d")) { // DESCRIBE table
@@ -523,16 +523,16 @@ public class Dbat implements Serializable {
             if (outputFormat.equals("def")) {
                 if (false) {
                 } else if (mainAction == 'd') {
-                	outputFormat = "sql";
+                    outputFormat = "sql";
                 } else if (mainAction == 'f' && isSourceType(".xml")) {
-                	outputFormat = "html";
+                    outputFormat = "html";
                 } else {
                     outputFormat = "tsv";
                 }
             } // default
  
- 	 		config.evaluateProperties();
-		/*
+            config.evaluateProperties();
+        /*
             if (! config.getSeparator().equals("\t") && ! outputFormat.equals("csv")) {  // -s was present
                 outputFormat = "csv";
             }
@@ -546,81 +546,81 @@ public class Dbat implements Serializable {
             tableSerializer.setTargetEncoding(config.getEncoding(1));
             tableSerializer.setSeparator     (config.getSeparator());
             tableSerializer.setInputURI      (config.getInputURI());
-			config.setTableSerializer        (tableSerializer);
+            config.setTableSerializer        (tableSerializer);
         } // at least 1 argument
         return karg;
-	} // evaluateOptions
-	
-	/** Performs the main action on a configured instance of sqlAction.
+    } // evaluateOptions
+    
+    /** Performs the main action on a configured instance of sqlAction.
      *  @param writer PrintWriter for result output
-	 *	@param karg index of procedure name in <em>args</em> behind <em>-call</em>, or 0
+     *  @param karg index of procedure name in <em>args</em> behind <em>-call</em>, or 0
      *  @param args command line arguments: options, strings, table- or filenames,
-     *	@param config configuration properties to be set for this session
-     *	@param tbMetaData properties to be set for one SQL action
-     *	needed only if <em>karg &gt; 0</em>
-	 */
-	public void process(PrintWriter writer, int karg, String[] args, Configuration config, TableMetaData tbMetaData) {
+     *  @param config configuration properties to be set for this session
+     *  @param tbMetaData properties to be set for one SQL action
+     *  needed only if <em>karg &gt; 0</em>
+     */
+    public void process(PrintWriter writer, int karg, String[] args, Configuration config, TableMetaData tbMetaData) {
         try {
-	   		if (writer == null) { // write to System.out
-	            WritableByteChannel target = Channels.newChannel(System.out);
-		        tableWriter = new PrintWriter(Channels.newWriter(target, config.getEncoding(1)), true); // autoFlush
-		    } else {
-		    	tableWriter = writer; // servlet response or other writer opened by the caller
-		    }
-		    BaseTable tableSerializer = config.getTableSerializer();
+            if (writer == null) { // write to System.out
+                WritableByteChannel target = Channels.newChannel(System.out);
+                tableWriter = new PrintWriter(Channels.newWriter(target, config.getEncoding(1)), true); // autoFlush
+            } else {
+                tableWriter = writer; // servlet response or other writer opened by the caller
+            }
+            BaseTable tableSerializer = config.getTableSerializer();
             tableSerializer.setWriter(tableWriter);
             tableSerializer.setGenerator(config.getGenerator());
             // System.err.println("tableWriter=" + tableWriter.toString() + ", generator=" + tableSerializer.getGenerator());
             // tableWriter.println("tableWriter wrote this");
 
-			sqlAction  = new SQLAction(config);
-			long startTime = System.nanoTime();
+            sqlAction  = new SQLAction(config);
+            long startTime = System.nanoTime();
             if (writer == null 
-            	 	&& ! (tableSerializer instanceof TableGenerator)
-            		&& ! (mainAction == 'f' && isSourceType(".xml"))) {
-	            tableSerializer.setParameterMap(config.getParameterMap());
-            	tableSerializer.writeStart(new String[] 
-            			{ "encoding"   	, config.getEncoding(1)
-            			, "contenttype"	, config.getHtmlMimeType() 
-            			, "nsp"  		, config.getNamespacePrefix()
-            			}
-            			, config.getParameterMap()
-            			);
+                    && ! (tableSerializer instanceof TableGenerator)
+                    && ! (mainAction == 'f' && isSourceType(".xml"))) {
+                tableSerializer.setParameterMap(config.getParameterMap());
+                tableSerializer.writeStart(new String[] 
+                        { "encoding"    , config.getEncoding(1)
+                        , "contenttype" , config.getHtmlMimeType() 
+                        , "nsp"         , config.getNamespacePrefix()
+                        }
+                        , config.getParameterMap()
+                        );
             }
             switch (mainAction) {
-            	case ' ':
-            		// ignore; set by -h
-            		break;
-            	case 'c':
-            		sqlAction.callStoredProcedure(config.getConnection(), tbMetaData, karg, args);
-            		break;
+                case ' ':
+                    // ignore; set by -h
+                    break;
+                case 'c':
+                    sqlAction.callStoredProcedure(config.getConnection(), tbMetaData, karg, args);
+                    break;
                 case 'd':
-					String tablePattern = tbMetaData.getTableName();
-					if (config.getDriverURL() != null && config.getDriverURL().startsWith("jdbc:db2:") && tablePattern != null) {
-						tablePattern = tablePattern.toUpperCase();
-					}
+                    String tablePattern = tbMetaData.getTableName();
+                    if (config.getDriverURL() != null && config.getDriverURL().startsWith("jdbc:db2:") && tablePattern != null) {
+                        tablePattern = tablePattern.toUpperCase();
+                    }
                     sqlAction.describeTables(config.getDefaultSchema(), tablePattern);
                     break;
                 case 'f':
-                	if (isSourceType(".xml")) { // specification for SpecificationHandler
-                		processXMLFile(getSourceName(), config.getOutputFormat());
-                	} else {
+                    if (isSourceType(".xml")) { // specification for SpecificationHandler
+                        processXMLFile(getSourceName(), config.getOutputFormat());
+                    } else {
                         sqlAction.execSQLfromURI(tbMetaData
-                        		, getSourceName()
-                        		, config.getParameterMap());
+                                , getSourceName()
+                                , config.getParameterMap());
                     }
                     break;
                 default:
                 case '?':
                 case 'h':
                     // Messages.usage(config.getLanguage());
-		            System.out.println(Messages.getHelpText(config.getLanguage(), tableFactory));
+                    System.out.println(Messages.getHelpText(config.getLanguage(), tableFactory));
                     break;
                 case 'n':
                     sqlAction.setWithHeaders(false);
                     sqlAction.execSQLStatement(tbMetaData
-                    		, "SELECT COUNT(*) FROM " + tbMetaData.getTableName()
-                    		, config.getParameterMap());
+                            , "SELECT COUNT(*) FROM " + tbMetaData.getTableName()
+                            , config.getParameterMap());
                     break;
                 case 'r':
                     // sqlAction.processRawData(tbMetaData);
@@ -628,38 +628,38 @@ public class Dbat implements Serializable {
                     break;
                 case 't':
                     sqlAction.execSQLStatement(tbMetaData
-                    		, "SELECT * FROM " + tbMetaData.getTableName()
-                    		, config.getParameterMap());
+                            , "SELECT * FROM " + tbMetaData.getTableName()
+                            , config.getParameterMap());
                     break;
                 case 'q':
                     sqlAction.execSQLStatement(tbMetaData
-                    		, argsSql
-                    		, config.getParameterMap());
+                            , argsSql
+                            , config.getParameterMap());
                     break;
             } // switch mainAction
 
             if (writer == null 
-            	 	&& ! (tableSerializer instanceof TableGenerator)
-            		&& ! (mainAction == 'f' && isSourceType(".xml"))) { // channel from System.out - flush it
-				tableSerializer.writeEnd();
-				tableWriter.flush();
-	        	// System.err.println("Dbat.process.close");
-	        	tableWriter.close();
-    		}
+                    && ! (tableSerializer instanceof TableGenerator)
+                    && ! (mainAction == 'f' && isSourceType(".xml"))) { // channel from System.out - flush it
+                tableSerializer.writeEnd();
+                tableWriter.flush();
+                // System.err.println("Dbat.process.close");
+                tableWriter.close();
+            }
 
             if (verbose > 0) {
-            	System.err.println(Messages.getTimingMessage(config.getLanguage()
-            			, startTime
-            			, sqlAction.getInstructionSum()
-            			, sqlAction.getManipulatedSum()
-            			, config.getDriverURL()));
+                System.err.println(Messages.getTimingMessage(config.getLanguage()
+                        , startTime
+                        , sqlAction.getInstructionSum()
+                        , sqlAction.getManipulatedSum()
+                        , config.getDriverURL()));
             } // verbose
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
-		} finally {
-			// tableWriter.flush();
-			sqlAction.terminate();
-			terminate();
+        } finally {
+            // tableWriter.flush();
+            sqlAction.terminate();
+            terminate();
         }
     } // process
 
@@ -683,16 +683,16 @@ public class Dbat implements Serializable {
 
     /** Processes all command line arguments, executes the SQL, 
      *  and prints the resulting rows in the specified format.
-     *	Only one main action (SQL instruction) will be executed if no
-     *	SQL or XML file is specified.
+     *  Only one main action (SQL instruction) will be executed if no
+     *  SQL or XML file is specified.
      *  @param writer PrintWriter for result output
      *  @param args command line arguments: options, strings, table- or filenames
      */
     public void processArguments(PrintWriter writer, String[] args) {
-    	TableMetaData tbMetaData = new TableMetaData();
-    	int karg = evaluateOptions(args, config, tbMetaData);
-    	// System.err.println("main action=" + mainAction + ", argsSql=" + argsSql);
-    	process(writer, karg, args, config, tbMetaData);
+        TableMetaData tbMetaData = new TableMetaData();
+        int karg = evaluateOptions(args, config, tbMetaData);
+        // System.err.println("main action=" + mainAction + ", argsSql=" + argsSql);
+        process(writer, karg, args, config, tbMetaData);
     } // processArguments
     
     //======================
@@ -707,16 +707,16 @@ public class Dbat implements Serializable {
     public static void main(String[] args) {
         Logger log = Logger.getLogger(Dbat.class.getName());
         Dbat dbat = new Dbat();
-		if (args.length == 0) {
-			args = new String[] { "-h" }; // usage message
-		}
+        if (args.length == 0) {
+            args = new String[] { "-h" }; // usage message
+        }
         try {
             dbat.initialize(Configuration.CLI_CALL);
             dbat.processArguments(null, args); // null = write to System.out
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         } finally {
-        	dbat.terminate();
+            dbat.terminate();
         }
     } // main
 

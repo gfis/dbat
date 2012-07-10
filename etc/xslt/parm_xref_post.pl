@@ -2,6 +2,7 @@
 
 # postprocess data for parm_xref checking
 # @(#) $Id$
+# 2012-07-09: <var />
 # 2012-01-18, Dr. Georg Fischer
 #------------------------------------------------------------------ 
 # Usage: c.f. makefile
@@ -9,51 +10,51 @@
 #------------------------------------------------------------------------------- 
 use strict;
 
-	my $init = "INSERT INTO parm_xref(element, name, spec, file) VALUES (\'";
-	my $sep  = "\',\'";
-	my $term = "\');\n";
-	my $rest;
-	while (<>) {
-		s{\s+\Z}{}; # chompr
-		my $line = $_;
-		if (0) {
-		} elsif (m{\A\-\-}) {
-			print "$line\n";
-		} elsif (m{\A(parm|dbat|when)\t}) {
-			my @fields = split(/\t/, $line);
-			print $init . join($sep, @fields) . $term;
-		} elsif (m{\A(input|select|textarea)\t}) {
-			my @fields = split(/\t/, $line);
-			$fields[0] = "input";
-			print $init . join($sep, @fields) . $term;
-		} elsif (m{\Ahref\t(\/dbat\/)?servlet\?\&?spec=(.*)}) {
-			$rest = $2;
-			&expand_link("link", $rest);
-		} elsif (m{\Ahref\t([\w\_\-\/\.]+)\?\&?(.*)}) {
-			$rest = "$1\&$2";
-			&expand_link("link", $rest);
-		} elsif (m{\Alink\t(.*)}) {
-			$rest = $1;
-			&expand_link("link", $rest);
-		} else {
-			print STDERR "unknown element in line: $line\n";
-		}
-	} # while <>
+    my $init = "INSERT INTO parm_xref(element, name, spec, file) VALUES (\'";
+    my $sep  = "\',\'";
+    my $term = "\');\n";
+    my $rest;
+    while (<>) {
+        s{\s+\Z}{}; # chompr
+        my $line = $_;
+        if (0) {
+        } elsif (m{\A\-\-}) {
+            print "$line\n";
+        } elsif (m{\A(parm|var|dbat|when)\t}) {
+            my @fields = split(/\t/, $line);
+            print $init . join($sep, @fields) . $term;
+        } elsif (m{\A(input|select|textarea)\t}) {
+            my @fields = split(/\t/, $line);
+            $fields[0] = "input";
+            print $init . join($sep, @fields) . $term;
+        } elsif (m{\Ahref\t(\/dbat\/)?servlet\?\&?spec=(.*)}) {
+            $rest = $2;
+            &expand_link("link", $rest);
+        } elsif (m{\Ahref\t([\w\_\-\/\.]+)\?\&?(.*)}) {
+            $rest = "$1\&$2";
+            &expand_link("link", $rest);
+        } elsif (m{\Alink\t(.*)}) {
+            $rest = $1;
+            &expand_link("link", $rest);
+        } else {
+            print STDERR "unknown element in line: $line\n";
+        }
+    } # while <>
 
 sub expand_link {
-	my ($element, $rest) = @_; # ('link','test/selec01&alpha=&beta=&sp3=','','test/pivot03m.xml');
-	my ($name, $spec, $file) = split(/\t/, $rest);
-	$file =~ s{\.}{\/}g; # subdir "." back to "/"
-	$name =~ s{\s}{}g; # remove whitespace in URL
-	my @parms = map {
-			s{\W\Z}{}; # remove trailing non-letter
-			$_
-			} split(/\&/, $name);
-	$spec = shift(@parms);
-	$spec =~ s{\.}{\/}g; # subdir "." back to "/"
-	foreach $name (@parms) {
-		print $init . join($sep, ($element, $name, $spec, $file)) . $term;
-	} # foreach $parm
+    my ($element, $rest) = @_; # ('link','test/selec01&alpha=&beta=&sp3=','','test/pivot03m.xml');
+    my ($name, $spec, $file) = split(/\t/, $rest);
+    $file =~ s{\.}{\/}g; # subdir "." back to "/"
+    $name =~ s{\s}{}g; # remove whitespace in URL
+    my @parms = map {
+            s{\W\Z}{}; # remove trailing non-letter
+            $_
+            } split(/\&/, $name);
+    $spec = shift(@parms);
+    $spec =~ s{\.}{\/}g; # subdir "." back to "/"
+    foreach $name (@parms) {
+        print $init . join($sep, ($element, $name, $spec, $file)) . $term;
+    } # foreach $parm
 } # expand_link
 __DATA__
 # this is an example only

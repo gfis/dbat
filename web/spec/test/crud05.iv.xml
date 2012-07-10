@@ -2,6 +2,7 @@
 <!--
 	Interactive view definition for test form crud01.xml, with INT key
     @(#) $Id$
+    2012-07-10: copy <where> condition with <parm>
     2012-05-21: with help URLs on field names
     2012-05-02, Dr. Georg Fischer
 -->
@@ -42,7 +43,7 @@
 	    <field ref="place"		/>
 	    <field ref="changed"	show="search" />
 	    <field ref="user"		/>
-	    <where></where>
+	    <where>name like '<db:parm name="search_name" />%'</where>
 	    <order by="1,2" />
 	</view>
 	
