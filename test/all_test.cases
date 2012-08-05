@@ -560,11 +560,26 @@ WGET test/color08
 TEST R00 clear pivot table for raw input test
 JRUN "delete from pivot"
 
-TEST R01 raw table input test
-JRUN -r pivot < pivot_test.raw
+TEST R01 tsv raw table input test
+JRUN -r pivot < pivot_test.tsv
 
-TEST R02 check raw input
+TEST R02 check tsv input
 JRUN "select * from pivot order by 1,2,3;"
+
+TEST R03 raw fix input
+JRUN -l 8,8,4 -r pivot -m fix < pivot_test.fix
+
+TEST R04 check fix input
+JRUN "select * from pivot where sp2 = 'fix' order by 1,2,3;"
+
+TEST R05 raw csv input
+JRUN -s ";" -r pivot -m csv < pivot_test.csv
+
+TEST R06 check csv input
+JRUN "select * from pivot where sp2 = 'csv' order by 1,2,3;"
+
+TEST R07 purge raw test data
+JRUN "delete from pivot where sp1 = 'test'"
 #-------------------
 TEST G01 CLI grouping test with TSV
 JRUN -g sp1 -m tsv  "select sp1, sp2      from pivot order by 1, 2"

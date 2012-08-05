@@ -402,7 +402,11 @@ public class TableMetaData {
             ResultSet results = dbMetaData.getColumns(null, schema, tableBaseName, "%"); // all columns
             int icol = 0;
             while (results.next()) { // get all columns
-                TableColumn column = this.addColumn(icol);
+                // TableColumn column = this.addColumn(icol);
+                TableColumn column = icol < columnList.size()
+                ? columnList.get(icol)
+                : this.addColumn(icol);
+                ;
                 column.completeColumn(results);
                 icol ++;
             } // while all columns
@@ -583,7 +587,7 @@ public class TableMetaData {
      *  @param widthList comma separated list of integers
      */
     public void fillColumnWidths(String widthList) {
-        String widths[] = widthList.split (",");
+        String widths[] = widthList.split ("\\D+"); // one or more non-digit characters
         int icol = 0;
         while (icol < widths.length) {
             TableColumn column = icol < columnList.size()

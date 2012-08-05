@@ -1737,11 +1737,11 @@ public class SQLAction implements Serializable {
      *  </ol>
      *  @param tbMetaData meta data for the target DB table to be loaded, with its name
      *  @param uri URI for the external file data
-     *  @param inputMode tsv, fix, xml etc.
      */
-    public void insertFromURI(TableMetaData tbMetaData, String uri, String inputMode) {
+    public void insertFromURI(TableMetaData tbMetaData, String uri) {
         int icol = 0;
         String rawTable = tbMetaData.getTableName();
+        char formatCode = config.getFormatMode().charAt(0); // default: 't'sv resp. whitespace separated
         String line; // a line read from STDIN
         PreparedStatement insertStmt = null;
         final int MAX_COMMIT = 250; // Maximum number of INSERTs without commit
@@ -1751,7 +1751,7 @@ public class SQLAction implements Serializable {
             tbMetaData.parseTableName(config.getDefaultSchema(), rawTable);
             tbMetaData.fillColumns(dbMetaData, tbMetaData.getSchema(), tbMetaData.getTableBaseName());
             int columnCount = tbMetaData.getColumnCount();
-            StringBuffer sqlBuffer = new StringBuffer(2048);
+            StringBuffer sqlBuffer = new StringBuffer(2048); // build a statemtent (with placeholders) to be prepared
             sqlBuffer.append("INSERT INTO " + rawTable + " VALUES(?"); // there must be at least 1 column
             icol = 1; // not 0, because 1st question mark is already set
             while (icol < columnCount) {
@@ -1768,33 +1768,38 @@ public class SQLAction implements Serializable {
             while ((line = lineReader.readLine()) != null) { // read and process lines
                 insertStmt.clearParameters();
                 int rawCount = 0; // number of values split from 'line'
-                if (false) {
-                } else if (config.getOutputFormat().equals("csv")) { // with separator
-                    columnValues = line.split(config.getSeparator());
-                    rawCount = columnValues.length;
-                } else if (config.getOutputFormat().equals("fix")) { // fixed column widths
-                    columnValues = new String[columnCount];
-                    int spos = 0; // starting position
-                    while (rawCount < columnCount && spos < line.length()) {
-                        column = tbMetaData.getColumn(rawCount);
-                        String pseudo = column.getPseudo();
-                        if (pseudo == null) {
-                            int epos = spos + column.getWidth();
-                            if (epos >= line.length()) {
-                                epos = line.length();
-                            }
-                            columnValues[rawCount] = ("x" + line.substring(spos, epos)).trim().substring(1);
-                                    // tricky - trim right whitespace only
-                            spos = epos;
-                        } // not pseudo
-                        rawCount ++;
-                    } // while rawCount
-                } else { // default: if (outputFormat.equals("tsv")) { // separated by whitespace
-                    columnValues = line.split("\\s+", -1);
-                    rawCount = columnValues.length;
-                }
+                switch (formatCode) {
+                    case 'f': // "fix", with fixed column widths
+                        columnValues = new String[columnCount];
+                        int spos = 0; // starting position
+                        while (rawCount < columnCount && spos < line.length()) {
+                            column = tbMetaData.getColumn(rawCount);
+                            String pseudo = column.getPseudo();
+                            if (pseudo == null) {
+                                int epos = spos + column.getWidth();
+                                if (epos >= line.length()) {
+                                    epos = line.length();
+                                }
+                                columnValues[rawCount] = ("x" + line.substring(spos, epos)).trim().substring(1); 
+                                        // tricky - trim right whitespace only
+                                spos = epos;
+                            } // not pseudo
+                            rawCount ++;
+                        } // while rawCount
+                        break;       
+                    case 'c': // "csv" with separator
+                        columnValues = line.split(config.getSeparator());
+                        rawCount = columnValues.length;
+                        break;
+                    case 't':
+                    default: // "tsv" -> separated by whitespace
+                        columnValues = line.split("\\s+", -1);
+                        rawCount = columnValues.length;
+                        break;
+                } // switch formatCode
+                
                 if (debug >= 2) {
-                    System.err.println("insertFromURI.rawCount=" + rawCount);
+                    System.err.println("insertFromURI.rawCount=" + rawCount + ", columnCount=" + columnCount);
                 }
                 if (rawCount > 0) { // insert row only if line contained some field
                     icol = 0;

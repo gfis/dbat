@@ -132,8 +132,8 @@ use strict;
     
     my $grep; # contains the variable expression from GREP command for filtering of dates, versions etc.
     my $default_grep; # contains the fixed expression for WGET commands
-    my $subst; 			# contains the variable expression from SUBST command for substituting of timestamps, versions etc.
-    my $default_subst; 	# contains the fixed    expression for WGET commands
+    my $subst;          # contains the variable expression from SUBST command for substituting of timestamps, versions etc.
+    my $default_subst;  # contains the fixed    expression for WGET commands
     $default_subst = 's{(on|at) 2[0-1]\d\d\-[0-1]\d\-[0-3]\d [0-2]\d\:[0-5]\d\:[0-5]\d}{$1 yyyy-mm-dd hh:mm:ss}g';
 
     my $buffer = ""; # for file contents
@@ -214,7 +214,7 @@ sub execute_test {
     my $subst = $default_subst;
     my $expr = '$this_result =~ ' . $default_subst . ';';
     # lestprint STDERR "evaluate: " . $expr . "\n";
-	eval($expr);
+    eval($expr);
     $this_result =~ s{affecting (\d+) rows in \d+ ms}{affecting $1 rows in ... ms}g;
     my $this_name = "$testcase." . ($action eq "comp" ? "this" : "prev") . ".tst";
     my $prev_name = $this_name;

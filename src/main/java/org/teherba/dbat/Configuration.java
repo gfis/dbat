@@ -117,14 +117,14 @@ public class Configuration implements Serializable {
     /** Sets the connection id to the default: take first key in {@link #dsMap}
      */
     public void setConnectionId() {
-    	if (dsMap != null) {
-	    	boolean busy = true;
-    		Iterator/*<1.5*/<String>/*1.5>*/ miter = dsMap.keySet().iterator();
-    		while (busy && miter.hasNext()) {
-    			this.connectionId = miter.next();
-	    		busy = false; // take first only
-    		} // while busy
-    	} // dsMap != null
+        if (dsMap != null) {
+            boolean busy = true;
+            Iterator/*<1.5*/<String>/*1.5>*/ miter = dsMap.keySet().iterator();
+            while (busy && miter.hasNext()) {
+                this.connectionId = miter.next();
+                busy = false; // take first only
+            } // while busy
+        } // dsMap != null
     } // setConnectionId(0)
 
     /** Schema which is used when none is specified with the table's name */
@@ -283,19 +283,19 @@ public class Configuration implements Serializable {
     } // setNamespacePrefix
 
     /** input/output format = mode: tsv (default), csv, fix, html and so on*/
-    private String  outputFormat;
-    /** Gets the output format
-     *  @return output format: html, sql, xml, tsv ...
+    private String  formatMode;
+    /** Gets the format
+     *  @return format: html, sql, xml, tsv ...
      */
-    public String getOutputFormat() {
-        return this.outputFormat;
-    } // getOutputFormat
-    /** Sets the output format
-     *  @param mode output format / format: html, sql, xml, tsv ...
+    public String getFormatMode() {
+        return this.formatMode;
+    } // getFormatMode
+    /** Sets the format
+     *  @param format: html, sql, xml, tsv ...
      */
-    public void setOutputFormat(String mode) {
-        this.outputFormat = mode;
-    } // setOutputFormat
+    public void setFormatMode(String mode) {
+        this.formatMode = mode;
+    } // setFormatMode
 
     /** Map for parameters (placeholders) embedded in the XML specification.
      *  The SAX handler will take parameter values from here when

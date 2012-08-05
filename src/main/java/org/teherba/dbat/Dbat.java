@@ -1,5 +1,6 @@
 /*  Dbat.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2012-08-04: outputFormat -> formatMode, becomes variable for -r
  *  2012-01-10: XML parsing error message with line+column numbers
  *  2011-11-11: set|getVerbose; Martini
  *  2011-09-13: prepareSeparator with \n, \t replacement
@@ -156,7 +157,7 @@ public class Dbat implements Serializable {
     public void initialize(int callType) {
         config                  = new Configuration();
         config.configure        (callType);
-        config.setOutputFormat  ("def");        // -m, will be changed to tsv below
+        config.setFormatMode  ("def");        // -m, will be changed to tsv below
         config.setSeparator     ("\t");         // -s
         config.setDefaultSchema ("");
         verbose                 = 0;            // -v
@@ -256,9 +257,9 @@ public class Dbat implements Serializable {
     /** Parses an XML specification (-f name.xml) with {@link SpecificationHandler} and 
      *  executes the generated SQL against the database
      *  @param specFileName filename of the XML specification
-     *  @param outputFormat output format, for example "html", "tsv"
+     *  @param formatMode output format, for example "html", "tsv"
      */
-    public void processXMLFile(String specFileName, String outputFormat) {
+    public void processXMLFile(String specFileName, String formatMode) {
         try {
             SpecificationHandler handler = new SpecificationHandler(config);
             handler.setParameterMap(config.getParameterMap());
@@ -285,7 +286,7 @@ public class Dbat implements Serializable {
      *  @return index of procedure name in <em>args</em> behind <em>-call</em>
      */
     private int evaluateOptions(String[] args, Configuration config, TableMetaData tbMetaData) {
-        String outputFormat = "def";
+        String formatMode = "def";
         String propFileName = "dbat.properties";
         String defaultSchema = config.getDefaultSchema();
         argsSql = "";
@@ -364,8 +365,8 @@ public class Dbat implements Serializable {
                     
                     if (opt.startsWith("m")) { // input/output mode
                         if (iarg < args.length) {
-                            outputFormat = args[iarg ++].toLowerCase();
-                            config.setOutputFormat(outputFormat);
+                            formatMode = args[iarg ++].toLowerCase();
+                            config.setFormatMode(formatMode);
                         } else {
                             log.error("Option -m and no following output mode");
                         }
@@ -520,29 +521,29 @@ public class Dbat implements Serializable {
                 } // end of case for arguments
             } // while args[]
  
-            if (outputFormat.equals("def")) {
+            if (formatMode.equals("def")) {
                 if (false) {
                 } else if (mainAction == 'd') {
-                    outputFormat = "sql";
+                    formatMode = "sql";
                 } else if (mainAction == 'f' && isSourceType(".xml")) {
-                    outputFormat = "html";
+                    formatMode = "html";
                 } else {
-                    outputFormat = "tsv";
+                    formatMode = "tsv";
                 }
             } // default
  
             config.evaluateProperties();
         /*
-            if (! config.getSeparator().equals("\t") && ! outputFormat.equals("csv")) {  // -s was present
-                outputFormat = "csv";
+            if (! config.getSeparator().equals("\t") && ! formatMode.equals("csv")) {  // -s was present
+                formatMode = "csv";
             }
         */
-            if (outputFormat.equals("fix")) { 
+            if (formatMode.equals("fix")) { 
                 config.setWithHeaders(false);
                 config.setSeparator("");
             }
-            config.setOutputFormat(outputFormat);
-            BaseTable tableSerializer = tableFactory.getTableSerializer(outputFormat);
+            config.setFormatMode(formatMode);
+            BaseTable tableSerializer = tableFactory.getTableSerializer(formatMode);
             tableSerializer.setTargetEncoding(config.getEncoding(1));
             tableSerializer.setSeparator     (config.getSeparator());
             tableSerializer.setInputURI      (config.getInputURI());
@@ -603,7 +604,7 @@ public class Dbat implements Serializable {
                     break;
                 case 'f':
                     if (isSourceType(".xml")) { // specification for SpecificationHandler
-                        processXMLFile(getSourceName(), config.getOutputFormat());
+                        processXMLFile(getSourceName(), config.getFormatMode());
                     } else {
                         sqlAction.execSQLfromURI(tbMetaData
                                 , getSourceName()
@@ -624,7 +625,7 @@ public class Dbat implements Serializable {
                     break;
                 case 'r':
                     // sqlAction.processRawData(tbMetaData);
-                    sqlAction.insertFromURI(tbMetaData, "-", "tsv");
+                    sqlAction.insertFromURI(tbMetaData, "-");
                     break;
                 case 't':
                     sqlAction.execSQLStatement(tbMetaData

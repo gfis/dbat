@@ -352,7 +352,7 @@ public class DbatServlet extends HttpServlet {
                     channel = (new FileInputStream (specFile)).getChannel();
                     Reader charReader = new BufferedReader(Channels.newReader(channel, "UTF-8")); 
                             // assume all spec files in UTF-8 XML
-                    config.setOutputFormat(mode);
+                    config.setFormatMode(mode);
                     config.setLanguage(language);
                     config.setFetchLimit(fetchLimit);
                     SpecificationHandler handler = new SpecificationHandler(config);
@@ -399,7 +399,7 @@ public class DbatServlet extends HttpServlet {
                 tbSerializer.setSeparator(separator);
                 tbSerializer.setTargetEncoding(encoding); 
                 tbSerializer.setWriter(response.getWriter());
-                config.setOutputFormat(mode);
+                config.setFormatMode(mode);
                 config.setLanguage(language);
                 config.setFetchLimit(fetchLimit);
                 config.setTableSerializer(tbSerializer);   
