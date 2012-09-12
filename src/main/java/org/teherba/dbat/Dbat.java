@@ -167,7 +167,7 @@ public class Dbat implements Serializable {
     /** Initializes the class for the 1st (or 2nd, 3rd etc) call of {@link #processArguments} et al.
      *  @param callType whether the class is activated by CLI, WEB or SOAP
      *  @param dsMap maps connection ids to pre-initialized DataSources, 
-     *  see {@link DbatServlet} and {@link DBCPoolingListener}.
+     *  see {@link DbatServlet}.
      */
     public void initialize(int callType, LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap) {
         initialize(callType);

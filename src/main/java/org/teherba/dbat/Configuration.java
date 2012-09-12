@@ -27,6 +27,7 @@
  */
 package org.teherba.dbat;
 import  org.teherba.dbat.format.BaseTable;
+import  org.teherba.dbat.format.TableFactory;
 import  org.teherba.xtrans.BaseTransformer;
 import  java.io.Serializable;
 import  java.io.File;
@@ -47,7 +48,7 @@ import  org.apache.log4j.Logger;
  *  @author Dr. Georg Fischer
  */
 public class Configuration implements Serializable {
-    public final static String CVSID = "@(#) $Id$"; // old 942
+    public final static String CVSID = "@(#) $Id$"; // old 958
     /** log4j logger (category) */
     private Logger log;
 
@@ -285,13 +286,13 @@ public class Configuration implements Serializable {
     /** input/output format = mode: tsv (default), csv, fix, html and so on*/
     private String  formatMode;
     /** Gets the format
-     *  @return format: html, sql, xml, tsv ...
+     *  @return target format: html, sql, xml, tsv ...
      */
     public String getFormatMode() {
         return this.formatMode;
     } // getFormatMode
     /** Sets the format
-     *  @param format: html, sql, xml, tsv ...
+     *  @param mode target format: html, sql, xml, tsv ...
      */
     public void setFormatMode(String mode) {
         this.formatMode = mode;
@@ -457,7 +458,7 @@ public class Configuration implements Serializable {
      *  @return a string of the form "Dbat Vm.n/date", where m is the major version, and n is the SVN revision number
      */
     public static String getVersionString() {
-        // public final static String CVSID = "@(#) $Id$"; // old 942
+        // public final static String CVSID = "@(#) $Id$"; // old 958
         //                                     0    1    2                  3   4
         String[] vers = CVSID.split("\\s+");
         // return "Dbat V7." + vers[3] + "/" + vers[4];
@@ -565,7 +566,7 @@ public class Configuration implements Serializable {
     /** Initializes the class for the 1st (or 2nd, 3rd etc) call.
      *  @param callType whether the class is activated by CLI, WEB or SOAP
      *  @param dsMap maps connection ids to pre-initialized DataSources,
-     *  see {@link DbatServlet} and {@link DBCPoolingListener}.
+     *  see {@link DbatServlet}.
      */
     public void configure(int callType, LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap) {
         configure(callType);
