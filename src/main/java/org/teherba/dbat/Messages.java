@@ -28,6 +28,7 @@ import  java.io.Serializable;
 import  java.sql.Driver;
 import  java.sql.DriverManager;
 import  java.text.SimpleDateFormat;
+import  java.util.Date;
 import  java.util.Enumeration;
 import  org.xml.sax.helpers.AttributesImpl;
 
@@ -244,8 +245,8 @@ public class Messages implements Serializable {
     public static String getTrailerText(String trailerSelect, String language, String specUrl, String specName, String xlsUrl, String moreUrl) {
         StringBuffer result = new StringBuffer
         		(128);
-        		// ("<!-- " + trailerSelect + "-->"); 
-        boolean withLink = ! trailerSelect.contains(" plain");  
+        		// ("<!-- " + trailerSelect + "-->");
+        boolean withLink = ! trailerSelect.contains(" plain");
         boolean comma = false; // whether to prefix a part with a comma
         String  outPart     = "Output";
         String  timePart    = " on ";
@@ -310,7 +311,7 @@ public class Messages implements Serializable {
                 result.append("</a>");
             }
             comma = true;
-        } // xls       
+        } // xls
         if (trailerSelect.contains(" more")) {
             if (comma) {
                 result.append(',');

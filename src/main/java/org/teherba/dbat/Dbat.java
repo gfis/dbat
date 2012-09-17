@@ -77,7 +77,6 @@ import  javax.xml.parsers.SAXParserFactory;
 import  org.xml.sax.InputSource;
 import  org.xml.sax.SAXParseException;
 import  org.xml.sax.XMLReader;
-// import  org.apache.tomcat.dbcp.dbcp.BasicDataSource; 
 import  org.apache.log4j.Logger;
 
 /** Database application tool for JDBC compatible relational databases.

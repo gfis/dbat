@@ -34,7 +34,7 @@ import  org.apache.log4j.Logger;
 
 /** This reader reads from the following sources:
  *	<ol>
- *	<li>a Uniform Resource Locator (URL) - out of the box of java.net.URL - with the protcols/schemas
+ *	<li>a Uniform Resource Locator (URL) - out of the box of java.net.URL - with the protocols/schemas
  *		<ul>
  *		<li>http: - Hypertext transfer protocol</li>
  *		<li>ftp: - File transfer protocol</li>
@@ -51,7 +51,7 @@ import  org.apache.log4j.Logger;
  *	<code>BufferedReader</code> and <code>InputStream</code> are both implemented,
  *	but care must be taken to call the appropriate overloaded method name.
  *  <p  />
- *	This class is used in 
+ *	This class is used in
  *	<ul>
  *	<li>{@link org.teherba.dbat.format.TayloredTable} for the -u pattern file</li>
  *	<li>{@link SQLAction#execSQLfromURI}</li>
@@ -64,7 +64,7 @@ public class URIReader {
 
     /** log4j logger (category) */
     private Logger log;
-	
+
 	//============================================
 	// Bean properties, getters and setters
 	//============================================
@@ -99,13 +99,13 @@ public class URIReader {
 		try {
 	        inputURI = new URI(uri);
 		} catch (Exception exc) {
-			inputURI = null;		
+			inputURI = null;
 		}
     } // setInputURI
-   
+
    	/** whether the reader is character oriented (in contrast to byte streams) */
    	private boolean isEncoded;
-   	
+
    	/** generalized local input stream */
    	private InputStream byteStream;
     /** Gets the byte input stream for this URI
@@ -114,7 +114,7 @@ public class URIReader {
     public InputStream getByteStream() {
         return this.byteStream;
     } // getByteStream
-    
+
    	/** generalized local buffered reader */
    	private BufferedReader charReader;
     /** Gets the character reader for this URI
@@ -166,7 +166,7 @@ public class URIReader {
 				} else if (uri.startsWith("file:")
 						|| uri.startsWith("ftp:")
 						|| uri.startsWith("gopher:")
-						|| uri.startsWith("http:") 
+						|| uri.startsWith("http:")
 						) {
 					inputURI = new URI(uri);
 					charReader = new BufferedReader(new InputStreamReader(inputURI.toURL().openStream(), this.encoding));
@@ -175,7 +175,7 @@ public class URIReader {
 		       		charReader = new BufferedReader(Channels.newReader(channel, this.encoding));
 				}
 				// encoded, characters
-				
+
 			} else { // byte oriented
 				if (false) {
 				} else if (uri == null || uri.equals("-")) { // read from STDIN
@@ -187,7 +187,7 @@ public class URIReader {
 				} else if (uri.startsWith("file:")
 						|| uri.startsWith("ftp:")
 						|| uri.startsWith("gopher:")
-						|| uri.startsWith("http:") 
+						|| uri.startsWith("http:")
 						) {
 					inputURI = new URI(uri);
 					byteStream = inputURI.toURL().openStream();
@@ -202,7 +202,7 @@ public class URIReader {
 
 	//==========================
 	// BufferedReader Interface
-	//========================== 
+	//==========================
 	/** Closes the stream and releases any system resources associated with it.
 	 */
 	public void close() throws IOException {
@@ -216,14 +216,14 @@ public class URIReader {
 			throw exc;
 		}
 	} // close
-	
+
 	/** Marks the present position in the stream.
-	 *	@param readAheadLimit - Limit on the number of characters 
-	 *	that may be read while still preserving the mark. 
-	 *	An attempt to reset the stream after reading characters or bytes up to this limit or beyond may fail. 
-	 *  A limit value larger than the size of the input buffer will cause a new buffer 
-	 * 	to be allocated whose size is no smaller than limit. 
-	 *	Therefore large values should be used with care. 
+	 *	@param readAheadLimit - Limit on the number of characters
+	 *	that may be read while still preserving the mark.
+	 *	An attempt to reset the stream after reading characters or bytes up to this limit or beyond may fail.
+	 *  A limit value larger than the size of the input buffer will cause a new buffer
+	 * 	to be allocated whose size is no smaller than limit.
+	 *	Therefore large values should be used with care.
 	 */
 	public void mark(int readAheadLimit) throws IllegalArgumentException, IOException {
 		try {
@@ -238,20 +238,20 @@ public class URIReader {
 			throw exc;
 		}
 	} // readAheadLimit
-	
+
 	/** Tells whether this stream supports the mark() operation, which it does.
 	 */
 	public boolean markSupported() {
-		return isEncoded 
+		return isEncoded
 				? this.charReader.markSupported()
 				: this.byteStream.markSupported()
 				;
 	} // markSupported
-	
-	/** Reads a single character or byte. 
-	 *	This method will block until a character is available, 
+
+	/** Reads a single character or byte.
+	 *	This method will block until a character is available,
 	 *	an I/O error occurs, or the end of the stream is reached.
-     *	@return The character or byte read, as an integer in the range 0 to 65535 (0x00-0xffff), 
+     *	@return The character or byte read, as an integer in the range 0 to 65535 (0x00-0xffff),
      *	or -1 if the end of the stream has been reached.
      *	@throws IOException - If an I/O error occurs
 	 */
@@ -269,15 +269,15 @@ public class URIReader {
 		return result;
 	} // read
 
-    /* Attempts to read characters into the specified character buffer. 
-     *	The buffer is used as a repository of characters as-is: 
-     *	the only changes made are the results of a put operation. 
+    /* Attempts to read characters into the specified character buffer.
+     *	The buffer is used as a repository of characters as-is:
+     *	the only changes made are the results of a put operation.
      *	No flipping or rewinding of the buffer is performed.
-     *	@param cb the buffer to read characters into 
-     *	@return The number of char values added to the buffer, 
-     *	or -1 if this source of characters is at its end 
-     *  @throws IOException - if an I/O error occurs 
-     *  @throws NullPointerException - if cb is null 
+     *	@param cb the buffer to read characters into
+     *	@return The number of char values added to the buffer,
+     *	or -1 if this source of characters is at its end
+     *  @throws IOException - if an I/O error occurs
+     *  @throws NullPointerException - if cb is null
      *  @throws ReadOnlyBufferException - if cb is a read only buffer
 	 */
 /* this would be needed for the Readable interface
@@ -288,10 +288,10 @@ public class URIReader {
 */
 
 	/** Reads bytes into an array.
-     *	This method will block until some input is available, 
+     *	This method will block until some input is available,
      *	an I/O error occurs, or the end of the stream is reached.
 	 *	@param  bbuf - Destination buffer
-     *	@return The number of bytes read, or -1 if the end of the stream has been reached 
+     *	@return The number of bytes read, or -1 if the end of the stream has been reached
      *	@throws IOException - If an I/O error occurs
 	 */
 	public int read(byte[] bbuf) throws IOException {
@@ -303,14 +303,14 @@ public class URIReader {
 		}
 		return result;
 	} // read
-	
+
 	/** Reads bytes into a portion of an array.
-     *	This method will block until some input is available, 
+     *	This method will block until some input is available,
      *	an I/O error occurs, or the end of the stream is reached.
 	 *	@param  bbuf - Destination buffer
      *	@param  off - Offset at which to start storing bytes
-     *	@param  len - Maximum number of byte to read 
-     *	@return The number of bytes read, or -1 if the end of the stream has been reached 
+     *	@param  len - Maximum number of byte to read
+     *	@return The number of bytes read, or -1 if the end of the stream has been reached
      *	@throws IOException - If an I/O error occurs
 	 */
 	public int read(byte[] bbuf, int off, int len) throws IOException {
@@ -322,14 +322,14 @@ public class URIReader {
 		}
 		return result;
 	} // read
-	
+
 	/** Reads characters into a portion of an array.
-     *	This method will block until some input is available, 
+     *	This method will block until some input is available,
      *	an I/O error occurs, or the end of the stream is reached.
 	 *	@param  cbuf - Destination buffer
      *	@param  off - Offset at which to start storing characters
-     *	@param  len - Maximum number of characters to read 
-     *	@return The number of characters read, or -1 if the end of the stream has been reached 
+     *	@param  len - Maximum number of characters to read
+     *	@return The number of characters read, or -1 if the end of the stream has been reached
      *	@throws IOException - If an I/O error occurs
 	 */
 	public int read(char[] cbuf, int off, int len) throws IOException {
@@ -341,14 +341,14 @@ public class URIReader {
 		}
 		return result;
 	} // read
-	
+
 	/** Reads a line of text.
-	 *	A line is considered to be terminated by any one of a line feed ('\n'), 
+	 *	A line is considered to be terminated by any one of a line feed ('\n'),
 	 *	a carriage return ('\r'), or a carriage return followed immediately by a linefeed.
-	 *  @return A String containing the contents of the line, 
-	 *	not including any line-termination characters, 
-	 *	or null if the end of the stream has been reached 
-	 *	@throws IOException - If an I/O error occurs 
+	 *  @return A String containing the contents of the line,
+	 *	not including any line-termination characters,
+	 *	or null if the end of the stream has been reached
+	 *	@throws IOException - If an I/O error occurs
 	 */
 	public String readLine() throws IOException {
 		String result = null;
@@ -359,10 +359,10 @@ public class URIReader {
 		}
 		return result;
 	} // readLine
-	
+
 	/** Tells whether this stream is ready to be read.
-	 *	@return     True if the next read() is guaranteed not to block for input, false otherwise. 
-	 *	Note that returning false does not guarantee that the next read will block. 
+	 *	@return     True if the next read() is guaranteed not to block for input, false otherwise.
+	 *	Note that returning false does not guarantee that the next read will block.
 	 *	@throws IOException
 	 */
 	public boolean ready() throws IOException {
@@ -374,7 +374,7 @@ public class URIReader {
 		}
 		return result;
 	} // ready
-	
+
 	/** Resets the stream to the most recent mark.
 	 */
 	public void reset() throws IOException {
@@ -388,13 +388,13 @@ public class URIReader {
 			throw exc;
 		}
 	} // reset
-	
-	/** Skips characters. 
-	 *	This method will block until some characters or bytes are available, 
+
+	/** Skips characters.
+	 *	This method will block until some characters or bytes are available,
 	 *	an I/O error occurs, or the end of the stream is reached.
-	 *	@param n - The number of characters or bytes to skip 
-     *	@return The number of characters oor bytes actually skipped 
-     *	@throws IllegalArgumentException - If n is negative. 
+	 *	@param n - The number of characters or bytes to skip
+     *	@return The number of characters oor bytes actually skipped
+     *	@throws IllegalArgumentException - If n is negative.
      *	@throws IOException - If an I/O error occurs
 	 */
 	public long skip(long n) throws IOException  {
@@ -410,11 +410,11 @@ public class URIReader {
 		}
 		return result;
 	} // skip
-	
+
 	//======================
     // Main method (test)
     //======================
-    
+
     /** Test method: read from an URL and print the result on STDOUT.
      *  @param args command line arguments: options, strings, table- or filenames
      */
