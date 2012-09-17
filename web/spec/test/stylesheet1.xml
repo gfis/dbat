@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2012-09-17, Dr. Georg Fischer: copied from selec01.xml
+-->
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="en"
+		conn="worddb"
+		title="stylesheet1"
+		stylesheet="/dbat/stylesheet.css"
+		>
+	<comment lang="en">Explicit Stylesheet</comment>
+	<comment lang="de">Explizite Stylesheet-Angabe</comment>
+
+    <ht:h3>Explicit Stylesheet</ht:h3>
+    <ht:form method="get">
+        <ht:input label="Name" name="name" maxsize="20" size="10" init="%r" />
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+    <select limit="2048">
+        <col label="Name"    	>name</col>
+        <col label="University" >univ</col>
+        <col label="Year"  align="right">year</col>
+        <col label="Gender"    	>gender</col>
+        <col label="Birthdate" 	>birth</col>
+        <from>c01</from>
+        <where>name like '<parm name="name" />%'
+        </where>
+        <counter desc="Person,s"/>
+	</select>
+</dbat>

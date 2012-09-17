@@ -277,6 +277,9 @@ WGET test/index view=con2 enc=ISO-8859-1 lang=en mode=html conn=worddb intext=se
 
 TEST SC3 submit SQL from console with limit 8
 WGET test/index view=con2 enc=ISO-8859-1 lang=en mode=html conn=worddb intext=select+*+from+de1 fetch=8
+#--------------------
+TEST SS1 explicit stylesheet
+WGET test/stylesheet1
 #-------------------
 TEST CT1 tokenizing preprogrammed commandline string
 CRUN CommandTokenizer
@@ -731,19 +734,19 @@ DATA --
 JRUN -f VW4.data.tmp
 #-------------------
 TEST TR1 web trailer "none"
-WGET test/trail01 
+WGET test/trail01
 
 TEST TR2 web trailer "out dbat"
-WGET test/trail02 
+WGET test/trail02
 
 TEST TR3 web trailer "out dbat script"
-WGET test/trail03 
+WGET test/trail03
 
 TEST TR4 web trailer "out dbat script xls"
-WGET test/trail04 
+WGET test/trail04
 
 TEST TR5 web trailer "out dbat script xls more"
-WGET test/trail05 
+WGET test/trail05
 
 TEST TR6 web trailer "out dbat more"
 WGET test/trail06

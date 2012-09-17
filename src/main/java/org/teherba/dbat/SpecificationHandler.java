@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+    2012-09-17: if <dbat stylesheet=""> attribute is present, it is taken as is
     2012-08-04: pass urlPath to HTML stylesheet declaration
     2012-06-27: Windows drive letter in relative file entity declaration
     2012-06-19: parameter not found in <listbox> => select 1st <option>; <choose> not for static formats
@@ -287,7 +288,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         this.specName   = name;
     } // setSpecPaths
 
-    /** whitespace separated list of keywords: 
+    /** whitespace separated list of keywords:
      *  "none out time dbat script xls more plain"
      */
     private String trailerSelect;
@@ -364,9 +365,9 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     //====================
 
     /** Gets the optional trailer with timestamp and links.
-     *  This is the language-independant code. 
+     *  This is the language-independant code.
      *  Language-specific words are added in {@link Messages#getTrailerText}.
-     *  @param trailerSelect a whitespace (or comma) separated list of keywords: 
+     *  @param trailerSelect a whitespace (or comma) separated list of keywords:
      *  "none plain out time dbat script xls more"
      *  @param language ISO country code "en", "de"
      *  @param specName base name of the specification with subdirectory, without ".xml"
@@ -385,16 +386,16 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             if (! (tbSerializer instanceof HTMLTable)) {
                 trailerSelect += " plain";
             }
-            String specUrl  = urlPath + specName + (config.getCallType() == Configuration.CLI_CALL ? "" : ".xml");                                  
-            String xlsUrl   = "servlet?&amp;mode=xls" 
+            String specUrl  = urlPath + specName + (config.getCallType() == Configuration.CLI_CALL ? "" : ".xml");
+            String xlsUrl   = "servlet?&amp;mode=xls"
                             + repeatURLParameters();
-            String moreUrl  = "servlet?&amp;view=more&amp;mode=" + tbSerializer.getOutputFormat()   
+            String moreUrl  = "servlet?&amp;view=more&amp;mode=" + tbSerializer.getOutputFormat()
                             + repeatURLParameters();
             result = Messages.getTrailerText(trailerSelect, language, specUrl, specName, xlsUrl, moreUrl);
         } // not suppressed
         return result;
     } // getTrailer
-    
+
     /** Returns all form parameters (except <em>view, mode</em>)
      *  as URL encoded name=value pairs separated by ampersands.
      */
@@ -1048,7 +1049,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 //--------
                 String stylesheet   = attrs.getValue("stylesheet");
                 if (stylesheet      != null) { // assume "stylesheet.css" in current subdirectory of dbat/spec
-                    stylesheet      = urlPath + stylesheet  + (stylesheet.endsWith(".css") ? "" : ".css");
+                    stylesheet      = // urlPath +
+                            stylesheet  + (stylesheet.endsWith(".css") ? "" : ".css");
                 } else { // default: take the stylesheet from dbat/spec/subdirectory
                     stylesheet      = subDirectory + "stylesheet.css";
                 }
@@ -1064,7 +1066,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                             { "encoding"                                    , config.getEncoding(1)
                             , "contenttype"                                 , contentType
                             , "specname"                                    , specName
-                            , "urlpath"                                     , urlPath 
+                            , "urlpath"                                     , urlPath
                             , "title"                                       , title
                             , (javascript != null ? "javascript" : "dummy") , javascript
                             , (stylesheet != null ? "stylesheet" : "dummy") , stylesheet
@@ -1992,7 +1994,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             } else if (systemId.startsWith("file://")) {
             } else if (systemId.startsWith("ftp://" )) {
             } else { // if no URL schema, assume URL to be relative to realPath
-                if (realPath.matches("\\w\\:.*")) { // Windows drive letter 
+                if (realPath.matches("\\w\\:.*")) { // Windows drive letter
                     realPath = "/" + realPath.substring(0, 1) +  "|/" + realPath.substring(2);
                     // file://e:/webapps... => file:///e|/webapps... - this is understood by MS InternetExplorer also
                 } // Windows
