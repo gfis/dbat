@@ -242,20 +242,26 @@ public class TableMetaData {
                 counterDesc = new String[] { partList, partList, partList };
             } else { // "row,s," or "Zeile,n," or "Mann,Männer"
                 int cpos2 = partList.indexOf(',', cpos + 1); // position of 2nd comma
-				if (cpos2 < 0) {
-					cpos2 = partList.length(); // behind the string
-				}
-                counterDesc = new String[] 
-                		{ partList.substring(0, cpos)
-                		, partList.substring(cpos + 1, cpos2)
-                		, cpos2 < partList.length() - 1 ? partList.substring(cpos2 + 1) : "" 
-                		};
-                if (counterDesc[1].length() < counterDesc[0].length()) { // plural shorter => append to singular
-                    counterDesc[1] = counterDesc[0] + counterDesc[1];
-                }
-                if (counterDesc[2].length() <= 0) { // 0 => plural
-                	counterDesc[2] = counterDesc[1];
-                }
+				if (cpos2 < 0) { // only 1 comma
+	                counterDesc = new String[] 
+    	            		{ partList.substring(0, cpos)
+        	        		, partList.substring(cpos + 1)
+            	    		, null
+                			};
+	                if (counterDesc[1].length() < counterDesc[0].length()) { // plural shorter => append to singular
+    	                counterDesc[1] = counterDesc[0] + counterDesc[1];
+        	        }
+        	        counterDesc[2] = counterDesc[1];
+				} else { // there is a 2nd comma
+	                counterDesc = new String[] 
+    	            		{ partList.substring(0, cpos)
+        	        		, partList.substring(cpos + 1, cpos2)
+            	    		, cpos2 < partList.length() - 1 ? partList.substring(cpos2 + 1) : null
+                			};
+	                if (counterDesc[1].length() < counterDesc[0].length()) { // plural shorter => append to singular
+    	                counterDesc[1] = counterDesc[0] + counterDesc[1];
+        	        }
+				} // 2nd comma
             } // with ","
         } // partList nonempty
     } // setCounterDesc

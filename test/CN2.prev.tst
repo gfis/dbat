@@ -47,7 +47,6 @@ FROM c01
 WHERE name like 'x%';
 :SQL -->
 <table id="tab3"><!-- table_not_specified -->
-<tr><td class="counter" colspan="1">0 Persons</td></tr>
 </table>
 
 
