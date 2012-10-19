@@ -197,40 +197,68 @@ public class TableMetaData {
     } // setAggregateColumn
     
     /** descriptive text for count of rows: [0] is singular, [1] is plural (also for 0 rows)*/
-    private String  counterDesc[]; // always 2 elements
+    private String  counterDesc[]; // always 3 elements: 0 = singular, 1 = plural, 0 = zero rows 
+    
     /** Gets the descriptive text for the row counter.
-     *  @param numerus 0 = singular, 2 = plural
-     *  @return one of two strings
+     *  @param rowCount number of rows retrieved by the SELECT statement
+     *  @return a word in the proper numerus
      */
-    public String getCounterDesc(int numerus) {
-        return counterDesc[numerus];
+    public String getCounterDesc(int rowCount) {
+    	int ix = 0;
+    	switch (rowCount) {
+    		case 1:
+    			ix = 0;
+    			break;
+    		case 0:
+    			ix = 2;
+    			break;
+    		default:
+    			ix = 1;
+    			break;
+    	} // switch rowCount
+        return counterDesc[ix];
     } // getCounterDesc
+    
     /** Sets the descriptive text for the row counter, a noun in singular or plural
-     *  @param desc text to be shown for 1 or more rows,
+     *  @param partList text to be shown for 0, 1 or more rows,
      *  empty string for default ("rows"),
-     *  null if no counter should be shown under the table
+     *  null if no counter should be shown under the table.
+     *  The parameter consists of up to 3 word particles, where 
+     *  <ul>
+     *	<li>the 1st is a noun (in singular form) which is used for a result of 1 row,</li>
+     *	<li>the optional 2nd particle is used for more than 1 row in the result set,
+     *  or for zero rows if there is no 3rd word; the particĺe is appended to the first
+     *	noun if its length is less than that of the noun,</li>
+     *	<li>the optional 3rd word is used for a result of 0 rows, or - if the word is empty - 
+     *	the counter is suppressed.</li>
+     *	</ul>
      */
-    public void setCounterDesc(String desc) {
-        if (desc == null) {
-            counterDesc = new String[] { null, null };
-        } else if (desc.equals("")) {
-            setCounterDesc("row,s");
-        } else { // non-empty string - split it
-            int cpos = desc.indexOf(',');
-            if (cpos < 0) { // no ","
-                counterDesc = new String[] { desc, desc };
-            } else { // "row,s" or "Zeile,n" or "Mann,Männer"
-                counterDesc = new String[] { null, null };
-                if (desc.length() - cpos < cpos) {
-                    counterDesc[0] = desc.substring(0, cpos);
-                    counterDesc[1] = counterDesc[0] + desc.substring(cpos + 1);
-                } else {
-                    counterDesc[0] = desc.substring(0, cpos);
-                    counterDesc[1] =                  desc.substring(cpos + 1);
+    public void setCounterDesc(String partList) {
+        if (partList == null) {
+            counterDesc = new String[] { null, null, null };
+        } else { // non-null string - split it on commas
+            int cpos = partList.indexOf(','); // position of 1st comma
+            if (cpos < 0) { // no "," - only 1 variant
+                counterDesc = new String[] { partList, partList, partList };
+            } else { // "row,s," or "Zeile,n," or "Mann,Männer"
+                int cpos2 = partList.indexOf(',', cpos + 1); // position of 2nd comma
+				if (cpos2 < 0) {
+					cpos2 = partList.length(); // behind the string
+				}
+                counterDesc = new String[] 
+                		{ partList.substring(0, cpos)
+                		, partList.substring(cpos + 1, cpos2)
+                		, cpos2 < partList.length() - 1 ? partList.substring(cpos2 + 1) : "" 
+                		};
+                if (counterDesc[1].length() < counterDesc[0].length()) { // plural shorter => append to singular
+                    counterDesc[1] = counterDesc[0] + counterDesc[1];
+                }
+                if (counterDesc[2].length() <= 0) { // 0 => plural
+                	counterDesc[2] = counterDesc[1];
                 }
             } // with ","
-        } // desc nonempty
-    } // setCounterDesc(desc)
+        } // partList nonempty
+    } // setCounterDesc
 
     /** Comma separated list (without spaces!) of column names which participate in control change determination */
     private String groupColumns;

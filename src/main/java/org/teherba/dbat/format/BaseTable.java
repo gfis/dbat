@@ -723,7 +723,7 @@ public abstract class BaseTable {
      *  @param tbMetaData contains the descriptive text for the counter: 1 for "row" and 0 or &gt;= 2 for "rows"
      */
     public void writeTableFooter(int rowCount, boolean moreRows, TableMetaData tbMetaData) {
-        String desc = tbMetaData.getCounterDesc(rowCount == 1 ? 0 : 1);
+        String desc = tbMetaData.getCounterDesc(rowCount);
         if (desc != null) { // only if set
             writeComment(rowCount + (moreRows ? "+ " : " ") + desc);
         } // if set

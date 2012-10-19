@@ -1,12 +1,12 @@
 Test A00 
-echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-09-12 11:04:38
+echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-10-19 21:46:43
 *** A00.prev.tst	2012-06-27 21:24:35.000000000 +0200
---- A00.this.tst	2012-09-12 11:04:39.000000000 +0200
+--- A00.this.tst	2012-10-19 21:46:44.000000000 +0200
 ***************
 *** 1 ****
 ! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-27 21:24:34
 --- 1 ----
-! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-09-12 11:04:38
+! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-10-19 21:46:43
 -- FAILED A00 
 Test A01 parameterized link
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/parmlink.xml
@@ -43,30 +43,31 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 ++ passed C01 create table
 Test H01 help messages
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -h
-*** H01.prev.tst	2012-07-01 21:56:07.000000000 +0200
---- H01.this.tst	2012-09-12 11:04:47.000000000 +0200
-***************
-*** 33 ****
-!   org.sqlite.JDBC 3.6
---- 33 ----
-!   org.sqlite.JDBC 3.7
--- FAILED H01 help messages
+++ passed H01 help messages
 Test H02 help messages - 0 arguments
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 
-*** H02.prev.tst	2012-07-01 21:56:07.000000000 +0200
---- H02.this.tst	2012-09-12 11:04:48.000000000 +0200
-***************
-*** 33 ****
-!   org.sqlite.JDBC 3.6
---- 33 ----
-!   org.sqlite.JDBC 3.7
--- FAILED H02 help messages - 0 arguments
+++ passed H02 help messages - 0 arguments
 Test I01 insert statements
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f I01.data.tmp
 ++ passed I01 insert statements
 Test I02 include with system entities
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/includer"
 ++ passed I02 include with system entities
+Test CN1 default counter en
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/counter01&name=x&lang=en"
+++ passed CN1 default counter en
+Test CN2 default counter de
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/counter01&name=x&lang=de"
+++ passed CN2 default counter de
+Test CN3 counter with 1 result
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/counter01&name=Ilse"
+++ passed CN3 counter with 1 result
+Test CN4 counter with 2 results
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/counter01&name=Ma%"
+++ passed CN4 counter with 2 results
+Test CN5 counter with 0 results
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/counter01&name=x"
+++ passed CN5 counter with 0 results
 Test DE1 create table with DECIMALs
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f DE1.data.tmp
 ++ passed DE1 create table with DECIMALs
@@ -160,7 +161,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.selec01"
 Test Y06 XML syntax error, CLI
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/badxml.xml 2> nul
 *** Y06.prev.tst	2012-06-27 21:24:53.000000000 +0200
---- Y06.this.tst	2012-09-12 11:05:01.000000000 +0200
+--- Y06.this.tst	2012-10-19 21:47:01.000000000 +0200
 ***************
 *** 1 ****
 ! java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/badxml.xml
@@ -170,40 +171,28 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 *** 13 ****
 ! 2012-06-27 21:24:53,405 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
 --- 13 ----
-! 2012-09-12 11:05:01,547 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
+! 2012-10-19 21:47:00,897 1    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
 ***************
 *** 26 ****
 ! 2012-06-27 21:24:53,408 3    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 --- 26 ----
-! 2012-09-12 11:05:01,550 3    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+! 2012-10-19 21:47:00,900 4    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 ***************
-*** 31,36 ****
-! 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:228)
-! 	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:271)
-! 	at org.teherba.dbat.Dbat.process(Dbat.java:606)
+*** 34,36 ****
 ! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:694)
 ! 	at org.teherba.dbat.Dbat.main(Dbat.java:714)
 ! 2012-06-27 21:24:53,409 4    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
---- 31,36 ----
-! 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:229)
-! 	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:272)
-! 	at org.teherba.dbat.Dbat.process(Dbat.java:607)
-! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:696)
-! 	at org.teherba.dbat.Dbat.main(Dbat.java:716)
-! 2012-09-12 11:05:01,552 5    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+--- 34,36 ----
+! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:695)
+! 	at org.teherba.dbat.Dbat.main(Dbat.java:715)
+! 2012-10-19 21:47:00,902 6    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 ***************
-*** 41,45 ****
-! 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:228)
-! 	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:271)
-! 	at org.teherba.dbat.Dbat.process(Dbat.java:606)
+*** 44,45 ****
 ! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:694)
 ! 	at org.teherba.dbat.Dbat.main(Dbat.java:714)
---- 41,45 ----
-! 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:229)
-! 	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:272)
-! 	at org.teherba.dbat.Dbat.process(Dbat.java:607)
-! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:696)
-! 	at org.teherba.dbat.Dbat.main(Dbat.java:716)
+--- 44,45 ----
+! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:695)
+! 	at org.teherba.dbat.Dbat.main(Dbat.java:715)
 -- FAILED Y06 XML syntax error, CLI
 Test Y07 XML syntax error, web
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.badxml"
@@ -223,6 +212,9 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/index&view=con2&enc=I
 Test SC3 submit SQL from console with limit 8
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/index&view=con2&enc=ISO-8859-1&lang=en&mode=html&conn=worddb&intext=select+*+from+de1&fetch=8"
 ++ passed SC3 submit SQL from console with limit 8
+Test SS1 explicit stylesheet
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/stylesheet1"
+++ passed SS1 explicit stylesheet
 Test CT1 tokenizing preprogrammed commandline string
 java -cp ../dist/dbat.jar org.teherba.dbat.CommandTokenizer
 ++ passed CT1 tokenizing preprogrammed commandline string
@@ -615,8 +607,6 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed VA3 echo with var elements
 ==================
 -- FAILED A00 
--- FAILED H01 help messages
--- FAILED H02 help messages - 0 arguments
 -- FAILED Y06 XML syntax error, CLI
 ++ passed A01 parameterized link
 ++ passed B01 create table with BLOB
@@ -629,8 +619,15 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed B08 insert into CLOB
 ++ passed B09 select from CLOB
 ++ passed C01 create table
+++ passed H01 help messages
+++ passed H02 help messages - 0 arguments
 ++ passed I01 insert statements
 ++ passed I02 include with system entities
+++ passed CN1 default counter en
+++ passed CN2 default counter de
+++ passed CN3 counter with 1 result
+++ passed CN4 counter with 2 results
+++ passed CN5 counter with 0 results
 ++ passed DE1 create table with DECIMALs
 ++ passed DE2 fill table with DECIMALs
 ++ passed DE3 fill table with DECIMALs, verbose output
@@ -667,6 +664,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed SC1 show SQL console page
 ++ passed SC2 submit SQL from console
 ++ passed SC3 submit SQL from console with limit 8
+++ passed SS1 explicit stylesheet
 ++ passed CT1 tokenizing preprogrammed commandline string
 ++ passed CT2 tokenizing from file
 ++ passed CT3 tokenizing from file with SQL syntax
@@ -797,5 +795,5 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed VA1 var element
 ++ passed VA2 var elements with data types
 ++ passed VA3 echo with var elements
-   4 FAILED.tests
- 179 passed.tests
+   2 FAILED.tests
+ 187 passed.tests

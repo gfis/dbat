@@ -1,6 +1,7 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
-    2012-09-17: if <dbat stylesheet=""> attribute is present, it is taken as is
+    2012-10-19: use Messages.getDefaultCounterDesc
+    2012-09-17: if <dbat stylesheet="..."> attribute is present, it is taken as is
     2012-08-04: pass urlPath to HTML stylesheet declaration
     2012-06-27: Windows drive letter in relative file entity declaration
     2012-06-19: parameter not found in <listbox> => select 1st <option>; <choose> not for static formats
@@ -1236,8 +1237,9 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 
             } else if (qName.equals(COUNTER_TAG )) {
                 String counterDesc = attrs.getValue("desc");
-                if (counterDesc == null) {
-                    counterDesc = "row,s";
+                if (counterDesc == null || counterDesc.length() == 0) { 
+                	// the element was present, but not the attribute: take default word particles
+                    counterDesc = Messages.getDefaultCounterDesc(config.getLanguage());
                 }
                 tbMetaData.setCounterDesc(counterDesc);
 

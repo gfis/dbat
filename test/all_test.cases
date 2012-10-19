@@ -2,6 +2,7 @@
 
 # Collection of all Testcases for Dbat
 # @(#) $Id: all.tca 955 2012-06-05 07:22:59Z gfis $
+# 2012-10-19: <counter> tests
 # 2012-06-19: GREP ... d{2})T => d{2})T
 # 2012-06-12: all clean again for github
 # 2012-05-08: V0% pass with method="post"; A01 FAILED, 156 passed tests
@@ -104,6 +105,17 @@ JRUN -f I01.data.tmp
 
 TEST I02 include with system entities
 WGET test/includer
+#-------------------
+TEST CN1 default counter en
+WGET test/counter01 name=x lang=en
+TEST CN2 default counter de
+WGET test/counter01 name=x lang=de
+TEST CN3 counter with 1 result
+WGET test/counter01 name=Ilse
+TEST CN4 counter with 2 results
+WGET test/counter01 name=Ma%
+TEST CN5 counter with 0 results
+WGET test/counter01 name=x
 #-------------------
 TEST DE1 create table with DECIMALs
 DATA

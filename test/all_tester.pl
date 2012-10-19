@@ -2,6 +2,7 @@
 
 # Test Dbat functions on the commandline and from the local webserver, and XSLT scripts 
 # @(#) $Id$
+# 2012-10-19: "am" before timestamp hindered the substitution
 # 2012-06-27: previous version was batch_test.pl which suppressed lines with timestamps;
 #             now the timestamps are replaced by "yyyy-mm-dd hh:mm:ss"
 # 2012-06-20:  . "\" 2>\&1"; after all commands
@@ -134,7 +135,7 @@ use strict;
     my $default_grep; # contains the fixed expression for WGET commands
     my $subst;          # contains the variable expression from SUBST command for substituting of timestamps, versions etc.
     my $default_subst;  # contains the fixed    expression for WGET commands
-    $default_subst = 's{(on|at) 2[0-1]\d\d\-[0-1]\d\-[0-3]\d [0-2]\d\:[0-5]\d\:[0-5]\d}{$1 yyyy-mm-dd hh:mm:ss}g';
+    $default_subst = 's{(on|at|am) 2[0-1]\d\d\-[0-1]\d\-[0-3]\d [0-2]\d\:[0-5]\d\:[0-5]\d}{$1 yyyy-mm-dd hh:mm:ss}g';
 
     my $buffer = ""; # for file contents
     my $file_extension; # of temporary SQL or XML file

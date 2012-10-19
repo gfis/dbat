@@ -1,5 +1,6 @@
 /*  Messages.java - Static help texts and other language specific messages for Dbat.
  *  @(#) $Id$
+ *	2012-10-19: comment for 'usage' method removed; getDefaultCounterDesc
  *  2012-06-19: more modes; TIMESTAMP_FORMAT for humans; trailer line configurable
  *  2012-04-19: try/catch the known JDBC drivers for -h
  *  2012-01-20: refer to index.html instead of index.jsp
@@ -53,6 +54,21 @@ public class Messages implements Serializable {
     public Messages() {
     } // Constructor
 
+    /** Gets the default word particles for the count of rows below a result table
+     *  @param language ISO country code: "de", "en"
+     *  @return language specific word particles
+     */
+    public static String getDefaultCounterDesc(String language) {
+        String result = null;
+        if (false) {
+        } else if (language.equals("de")) {
+            result = "Zeile,n";
+        } else { // default: en
+            result = "row,s";
+        }
+        return result;
+    } // getDefaultCounterDesc
+    
     /** Gets the message text for a notice about form field validation errors
      *  @param language ISO country code: "de", "en"
      *  @return language specific message text
@@ -386,16 +402,7 @@ public class Messages implements Serializable {
     /** Display help: commandline options and arguments
      *  @param language language to be used for text output
      */
-/*
-    public static void usage(String language) {
-        try {
-            System.out.println(getHelpText(language));
-        } catch (Exception exc) {
-            // ignore
-            // log.error(exc.getMessage(), exc);
-        }
-    } // usage
-*/
+
     //================
     // Main method
     //================

@@ -8,7 +8,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/stylesheet1"
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
 <title>stylesheet1</title>
-<link rel="stylesheet" type="text/css" href="web/stylesheet.css" />
+<link rel="stylesheet" type="text/css" href="/dbat/stylesheet.css" />
 </head><body>
 
 	<!--Explicit Stylesheet-->

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2012-10-19: Dr. Georg Fischer
+-->
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		conn="worddb" 
+		title="counter01"
+		>
+	<comment lang="en">Counter Test</comment>
+	<comment lang="de">Test des Zeilenz&#xe4;hlers</comment>
+	
+    <ht:h3>Counter Test</ht:h3>
+    <ht:form method="get">
+        <ht:input label="Name" name="name" maxsize="20" size="10" init="%r" />
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+
+    <select>
+        <col label="Name"    	>name</col>
+        <from>c01</from>
+        <where>name like '<parm name="name" />%'
+        </where>
+        <counter />
+	</select>
+
+    <select>
+        <col label="Name"    	>name</col>
+        <from>c01</from>
+        <where>name like '<parm name="name" />%'
+        </where>
+        <counter desc="Person,s" />
+	</select>
+
+    <select>
+        <col label="Name"    	>name</col>
+        <from>c01</from>
+        <where>name like '<parm name="name" />%'
+        </where>
+        <counter desc="Person,s," />
+	</select>
+
+    <select>
+        <col label="Name"    	>name</col>
+        <from>c01</from>
+        <where>name like '<parm name="name" />%'
+        </where>
+        <counter desc="Person,known Persons,result rows" />
+	</select>
+</dbat>
