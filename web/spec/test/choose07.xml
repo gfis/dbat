@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2012-10-20: Dr. Georg Fischer
+-->
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="en" 
+		conn="worddb" 
+		title="choose07"
+		>
+	<comment lang="en">Test of Conditional Compilation with Regular Expressions</comment>
+	<comment lang="de">Test der bedingten Compilierung mit Regul&#xe4;ren Ausdr&#xfc;cken</comment>
+
+    <ht:h3>Test of Conditional Compilation with regular expression</ht:h3>
+    <ht:form method="get">
+        <ht:input label="Parameter" name="par" maxsize="8" size="3" init="x" />
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+   
+  	<choose>
+   		<when name="par" match="\d+">
+   			"<parm name="par" />" is numeric<ht:br />
+   		</when>
+   		<when name="par" match="\w+">
+   			"<parm name="par" />" is alphanumeric<ht:br />
+   		</when>
+   		<otherwise>
+   			"<parm name="par" />" contains non-word characters<ht:br />
+   		</otherwise>
+   	</choose>
+</dbat>

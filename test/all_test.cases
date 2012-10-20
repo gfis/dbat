@@ -672,6 +672,15 @@ JRUN -m csv -s "-" -p switch=true -f ../web/spec/test/choose06.xml
 
 TEST CH3 choose conditional compilation, "other"
 JRUN -m csv -s "-" -p switch=other -f ../web/spec/test/choose06.xml
+
+TEST CH4 choose conditional compilation, numeric
+WGET test/choose07 par=29 
+
+TEST CH5 choose conditional compilation, alphanumeric
+WGET test/choose07 par=gf
+
+TEST CH6 choose conditional compilation, non-word
+WGET test/choose07 par=29-06
 #-------------------
 TEST FK1 create tables with foreign keys
 DATA
