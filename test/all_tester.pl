@@ -2,6 +2,7 @@
 
 # Test Dbat functions on the commandline and from the local webserver, and XSLT scripts 
 # @(#) $Id$
+# 2012-11-22: QUERY_STRING modified if not starting with "test/"
 # 2012-10-19: "am" before timestamp hindered the substitution
 # 2012-06-27: previous version was batch_test.pl which suppressed lines with timestamps;
 #             now the timestamps are replaced by "yyyy-mm-dd hh:mm:ss"
@@ -125,11 +126,9 @@ use strict;
 
     # the following 3 commands should be modified for tests of other applications
     my $jrun = "java -cp ../dist/dbat.jar org.teherba.dbat.Dbat$version -c ../etc/worddb.properties -e UTF-8"; # commandline activation
-    my $wget = "wget -q -O - \"http://localhost:8080/dbat/servlet$version?spec="; # prefix of the command for a web request
+    my $wget = "wget -q -O - \"http://localhost:8080/dbat/servlet$version?"; # prefix of the command for a web request
     my $crun = "java -cp ../dist/dbat.jar org.teherba.dbat"; # prefix for the activation of the main method of a different class
     my $xslt = "xsltproc "; # prefix of the command for an XSLT transformation
-    $jrun =~ s{\.Dbat}{\.Dbat$version};
-    $wget =~ s{\/servlet}{\/servlet$version};
     
     my $grep; # contains the variable expression from GREP command for filtering of dates, versions etc.
     my $default_grep; # contains the fixed expression for WGET commands
@@ -184,7 +183,9 @@ use strict;
                 $testcase = uc($testcase);
             } elsif ($verb =~ m/WGET/i) {
                 my @args = split(/\s+/, $options);
-                $command = "$wget" . join('&', @args) . "\"$err_redir";
+                $command = "$wget" 
+                    # . ( ($args[0] =~ m{\A(test[\.\/]|describe)}) ? "spec=" : "") 
+                    . join('&', @args) . "\"$err_redir";
             #   $default_grep = qr/Output\s+on\s+\d{4}\-\d{2}\-\d{2}/;
                 &execute_test($command);
             } elsif ($verb =~ m/XML/i) {

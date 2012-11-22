@@ -22,9 +22,9 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/choose07&par=29"
     </form>
    
   	
-   			29 is numeric<br />
+   			"29" is numeric<br />
    		
-   			29 is alphanumeric<br />
+   			"29" is alphanumeric<br />
    		
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/choose07.xml" type="text/plain">test/choose07</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;par=29&amp;spec=test%2Fchoose07&amp;lang=en">Excel</a>,

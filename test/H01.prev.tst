@@ -29,24 +29,24 @@ Options and actions are evaluated from left to right.
 SQL statements must contain a space. Enclose them in double quotes.
 Filenames may not contain spaces. '-' is STDIN.
 Included JDBC drivers:
-  com.mysql.jdbc.Driver 5.1
-  org.sqlite.JDBC 3.7
+  com.mysql.jdbc.Driver V5.1
+  org.sqlite.JDBC V3.7
 Implemented output formats (-m):
-  html	HTML
-  xls	Excel
-  xml	XML
-  fix	Fixed width columns
-  csv,tsv	Separated Values
-  sql	SQL INSERTs
-  update	SQL UPDATEs
-  jdbc	SQL with JDBC escapes
-  json	JSON
-  spec	Default Spec. File
-  taylor	File Tayloring
-  trans	XML+XSLT
-  gen	generate SAX events
-  wiki	MediaWiki Text
-  echo	Echo SQL
-  sqlj	Generate SQLJ
-  probe	Probe SQL
+  html      HTML
+  xls       Excel
+  xml       XML
+  fix       Fixed width columns
+  csv,tsv   Separated Values
+  sql       SQL INSERTs
+  update    SQL UPDATEs
+  jdbc      SQL with JDBC escapes
+  json      JSON
+  spec      Default Spec. File
+  taylor    File Tayloring
+  trans     XML+XSLT
+  gen       generate SAX events
+  wiki      MediaWiki Text
+  echo      Echo SQL
+  sqlj      Generate SQLJ
+  probe     Probe SQL
 

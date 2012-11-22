@@ -160,17 +160,18 @@ public class TableFactory {
      *  @return plain text list with one line per format
      */
     public String getHelpList(String language) {
-        if (language == null) { // safety brake
+        if (language == null || language.length() < 2) { // safety brake
             language = "en";
         }
         StringBuffer result = new StringBuffer(256);
-        final String SPACE2 = "  ";     
+        final String SPACES = "                "; // 16 x ' '     
         Iterator /*<1.5*/<BaseTable>/*1.5>*/ titer = this.getIterator();
         while (titer.hasNext()) {
             BaseTable tableFormat = (BaseTable) titer.next();
-            result.append(SPACE2);
-            result.append(tableFormat.getFormatCodes());
-            result.append("\t");
+            result.append("  ");
+            String code = tableFormat.getFormatCodes();
+            result.append(code);
+            result.append(SPACES.substring(0, 10 - code.length()));
             result.append(tableFormat.getDescription(language));
             result.append("\n");
         } // titer

@@ -1,6 +1,7 @@
 /*  Messages.java - Static help texts and other language specific messages for Dbat.
  *  @(#) $Id$
- *	2012-10-19: comment for 'usage' method removed; getDefaultCounterDesc
+ *  2012-11-22: "V" before JDBC driver version
+ *  2012-10-19: comment for 'usage' method removed; getDefaultCounterDesc
  *  2012-06-19: more modes; TIMESTAMP_FORMAT for humans; trailer line configurable
  *  2012-04-19: try/catch the known JDBC drivers for -h
  *  2012-01-20: refer to index.html instead of index.jsp
@@ -167,7 +168,7 @@ public class Messages implements Serializable {
     /** Get the tools version, the explanation of the options and
      *  the available JDBC drivers.
      *  @param language one of "en", "de"
-	 *	@param tableFactory factory for table serializers
+     *  @param tableFactory factory for table serializers
      *  @return a block of plain text
      */
     public static String getHelpText(String language, TableFactory tableFactory) {
@@ -194,7 +195,7 @@ public class Messages implements Serializable {
                 }
                 help.append(SPACE2);
                 help.append(driverName.substring(0, atPos));
-                help.append(' ');
+                help.append(" V");
                 help.append(driver.getMajorVersion());
                 help.append('.');
                 help.append(driver.getMinorVersion());
@@ -246,7 +247,7 @@ public class Messages implements Serializable {
     /** Gets the markup text for the page trailer.
      *  For HTML and XML, the text contains links.
      *  @param trailerSelect a space separated list of keywords, with a leading space, in any order:
-     *	" none plain out time dbat script xls more"
+     *  " none plain out time dbat script xls more"
      *  @param language ISO country code: "de", "en"
      *  @param specUrl  link to the specification source
      *  @param specName base name (with subdirectory, without ".xml") of the Dbat specification file
@@ -260,8 +261,8 @@ public class Messages implements Serializable {
      */
     public static String getTrailerText(String trailerSelect, String language, String specUrl, String specName, String xlsUrl, String moreUrl) {
         StringBuffer result = new StringBuffer
-        		(128);
-        		// ("<!-- " + trailerSelect + "-->");
+                (128);
+                // ("<!-- " + trailerSelect + "-->");
         boolean withLink = ! trailerSelect.contains(" plain");
         boolean comma = false; // whether to prefix a part with a comma
         String  outPart     = "Output";
@@ -346,7 +347,7 @@ public class Messages implements Serializable {
         } // more
         if (comma) {
             result.append('\n');
- 		}
+        }
         return result.toString();
     } // getTrailerText
 

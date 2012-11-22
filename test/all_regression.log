@@ -1,12 +1,12 @@
 Test A00 
-echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-10-19 22:47:29
+echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet? 2012-11-22 18:40:31
 *** A00.prev.tst	2012-06-27 21:24:35.000000000 +0200
---- A00.this.tst	2012-10-19 22:47:30.000000000 +0200
+--- A00.this.tst	2012-11-22 18:40:32.000000000 +0100
 ***************
 *** 1 ****
 ! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-27 21:24:34
 --- 1 ----
-! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-10-19 22:47:29
+! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet? 2012-11-22 18:40:31
 -- FAILED A00 
 Test A01 parameterized link
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/parmlink.xml
@@ -29,9 +29,6 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 Test B06 insert from URI into CLOB
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -r b04 < B06.data.tmp
 ++ passed B06 insert from URI into CLOB
-Test B07 select from CLOB
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 "select * from b04"
-++ passed B07 select from CLOB
 Test B08 insert into CLOB
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f B08.data.tmp
 ++ passed B08 insert into CLOB
@@ -47,6 +44,12 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 Test H02 help messages - 0 arguments
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 
 ++ passed H02 help messages - 0 arguments
+Test H03 web help page en
+wget -q -O - "http://localhost:8080/dbat/servlet?view=help&lang=en"
+++ passed H03 web help page en
+Test H04 web help page de
+wget -q -O - "http://localhost:8080/dbat/servlet?view=help&lang=de"
+++ passed H04 web help page de
 Test I01 insert statements
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f I01.data.tmp
 ++ passed I01 insert statements
@@ -161,7 +164,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.selec01"
 Test Y06 XML syntax error, CLI
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/badxml.xml 2> nul
 *** Y06.prev.tst	2012-06-27 21:24:53.000000000 +0200
---- Y06.this.tst	2012-10-19 22:47:47.000000000 +0200
+--- Y06.this.tst	2012-11-22 18:40:47.000000000 +0100
 ***************
 *** 1 ****
 ! java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/badxml.xml
@@ -171,12 +174,12 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 *** 13 ****
 ! 2012-06-27 21:24:53,405 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
 --- 13 ----
-! 2012-10-19 22:47:47,176 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
+! 2012-11-22 18:40:47,068 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
 ***************
 *** 26 ****
 ! 2012-06-27 21:24:53,408 3    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 --- 26 ----
-! 2012-10-19 22:47:47,180 4    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+! 2012-11-22 18:40:47,072 4    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 ***************
 *** 34,36 ****
 ! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:694)
@@ -185,7 +188,7 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 --- 34,36 ----
 ! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:695)
 ! 	at org.teherba.dbat.Dbat.main(Dbat.java:715)
-! 2012-10-19 22:47:47,181 5    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+! 2012-11-22 18:40:47,073 5    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 ***************
 *** 44,45 ****
 ! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:694)
@@ -494,6 +497,15 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/pivot03&mode=xls"
 Test P09 Web pivot test with fetchLimit
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/pivot03&fetch=10"
 ++ passed P09 Web pivot test with fetchLimit
+Test TN1 specify table name in SQL INSERTs
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m sql -t tartable -4 "select * from c01"
+++ passed TN1 specify table name in SQL INSERTs
+Test TN2 specify table name in SQL UPDATEs
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m update -t tartable -4 "select * from c01"
+++ passed TN2 specify table name in SQL UPDATEs
+Test TN3 web select with table name
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/xslt_brackets&mode=jdbc"
+++ passed TN3 web select with table name
 Test PR1 probe correct SQL
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m probe -f ../web/spec/test/selec02.xml
 ++ passed PR1 probe correct SQL
@@ -515,6 +527,15 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 Test CH3 choose conditional compilation, "other"
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m csv -s "-" -p switch=other -f ../web/spec/test/choose06.xml
 ++ passed CH3 choose conditional compilation, "other"
+Test CH4 choose conditional compilation, numeric
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/choose07&par=29"
+++ passed CH4 choose conditional compilation, numeric
+Test CH5 choose conditional compilation, alphanumeric
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/choose07&par=gf"
+++ passed CH5 choose conditional compilation, alphanumeric
+Test CH6 choose conditional compilation, non-word
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/choose07&par=29-06"
+++ passed CH6 choose conditional compilation, non-word
 Test FK1 create tables with foreign keys
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f FK1.data.tmp
 ++ passed FK1 create tables with foreign keys
@@ -615,12 +636,13 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed B04 create table with CLOB
 ++ passed B05 describe CLOB table
 ++ passed B06 insert from URI into CLOB
-++ passed B07 select from CLOB
 ++ passed B08 insert into CLOB
 ++ passed B09 select from CLOB
 ++ passed C01 create table
 ++ passed H01 help messages
 ++ passed H02 help messages - 0 arguments
+++ passed H03 web help page en
+++ passed H04 web help page de
 ++ passed I01 insert statements
 ++ passed I02 include with system entities
 ++ passed CN1 default counter en
@@ -758,6 +780,9 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed P07 Web pivot test with TSV
 ++ passed P08 Web pivot test with XLS
 ++ passed P09 Web pivot test with fetchLimit
+++ passed TN1 specify table name in SQL INSERTs
+++ passed TN2 specify table name in SQL UPDATEs
+++ passed TN3 web select with table name
 ++ passed PR1 probe correct SQL
 ++ passed VS1 CLI visible grouping test with TSV
 ++ passed VS2 CLI visible grouping test with HTML
@@ -765,6 +790,9 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed CH1 choose conditional compilation, "yes"
 ++ passed CH2 choose conditional compilation, "true"
 ++ passed CH3 choose conditional compilation, "other"
+++ passed CH4 choose conditional compilation, numeric
+++ passed CH5 choose conditional compilation, alphanumeric
+++ passed CH6 choose conditional compilation, non-word
 ++ passed FK1 create tables with foreign keys
 ++ passed FK2 describe with foreign keys
 ++ passed FK3 Web describe
@@ -796,4 +824,4 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed VA2 var elements with data types
 ++ passed VA3 echo with var elements
    2 FAILED.tests
- 187 passed.tests
+ 194 passed.tests

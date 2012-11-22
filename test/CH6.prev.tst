@@ -22,7 +22,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/choose07&par=29-06"
     </form>
    
   	
-   			29-06 contains non-word characters<br />
+   			"29-06" contains non-word characters<br />
    		
    	
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/choose07.xml" type="text/plain">test/choose07</a>,

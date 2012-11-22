@@ -1,5 +1,6 @@
 /*  MorePage.java - replacement for more.jsp: input form with all parameters
  *  @(#) $Id$
+ *  2012-11-22: superfluous quote behind lang= caused format descriptions "null"
  *  2012-07-01: subpackage view
  *  2012-02-11, Georg Fischer: copied from more.jsp
  */
@@ -69,8 +70,8 @@ public class MorePage {
             out.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"stylesheet.css\" />\n");
 
             out.write("<title>Database Administration Tool</title>\n");
-            out.write("<style>\ntd,th\n");
-            out.write("{vertical-align:top;margin:0px;padding-top:0px;padding-bottom:0px;padding-left:10px;padding-right:10px;border:none;}\n</style>\n<script src=\"script.js\" type=\"text/javascript\">\n</script>\n</head>\n");
+            out.write("<style>\ntd,th\n{vertical-align:top;margin:0px;padding-top:0px;padding-bottom:0px;padding-left:10px;padding-right:10px;border:none;}\n</style>\n");
+            out.write("<script src=\"script.js\" type=\"text/javascript\">\n</script>\n</head>\n");
             String[] optEnc    = new String []
                     /*  0 */ { "ISO-8859-1"
                     /*  1 */ , "UTF-8"
@@ -256,7 +257,7 @@ public class MorePage {
             } else {
                 out.write("List</a> of available specifications");
             }
-            out.write("\n</li>\n<li><a href=\"servlet?view=help&lang=\"");
+            out.write("\n</li>\n<li><a href=\"servlet?view=help&lang=");
             out.write(language);
             if (false) {
             } else if (language.startsWith("de")) {

@@ -1,4 +1,24 @@
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 
+wget -q -O - "http://localhost:8080/dbat/servlet?view=help&lang=en"
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" type="text/css" href="stylesheet.css" />
+<title>Dbat help</title>
+<script src="script.js" type="text/javascript">
+</script>
+</head>
+
+<body>
+<!--
+lang="en" 
+-->
+<h3><a href="/index.html">Dbat</a> Commandline Options</h3>
+<pre>
 Dbat V8.5be5 - DataBase Application Tool
 usage:
   java -jar dbat.jar [-acdfghlnrstvx] (table | "sql" | file | - | parameter ...)
@@ -50,3 +70,12 @@ Implemented output formats (-m):
   sqlj      Generate SQLJ
   probe     Probe SQL
 
+</pre>
+<p><a href="servlet?view=more&lang=en">more ...</a></p>
+<span style="font-size:small">
+Questions, remarks:
+<a href="mailto:punctum@punctum.com">Dr. Georg Fischer</a>
+</span>
+</p>
+</body>
+</html>

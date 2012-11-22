@@ -1,6 +1,7 @@
 /*  HelpPage.java - show the language specific commandline help text
  *  @(#) $Id$
- *	2012-07-01: subpackage view
+ *  2012-11-22: disable comment output for environment and session attributes
+ *  2012-07-01: subpackage view
  *  2012-02-11, Georg Fischer: copied from help.jsp
  */
 /*
@@ -33,34 +34,34 @@ import  javax.servlet.http.HttpSession;
 import  org.apache.log4j.Logger;
 
 /** This class prints the language-specific commandline help text.
- *	The code is extracted from the former <em>help.jsp</em>.
+ *  The code is extracted from the former <em>help.jsp</em>.
  *  @author Dr. Georg Fischer
  */
 public class HelpPage {
-	public final static String CVSID = "@(#) $Id$";
-	public final static long serialVersionUID = 19470629;
+    public final static String CVSID = "@(#) $Id$";
+    public final static long serialVersionUID = 19470629;
 
-	/** log4j logger (category) */
-	private Logger log;
+    /** log4j logger (category) */
+    private Logger log;
 
-	/** No-argument constructor
-	 */
-	public HelpPage() {
-		log = Logger.getLogger(HelpPage.class.getName());
-	} // constructor()
-	
-	/** Processes an http GET request
-	 *  @param request request with header fields
-	 *  @param response response with writer
-	 *	@param tableFactory factory for table serializers
-	 *  @throws IOException
-	 */
-	public void forward(HttpServletRequest request, HttpServletResponse response, TableFactory tableFactory) {
-		try {
-			PrintWriter out = response.getWriter();
-			response.setCharacterEncoding("UTF-8");
+    /** No-argument constructor
+     */
+    public HelpPage() {
+        log = Logger.getLogger(HelpPage.class.getName());
+    } // constructor()
+    
+    /** Processes an http GET request
+     *  @param request request with header fields
+     *  @param response response with writer
+     *  @param tableFactory factory for table serializers
+     *  @throws IOException
+     */
+    public void forward(HttpServletRequest request, HttpServletResponse response, TableFactory tableFactory) {
+        try {
+            PrintWriter out = response.getWriter();
+            response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html; charset=UTF-8");
-			response.setCharacterEncoding("UTF-8");
+            response.setCharacterEncoding("UTF-8");
             out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             out.write("\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n");
             out.write("    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
@@ -73,11 +74,11 @@ public class HelpPage {
             out.write("<title>Dbat help</title>\n");
             out.write("<script src=\"script.js\" type=\"text/javascript\">\n</script>\n</head>\n");
             String[] optLang = new String []
-	            	/*  0 */ { "de"
-            	    /*  1 */ , "en"
-    		        } ;
+                    /*  0 */ { "de"
+                    /*  1 */ , "en"
+                    } ;
             String[] enLang = new String []
-		            /*  0 */ { "Deutsch"
+                    /*  0 */ { "Deutsch"
                     /*  1 */ , "English"
                     } ;
             String language = "en";
@@ -88,7 +89,7 @@ public class HelpPage {
                 String name = (String) parmIter.next();
                 String[] values = request.getParameterValues(name);
                 if (values.length <= 0) { // ignore empty value lists
-                } else if (name.equals("lang"		)) {
+                } else if (name.equals("lang"       )) {
                     language = values[0];
                 }
             } // while parmIter
@@ -113,7 +114,7 @@ public class HelpPage {
                 out.write("more ...");
             }
             
-            if (true) { // environment
+            if (false) { // environment
                 out.write("<!-- Environment:\n");
                 Map/*<1.5*/<String, String>/*1.5>*/ env = System.getenv();
                 TreeSet/*<1.5*/<String>/*1.5>*/ keys = new TreeSet/*<1.5*/<String>/*1.5>*/(env.keySet());
@@ -121,21 +122,21 @@ public class HelpPage {
                 while (iter.hasNext()) {
                     String key   = (String) iter.next();
                     String value = (String) env.get(key);
-					out.write(key + "=" + value + "\n");
+                    out.write(key + "=" + value + "\n");
                 } // while iter
                 out.write(":Environment -->\n");
             } // environment
 
-            if (true) { // Http session attributes
+            if (false) { // Http session attributes
                 out.write("<!-- SessionAttributes:\n");
-	            HttpSession session = request.getSession();
+                HttpSession session = request.getSession();
                 Enumeration attrs = session.getAttributeNames();                 
                 while (attrs.hasMoreElements()) {
-                	String  attr = (String) attrs.nextElement();
-	                out.write(attr + "=" + session.getAttribute(attr) + "\n");
+                    String  attr = (String) attrs.nextElement();
+                    out.write(attr + "=" + session.getAttribute(attr) + "\n");
                 } // while attrs
                 out.write(":SessionAttributes -->\n");
-			} // session attributes
+            } // session attributes
 
             out.write("</a></p>\n");
             out.write("<span style=\"font-size:small\">\n");
@@ -146,10 +147,10 @@ public class HelpPage {
                 out.write("Questions, remarks:");
             }
             out.write("\n<a href=\"mailto:punctum@punctum.com\">Dr. Georg Fischer</a>\n</span>\n</p>\n</body>\n</html>\n");
-		} catch (Exception exc) {
-			log.error(exc.getMessage(), exc);
-		} finally {
-		}
-	} // forward
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        } finally {
+        }
+    } // forward
 
 } // HelpPage

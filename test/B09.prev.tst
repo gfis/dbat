@@ -6,9 +6,9 @@ This file contains no SVN Id keyword for better comparision.
 
 +B04.data.tmp	2906	DROP TABLE if exists b04;
   CREATE TABLE            b04
-  ( name VARCHAR(16) not null 	COMMENT 'key for the LOB'
-  , len  INT 					COMMENT 'size of the LOB content'
-  , content TEXT 				COMMENT 'character large object (CLOB)'
+  ( name VARCHAR(16) not null   COMMENT 'key for the LOB'
+  , len  INT                    COMMENT 'size of the LOB content'
+  , content TEXT                COMMENT 'character large object (CLOB)'
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
   COMMIT;
 
