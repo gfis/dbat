@@ -64,6 +64,7 @@ import  org.teherba.dbat.format.TableGenerator;
 import  java.io.Serializable;
 import  java.io.BufferedReader;
 import  java.io.FileInputStream;
+import  java.io.PrintStream;
 import  java.io.PrintWriter;
 import  java.io.Reader;
 import  java.nio.channels.Channels;
@@ -288,6 +289,8 @@ public class Dbat implements Serializable {
         String formatMode = "def";
         String propFileName = "dbat.properties";
         String defaultSchema = config.getDefaultSchema();
+        String pair = null; // for options -o and -p
+        int eqPos = 0;
         argsSql = "";
         mainAction = '?'; // undefined so far
         int ienc = 0;
@@ -379,11 +382,26 @@ public class Dbat implements Serializable {
                         }
                     } // m
                     
-                    if (opt.startsWith("p")) {
-                        // optional parameter setting: "-p name=value" or "-p name" (implies "name=true")
+                    if (opt.startsWith("o")) {
+                        // property setting: "-o name=value" 
                         if (iarg < args.length) {
-                            String pair = args[iarg ++];
-                            int eqPos = pair.indexOf("=");
+                            pair = args[iarg ++];
+                            eqPos = pair.indexOf('=');
+                            if (eqPos >= 0) {
+                                config.setProperty(pair.substring(0, eqPos), pair.substring(eqPos + 1));
+                            } else {
+                                log.error("Option -o with invalid property assigment");
+                            }
+                        } else {
+                            log.error("Option -o and no following property assignment");
+                        }
+                    } // p
+                    
+                    if (opt.startsWith("p")) {
+                        // parameter setting: "-p name=value" or "-p name" (implies "name=true")
+                        if (iarg < args.length) {
+                            pair = args[iarg ++];
+                            eqPos = pair.indexOf('=');
                             if (eqPos >= 0) {
                                 config.getParameterMap().put(pair.substring(0, eqPos), new String[]{pair.substring(eqPos + 1)});
                             } else {
@@ -471,6 +489,15 @@ public class Dbat implements Serializable {
                             tbMetaData.setTableName(defaultSchema, args[iarg ++]);
                         } else {
                             log.error("Option -r and no following table name");
+                        }
+                        if (iarg < args.length) {
+							if (args[iarg].startsWith("-")) {
+	                            setSourceName("-"); // option follows, read from STDIN
+	                        } else {
+	                            setSourceName(args[iarg ++]); // read from filename
+	                        }
+                        } else {
+                            setSourceName("-"); // read from STDIN
                         }
                     }
                     if (opt.startsWith("t")) {
@@ -570,6 +597,7 @@ public class Dbat implements Serializable {
             BaseTable tableSerializer = config.getTableSerializer();
             tableSerializer.setWriter(tableWriter);
             tableSerializer.setGenerator(config.getGenerator());
+            config.setTableSerializer(tableSerializer);
             // System.err.println("tableWriter=" + tableWriter.toString() + ", generator=" + tableSerializer.getGenerator());
             // tableWriter.println("tableWriter wrote this");
 
@@ -624,7 +652,7 @@ public class Dbat implements Serializable {
                     break;
                 case 'r':
                     // sqlAction.processRawData(tbMetaData);
-                    sqlAction.insertFromURI(tbMetaData, "-");
+                    sqlAction.insertFromURI(tbMetaData, getSourceName());
                     break;
                 case 't':
                     sqlAction.execSQLStatement(tbMetaData
@@ -712,6 +740,16 @@ public class Dbat implements Serializable {
         }
         try {
             dbat.initialize(Configuration.CLI_CALL);
+            if (false) { // debug output
+                StringBuffer commandline = new StringBuffer(128);
+                int iarg = 0;
+                commandline.append("Dbat");
+                while (iarg < args.length) {
+                    commandline.append(' ');
+                    commandline.append(args[iarg ++]);
+                } // while iarg
+                System.out.println(commandline.toString());
+            } // debug output
             dbat.processArguments(null, args); // null = write to System.out
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);

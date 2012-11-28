@@ -523,7 +523,7 @@ public class XMLTable extends BaseTable {
                 charWriter.print("<tr>");
                 while (icol < ncol) {
                     TableColumn column = columnList.get(icol);
-                    if (column.getValue() != null) {
+                    if (! column.getValue().equals("null")) { // c.f. SQLAction.separateURLfromValue.displayValue
                         charWriter.print("<td>" + getContent(columnList.get(icol)) + "</td>");
                     } else { // == null
                         charWriter.print("<td isnull=\"yes\"></td>");

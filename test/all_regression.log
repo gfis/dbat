@@ -1,12 +1,12 @@
 Test A00 
-echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet? 2012-11-22 18:40:31
+echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet? 2012-11-28 14:03:47
 *** A00.prev.tst	2012-06-27 21:24:35.000000000 +0200
---- A00.this.tst	2012-11-22 18:40:32.000000000 +0100
+--- A00.this.tst	2012-11-28 14:03:48.000000000 +0100
 ***************
 *** 1 ****
 ! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-27 21:24:34
 --- 1 ----
-! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet? 2012-11-22 18:40:31
+! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet? 2012-11-28 14:03:47
 -- FAILED A00 
 Test A01 parameterized link
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/parmlink.xml
@@ -56,6 +56,9 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 Test I02 include with system entities
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/includer"
 ++ passed I02 include with system entities
+Test CM1 commit after 2
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m sql -o commit=2 -100 c01
+++ passed CM1 commit after 2
 Test CN1 default counter en
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/counter01&name=x&lang=en"
 ++ passed CN1 default counter en
@@ -164,7 +167,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.selec01"
 Test Y06 XML syntax error, CLI
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/badxml.xml 2> nul
 *** Y06.prev.tst	2012-06-27 21:24:53.000000000 +0200
---- Y06.this.tst	2012-11-22 18:40:47.000000000 +0100
+--- Y06.this.tst	2012-11-28 14:04:07.000000000 +0100
 ***************
 *** 1 ****
 ! java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/badxml.xml
@@ -174,28 +177,40 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 *** 13 ****
 ! 2012-06-27 21:24:53,405 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
 --- 13 ----
-! 2012-11-22 18:40:47,068 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
+! 2012-11-28 14:04:06,930 1    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
 ***************
 *** 26 ****
 ! 2012-06-27 21:24:53,408 3    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 --- 26 ----
-! 2012-11-22 18:40:47,072 4    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+! 2012-11-28 14:04:06,933 4    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 ***************
-*** 34,36 ****
+*** 31,36 ****
+! 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:228)
+! 	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:271)
+! 	at org.teherba.dbat.Dbat.process(Dbat.java:606)
 ! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:694)
 ! 	at org.teherba.dbat.Dbat.main(Dbat.java:714)
 ! 2012-06-27 21:24:53,409 4    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
---- 34,36 ----
-! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:695)
-! 	at org.teherba.dbat.Dbat.main(Dbat.java:715)
-! 2012-11-22 18:40:47,073 5    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+--- 31,36 ----
+! 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:229)
+! 	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:272)
+! 	at org.teherba.dbat.Dbat.process(Dbat.java:634)
+! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:723)
+! 	at org.teherba.dbat.Dbat.main(Dbat.java:753)
+! 2012-11-28 14:04:06,934 5    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 ***************
-*** 44,45 ****
+*** 41,45 ****
+! 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:228)
+! 	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:271)
+! 	at org.teherba.dbat.Dbat.process(Dbat.java:606)
 ! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:694)
 ! 	at org.teherba.dbat.Dbat.main(Dbat.java:714)
---- 44,45 ----
-! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:695)
-! 	at org.teherba.dbat.Dbat.main(Dbat.java:715)
+--- 41,45 ----
+! 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:229)
+! 	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:272)
+! 	at org.teherba.dbat.Dbat.process(Dbat.java:634)
+! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:723)
+! 	at org.teherba.dbat.Dbat.main(Dbat.java:753)
 -- FAILED Y06 XML syntax error, CLI
 Test Y07 XML syntax error, web
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.badxml"
@@ -219,25 +234,25 @@ Test SS1 explicit stylesheet
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/stylesheet1"
 ++ passed SS1 explicit stylesheet
 Test CT1 tokenizing preprogrammed commandline string
-java -cp ../dist/dbat.jar org.teherba.dbat.CommandTokenizer
+java -cp ../dist/dbat.jar org.teherba.common.CommandTokenizer
 ++ passed CT1 tokenizing preprogrammed commandline string
 Test CT2 tokenizing from file
-java -cp ../dist/dbat.jar org.teherba.dbat.CommandTokenizer -f CT2.data.tmp
+java -cp ../dist/dbat.jar org.teherba.common.CommandTokenizer -f CT2.data.tmp
 ++ passed CT2 tokenizing from file
 Test CT3 tokenizing from file with SQL syntax
-java -cp ../dist/dbat.jar org.teherba.dbat.CommandTokenizer -sql CT2.data.tmp
+java -cp ../dist/dbat.jar org.teherba.common.CommandTokenizer -sql CT2.data.tmp
 ++ passed CT3 tokenizing from file with SQL syntax
 Test U01 http schema
-java -cp ../dist/dbat.jar org.teherba.dbat.URIReader http://localhost:8080/dbat/noversion.txt
+java -cp ../dist/dbat.jar org.teherba.common.URIReader http://localhost:8080/dbat/noversion.txt
 ++ passed U01 http schema
 Test U04 file schema
-java -cp ../dist/dbat.jar org.teherba.dbat.URIReader file:///home/gfis/work/webapps-super/dbat/web/noversion.txt
+java -cp ../dist/dbat.jar org.teherba.common.URIReader file:///home/gfis/work/webapps-super/dbat/web/noversion.txt
 ++ passed U04 file schema
 Test U05 relative file
-java -cp ../dist/dbat.jar org.teherba.dbat.URIReader ../web/noversion.txt
+java -cp ../dist/dbat.jar org.teherba.common.URIReader ../web/noversion.txt
 ++ passed U05 relative file
 Test U06 data URI
-java -cp ../dist/dbat.jar org.teherba.dbat.URIReader data:this+is%20the+text+to+be+read
+java -cp ../dist/dbat.jar org.teherba.common.URIReader data:this+is%20the+text+to+be+read
 ++ passed U06 data URI
 Test U08 file tayloring - head+tail
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m taylor -s "{}" -u U08.data.tmp "select * from c01"
@@ -404,6 +419,30 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/enum01"
 Test EN4 enumerations into listbox
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/enum02"
 ++ passed EN4 enumerations into listbox
+Test NU1 csv  write "null"
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m csv -s ";" -f ../web/spec/test/selnull.xml
+++ passed NU1 csv  write "null"
+Test NU2 csv  omit  "null"
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m csv -s ";" -f ../web/spec/test/selnull.xml -o null=0
+++ passed NU2 csv  omit  "null"
+Test NU3 sql  write "null"?  NULL
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m sql -f ../web/spec/test/selnull.xml
+++ passed NU3 sql  write "null"?  NULL
+Test NU4 sql  omit  "null"?  no, also NULL
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m sql -f ../web/spec/test/selnull.xml -o null=0
+++ passed NU4 sql  omit  "null"?  no, also NULL
+Test NU5 html write "null"
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/selnull.xml
+++ passed NU5 html write "null"
+Test NU6 html omit  "null"
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/selnull.xml -o null=0
+++ passed NU6 html omit  "null"
+Test NU7 xml  write "null"
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m xml -f ../web/spec/test/selnull.xml
+++ passed NU7 xml  write "null"
+Test NU8 xml  omit  "null"
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m xml -f ../web/spec/test/selnull.xml -o null=0
+++ passed NU8 xml  omit  "null"
 Test C02 create pivot table
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f C02.data.tmp
 ++ passed C02 create pivot table
@@ -645,6 +684,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed H04 web help page de
 ++ passed I01 insert statements
 ++ passed I02 include with system entities
+++ passed CM1 commit after 2
 ++ passed CN1 default counter en
 ++ passed CN2 default counter de
 ++ passed CN3 counter with 1 result
@@ -749,6 +789,14 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed EN2 fill table with enumerations
 ++ passed EN3 enumerations into parameters
 ++ passed EN4 enumerations into listbox
+++ passed NU1 csv  write "null"
+++ passed NU2 csv  omit  "null"
+++ passed NU3 sql  write "null"?  NULL
+++ passed NU4 sql  omit  "null"?  no, also NULL
+++ passed NU5 html write "null"
+++ passed NU6 html omit  "null"
+++ passed NU7 xml  write "null"
+++ passed NU8 xml  omit  "null"
 ++ passed C02 create pivot table
 ++ passed C03 CLI colors
 ++ passed C04 web colors
@@ -824,4 +872,4 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed VA2 var elements with data types
 ++ passed VA3 echo with var elements
    2 FAILED.tests
- 194 passed.tests
+ 203 passed.tests

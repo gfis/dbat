@@ -1,5 +1,6 @@
 /*  Generator for an SQL table (DDL or INSERT statements)
     @(#) $Id$
+    2012-11-27: writeCommit
     2012-04-17: NON_UNIQUE INDEX; error in INSERT header (getLabel -> getName)
     2011-12-06: CONSTRAINT PRIMARY KEY
     2011-12-03: writeComment(2)
@@ -158,6 +159,13 @@ public class SQLTable extends BaseTable {
             writeComment(line);
         }
     } // writeComment(2)
+
+    /** Writes a COMMIT statement.
+     *  @param rowCount number of INSERT/UPDATE statements already generated
+     */
+    public void writeCommit(int rowCount) {
+    	charWriter.println("COMMIT; -- " + rowCount);
+    } // writeCommit
 
     //======================================
     // Table description (DDL)

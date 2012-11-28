@@ -26,6 +26,7 @@
  * limitations under the License.
  */
 package org.teherba.dbat;
+import  org.teherba.common.CommandTokenizer;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.TableFactory;
 import  org.teherba.xtrans.BaseTransformer;
@@ -40,7 +41,6 @@ import  java.util.LinkedHashMap;
 import  java.util.Map;
 import  java.util.Properties;
 import  javax.sql.DataSource;
-// import  org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import  org.apache.log4j.Logger;
 
 /** This bean encapsulates the JDBC database connection, its properties
@@ -194,6 +194,21 @@ public class Configuration implements Serializable {
         this.fetchLimit = fetchLimit;
     } // setFetchLimit
 
+    /** input/output format = mode: tsv (default), csv, fix, html and so on*/
+    private String  formatMode;
+    /** Gets the format
+     *  @return target format: html, sql, xml, tsv ...
+     */
+    public String getFormatMode() {
+        return this.formatMode;
+    } // getFormatMode
+    /** Sets the format
+     *  @param mode target format: html, sql, xml, tsv ...
+     */
+    public void setFormatMode(String mode) {
+        this.formatMode = mode;
+    } // setFormatMode
+
     /** generator for SAX events */
     protected BaseTransformer generator;
     /** Gets the generator
@@ -268,6 +283,21 @@ public class Configuration implements Serializable {
         this.manner = manner;
     } // setManner
 
+    /** insert a COMMIT statement after this number of rows in a result set (modes -sql/jdbc, -update) */
+    private int maxCommit;
+    /** Gets the commit limit
+     *  @return number of rows after which a COMMIT is written
+     */
+    public int getMaxCommit() {
+        return  this.maxCommit;
+    } // getMaxCommit
+    /** Sets the commit limit
+     *  @param maxCommit number of rows after which a COMMIT is written
+     */
+    public void setMaxCommit(int maxCommit) {
+        this.maxCommit = maxCommit;
+    } // setMaxCommit
+
     /** Namespace prefix (for XML output) */
     private String  namespacePrefix;
     /** Gets the namespace prefix
@@ -283,20 +313,20 @@ public class Configuration implements Serializable {
         this.namespacePrefix = namespacePrefix;
     } // setNamespacePrefix
 
-    /** input/output format = mode: tsv (default), csv, fix, html and so on*/
-    private String  formatMode;
-    /** Gets the format
-     *  @return target format: html, sql, xml, tsv ...
+    /** whether to write the value <em>null</em> in text formats: 0 = omit, 1 = write "null" */
+    private int nullText;
+    /** Tells whether the value <em>null</em> should be written in text formats
+     *  @return 0 = omit, 1 = write "null"
      */
-    public String getFormatMode() {
-        return this.formatMode;
-    } // getFormatMode
-    /** Sets the format
-     *  @param mode target format: html, sql, xml, tsv ...
+    public int getNullText() {
+        return nullText;
+    } // getNullText
+    /** Tells whether the value <em>null</em> should be written in text formats
+     *  @param nullText: 0 = omit, 1 = write "null"
      */
-    public void setFormatMode(String mode) {
-        this.formatMode = mode;
-    } // setFormatMode
+    public void setNullText(int nullText) {
+        this.nullText = nullText;
+    } // setNullText
 
     /** Map for parameters (placeholders) embedded in the XML specification.
      *  The SAX handler will take parameter values from here when
@@ -423,20 +453,20 @@ public class Configuration implements Serializable {
         this.tableSerializer = tableSerializer;
     } // setTableSerializer
 
-    /** whether to trim VARCHAR column values */
-    private boolean trimVarchar;
-    /** Tells whether VARCHARs should be trimmed by INSERT and SELECT
-     *  @return true if trimming (on both sides) should be done
+    /** how to trim CHAR and VARCHAR column values */
+    private int trimSides;
+    /** Tells how CHARs and VARCHARs should be trimmed by INSERT and SELECT
+     *  @return how to trim CHARs and VARCHARs: 0 = never, 1 = right, 2 = both sides
      */
-    public boolean hasTrimVarchar() {
-        return trimVarchar;
-    } // hasTrimVarchar
+    public int getTrimSides() {
+        return trimSides;
+    } // getTrimSides
     /** Sets the trimming behaviour
-     *  @param trimming whether to trim varchars on both sides) for input and output
+     *  @param trimSides how to trim CHARs and VARCHARs: 0 = never, 1 = right, 2 = both sides
      */
-    public void setTrimVarchar(boolean trimming) {
-        this.trimVarchar = trimming;
-    } // setTrimVarchar
+    public void setTrimSides(int trimSides) {
+        this.trimSides = trimSides;
+    } // setTrimSides
 
     /** whether to print verbose messages: 0 = none, 1 = some, 2 = many */
     private int verbose;
@@ -548,7 +578,9 @@ public class Configuration implements Serializable {
         setInputURI     (null); // no default
         setLanguage     ("en");
         setManner       (JDBC_MANNER);
-        setTrimVarchar  (true);
+        setMaxCommit    (getFetchLimit()); // very high - never reached
+        setNullText     (1); // write "null"
+        setTrimSides    (2); // trim on both sides
         setParameterMap (new HashMap/*<1.5*/<String, String[]>/*1.5>*/());
         setProcSeparator(null); // no default
         propFileName    = ""; // default (built-in) connection properties
@@ -577,19 +609,47 @@ public class Configuration implements Serializable {
     // Auxiliary methods
     //========================
 
-    /** Evaluates some non-JDBC properties and remembers them in local variables.
+    /** Evaluates a set of non-JDBC properties and remembers them in local variables:
+     *  <ul>
+     *  <li>schema= the default DB schema</li>
+     *  <li>maxcommit=250 number of rows after which a COMMIT statement is inserted by formats -sql/jdbc, -update</li>
+     *  <li>nulltext=1 whether the value <em>null</em> should be written by text formats</li>
+     *  <li>trimsides=2 how CHAR and VARCHAR values are trimmed: 0 = never, 1 = rtrim, 2 = trim on both sides</li>
+     *  </ul>
      */
     public void evaluateProperties() {
-        // (3) evaluate properties
+        // (3) evaluate non-JDBC oriented properties
+        String prop = null;
+        setDefaultSchema(props.getProperty("schema"   , ""   ).trim());
         try {
-            trimVarchar     = props.getProperty("trim", "true").trim().matches("[jJtTyY].*");
+            prop =       props.getProperty("commit"   , "250").trim();
+            setMaxCommit(Integer.parseInt(prop));
         } catch (Exception exc) {
+            setMaxCommit(getFetchLimit());
         }
         try {
-            defaultSchema   = props.getProperty("schema", "").trim();
+            prop =       props.getProperty("null"     , "1"  ).trim();
+            setNullText(Integer.parseInt(prop));
         } catch (Exception exc) {
+            setNullText(1);
+        }
+        try {
+            prop =       props.getProperty("trim"     , "2"  ).trim();
+            setTrimSides(Integer.parseInt(prop));
+        } catch (Exception exc) {
+            setTrimSides(2);
         }
     } // evaluateProperties
+
+    /** Sets a single property in this configuration,
+     *  and evaluates it.
+     *  @param name name of the property
+     *  @param value value of property <em>name</em>
+     */
+    public void setProperty(String name, String value) {
+        props.setProperty(name, value);
+        evaluateProperties(); // maybe it was one of the non-JDBC-oriented
+    } // addProperties
 
     /** Adds properties from a file in the classpath, or in the current directory
      *  (of the context in case of the web application).

@@ -113,6 +113,9 @@ JRUN -f I01.data.tmp
 TEST I02 include with system entities
 WGET spec=test/includer
 #-------------------
+TEST CM1 commit after 2
+JRUN -m sql -o commit=2 -100 c01
+#-------------------
 TEST CN1 default counter en
 WGET spec=test/counter01 name=x lang=en
 TEST CN2 default counter de
@@ -301,36 +304,36 @@ TEST SS1 explicit stylesheet
 WGET spec=test/stylesheet1
 #-------------------
 TEST CT1 tokenizing preprogrammed commandline string
-CRUN CommandTokenizer
+CRUN common.CommandTokenizer
 
 TEST CT2 tokenizing from file
 DATA call -in '2011-07-21 17:39:00'
     call  my.pr1 -in "2 double quoted" -in:int 29647 -in '3 single quoted';
-CRUN CommandTokenizer -f CT2.data.tmp
+CRUN common.CommandTokenizer -f CT2.data.tmp
 
 TEST CT3 tokenizing from file with SQL syntax
-CRUN CommandTokenizer -sql CT2.data.tmp
+CRUN common.CommandTokenizer -sql CT2.data.tmp
 #-------------------------------
 # URIReader schema testing
 TEST U01 http schema
-CRUN URIReader http://localhost:8080/dbat/noversion.txt
+CRUN common.URIReader http://localhost:8080/dbat/noversion.txt
 
 # the following works with an Internet connection only
 TEST U02 gopher schema
-# CRUN URIReader gopher://gopher.rbfh.de/0/Fun/500miles.txt
+# CRUN common.URIReader gopher://gopher.rbfh.de/0/Fun/500miles.txt
 
 # the following works with an Internet connection only
 TEST U03 ftp schema
-# CRUN URIReader ftp://roland:roland@localhost/../gfis/work/webapps-super/dbat/web/noversion.txt
+# CRUN common.URIReader ftp://roland:roland@localhost/../gfis/work/webapps-super/dbat/web/noversion.txt
 
 TEST U04 file schema
-CRUN URIReader file:///home/gfis/work/webapps-super/dbat/web/noversion.txt
+CRUN common.URIReader file:///home/gfis/work/webapps-super/dbat/web/noversion.txt
 
 TEST U05 relative file
-CRUN URIReader ../web/noversion.txt
+CRUN common.URIReader ../web/noversion.txt
 
 TEST U06 data URI
-CRUN URIReader data:this+is%20the+text+to+be+read
+CRUN common.URIReader data:this+is%20the+text+to+be+read
 
 # TEST U07 describe tayloring variables
 # JRUN -m taylor -s "{}" -d c01
@@ -547,6 +550,23 @@ WGET spec=test/enum01
 
 TEST EN4 enumerations into listbox
 WGET spec=test/enum02
+#--------------------------
+TEST NU1 csv  write "null"
+JRUN -m  csv -s ";" -f ../web/spec/test/selnull.xml 
+TEST NU2 csv  omit  "null"
+JRUN -m  csv -s ";" -f ../web/spec/test/selnull.xml -o null=0
+TEST NU3 sql  write "null"?  NULL
+JRUN -m  sql        -f ../web/spec/test/selnull.xml 
+TEST NU4 sql  omit  "null"?  no, also NULL
+JRUN -m  sql        -f ../web/spec/test/selnull.xml -o null=0
+TEST NU5 html write "null"
+JRUN -m  html       -f ../web/spec/test/selnull.xml 
+TEST NU6 html omit  "null"
+JRUN -m  html       -f ../web/spec/test/selnull.xml -o null=0
+TEST NU7 xml  write "null"
+JRUN -m  xml        -f ../web/spec/test/selnull.xml 
+TEST NU8 xml  omit  "null"
+JRUN -m  xml        -f ../web/spec/test/selnull.xml -o null=0
 #--------------------------
 # aggregation, pivot and grouping
 TEST C02 create pivot table

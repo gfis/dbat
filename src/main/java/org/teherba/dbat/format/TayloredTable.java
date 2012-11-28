@@ -22,10 +22,10 @@
  * limitations under the License.
  */
 package org.teherba.dbat.format;
+import  org.teherba.common.URIReader;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
-import  org.teherba.dbat.URIReader;
 import  java.util.ArrayList;
 import  java.util.regex.Matcher;
 import  java.util.regex.Pattern;

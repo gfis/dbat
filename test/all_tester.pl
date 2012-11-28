@@ -127,7 +127,7 @@ use strict;
     # the following 3 commands should be modified for tests of other applications
     my $jrun = "java -cp ../dist/dbat.jar org.teherba.dbat.Dbat$version -c ../etc/worddb.properties -e UTF-8"; # commandline activation
     my $wget = "wget -q -O - \"http://localhost:8080/dbat/servlet$version?"; # prefix of the command for a web request
-    my $crun = "java -cp ../dist/dbat.jar org.teherba.dbat"; # prefix for the activation of the main method of a different class
+    my $crun = "java -cp ../dist/dbat.jar org.teherba"; # prefix for the activation of the main method of a different class
     my $xslt = "xsltproc "; # prefix of the command for an XSLT transformation
     
     my $grep; # contains the variable expression from GREP command for filtering of dates, versions etc.

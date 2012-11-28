@@ -1,5 +1,6 @@
 /*  Base class for file format representing table descriptions or results sets
     @(#) $Id$
+    2012-11-27: writeCommit
     2012-05-14: appendToParameters should not apply links
     2012-02-17: exception handling if stylesheet could not be compiled
     2011-12-13: ROW1
@@ -743,6 +744,13 @@ public abstract class BaseTable {
         writeComment(line);
     } // writeComment(2)
 
+    /** Writes a COMMIT statement.
+     *  @param rowCount number of INSERT/UPDATE statements already generated
+     */
+    public void writeCommit(int rowCount) {
+        // no-op for most formats, only -sql/jdbc and -update do implement this method
+    } // writeCommit
+
     /** Writes the pure SQL instruction, with any placeholders replaced by constant values again.
      *  @param tbMetaData meta data for the table as far as they are already known
      *  @param sqlInstruction a SELECT, CALL, DELETE, INSERT or UPDATE statement
@@ -800,7 +808,13 @@ public abstract class BaseTable {
      *  @param column attributes of this column, containing the value also
      */
     public String getContent(TableColumn column) {
-        return column.getValue(); // for many formats it is simply the column's value (not enclosed in a link)
+        String value = column.getValue();
+    /*
+        if (value == null) {
+            value = "Null";
+        }
+    */
+        return value; // for many formats it is simply the column's value (not enclosed in a link)
     } // getContent
 
     /** Writes a complete header, data or alternate data row with all tags and cell contents.

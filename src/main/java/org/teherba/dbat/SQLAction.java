@@ -1,5 +1,6 @@
 /*  SQLAction.java - Properties and methods specific for one elementary sequence of SQL instructions
     @(#) $Id$
+    2012-11-27: COMMIT if max_commit % 250 = 0
     2012-06-27: without references to com.ibm.db2.jcc.*; printSQLError commented out
     2012-06-13: prepare PreparedStatements
     2012-05-21: improved setting of update_count and sql_state (for CALL a.o.)
@@ -31,13 +32,15 @@
  * limitations under the License.
  */
 package org.teherba.dbat;
+import  org.teherba.common.CommandTokenizer;
+import  org.teherba.common.URIReader;
 import  org.teherba.dbat.Configuration;
 import  org.teherba.dbat.Placeholder;
 import  org.teherba.dbat.PlaceholderList;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
-import  org.teherba.dbat.URIReader;
 import  org.teherba.dbat.format.BaseTable;
+import  org.teherba.dbat.format.SQLTable;
 import  java.io.Serializable;
 import  java.io.ByteArrayOutputStream;
 import  java.io.InputStream;
@@ -121,10 +124,25 @@ public class SQLAction implements Serializable {
      */
     public void setConfiguration(Configuration config) {
         this.config = config;
+        setMaxCommit(config.getMaxCommit());
+        setNullText (config.getNullText ());
+        setTrimSides(config.getTrimSides());
     } // setConfiguration
 
+    /** Rule how to escape a value, from {@link BaseTable}.
+     *  The following escaping rules are currently observed:
+     *  <ul>
+     *  <li>0 = no escaping at all</li>
+     *  <li>1 = "&amp;", "&lt;" and "&gt;" are escaped as "&amp;amp;", "&amp;lt;" and "&amp;gt;" respectively</li>
+     *  <li>2 = "&apos;" is replaced by "&amp;apos"</li>
+     *  <li>3 = combination of rule 1 and rule 2</li>
+     *  <li>4 = like 1, but only if the SQL expression of the column does not contain a '&lt;' </li>
+     *  </ul>
+     */
+    private   int escapingRule;
+
     /** max. number of rows to be fetched; default "infinite" */
-    private int     fetchLimit;
+    private int fetchLimit;
     /** Gets the maximum number of rows to be fetched
      *  @return  maximum number of rows to be fetched
      */
@@ -168,20 +186,53 @@ public class SQLAction implements Serializable {
         this.manipulatedSum = manipulatedSum;
     } // setManipulatedSum
 
-    /** Rule how to escape a value, from {@link BaseTable}.
-     *  The following escaping rules are currently observed:
-     *  <ul>
-     *  <li>0 = no escaping at all</li>
-     *  <li>1 = "&amp;", "&lt;" and "&gt;" are escaped as "&amp;amp;", "&amp;lt;" and "&amp;gt;" respectively</li>
-     *  <li>2 = "&apos;" is replaced by "&amp;apos"</li>
-     *  <li>3 = combination of rule 1 and rule 2</li>
-     *  <li>4 = like 1, but only if the SQL expression of the column does not contain a '&lt;' </li>
-     *  </ul>
+    /** insert a COMMIT statement after this number of rows in a result set (modes -sql/jdbc, -update) */
+    private int maxCommit;
+    /** Gets the commit limit
+     *  @return number of rows after which a COMMIT is written
      */
-    private   int escapingRule;
+    public int getMaxCommit() {
+        return  this.maxCommit;
+    } // getMaxCommit
+    /** Sets the commit limit
+     *  @param maxCommit number of rows after which a COMMIT is written
+     */
+    public void setMaxCommit(int maxCommit) {
+        this.maxCommit = maxCommit;
+    } // setMaxCommit
+
+    /** whether to write the value <em>null</em> in text formats: 0 = omit, 1 = write "null" */
+    private int nullText;
+    /** Tells whether the value <em>null</em> should be written in text formats
+     *  @return 0 = omit, 1 = write "null"
+     */
+    public int getNullText() {
+        return nullText;
+    } // getNullText
+    /** Tells whether the value <em>null</em> should be written in text formats
+     *  @param nullText: 0 = omit, 1 = write "null"
+     */
+    public void setNullText(int nullText) {
+        this.nullText = nullText;
+    } // setNullText
 
     /** encoding of URLs, from {@link BaseTable} */
     private   String targetEncoding;
+
+    /** how to trim CHAR and VARCHAR column values */
+    private int trimSides;
+    /** Tells how CHARs and VARCHARs should be trimmed by INSERT and SELECT
+     *  @return how to trim CHARs and VARCHARs: 0 = never, 1 = right, 2 = both sides
+     */
+    public int getTrimSides() {
+        return trimSides;
+    } // getTrimSides
+    /** Sets the trimming behaviour
+     *  @param trimSides how to trim CHARs and VARCHARs: 0 = never, 1 = right, 2 = both sides
+     */
+    public void setTrimSides(int trimSides) {
+        this.trimSides = trimSides;
+    } // setTrimSides
 
     /** whether to print header and trailer */
     private boolean withHeaders;
@@ -207,6 +258,7 @@ public class SQLAction implements Serializable {
     public SQLAction() {
         log = Logger.getLogger(SQLAction.class.getName());
         batchInsert         = false;        // -b
+        setMaxCommit(250);
     } // Constructor
 
     /** Constructor from configuration
@@ -326,17 +378,21 @@ public class SQLAction implements Serializable {
      *  @return printable SQL string
      */
     private String escapeSQLValue(String value) {
-        StringBuffer result = new StringBuffer(256);
-        int qpos1 = 0;
-        int qpos2 = value.indexOf('\'', qpos1); // position of single quote (apostrophe)
-        while (qpos2 >= 0) {
-            result.append(value.substring(qpos1, qpos2 + 1)); // including the quote
-            result.append('\''); // the 2nd quote
-            qpos1 = qpos2 + 1; // behind the current quote
-            qpos2 = value.indexOf('\'', qpos1);
-        } // while single quotes
-        result.append(value.substring(qpos1));
-        return result.toString();
+    	String result = null;
+    	if (value.compareToIgnoreCase("null") != 0) {
+	        StringBuffer buffer = new StringBuffer(256);
+    	    int qpos1 = 0;
+        	int qpos2 = value.indexOf('\'', qpos1); // position of single quote (apostrophe)
+	        while (qpos2 >= 0) {
+    	        buffer.append(value.substring(qpos1, qpos2 + 1)); // including the quote
+        	    buffer.append('\''); // the 2nd quote
+            	qpos1 = qpos2 + 1; // behind the current quote
+	            qpos2 = value.indexOf('\'', qpos1);
+    	    } // while single quotes
+        	buffer.append(value.substring(qpos1));
+        	result = buffer.toString();
+    	} // != "null"
+        return result;
     } // escapeSQLValue
 
     /** Converts the codes for UPDATE_RULE and DELETE_RULE to strings
@@ -1277,7 +1333,19 @@ public class SQLAction implements Serializable {
                     }
                     break;
             } // switch escapingRule
-        } // displayValue != null
+            // displayValue != null
+        } else { // displayValue == null
+        	switch (nullText) {
+        		case 0:
+        			displayValue = "";
+        			break;
+        		case 1:
+        			displayValue = "null";
+        			break;
+        		default: // -1 = do nothing
+        			break;
+        	} // switch nullText
+        } // displayValue == null
         column.setValue(displayValue);
         if (debug >= 1) System.err.println("separateURLfromValue, hrefValue=\"" + column.getHrefValue() + "\", value=\"" + column.getValue() + "\"");
     } // separateURLfromValue
@@ -1320,8 +1388,18 @@ public class SQLAction implements Serializable {
                 case Types.CHAR:
                 case Types.VARCHAR:
                     value = stResults.getString(icol + 1);
-                    if (value != null && config.hasTrimVarchar()) {
-                        value = value.trim();
+                    if (value != null) {
+                        switch(trimSides) {
+                            case 0: // no trim
+                                break;
+                            case 1: // rtrim
+                                value = (("x" + value).trim()).substring(1);
+                                break;
+                            default:
+                            case 2: // both sides
+                                value = value.trim();
+                                break;
+                        } // switch 
                     }
                     break;
                 case Types.DECIMAL:
@@ -1366,6 +1444,9 @@ public class SQLAction implements Serializable {
         BaseTable tbSerializer  = config.getTableSerializer();
         escapingRule    = tbSerializer.getEscapingRule();
         targetEncoding  = tbSerializer.getTargetEncoding();
+        if (tbSerializer instanceof SQLTable) { // write 'null' and not '"null"' for SQL derived formats
+        	setNullText(-1);
+        } 
         try {
             tbMetaData.putAttributes(stResults);
             int columnCount      = tbMetaData.getColumnCount();
@@ -1431,6 +1512,9 @@ public class SQLAction implements Serializable {
                         break;
                 } // switch aggregateChange
                 tbMetaData.rememberRow();
+                if (sqlRowCount % maxCommit == 0) { 
+                    tbSerializer.writeCommit(sqlRowCount); // some modes insert a COMMIT statement here
+                }
             } // while results
 
             if (tbMetaData.getAggregateChange() > -3) { // don't forget last row
@@ -1744,7 +1828,6 @@ public class SQLAction implements Serializable {
         char formatCode = config.getFormatMode().charAt(0); // default: 't'sv resp. whitespace separated
         String line; // a line read from STDIN
         PreparedStatement insertStmt = null;
-        final int MAX_COMMIT = 250; // Maximum number of INSERTs without commit
         try {
             Connection con = config.getConnection();
             DatabaseMetaData dbMetaData = con.getMetaData();
@@ -1780,8 +1863,18 @@ public class SQLAction implements Serializable {
                                 if (epos >= line.length()) {
                                     epos = line.length();
                                 }
-                                columnValues[rawCount] = ("x" + line.substring(spos, epos)).trim().substring(1); 
-                                        // tricky - trim right whitespace only
+                                switch (trimSides) {
+                                	case 0: // notrim
+		                                columnValues[rawCount] = (      line.substring(spos, epos))                    ; 
+                                		break;
+                                	case 1: // rtrim
+		                                columnValues[rawCount] = ("x" + line.substring(spos, epos)).trim().substring(1); 
+                                        break;
+                                    default:
+                                    case 2:
+		                                columnValues[rawCount] = (      line.substring(spos, epos)).trim()             ; 
+                                    	break;
+                                } // switch trimSides
                                 spos = epos;
                             } // not pseudo
                             rawCount ++;
@@ -1878,7 +1971,7 @@ public class SQLAction implements Serializable {
                     int inserted = insertStmt.executeUpdate();
 
                     rowCount ++;
-                    if (rowCount % MAX_COMMIT == 0) {
+                    if (rowCount % maxCommit == 0) {
                         this.execCommitStatement();
                     }
                 } // rawCount > 0

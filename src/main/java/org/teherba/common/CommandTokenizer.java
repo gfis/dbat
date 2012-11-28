@@ -1,5 +1,6 @@
 /*  CommandTokenizer.java - some strange conversion (we don't comment it)
  *  @(#) $Id$
+ *  2012-11-24: handling of '.' and '/'
  *  2012-11-09: remove superfluous code
  *  2011-07-21: '_' is also a word char
  *  2010-09-10: tokenizeArgs and tokenizeSQL
@@ -22,8 +23,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.teherba.dbat;
-import  org.teherba.dbat.URIReader;
+package org.teherba.common;
+import  org.teherba.common.URIReader;
 import  java.io.Serializable;
 import  java.io.PrintWriter;
 import  java.io.StreamTokenizer;
@@ -53,8 +54,10 @@ public class CommandTokenizer implements Serializable {
             // Caution, real ranges will not work on a non-ASCII JVM !!
             tokenizer.wordChars('_', '_');
             // DB2 would allow '#', too?
+            tokenizer.ordinaryChar('.'); // Better call this a bug than a feature: needed to deactivate the numerical interpretation.
             tokenizer.wordChars('.', '.');
             tokenizer.wordChars(':', ':');
+            tokenizer.wordChars('/', '/');
             tokenizer.ordinaryChar('-'); // Better call this a bug than a feature: needed to deactivate the numerical interpretation.
             tokenizer.wordChars('-', '-'); // we want to prefix option words by "-"
             int token = tokenizer.nextToken();

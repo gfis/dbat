@@ -66,6 +66,12 @@
 		</copy>
     </target>                                               
 
+    <target name="regression"><!-- run a regression test -->
+		<java classname="org.teherba.common.RegressionTester" classpathref="compile.classpath" fork="true">
+			<arg line="test2/all.tca" />
+		</java>
+	</target>
+
     <target name="test" depends="deploy,test.command,test.servlet,test.service" />
     <target name="test.command"><!-- run the program from the commandline -->
         <antcall target="run">

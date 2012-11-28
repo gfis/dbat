@@ -1,4 +1,4 @@
-java -cp ../dist/dbat.jar org.teherba.dbat.CommandTokenizer -f CT2.data.tmp
+java -cp ../dist/dbat.jar org.teherba.common.CommandTokenizer -f CT2.data.tmp
 call
 -in
 2011-07-21 17:39:00
