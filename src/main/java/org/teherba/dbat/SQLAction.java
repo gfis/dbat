@@ -378,20 +378,20 @@ public class SQLAction implements Serializable {
      *  @return printable SQL string
      */
     private String escapeSQLValue(String value) {
-    	String result = null;
-    	if (value.compareToIgnoreCase("null") != 0) {
-	        StringBuffer buffer = new StringBuffer(256);
-    	    int qpos1 = 0;
-        	int qpos2 = value.indexOf('\'', qpos1); // position of single quote (apostrophe)
-	        while (qpos2 >= 0) {
-    	        buffer.append(value.substring(qpos1, qpos2 + 1)); // including the quote
-        	    buffer.append('\''); // the 2nd quote
-            	qpos1 = qpos2 + 1; // behind the current quote
-	            qpos2 = value.indexOf('\'', qpos1);
-    	    } // while single quotes
-        	buffer.append(value.substring(qpos1));
-        	result = buffer.toString();
-    	} // != "null"
+        String result = null;
+        if (value.compareToIgnoreCase("null") != 0) {
+            StringBuffer buffer = new StringBuffer(256);
+            int qpos1 = 0;
+            int qpos2 = value.indexOf('\'', qpos1); // position of single quote (apostrophe)
+            while (qpos2 >= 0) {
+                buffer.append(value.substring(qpos1, qpos2 + 1)); // including the quote
+                buffer.append('\''); // the 2nd quote
+                qpos1 = qpos2 + 1; // behind the current quote
+                qpos2 = value.indexOf('\'', qpos1);
+            } // while single quotes
+            buffer.append(value.substring(qpos1));
+            result = buffer.toString();
+        } // != "null"
         return result;
     } // escapeSQLValue
 
@@ -1335,16 +1335,16 @@ public class SQLAction implements Serializable {
             } // switch escapingRule
             // displayValue != null
         } else { // displayValue == null
-        	switch (nullText) {
-        		case 0:
-        			displayValue = "";
-        			break;
-        		case 1:
-        			displayValue = "null";
-        			break;
-        		default: // -1 = do nothing
-        			break;
-        	} // switch nullText
+            switch (nullText) {
+                case 0:
+                    displayValue = "";
+                    break;
+                case 1:
+                    displayValue = "null";
+                    break;
+                default: // -1 = do nothing
+                    break;
+            } // switch nullText
         } // displayValue == null
         column.setValue(displayValue);
         if (debug >= 1) System.err.println("separateURLfromValue, hrefValue=\"" + column.getHrefValue() + "\", value=\"" + column.getValue() + "\"");
@@ -1445,7 +1445,7 @@ public class SQLAction implements Serializable {
         escapingRule    = tbSerializer.getEscapingRule();
         targetEncoding  = tbSerializer.getTargetEncoding();
         if (tbSerializer instanceof SQLTable) { // write 'null' and not '"null"' for SQL derived formats
-        	setNullText(-1);
+            setNullText(-1);
         } 
         try {
             tbMetaData.putAttributes(stResults);
@@ -1864,16 +1864,16 @@ public class SQLAction implements Serializable {
                                     epos = line.length();
                                 }
                                 switch (trimSides) {
-                                	case 0: // notrim
-		                                columnValues[rawCount] = (      line.substring(spos, epos))                    ; 
-                                		break;
-                                	case 1: // rtrim
-		                                columnValues[rawCount] = ("x" + line.substring(spos, epos)).trim().substring(1); 
+                                    case 0: // notrim
+                                        columnValues[rawCount] = (      line.substring(spos, epos))                    ; 
+                                        break;
+                                    case 1: // rtrim
+                                        columnValues[rawCount] = ("x" + line.substring(spos, epos)).trim().substring(1); 
                                         break;
                                     default:
                                     case 2:
-		                                columnValues[rawCount] = (      line.substring(spos, epos)).trim()             ; 
-                                    	break;
+                                        columnValues[rawCount] = (      line.substring(spos, epos)).trim()             ; 
+                                        break;
                                 } // switch trimSides
                                 spos = epos;
                             } // not pseudo

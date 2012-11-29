@@ -491,11 +491,11 @@ public class Dbat implements Serializable {
                             log.error("Option -r and no following table name");
                         }
                         if (iarg < args.length) {
-							if (args[iarg].startsWith("-")) {
-	                            setSourceName("-"); // option follows, read from STDIN
-	                        } else {
-	                            setSourceName(args[iarg ++]); // read from filename
-	                        }
+                            if (args[iarg].startsWith("-")) {
+                                setSourceName("-"); // option follows, read from STDIN
+                            } else {
+                                setSourceName(args[iarg ++]); // read from filename
+                            }
                         } else {
                             setSourceName("-"); // read from STDIN
                         }

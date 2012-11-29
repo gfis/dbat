@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Dbat specification - test 1
+    @(#) $Id$
+    2012-11-28: Dr. Georg Fischer
+-->
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang="en" 
+        conn="worddb" 
+        title="selnull"
+        >
+    <comment lang="en">Select with NULL values</comment>
+    <ht:h3>Select with NULL values</ht:h3>
+    <select limit="2048">
+        <col label="Town"    >c.univ</col>
+        <col label="Gender"  >e.display</col>
+        <col label="Language">e.lang</col>
+        <from>        c01 c 
+            left join en1 e on substr(c.name, 1, 1) = e.code
+        </from>
+    </select>
+
+</dbat>

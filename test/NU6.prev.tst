@@ -11,14 +11,14 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 <link rel="stylesheet" type="text/css" href="./../web/spec/test/stylesheet.css" />
 </head><body>
 
-	<!--Select with NULL values-->
+    <!--Select with NULL values-->
     <h3>Select with NULL values</h3>
     <!-- SQL:
 SELECT c.univ
 , e.display
 , e.lang 
 FROM c01 c 
-        	left join en1 e on substr(c.name, 1, 1) = e.code;
+            left join en1 e on substr(c.name, 1, 1) = e.code;
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
 <tr><th title="c.univ">Town</th><th title="e.display">Gender</th><th title="e.lang">Language</th></tr>

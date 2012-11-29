@@ -1,5 +1,6 @@
 /*  Generator for an HTML table
     @(#) $Id$
+    2012-11-29: sorttable.js
     2012-05-15: pseudo column with style behind all real columns => Javascript sets style on row
     2012-01-05: no Javascript
     2011-11-16: describeConstraints with TreeMap
@@ -69,6 +70,9 @@ public class HTMLTable extends XMLTable {
     // method 'endTable'        is inherited from XMLTable
     // method 'writeComment'    is inherited from XMLTable
 
+	/** Whether a table should be sortable via sorttable.js */
+	private boolean isSortable;
+	
     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
      *  @param params array of 0 or more (name, value) string which specify features in the file header.
      *  @param parameterMap map of request parameters to values
@@ -100,7 +104,9 @@ public class HTMLTable extends XMLTable {
                 if (false) {
                 } else if (params[iparam].equals("contenttype"))    { contenttype   = params[iparam + 1];
                 } else if (params[iparam].equals("encoding"))       { encoding      = params[iparam + 1];
-                } else if (params[iparam].equals("javascript"))     { javascript    = params[iparam + 1];
+                } else if (params[iparam].equals("javascript"))     { 
+                	javascript    = params[iparam + 1];
+                	isSortable = javascript.equals("spec/sorttable.js");
                 } else if (params[iparam].equals("stylesheet"))     { stylesheet    = params[iparam + 1];
                 } else if (params[iparam].equals("target"))         { target        = params[iparam + 1];
                 } else if (params[iparam].equals("title"))          { title         = params[iparam + 1];
@@ -266,7 +272,11 @@ public class HTMLTable extends XMLTable {
         try {
             tableSeqNo ++;
             tableRowNo = 0;
-            charWriter.println("<table id=\"tab" + String.valueOf(tableSeqNo) + "\"><!-- " + tableName + " -->");
+            charWriter.print("<table id=\"tab" + String.valueOf(tableSeqNo) + "\"");
+            if (isSortable) {
+            	charWriter.print(" class=\"sortable\"");
+            }
+            charWriter.println("><!-- " + tableName + " -->");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
@@ -282,11 +292,17 @@ public class HTMLTable extends XMLTable {
     public void writeTableFooter(int rowCount, boolean moreRows, TableMetaData tbMetaData) {
         String desc = tbMetaData.getCounterDesc(rowCount);
         if (desc != null) { // only if set
+        	if (isSortable) {
+        		charWriter.println("<tfoot>");
+        	}
             charWriter.println("<tr><td class=\"counter\" colspan=\"" + tbMetaData.getLastColumnCount() + "\">"
                     + rowCount + (moreRows ? "+ " : " ")
                     + desc
                     + "</td></tr>"
                     );
+        	if (isSortable) {
+	        	charWriter.println("</tfoot>");
+    		}
         } // desc was set
     } // writeTableFooter
 

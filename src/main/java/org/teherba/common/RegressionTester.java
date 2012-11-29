@@ -134,8 +134,8 @@ public class RegressionTester {
         String argsPrefix  = ""; // default for ARGS macro
         String baseURL     = "http://localhost:8080/dbat"; // default for URL macro
         String xsltPrefix  = "xsltproc ";
-		String cmd         = null; // system command to be executed
-		BufferedReader reader = null; // reader for stdout from 'cmd'
+        String cmd         = null; // system command to be executed
+        BufferedReader reader = null; // reader for stdout from 'cmd'
         String line        = null; // a line read from 'reader'
         int passedCount = 0; // number of tests which were run successfully
         int failedCount = 0; // number of tests which showed a 'diff'erence
@@ -225,7 +225,7 @@ public class RegressionTester {
                             if (thisStream != null) { // is still open - process results of previous TEST
                                 thisStream.close();
                                 System.setOut(realStdOut);
-						        System.setErr(realStdErr);
+                                System.setErr(realStdErr);
                                 prevName = thisName.replaceAll("\\.this\\.", ".prev.")
                                         .replaceAll(".bad", "")
                                         ;
@@ -412,7 +412,7 @@ public class RegressionTester {
             System.setErr(realStdErr);
         } catch (Exception exc) {
             try {
-	            log.error(exc.getMessage(), exc);
+                log.error(exc.getMessage(), exc);
             } catch (Exception exc2) {
                 System.setOut(realStdOut);
                 System.setErr(realStdErr);

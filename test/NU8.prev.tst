@@ -6,7 +6,7 @@ SELECT c.univ
 , e.display
 , e.lang 
 FROM c01 c 
-        	left join en1 e on substr(c.name, 1, 1) = e.code;
+            left join en1 e on substr(c.name, 1, 1) = e.code;
 :SQL -->
 <table id="tab1" name="table_not_specified">
 <tr><th>Town</th>

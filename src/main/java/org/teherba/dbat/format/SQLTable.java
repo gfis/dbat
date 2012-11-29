@@ -164,7 +164,7 @@ public class SQLTable extends BaseTable {
      *  @param rowCount number of INSERT/UPDATE statements already generated
      */
     public void writeCommit(int rowCount) {
-    	charWriter.println("COMMIT; -- " + rowCount);
+        charWriter.println("COMMIT; -- " + rowCount);
     } // writeCommit
 
     //======================================

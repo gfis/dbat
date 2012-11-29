@@ -1238,7 +1238,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             } else if (qName.equals(COUNTER_TAG )) {
                 String counterDesc = attrs.getValue("desc");
                 if (counterDesc == null || counterDesc.length() == 0) { 
-                	// the element was present, but not the attribute: take default word particles
+                    // the element was present, but not the attribute: take default word particles
                     counterDesc = Messages.getDefaultCounterDesc(config.getLanguage());
                 }
                 tbMetaData.setCounterDesc(counterDesc);
