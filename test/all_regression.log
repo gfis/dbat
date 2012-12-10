@@ -1,12 +1,12 @@
 Test A00 
-echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet? 2012-11-29 11:49:09
+echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet? 2012-12-10 11:40:28
 *** A00.prev.tst	2012-06-27 21:24:35.000000000 +0200
---- A00.this.tst	2012-11-29 11:49:10.000000000 +0100
+--- A00.this.tst	2012-12-10 11:40:29.000000000 +0100
 ***************
 *** 1 ****
 ! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-27 21:24:34
 --- 1 ----
-! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet? 2012-11-29 11:49:09
+! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet? 2012-12-10 11:40:28
 -- FAILED A00 
 Test A01 parameterized link
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/parmlink.xml
@@ -167,7 +167,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.selec01"
 Test Y06 XML syntax error, CLI
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/badxml.xml 2> nul
 *** Y06.prev.tst	2012-06-27 21:24:53.000000000 +0200
---- Y06.this.tst	2012-11-29 11:49:26.000000000 +0100
+--- Y06.this.tst	2012-12-10 11:40:47.000000000 +0100
 ***************
 *** 1 ****
 ! java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/badxml.xml
@@ -177,12 +177,12 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 *** 13 ****
 ! 2012-06-27 21:24:53,405 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
 --- 13 ----
-! 2012-11-29 11:49:26,630 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
+! 2012-12-10 11:40:46,835 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
 ***************
 *** 26 ****
 ! 2012-06-27 21:24:53,408 3    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 --- 26 ----
-! 2012-11-29 11:49:26,634 4    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+! 2012-12-10 11:40:46,838 3    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 ***************
 *** 31,36 ****
 ! 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:228)
@@ -194,10 +194,10 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 --- 31,36 ----
 ! 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:229)
 ! 	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:272)
-! 	at org.teherba.dbat.Dbat.process(Dbat.java:634)
-! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:723)
-! 	at org.teherba.dbat.Dbat.main(Dbat.java:753)
-! 2012-11-29 11:49:26,635 5    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+! 	at org.teherba.dbat.Dbat.process(Dbat.java:641)
+! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:730)
+! 	at org.teherba.dbat.Dbat.main(Dbat.java:760)
+! 2012-12-10 11:40:46,839 4    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 ***************
 *** 41,45 ****
 ! 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:228)
@@ -208,9 +208,9 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 --- 41,45 ----
 ! 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:229)
 ! 	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:272)
-! 	at org.teherba.dbat.Dbat.process(Dbat.java:634)
-! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:723)
-! 	at org.teherba.dbat.Dbat.main(Dbat.java:753)
+! 	at org.teherba.dbat.Dbat.process(Dbat.java:641)
+! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:730)
+! 	at org.teherba.dbat.Dbat.main(Dbat.java:760)
 -- FAILED Y06 XML syntax error, CLI
 Test Y07 XML syntax error, web
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.badxml"
@@ -464,9 +464,18 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/column02"
 Test C08 web with colors on rows
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/color08"
 ++ passed C08 web with colors on rows
-Test SR1 sortable table
+Test SR1 web sortable table
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/color07"
-++ passed SR1 sortable table
+++ passed SR1 web sortable table
+Test SR2 web sortable table, German title
+wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/color07&lang=de"
+++ passed SR2 web sortable table, German title
+Test SR3 CLI sortable table, English title
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f ../web/spec/test/color07.xml -p lang=en
+++ passed SR3 CLI sortable table, English title
+Test SR4 CLI sortable table, German title
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f ../web/spec/test/color07.xml -p lang=de
+++ passed SR4 CLI sortable table, German title
 Test R00 clear pivot table for raw input test
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 "delete from pivot"
 ++ passed R00 clear pivot table for raw input test
@@ -807,7 +816,10 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed C06 CLI with column element
 ++ passed C07 web with column element
 ++ passed C08 web with colors on rows
-++ passed SR1 sortable table
+++ passed SR1 web sortable table
+++ passed SR2 web sortable table, German title
+++ passed SR3 CLI sortable table, English title
+++ passed SR4 CLI sortable table, German title
 ++ passed R00 clear pivot table for raw input test
 ++ passed R01 tsv raw table input test
 ++ passed R02 check tsv input
@@ -876,4 +888,4 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed VA2 var elements with data types
 ++ passed VA3 echo with var elements
    2 FAILED.tests
- 204 passed.tests
+ 207 passed.tests

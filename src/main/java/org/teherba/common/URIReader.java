@@ -50,13 +50,6 @@ import  org.apache.log4j.Logger;
  *	of the class is either character or byte oriented. The sets of methods of the
  *	<code>BufferedReader</code> and <code>InputStream</code> are both implemented,
  *	but care must be taken to call the appropriate overloaded method name.
- *  <p  />
- *	This class is used in
- *	<ul>
- *	<li>{@link org.teherba.dbat.format.TayloredTable} for the -u pattern file</li>
- *	<li>{@link SQLAction#execSQLfromURI}</li>
- *	<li>{@link SQLAction#insertFromURI} for the reading of (B|C)LOB values</li>
- *	</ul>
  *  @author Dr. Georg Fischer
  */
 public class URIReader {

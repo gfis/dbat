@@ -1,5 +1,6 @@
 /*  Generator for an HTML table
     @(#) $Id$
+    2012-12-10: sortable again and counter 0, language dependant
     2012-11-29: sorttable.js
     2012-05-15: pseudo column with style behind all real columns => Javascript sets style on row
     2012-01-05: no Javascript
@@ -43,6 +44,7 @@
 package org.teherba.dbat.format;
 import  org.teherba.dbat.format.SQLTable; // for <describe>
 import  org.teherba.dbat.format.XMLTable;
+import  org.teherba.dbat.Messages;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  java.sql.DatabaseMetaData;
@@ -70,9 +72,11 @@ public class HTMLTable extends XMLTable {
     // method 'endTable'        is inherited from XMLTable
     // method 'writeComment'    is inherited from XMLTable
 
-	/** Whether a table should be sortable via sorttable.js */
-	private boolean isSortable;
-	
+    /** Whether a table should be sortable via sorttable.js */
+    private boolean isSortable;
+    /** The natural language for messages and internationalized text portions */
+    private String language;
+    
     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
      *  @param params array of 0 or more (name, value) string which specify features in the file header.
      *  @param parameterMap map of request parameters to values
@@ -91,6 +95,7 @@ public class HTMLTable extends XMLTable {
         String contenttype  = getMimeType();
         String encoding     = getTargetEncoding();
         String javascript   = null;
+        language            = "en"; // default
         String stylesheet   = "stylesheet.css";
         String target       = null;
         String title        = "dbat";
@@ -105,8 +110,9 @@ public class HTMLTable extends XMLTable {
                 } else if (params[iparam].equals("contenttype"))    { contenttype   = params[iparam + 1];
                 } else if (params[iparam].equals("encoding"))       { encoding      = params[iparam + 1];
                 } else if (params[iparam].equals("javascript"))     { 
-                	javascript    = params[iparam + 1];
-                	isSortable = javascript.equals("spec/sorttable.js");
+                    javascript    = params[iparam + 1];
+                    isSortable = javascript.matches("(spec|\\.)/sort.*");
+                } else if (params[iparam].equals("lang"))           { language      = params[iparam + 1];
                 } else if (params[iparam].equals("stylesheet"))     { stylesheet    = params[iparam + 1];
                 } else if (params[iparam].equals("target"))         { target        = params[iparam + 1];
                 } else if (params[iparam].equals("title"))          { title         = params[iparam + 1];
@@ -144,7 +150,7 @@ public class HTMLTable extends XMLTable {
             log.error(exc.getMessage(), exc);
             System.err.println("encoding="  + encoding
                     + ", contenttype="      + contenttype
-                    + ", javascriptr="      + javascript
+                    + ", javascript="       + javascript
                     + ", stylesheet="       + stylesheet
                     + ", target="           + target
                     + ", title="            + title
@@ -274,7 +280,7 @@ public class HTMLTable extends XMLTable {
             tableRowNo = 0;
             charWriter.print("<table id=\"tab" + String.valueOf(tableSeqNo) + "\"");
             if (isSortable) {
-            	charWriter.print(" class=\"sortable\"");
+                charWriter.print(" class=\"sortable\"");
             }
             charWriter.println("><!-- " + tableName + " -->");
         } catch (Exception exc) {
@@ -292,17 +298,19 @@ public class HTMLTable extends XMLTable {
     public void writeTableFooter(int rowCount, boolean moreRows, TableMetaData tbMetaData) {
         String desc = tbMetaData.getCounterDesc(rowCount);
         if (desc != null) { // only if set
-        	if (isSortable) {
-        		charWriter.println("<tfoot>");
-        	}
-            charWriter.println("<tr><td class=\"counter\" colspan=\"" + tbMetaData.getLastColumnCount() + "\">"
-                    + rowCount + (moreRows ? "+ " : " ")
-                    + desc
-                    + "</td></tr>"
-                    );
-        	if (isSortable) {
-	        	charWriter.println("</tfoot>");
-    		}
+            if (isSortable) {
+                charWriter.println("<tfoot>");
+            }
+            charWriter.print("<tr><td class=\"counter\" colspan=\"" + tbMetaData.getLastColumnCount() + "\">");
+            if (rowCount == 0) {
+                charWriter.print(desc);
+            } else {
+                charWriter.print(rowCount + (moreRows ? "+ " : " ") + desc);
+            }
+            charWriter.println("</td></tr>");
+            if (isSortable) {
+                charWriter.println("</tfoot>");
+            }
         } // desc was set
     } // writeTableFooter
 
@@ -411,6 +419,9 @@ public class HTMLTable extends XMLTable {
         StringBuffer result = new StringBuffer(256);
         switch (rowType) {
             case HEADER:
+                if (isSortable) {
+                    charWriter.println("<thead>");
+                }
                 result.append("<tr>");
                 while (icol < ncol) {
                     column = columnList.get(icol);
@@ -428,7 +439,12 @@ public class HTMLTable extends XMLTable {
                         }
                         result.append("<th");
                         String remark = column.getRemark();
-                        if (remark != null && remark.length() > 0) {
+                        if (false) {
+                        } else if (isSortable) {
+                            result.append(" title=\"");
+                            result.append(Messages.getSortTitle(language));
+                            result.append("\"");
+                        } else if (remark != null && remark.length() > 0) {
                             result.append(" title=\"");
                             result.append(remark);
                             result.append("\"");
@@ -448,6 +464,9 @@ public class HTMLTable extends XMLTable {
                 } // while icol
                 result.append("</tr>");
                 charWriter.println(result.toString());
+                if (isSortable) {
+                    charWriter.println("</thead>");
+                }
                 tableRowNo ++;
                 break;
             case DATA:

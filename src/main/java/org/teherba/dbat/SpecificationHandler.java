@@ -1069,6 +1069,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                             , "specname"                                    , specName
                             , "urlpath"                                     , urlPath
                             , "title"                                       , title
+                            , "lang"                                        , language
                             , (javascript != null ? "javascript" : "dummy") , javascript
                             , (stylesheet != null ? "stylesheet" : "dummy") , stylesheet
                             , (target     != null ? "target"     : "dummy") , target

@@ -599,8 +599,14 @@ WGET spec=test/column02
 TEST C08 web with colors on rows
 WGET spec=test/color08
 #-------------------
-TEST SR1 sortable table
+TEST SR1 web sortable table
 WGET spec=test/color07
+TEST SR2 web sortable table, German title
+WGET spec=test/color07 lang=de 
+TEST SR3 CLI sortable table, English title
+JRUN -f ../web/spec/test/color07.xml -p lang=en
+TEST SR4 CLI sortable table, German title
+JRUN -f ../web/spec/test/color07.xml -p lang=de 
 #-------------------
 TEST R00 clear pivot table for raw input test
 JRUN "delete from pivot"

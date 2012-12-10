@@ -45,8 +45,8 @@ public class TimestampFilterStream extends PrintStream {
         tfStream = pStream;
     } // Constructor with output stream
 
-    /** Constructor with output stream and encoding
-     *  @param ostream stream to be filtered for ISO timestamps
+    /** Constructor with output file name and encoding
+     *  @param fileName name of the file to be written
      *  @param csn character set name
      */
     public TimestampFilterStream(String fileName, String csn) 
@@ -67,8 +67,8 @@ public class TimestampFilterStream extends PrintStream {
      */
     public void print(String str) {
         tfStream.print(
-        	//	"###" + 
-        		str
+            //  "###" + 
+                str
                 .replaceAll(" \\d{4}\\-\\d{2}\\-\\d{2} \\d{2}\\:\\d{2}\\:\\d{2}(\\.\\d+)?", " yyyy-mm-dd hh:mm:ss")
             //  .replaceAll(" \\d{4}\\-\\d{2}\\-\\d{2}"                                   , " yyyy-mm-dd")
                 .replaceAll(" rows in \\d+ ms", " rows in ... ms")
@@ -82,8 +82,8 @@ public class TimestampFilterStream extends PrintStream {
      */
     public void println(String str) {
         tfStream.println(
-        	//	"###" + 
-        		str
+            //  "###" + 
+                str
                 .replaceAll(" \\d{4}\\-\\d{2}\\-\\d{2} \\d{2}\\:\\d{2}\\:\\d{2}(\\.\\d+)?", " yyyy-mm-dd hh:mm:ss")
             //  .replaceAll(" \\d{4}\\-\\d{2}\\-\\d{2}"                                   , " yyyy-mm-dd")
                 .replaceAll(" rows in \\d+ ms", " rows in ... ms")

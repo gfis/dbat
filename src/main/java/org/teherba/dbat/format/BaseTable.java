@@ -726,7 +726,11 @@ public abstract class BaseTable {
     public void writeTableFooter(int rowCount, boolean moreRows, TableMetaData tbMetaData) {
         String desc = tbMetaData.getCounterDesc(rowCount);
         if (desc != null) { // only if set
-            writeComment(rowCount + (moreRows ? "+ " : " ") + desc);
+        	if (rowCount == 0) {
+        		writeComment(desc);
+        	} else {
+                writeComment(rowCount + (moreRows ? "+ " : " ") + desc);
+            }
         } // if set
     } // writeTableFooter
 

@@ -8,7 +8,7 @@
 		encoding="UTF-8"
 		lang="en" 
 		conn="worddb" 
-		title="color08"
+		title="color07"
 		javascript="sorttable.js"
 		>
 	<comment lang="en">Select from test table wirth sorttable.js</comment>

@@ -607,10 +607,17 @@ public class Dbat implements Serializable {
                     && ! (tableSerializer instanceof TableGenerator)
                     && ! (mainAction == 'f' && isSourceType(".xml"))) {
                 tableSerializer.setParameterMap(config.getParameterMap());
+                String language = "en";
+                Object obj      = config.getParameterMap().get("lang");
+                if (obj != null) {
+                    language    = ((String[]) obj)[0]; // override it from the HttpRequest
+                }
+                config.setLanguage(language);
                 tableSerializer.writeStart(new String[] 
                         { "encoding"    , config.getEncoding(1)
                         , "contenttype" , config.getHtmlMimeType() 
                         , "nsp"         , config.getNamespacePrefix()
+                        , "lang"        , language
                         }
                         , config.getParameterMap()
                         );

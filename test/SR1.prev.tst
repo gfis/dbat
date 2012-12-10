@@ -7,7 +7,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/color07"
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
-<title>color08</title>
+<title>color07</title>
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
 <script src="spec/sorttable.js" type="text/javascript"></script>
 </head><body>
@@ -33,7 +33,9 @@ FROM c01
 WHERE name like '%%';
 :SQL -->
 <table id="tab1" class="sortable"><!-- table_not_specified -->
-<tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
+<thead>
+<tr><th title="Click =&gt; Sort">Year</th><th title="Click =&gt; Sort">Name</th><th title="Click =&gt; Sort">University</th><th title="Click =&gt; Sort">Gender</th><th title="Click =&gt; Sort">Birthdate</th></tr>
+</thead>
 <tr><td align="right">1999</td><td>Martha</td><td>Freiburg</td><td>&amp;</td><td>1909-11-17</td>
 <script type="text/javascript">document.getElementById("tab1").rows[1].className = "red";</script></tr>
 <tr><td align="right">1992</td><td>Johannes</td><td>Schramberg</td><td>&lt;</td><td>1911-06-03</td>

@@ -204,18 +204,18 @@ public class TableMetaData {
      *  @return a word in the proper numerus
      */
     public String getCounterDesc(int rowCount) {
-    	int ix = 0;
-    	switch (rowCount) {
-    		case 1:
-    			ix = 0;
-    			break;
-    		case 0:
-    			ix = 2;
-    			break;
-    		default:
-    			ix = 1;
-    			break;
-    	} // switch rowCount
+        int ix = 0;
+        switch (rowCount) {
+            case 1:
+                ix = 0;
+                break;
+            case 0:
+                ix = 2;
+                break;
+            default:
+                ix = 1;
+                break;
+        } // switch rowCount
         return counterDesc[ix];
     } // getCounterDesc
     
@@ -225,13 +225,13 @@ public class TableMetaData {
      *  null if no counter should be shown under the table.
      *  The parameter consists of up to 3 word particles, where 
      *  <ul>
-     *	<li>the 1st is a noun (in singular form) which is used for a result of 1 row,</li>
-     *	<li>the optional 2nd particle is used for more than 1 row in the result set,
+     *  <li>the 1st is a noun (in singular form) which is used for a result of 1 row,</li>
+     *  <li>the optional 2nd particle is used for more than 1 row in the result set,
      *  or for zero rows if there is no 3rd word; the particĺe is appended to the first
-     *	noun if its length is less than that of the noun,</li>
-     *	<li>the optional 3rd word is used for a result of 0 rows, or - if the word is empty - 
-     *	the counter is suppressed.</li>
-     *	</ul>
+     *  noun if its length is less than that of the noun,</li>
+     *  <li>the optional 3rd word is used for a result of 0 rows, or - if the word is empty - 
+     *  the counter is suppressed.</li>
+     *  </ul>
      */
     public void setCounterDesc(String partList) {
         if (partList == null) {
@@ -239,29 +239,29 @@ public class TableMetaData {
         } else { // non-null string - split it on commas
             int cpos = partList.indexOf(','); // position of 1st comma
             if (cpos < 0) { // no "," - only 1 variant
-                counterDesc = new String[] { partList, partList, partList };
+                counterDesc = new String[] { partList, partList, "0 " + partList };
             } else { // "row,s," or "Zeile,n," or "Mann,Männer"
                 int cpos2 = partList.indexOf(',', cpos + 1); // position of 2nd comma
-				if (cpos2 < 0) { // only 1 comma
-	                counterDesc = new String[] 
-    	            		{ partList.substring(0, cpos)
-        	        		, partList.substring(cpos + 1)
-            	    		, null
-                			};
-	                if (counterDesc[1].length() < counterDesc[0].length()) { // plural shorter => append to singular
-    	                counterDesc[1] = counterDesc[0] + counterDesc[1];
-        	        }
-        	        counterDesc[2] = counterDesc[1];
-				} else { // there is a 2nd comma
-	                counterDesc = new String[] 
-    	            		{ partList.substring(0, cpos)
-        	        		, partList.substring(cpos + 1, cpos2)
-            	    		, cpos2 < partList.length() - 1 ? partList.substring(cpos2 + 1) : null
-                			};
-	                if (counterDesc[1].length() < counterDesc[0].length()) { // plural shorter => append to singular
-    	                counterDesc[1] = counterDesc[0] + counterDesc[1];
-        	        }
-				} // 2nd comma
+                if (cpos2 < 0) { // only 1 comma
+                    counterDesc = new String[] 
+                            { partList.substring(0, cpos)
+                            , partList.substring(cpos + 1)
+                            , null
+                            };
+                    if (counterDesc[1].length() < counterDesc[0].length()) { // plural shorter => append to singular
+                        counterDesc[1] = counterDesc[0] + counterDesc[1];
+                    }
+                    counterDesc[2] = "0 " + counterDesc[1]; // "0 Männer"
+                } else { // there is a 2nd comma
+                    counterDesc = new String[] 
+                            { partList.substring(0, cpos)
+                            , partList.substring(cpos + 1, cpos2)
+                            , cpos2 < partList.length() - 1 ? partList.substring(cpos2 + 1) : null
+                            };
+                    if (counterDesc[1].length() < counterDesc[0].length()) { // plural shorter => append to singular
+                        counterDesc[1] = counterDesc[0] + counterDesc[1];
+                    }
+                } // 2nd comma
             } // with ","
         } // partList nonempty
     } // setCounterDesc
@@ -585,8 +585,8 @@ public class TableMetaData {
                         } // no identfier
                         column.setName(name);
                     } // name not set
-                    String stLabel = rsMetaData.getColumnLabel(icol + 1)
-                            .replaceAll("\\s+", " "); // CASE WHEN statements had multiple lines (bad for Excel column header)
+                    String stLabel = rsMetaData.getColumnLabel(icol + 1).replaceAll("\\s+", " "); 
+                        // CASE WHEN statements had multiple lines (bad for Excel column header)
                 /*
                     if (label.startsWith(tableName + ".")) {
                         label = label.substring(tableName.length() + 1);

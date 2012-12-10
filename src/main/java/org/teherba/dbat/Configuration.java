@@ -322,7 +322,7 @@ public class Configuration implements Serializable {
         return nullText;
     } // getNullText
     /** Tells whether the value <em>null</em> should be written in text formats
-     *  @param nullText: 0 = omit, 1 = write "null"
+     *  @param nullText 0 = omit, 1 = write "null"
      */
     public void setNullText(int nullText) {
         this.nullText = nullText;

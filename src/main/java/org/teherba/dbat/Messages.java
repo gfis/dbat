@@ -1,5 +1,6 @@
 /*  Messages.java - Static help texts and other language specific messages for Dbat.
  *  @(#) $Id$
+ *  2012-12-10: getSortTitle
  *  2012-11-22: "V" before JDBC driver version
  *  2012-10-19: comment for 'usage' method removed; getDefaultCounterDesc
  *  2012-06-19: more modes; TIMESTAMP_FORMAT for humans; trailer line configurable
@@ -243,6 +244,21 @@ public class Messages implements Serializable {
 
     /** ISO timestamp without milliseconds */
     public static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
+
+    /** Gets the title text for a sortable column.
+     *  @param language ISO country code: "de", "en"
+     *  @return language specific title attribute for the &lt;th&gt element.
+     */
+    public static String getSortTitle(String language) {
+        StringBuffer result = new StringBuffer(64);
+        if (false) {
+        } else if (language.equals("en")) {
+            result.append("Click =&gt; Sort");
+        } else {
+            result.append("Klick =&gt; Sort");
+        }
+        return result.toString();
+    } // getSortTitle
 
     /** Gets the markup text for the page trailer.
      *  For HTML and XML, the text contains links.
