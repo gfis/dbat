@@ -1,7 +1,14 @@
 /*  Reader for a URL or data URI source
     @(#) $Id$
+    2013-01-04: gopher repaired
 	2011-08-06: extended to InputStream interface
     2011-07-15, Dr. Georg Fischer: copied from SeparatedTable
+    
+    Caution, the gopher protocol is disabled by default in OpenJDK 6. 
+    From http://ads.freecode.com/articles/red-hat-security-update-for-openjdk-6:
+    This update disables Gopher protocol support in the java.net package by
+    default. Gopher support can be enabled by setting the newly introduced
+    property, "jdk.net.registerGopherProtocol", to true. (CVE-2012-5085)
 */
 /*
  * Copyright 2011 Dr. Georg Fischer <punctum at punctum dot kom>
@@ -28,6 +35,7 @@ import 	java.io.IOException;
 import  java.io.StringReader;
 import 	java.lang.IllegalArgumentException;
 import  java.net.URI;
+import  java.net.URL;
 import  java.nio.channels.Channels;
 import  java.nio.channels.ReadableByteChannel;
 import  org.apache.log4j.Logger;
@@ -127,65 +135,65 @@ public class URIReader {
     } // Constructor
 
     /** Construct from an URI (character oriented)
-	 *	@param uri the Uniform Resource Identifier to be used: URL or <em>data:</em> URI
+	 *	@param unresid the Uniform Resource Identifier to be used: URL or <em>data:</em> URI
      */
-    public URIReader(String uri) {
-		this(uri, "UTF-8");
+    public URIReader(String unresid) {
+		this(unresid, "UTF-8");
     } // Constructor
 
     /** Construct from a URI and specifiy character set encoding (if character oriented),
      *	or <code>null</code> (if byte oriented reading should be performed).
-	 *	@param uri the Uniform Resource Identifier to be used: URL or <em>data:</em> URI
+	 *	@param unresid the Uniform Resource Identifier to be used: URL or <em>data:</em> URI
 	 *	@param enc character set to be used to read from bytes (character oriented),
 	 *	or <code>null</code> (byte oriented)
      */
-    public URIReader(String uri, String enc) {
+    public URIReader(String unresid, String enc) {
         log = Logger.getLogger(URIReader.class.getName());
         this.encoding = enc;
     	isEncoded 	= enc != null;
-		charReader 	= null;
-		byteStream  = null;
+		charReader 	= null; // the protocol is unreadable so far
+		byteStream  = null; // the protocol is unreadable so far
 		try {
 			if (isEncoded) {
 				ReadableByteChannel channel = null;
 				if (false) {
-				} else if (uri == null || uri.equals("-")) { // read from STDIN
+				} else if (unresid == null || unresid.equals("-")) { // read from STDIN
 		        	channel = Channels.newChannel(System.in);
 		       		charReader = new BufferedReader(Channels.newReader(channel, this.encoding));
-				} else if (uri.startsWith("data:")) {
-					inputURI = new URI(uri);
+				} else if (unresid.startsWith("data:")) {
+					inputURI = new URI(unresid);
 					String content = inputURI.getSchemeSpecificPart().replaceAll("\\+", " "); // rather primitive, no BASE64
 					charReader = new BufferedReader(new StringReader(content));
-				} else if (uri.startsWith("file:")
-						|| uri.startsWith("ftp:")
-						|| uri.startsWith("gopher:")
-						|| uri.startsWith("http:")
-						) {
-					inputURI = new URI(uri);
-					charReader = new BufferedReader(new InputStreamReader(inputURI.toURL().openStream(), this.encoding));
+				} else if (unresid.matches("\\w+\\:.*")) { 
+					// the JVM has handlers in rt.jar!/sun/net/www/protocol/* for 
+					//   file: ftp: gopher: http: https: jar: mailto: netdoc:
+					inputURI = new URI(unresid);
+					URL url = inputURI.toURL();
+					if (! unresid.startsWith("mailto:")) { 
+						charReader = new BufferedReader(new InputStreamReader(url.openStream(), this.encoding));
+					} // else still unreadable
 				} else { // this will (probably) be an absolute or relative file URL
-	            	channel = (new FileInputStream (uri)).getChannel();
+	            	channel = (new FileInputStream (unresid)).getChannel();
 		       		charReader = new BufferedReader(Channels.newReader(channel, this.encoding));
 				}
 				// encoded, characters
 
 			} else { // byte oriented
 				if (false) {
-				} else if (uri == null || uri.equals("-")) { // read from STDIN
+				} else if (unresid == null || unresid.equals("-")) { // read from STDIN
 					byteStream = System.in;
-				} else if (uri.startsWith("data:")) {
-					inputURI = new URI(uri);
+				} else if (unresid.startsWith("data:")) {
+					inputURI = new URI(unresid);
 					String content = inputURI.getSchemeSpecificPart().replaceAll("\\+", " "); // rather primitive, no BASE64
 					byteStream = new ByteArrayInputStream(content.getBytes(this.encoding)); // or US_ASCII ?
-				} else if (uri.startsWith("file:")
-						|| uri.startsWith("ftp:")
-						|| uri.startsWith("gopher:")
-						|| uri.startsWith("http:")
-						) {
-					inputURI = new URI(uri);
-					byteStream = inputURI.toURL().openStream();
+				} else if (unresid.matches("\\w+\\:.*")) {
+					inputURI = new URI(unresid);
+					URL url = inputURI.toURL();
+					if (! unresid.startsWith("mailto:")) {
+						byteStream = url.openStream();
+					} // else still unreadable
 				} else { // this will (probably) be an absolute or relative file URL
-                    byteStream = new FileInputStream(uri);
+                    byteStream = new FileInputStream(unresid);
 				}
 			} // byte orientend
 		} catch (Exception exc) {
@@ -200,10 +208,12 @@ public class URIReader {
 	 */
 	public void close() throws IOException {
 		try {
-			if (isEncoded) {
+			if (false) {
+			} else if (this.charReader != null && isEncoded) {
 				this.charReader.close();
-			} else {
+			} else if (this.byteStream != null) {
 				this.byteStream.close();
+			} else {
 			}
 		} catch (IOException exc) {
 			throw exc;
@@ -220,10 +230,12 @@ public class URIReader {
 	 */
 	public void mark(int readAheadLimit) throws IllegalArgumentException, IOException {
 		try {
-			if (isEncoded) {
+			if (false) {
+			} else if (this.charReader != null && isEncoded) {
 				this.charReader.mark(readAheadLimit);
-			} else {
+			} else if (this.byteStream != null) {
 				this.byteStream.mark(readAheadLimit);
+			} else {
 			}
 		} catch (IllegalArgumentException exc) {
 			throw exc;
@@ -235,10 +247,15 @@ public class URIReader {
 	/** Tells whether this stream supports the mark() operation, which it does.
 	 */
 	public boolean markSupported() {
-		return isEncoded
-				? this.charReader.markSupported()
-				: this.byteStream.markSupported()
-				;
+		boolean result = false;
+		if (false) {
+		} else if (this.charReader != null && isEncoded) {
+			result = this.charReader.markSupported();
+		} else if (this.byteStream != null) {
+			result = this.byteStream.markSupported();
+		} else {
+		}
+		return result;
 	} // markSupported
 
 	/** Reads a single character or byte.
@@ -251,10 +268,12 @@ public class URIReader {
 	public int read() throws IOException {
 		int result = -1;
 		try {
-			if (isEncoded) {
+			if (false) {
+			} else if (this.charReader != null && isEncoded) {
 				result = this.charReader.read();
-			} else {
+			} else if (this.byteStream != null) {
 				result = this.byteStream.read();
+			} else {
 			}
 		} catch (IOException exc) {
 			throw exc;
@@ -290,7 +309,9 @@ public class URIReader {
 	public int read(byte[] bbuf) throws IOException {
 		int result = -1;
 		try {
-			result = this.byteStream.read(bbuf, 0, bbuf.length);
+			if (this.byteStream != null) {
+				result = this.byteStream.read(bbuf, 0, bbuf.length);
+			}
 		} catch (IOException exc) {
 			throw exc;
 		}
@@ -309,7 +330,9 @@ public class URIReader {
 	public int read(byte[] bbuf, int off, int len) throws IOException {
 		int result = -1;
 		try {
-			result = this.byteStream.read(bbuf, off, len);
+			if (this.byteStream != null) {
+				result = this.byteStream.read(bbuf, off, len);
+			}
 		} catch (IOException exc) {
 			throw exc;
 		}
@@ -328,7 +351,9 @@ public class URIReader {
 	public int read(char[] cbuf, int off, int len) throws IOException {
 		int result = -1;
 		try {
-			result = this.charReader.read(cbuf, off, len);
+			if (this.charReader != null) {
+				result = this.charReader.read(cbuf, off, len);
+			}
 		} catch (IOException exc) {
 			throw exc;
 		}
@@ -346,7 +371,9 @@ public class URIReader {
 	public String readLine() throws IOException {
 		String result = null;
 		try {
-			result = this.charReader.readLine();
+			if (this.charReader != null) {
+				result = this.charReader.readLine();
+			}
 		} catch (IOException exc) {
 			throw exc;
 		}
@@ -361,7 +388,9 @@ public class URIReader {
 	public boolean ready() throws IOException {
 		boolean result = false;
 		try {
-			result = this.charReader.ready();
+			if (this.charReader != null) {
+				result = this.charReader.ready();
+			}
 		} catch (IOException exc) {
 			throw exc;
 		}
@@ -372,10 +401,12 @@ public class URIReader {
 	 */
 	public void reset() throws IOException {
 		try {
-			if (isEncoded) {
+			if (false) {
+			} else if (this.charReader != null && isEncoded) {
 				this.charReader.reset();
-			} else {
+			} else if (this.byteStream != null) {
 				this.byteStream.reset();
+			} else {
 			}
 		} catch (IOException exc) {
 			throw exc;
@@ -386,17 +417,19 @@ public class URIReader {
 	 *	This method will block until some characters or bytes are available,
 	 *	an I/O error occurs, or the end of the stream is reached.
 	 *	@param n - The number of characters or bytes to skip
-     *	@return The number of characters oor bytes actually skipped
+     *	@return The number of characters or bytes actually skipped
      *	@throws IllegalArgumentException - If n is negative.
      *	@throws IOException - If an I/O error occurs
 	 */
 	public long skip(long n) throws IOException  {
 		long result = 0l;
 		try {
-			if (isEncoded) {
+			if (false) {
+			} else if (this.charReader != null && isEncoded) {
 				result = this.charReader.skip(n);
-			} else {
+			} else if (this.byteStream != null) {
 				result = this.byteStream.skip(n);
+			} else {
 			}
 		} catch (IOException exc) {
 			throw exc;
@@ -404,7 +437,7 @@ public class URIReader {
 		return result;
 	} // skip
 
-	//======================
+	//======================news://news.netcologne.de/alt.free.newsservers
     // Main method (test)
     //======================
 
@@ -415,22 +448,54 @@ public class URIReader {
         Logger log = Logger.getLogger(URIReader.class.getName());
         int iarg = 0;
         try {
-        /*
-			URI uri = new URI(args[iarg ++]);
-			URL url = uri.toURL();
-			BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-			String line = "";
-			while ((line = in.readLine()) != null) {
-				System.out.println(line);
-			} // while reading
-			in.close();
-		*/
-			URIReader in = new URIReader(args[iarg ++]);
-			String line = "";
-			while ((line = in.readLine()) != null) {
-				System.out.println(line);
-			} // while reading
-			in.close();
+	    /*
+	        System.out.println("previous gopher property = " + 
+	        		System.setProperty("jdk.net.registerGopherProtocol", "true")
+	        		);
+	    */
+        	if (iarg == args.length) {
+        		new URIReader("http://www.teherba.org");
+        		String protocols[] = 
+        				{ "http://www.teherba.org/"
+        				, "mailto:punctum@punctum.com"
+        				, "jar:file:///home/gfis/work/gits/dbat/dist/dbat.jar!/META-INF/LICENSE"
+        				, "news://news.netcologne.de/alt.free.newsservers"
+        				, "gopher://gopher.rbfh.de/0/Fun/500miles.txt"
+        				, "file:///home/gfis/work/gits/dbat/web/noversion.txt"
+        				, "ftp://ftp.akk.uni-karlsruhe.de/pub/linux/README"
+        				, "telnet:teherba.org"
+        				, "verbatim:"
+        				, "data:this+is%20the+text+to+be+read"
+        				};
+        		int iprot = 0;
+        		while (iprot < protocols.length) {
+        			try {
+	        			System.out.print("URL " + protocols[iprot]);
+	        			URL url = new URL(protocols[iprot]);
+    	    			System.out.println(" ok");
+        			} catch (Exception exc) {
+        				System.out.println(" failed");
+        			}
+        			iprot ++;
+        		} // while iprot
+			/*
+				URI unresid = new URI(args[iarg ++]);
+				URL url = unresid.toURL();
+				BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+				String line = "";
+				while ((line = in.readLine()) != null) {
+					System.out.println(line);
+				} // while reading
+				in.close();
+			*/
+			} else {
+				URIReader in = new URIReader(args[iarg ++]);
+				String line = "";
+				while ((line = in.readLine()) != null) {
+					System.out.println(line);
+				} // while reading
+				in.close();
+			}
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }

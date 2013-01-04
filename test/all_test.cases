@@ -248,7 +248,7 @@ TEST XS5 generate a non-altering search form
 XSLT --stringparam alter 0 ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud01.iv.xml
 
 TEST XS6 whereClause copied with parm
-XSLT --stringparam  ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud05.iv.xml
+XSLT ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud05.iv.xml
 #-------------------
 TEST L01 List Box and List Parameters - init values
 WGET spec=test/listbox
@@ -320,14 +320,17 @@ CRUN common.URIReader http://localhost:8080/dbat/noversion.txt
 
 # the following works with an Internet connection only
 TEST U02 gopher schema
-# CRUN common.URIReader gopher://gopher.rbfh.de/0/Fun/500miles.txt
+CRUN common.URIReader gopher://gopher.rbfh.de/0/Fun/500miles.txt
 
 # the following works with an Internet connection only
 TEST U03 ftp schema
-# CRUN common.URIReader ftp://roland:roland@localhost/../gfis/work/webapps-super/dbat/web/noversion.txt
+CRUN common.URIReader ftp://ftp.gnu.org/README
 
 TEST U04 file schema
-CRUN common.URIReader file:///home/gfis/work/webapps-super/dbat/web/noversion.txt
+CRUN common.URIReader file:///home/gfis/work/gits/dbat/web/noversion.txt
+
+TEST UR5 jar-file schema
+CRUN common.URIReader jar:file:///home/gfis/work/gits/dbat/dist/dbat.jar!/META-INF/LICENSE
 
 TEST U05 relative file
 CRUN common.URIReader ../web/noversion.txt

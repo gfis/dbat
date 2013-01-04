@@ -1,5 +1,6 @@
 /*  Reader for text file, returns a string without any whitespace
  *  @(#) $Id$
+ *  2013-01-04: with org.apache.commons.exec methods
  *  2012-11-24: copied from ramath/src...
  *  2012-11-06, Georg Fischer: copied from ExpressionReader
  */
@@ -29,6 +30,7 @@ import  java.io.FileReader;
 import  java.io.InputStreamReader;
 import  java.io.PrintStream;
 import  java.lang.Process;
+import  java.lang.ProcessBuilder;
 import  java.lang.Runtime;
 import  java.lang.reflect.Method;
 import  java.net.URLEncoder;
@@ -37,6 +39,9 @@ import  java.util.HashMap;
 import  java.util.regex.Matcher;
 import  java.util.regex.Pattern;
 import  java.text.SimpleDateFormat;
+import  org.apache.commons.exec.CommandLine;
+import  org.apache.commons.exec.DefaultExecutor;
+import  org.apache.commons.exec.ExecuteWatchdog;
 import  org.apache.log4j.Logger;
 
 /** Processess a file with test cases and either generates the test output reference
@@ -120,8 +125,8 @@ public class RegressionTester {
         String thisName = null; // filename for this test's results
         String prevName = null; // filename for previous test's results
         String dataName = "XXX.data." + DATA_EXTENSION; // DATA file name for current test case
-        File thisFile = null;
-        File prevFile = null;
+        File  thisFile = null;
+        File  prevFile = null;
         PrintStream thisStream = null;
         String ext = ".tst.bad"; // extension for result files
         Runtime runtime = Runtime.getRuntime(); // for command execution
@@ -137,9 +142,9 @@ public class RegressionTester {
         String cmd         = null; // system command to be executed
         BufferedReader reader = null; // reader for stdout from 'cmd'
         String line        = null; // a line read from 'reader'
-        int passedCount = 0; // number of tests which were run successfully
-        int failedCount = 0; // number of tests which showed a 'diff'erence
-        int recreatedCount = 0; // number of tests for which there was no previous result file
+        int    passedCount = 0; // number of tests which were run successfully
+        int    failedCount = 0; // number of tests which showed a 'diff'erence
+        int    recreatedCount = 0; // number of tests for which there was no previous result file
         String logText = null; // for test files and stdout
 
         int iarg = 0;
@@ -349,31 +354,38 @@ public class RegressionTester {
                             } // while urlLine
 
                         } else if (verb.equals("WGET")) {
-                        //  cmd = "wget -q -O - \"" 
-                            cmd = "lynx -source \"" 
+                            cmd = "wget -q -O - \"" 
+                        //  cmd = "lynx -source \"" 
                                     + baseURL + rest.trim().replaceAll("\\s+", "&")
                                     + "\"";
                             logText = cmd;
                             System.out.println(logText);
                             realStdOut.println(logText);
-                            process = runtime.exec(cmd);
-                            Thread.sleep(1000);
-                            reader = new BufferedReader(new InputStreamReader(process.getInputStream(), logEncoding));
-                            int 
-                            iline = 0;
-                            while ((line = reader.readLine()) != null) {
-                                thisStream.println(line);
-                                iline ++;
-                            } // while iline
-                            reader.close();
-                            reader = new BufferedReader(new InputStreamReader(process.getErrorStream(), logEncoding));
-                            iline = 0;
-                            while ((line = reader.readLine()) != null) {
-                                thisStream.println(line);
-                                iline ++;
-                            } // while iline
-                            reader.close();
-
+							if (false) { // new code
+								CommandLine cmdLine = CommandLine.parse(cmd);
+								DefaultExecutor executor = new DefaultExecutor();
+								ExecuteWatchdog watchdog = new ExecuteWatchdog(20000);
+								executor.setWatchdog(watchdog);
+								int exitValue = executor.execute(cmdLine);                            
+	                        } else { // old code
+    	                        process = runtime.exec(cmd);
+    	                        // Thread.sleep(1000);
+    	                        reader = new BufferedReader(new InputStreamReader(process.getInputStream(), logEncoding));
+    	                        int 
+    	                        iline = 0;
+    	                        while ((line = reader.readLine()) != null) {
+    	                            thisStream.println(line);
+    	                            iline ++;
+    	                        } // while iline
+    	                        reader.close();
+    	                        reader = new BufferedReader(new InputStreamReader(process.getErrorStream(), logEncoding));
+    	                        iline = 0;
+    	                        while ((line = reader.readLine()) != null) {
+    	                            thisStream.println(line);
+    	                            iline ++;
+    	                        } // while iline
+    	                        reader.close();
+							} // old code
                         } else if (verb.equals("XSLT")) {
                             cmd = xsltPrefix + rest.trim();
                             logText = cmd;

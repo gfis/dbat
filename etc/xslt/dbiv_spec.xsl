@@ -2,6 +2,7 @@
 <!--
     Generates a Dbat specification for an interactive view (C/R/U/D) äöü
     @(#) $Id: dbiv_spec.xsl 958 2012-06-06 06:02:39Z gfis $
+    2013-01-04: commenting of parameters
     2012-07-10: copy <where> condition with <parm>
     2012-06-27: timestamp(19) with space
     2012-06-25: without sql_state and update_count
@@ -49,11 +50,12 @@
 -->
     <xsl:param name="lang"  >de</xsl:param><!-- language; default: de -->
     <xsl:param name="method">post</xsl:param><!-- post or get -->
-    <xsl:param name="prefix">search_</xsl:param><!-- maybe uppercase -->
-    <xsl:param name="debug" >true</xsl:param><!-- true or empty -->
-    <xsl:param name="valid" >0</xsl:param><!-- or 1 = true -->
+    <xsl:param name="prefix">search_</xsl:param><!-- prefix for search field names, maybe uppercase -->
+    <xsl:param name="debug" >true</xsl:param><!-- whether to print debugging output: true or empty -->
+    <xsl:param name="valid" >0</xsl:param><!-- whether to insert validation code: 1 = true -->
     <xsl:param name="alter" >1</xsl:param><!-- or 0 = false: do not enable any alter functionality -->
-    <xsl:param name="rdbms" >mysql</xsl:param><!-- mysql, db2zos, db2luw, oracle ... -->
+    <xsl:param name="rdbms" >mysql</xsl:param><!-- for fine-tuning stored procs et al.: mysql, db2zos, db2luw, oracle ... -->
+    
     <xsl:output method="xml" indent="yes" encoding="UTF-8" />
     <xsl:strip-space elements="*"/>
     <xsl:key name="fieldNameKey" match="iv:field" use="@name"/>

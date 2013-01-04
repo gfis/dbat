@@ -212,7 +212,9 @@ sub execute_test {
     }
     my ($command) = @_;
     # print STDERR "execute: $command\n";
-    my $this_result = `$command 2>&1`;   
+    my $command_d = $command;
+    $command_d =~ s{\Ajava}{java -Djdk.net.registerGopherProtocol=true};
+    my $this_result = `$command_d 2>&1`;   
     my $subst = $default_subst;
     my $expr = '$this_result =~ ' . $default_subst . ';';
     # lestprint STDERR "evaluate: " . $expr . "\n";

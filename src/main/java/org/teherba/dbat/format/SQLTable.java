@@ -1,5 +1,6 @@
 /*  Generator for an SQL table (DDL or INSERT statements)
     @(#) $Id$
+    2013-01-04: comments before COMMIT with trailing ";" for DB2 commandline processor
     2012-11-27: writeCommit
     2012-04-17: NON_UNIQUE INDEX; error in INSERT header (getLabel -> getName)
     2011-12-06: CONSTRAINT PRIMARY KEY
@@ -144,7 +145,7 @@ public class SQLTable extends BaseTable {
      */
     public void writeComment(String line) {
         try {
-            charWriter.println("-- " + line.replaceAll("\n", "\n--"));
+            charWriter.println("-- " + line.replaceAll("\n", "\n--")); //  + " ;");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
@@ -164,7 +165,8 @@ public class SQLTable extends BaseTable {
      *  @param rowCount number of INSERT/UPDATE statements already generated
      */
     public void writeCommit(int rowCount) {
-        charWriter.println("COMMIT; -- " + rowCount);
+        charWriter.println("-- " + rowCount + ";");
+        charWriter.println("COMMIT;");
     } // writeCommit
 
     //======================================
