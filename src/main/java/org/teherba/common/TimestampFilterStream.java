@@ -36,6 +36,8 @@ public class TimestampFilterStream extends PrintStream {
 
     /* local copy of the parent stream */
     private PrintStream tfStream;
+    /* local copy of the encoding */
+    private String encoding;
     
     /** Constructor with output stream
      *  @param pStream stream to be filtered for ISO timestamps
@@ -47,49 +49,93 @@ public class TimestampFilterStream extends PrintStream {
 
     /** Constructor with output file name and encoding
      *  @param fileName name of the file to be written
-     *  @param csn character set name
+     *  @param enc character set name
      */
-    public TimestampFilterStream(String fileName, String csn) 
+    public TimestampFilterStream(String fileName, String enc) 
             throws FileNotFoundException,
             UnsupportedEncodingException {
-        super(fileName, csn);
+        super(fileName, enc);
+        encoding = enc;
         tfStream = new PrintStream(super.out);
     } // Constructor with output stream and encoding
 
+	/** Replaces a set of patterns by constant strings
+	 *  @param str input string where replacements take place
+	 *  @return output string with constants
+	 */
+	private String replacePatterns(String str) {
+		return  str
+                .replaceAll(" \\d{4}\\-\\d{2}\\-\\d{2} \\d{2}\\:\\d{2}\\:\\d{2}(\\.\\d+)?", " yyyy-mm-dd hh:mm:ss")
+            //  .replaceAll(" \\d{4}\\-\\d{2}\\-\\d{2}"                                   , " yyyy-mm-dd")
+                .replaceAll(" rows in \\d+ ms", " rows in ... ms")
+                .replaceAll("5.1.62-0ubuntu0.11.10.1", "5.1.66-0ubuntu0.11.10.3")
+                .replaceAll("web/spec/", "../web/spec/")
+                ;
+	} // replacePatterns
+	
     /** Flushes the stream
      */
     public void flush() {
         tfStream.flush();
-    } // flush
+    } // flush()
 
     /** Prints a string, after replacing any ISO timestamp by the constant "yyyy-MM-dd hh:mm:ss".
      *  @param str the string to be printed, possibly containing an ISO timestamp or date
      */
     public void print(String str) {
-        tfStream.print(
-            //  "###" + 
-                str
-                .replaceAll(" \\d{4}\\-\\d{2}\\-\\d{2} \\d{2}\\:\\d{2}\\:\\d{2}(\\.\\d+)?", " yyyy-mm-dd hh:mm:ss")
-            //  .replaceAll(" \\d{4}\\-\\d{2}\\-\\d{2}"                                   , " yyyy-mm-dd")
-                .replaceAll(" rows in \\d+ ms", " rows in ... ms")
-                .replaceAll("5.1.62-0ubuntu0.11.10.2", "5.1.62-0ubuntu0.11.10.1")
-                .replaceAll("web/spec/", "../web/spec/")
-                );
-    } // print(str)
+        tfStream.print(replacePatterns(str));
+    } // print(String)
 
     /** Prints a string, after replacing any ISO timestamp by the constant "yyyy-MM-dd hh:mm:ss".
      *  @param str the string to be printed, possibly containing an ISO timestamp or date
      */
     public void println(String str) {
-        tfStream.println(
-            //  "###" + 
-                str
-                .replaceAll(" \\d{4}\\-\\d{2}\\-\\d{2} \\d{2}\\:\\d{2}\\:\\d{2}(\\.\\d+)?", " yyyy-mm-dd hh:mm:ss")
-            //  .replaceAll(" \\d{4}\\-\\d{2}\\-\\d{2}"                                   , " yyyy-mm-dd")
-                .replaceAll(" rows in \\d+ ms", " rows in ... ms")
-                .replaceAll("5.1.62-0ubuntu0.11.10.2", "5.1.62-0ubuntu0.11.10.1")
-                .replaceAll("web/spec/", "../web/spec/")
-                );
-    } // println(str)
+        tfStream.println(replacePatterns(str));
+    } // println(String)
 
+    /** Writes b.length bytes from the specified byte array to this file output stream.
+     *  @param b byte array containing the bytes to be written to the stream.
+  	 */
+	public void write(byte[] b) {
+		try {
+			tfStream.write('[');
+			tfStream.write(b);
+			tfStream.write(64);
+			tfStream.write(b);
+			tfStream.write(']');
+		} catch (Exception exc) {
+		}
+	} // write(byte[])
+	
+    /** Writes <em>len</em> bytes from the specified byte array to this file output stream, 
+     *  starting at offset <em>off</em>.
+     *  @param b byte array containing the bytes to be written to the stream.
+     *  @param off offset (0 based) of first byte to be written 
+     *  @param len number of bytes to be written
+     */
+	public void write(byte[] b, int off, int len) {
+		try {
+			// tfStream.write('(');
+			byte[] b2 = replacePatterns(new String(b, off, len, encoding)).getBytes(encoding);
+			int len2 = b2.length;
+			int off2 = 0;
+			while (len2 > 0) {
+				tfStream.write(b2[off2 ++]);
+				len2 --;
+			} // while len2
+			// tfStream.write(')');
+		} catch (Exception exc) {
+		}
+	} // write(byte[],int,int)
+    
+    /** Writes b.length bytes from the specified byte array to this file output stream.
+	*/
+	public void write(int b) {
+		try {
+			tfStream.write(b);
+			tfStream.write('.');
+		} catch (Exception exc) {
+		}
+	} // write(byte)
+	
 } // TimestampFilterStream

@@ -1,12 +1,12 @@
 Test A00 
-echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet? 2013-01-04 21:30:07
+echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet? 2013-01-05 10:24:07
 *** A00.prev.tst	2012-06-27 21:24:35.000000000 +0200
---- A00.this.tst	2013-01-04 21:30:08.000000000 +0100
+--- A00.this.tst	2013-01-05 10:24:08.000000000 +0100
 ***************
 *** 1 ****
 ! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet?spec= 2012-06-27 21:24:34
 --- 1 ----
-! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet? 2013-01-04 21:30:07
+! echo java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 wget -q -O - "http://localhost:8080/dbat/servlet? 2013-01-05 10:24:07
 -- FAILED A00 
 Test A01 parameterized link
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/parmlink.xml
@@ -167,7 +167,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.selec01"
 Test Y06 XML syntax error, CLI
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/badxml.xml 2> nul
 *** Y06.prev.tst	2012-06-27 21:24:53.000000000 +0200
---- Y06.this.tst	2013-01-04 21:30:29.000000000 +0100
+--- Y06.this.tst	2013-01-05 10:24:31.000000000 +0100
 ***************
 *** 1 ****
 ! java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -f ../web/spec/test/badxml.xml
@@ -177,12 +177,12 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 *** 13 ****
 ! 2012-06-27 21:24:53,405 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
 --- 13 ----
-! 2013-01-04 21:30:28,865 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
+! 2013-01-05 10:24:31,309 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
 ***************
 *** 26 ****
 ! 2012-06-27 21:24:53,408 3    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 --- 26 ----
-! 2013-01-04 21:30:28,869 4    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+! 2013-01-05 10:24:31,315 6    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 ***************
 *** 31,36 ****
 ! 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:228)
@@ -197,7 +197,7 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 ! 	at org.teherba.dbat.Dbat.process(Dbat.java:641)
 ! 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:730)
 ! 	at org.teherba.dbat.Dbat.main(Dbat.java:760)
-! 2013-01-04 21:30:28,870 5    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+! 2013-01-05 10:24:31,340 31   [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
 ***************
 *** 41,45 ****
 ! 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:228)
@@ -242,36 +242,39 @@ java -cp ../dist/dbat.jar org.teherba.common.CommandTokenizer -f CT2.data.tmp
 Test CT3 tokenizing from file with SQL syntax
 java -cp ../dist/dbat.jar org.teherba.common.CommandTokenizer -sql CT2.data.tmp
 ++ passed CT3 tokenizing from file with SQL syntax
-Test U01 http schema
+Test UR1 http schema
 java -cp ../dist/dbat.jar org.teherba.common.URIReader http://localhost:8080/dbat/noversion.txt
-++ passed U01 http schema
-Test U02 gopher schema
+++ passed UR1 http schema
+Test UR2 gopher schema
 java -cp ../dist/dbat.jar org.teherba.common.URIReader gopher://gopher.rbfh.de/0/Fun/500miles.txt
-++ passed U02 gopher schema
-Test U03 ftp schema
+++ passed UR2 gopher schema
+Test UR3 ftp schema
 java -cp ../dist/dbat.jar org.teherba.common.URIReader ftp://ftp.gnu.org/README
-++ passed U03 ftp schema
-Test U04 file schema
+++ passed UR3 ftp schema
+Test UR4 file schema
 java -cp ../dist/dbat.jar org.teherba.common.URIReader file:///home/gfis/work/gits/dbat/web/noversion.txt
-++ passed U04 file schema
+++ passed UR4 file schema
 Test UR5 jar-file schema
 java -cp ../dist/dbat.jar org.teherba.common.URIReader jar:file:///home/gfis/work/gits/dbat/dist/dbat.jar!/META-INF/LICENSE
 ++ passed UR5 jar-file schema
-Test U05 relative file
+Test UR6 relative file
 java -cp ../dist/dbat.jar org.teherba.common.URIReader ../web/noversion.txt
-++ passed U05 relative file
-Test U06 data URI
+++ passed UR6 relative file
+Test UR7 data URI
 java -cp ../dist/dbat.jar org.teherba.common.URIReader data:this+is%20the+text+to+be+read
-++ passed U06 data URI
-Test U08 file tayloring - head+tail
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m taylor -s "{}" -u U08.data.tmp "select * from c01"
-++ passed U08 file tayloring - head+tail
-Test U09 file tayloring - head only
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m taylor -s "[" -u U09.data.tmp "select * from c01"
-++ passed U09 file tayloring - head only
-Test U10 file tayloring - with data: URI template
+++ passed UR7 data URI
+Test TL1 file tayloring - head+tail
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m taylor -s "{}" -u TL1.data.tmp "select * from c01"
+++ passed TL1 file tayloring - head+tail
+Test TL2 describe tayloring variables
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m taylor -s "{}" -u TL1.data.tmp -d c01
+++ passed TL2 describe tayloring variables
+Test TL3 file tayloring - head only
+java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m taylor -s "[" -u TL3.data.tmp "select * from c01"
+++ passed TL3 file tayloring - head only
+Test TL4 file tayloring - with data: URI template
 java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m taylor -s "ß" -u data:%09%c3%9fname%09in+%c3%9funiv+%c3%9fyear%0a "select name, univ, year from c01"
-++ passed U10 file tayloring - with data: URI template
+++ passed TL4 file tayloring - with data: URI template
 Test W01 select
 wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/selec01"
 ++ passed W01 select
@@ -751,16 +754,17 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed CT1 tokenizing preprogrammed commandline string
 ++ passed CT2 tokenizing from file
 ++ passed CT3 tokenizing from file with SQL syntax
-++ passed U01 http schema
-++ passed U02 gopher schema
-++ passed U03 ftp schema
-++ passed U04 file schema
+++ passed UR1 http schema
+++ passed UR2 gopher schema
+++ passed UR3 ftp schema
+++ passed UR4 file schema
 ++ passed UR5 jar-file schema
-++ passed U05 relative file
-++ passed U06 data URI
-++ passed U08 file tayloring - head+tail
-++ passed U09 file tayloring - head only
-++ passed U10 file tayloring - with data: URI template
+++ passed UR6 relative file
+++ passed UR7 data URI
+++ passed TL1 file tayloring - head+tail
+++ passed TL2 describe tayloring variables
+++ passed TL3 file tayloring - head only
+++ passed TL4 file tayloring - with data: URI template
 ++ passed W01 select
 ++ passed W02 select as HTML
 ++ passed W03 select as XML
@@ -900,4 +904,4 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ++ passed VA2 var elements with data types
 ++ passed VA3 echo with var elements
    2 FAILED.tests
- 210 passed.tests
+ 211 passed.tests

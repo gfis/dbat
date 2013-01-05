@@ -55,7 +55,7 @@ FROM c01
 WHERE name like 'x%';
 :SQL -->
 <table id="tab4"><!-- table_not_specified -->
-<tr><td class="counter" colspan="1">0 result rows</td></tr>
+<tr><td class="counter" colspan="1">no Persons known</td></tr>
 </table>
 
 <br />Ausgabe am yyyy-mm-dd hh:mm:ss durch <a href="index.html">Dbat</a>-Skript <a target="_blank" href="spec/test/counter01.xml" type="text/plain">test/counter01</a>,

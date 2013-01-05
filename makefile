@@ -23,6 +23,10 @@ TESTDIR=test
 
 all: new_regression
 #------------------------------------------------
+java_regression:
+	java -Djdk.net.registerGopherProtocol=true -cp dist/dbat.jar \
+			org.teherba.common.RegressionTester test2/all.tca $(TEST) \
+	| tee regr.log
 new_regression: comp eval
 fill:
 	cd $(TESTDIR) ; perl $(TESTER) -fill all_test.cases

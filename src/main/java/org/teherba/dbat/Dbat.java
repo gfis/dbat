@@ -53,6 +53,7 @@
  * limitations under the License.
  */
 package org.teherba.dbat;
+import  org.teherba.common.TimestampFilterStream;
 import  org.teherba.dbat.Configuration;
 import  org.teherba.dbat.Messages;
 import  org.teherba.dbat.SpecificationHandler;
@@ -591,6 +592,10 @@ public class Dbat implements Serializable {
             if (writer == null) { // write to System.out
                 WritableByteChannel target = Channels.newChannel(System.out);
                 tableWriter = new PrintWriter(Channels.newWriter(target, config.getEncoding(1)), true); // autoFlush
+            	// System.err.println("set PrintWriter=System.out");
+            /*
+            	tableWriter = new PrintWriter(new TimestampFilterStream(System.out)); // , true); // autoFlush
+            */
             } else {
                 tableWriter = writer; // servlet response or other writer opened by the caller
             }

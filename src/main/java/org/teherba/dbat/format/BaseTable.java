@@ -288,7 +288,7 @@ public abstract class BaseTable {
     } // setTargetEncoding
 
     /** writer for text files */
-    public PrintWriter charWriter;
+    protected PrintWriter charWriter;
     /** Gets the writer for all output
      *  @return writer writer to be used for output
      */

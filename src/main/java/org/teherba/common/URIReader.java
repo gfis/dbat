@@ -3,12 +3,6 @@
     2013-01-04: gopher repaired
 	2011-08-06: extended to InputStream interface
     2011-07-15, Dr. Georg Fischer: copied from SeparatedTable
-    
-    Caution, the gopher protocol is disabled by default in OpenJDK 6. 
-    From http://ads.freecode.com/articles/red-hat-security-update-for-openjdk-6:
-    This update disables Gopher protocol support in the java.net package by
-    default. Gopher support can be enabled by setting the newly introduced
-    property, "jdk.net.registerGopherProtocol", to true. (CVE-2012-5085)
 */
 /*
  * Copyright 2011 Dr. Georg Fischer <punctum at punctum dot kom>
@@ -44,9 +38,15 @@ import  org.apache.log4j.Logger;
  *	<ol>
  *	<li>a Uniform Resource Locator (URL) - out of the box of java.net.URL - with the protocols/schemas
  *		<ul>
- *		<li>http: - Hypertext transfer protocol</li>
+ *		<li>file: - local file access</li>
  *		<li>ftp: - File transfer protocol</li>
- *		<li>gopher: - predecessor of http</li>
+ *		<li>gopher: - predecessor of http (only with system property -Djdk.net.registerGopherProtocol=true)</li>
+ *		<li>http: - Hypertext transfer protocol</li>
+ *		<li>https: - secure Hypertext transfer protocol</li>
+ *		<li>jar: - access to files in a zipped Java archive</li>
+ *		<li>(mailto: - send email from an URI, does not seem to work)</li>
+ *		<li>(netdoc: - rarely used special Java protocol for documentation)</li>
+ *		<li>URLs not starting with <em>word:</em> are assumed to be local filenames, too<li>
  *		</ul>
  *	</li>
  *	<li>data: - data content within an Uniform Resource Identfier (URI) itself</li>
@@ -58,6 +58,13 @@ import  org.apache.log4j.Logger;
  *	of the class is either character or byte oriented. The sets of methods of the
  *	<code>BufferedReader</code> and <code>InputStream</code> are both implemented,
  *	but care must be taken to call the appropriate overloaded method name.
+ *  <p>
+ *  Caution, the gopher protocol is disabled by default in OpenJDK 6. 
+ *  From http://ads.freecode.com/articles/red-hat-security-update-for-openjdk-6:
+ *  This update disables Gopher protocol support in the java.net package by
+ *  default. Gopher support can be enabled by setting the newly introduced
+ *  property, "jdk.net.registerGopherProtocol", to true. (CVE-2012-5085)
+
  *  @author Dr. Georg Fischer
  */
 public class URIReader {
@@ -441,28 +448,30 @@ public class URIReader {
     // Main method (test)
     //======================
 
-    /** Test method: read from an URL and print the result on STDOUT.
+    /** Test method: read from an URI.
      *  @param args command line arguments: options, strings, table- or filenames
+     *  <pre>
+     *  java -cp dist/dbat.jar org.teherba.dbat.common.URIReader [uri]
+     *  </pre>
+     *  Without any argument, the program tries a set of URI schemas/protocols, and
+     *  shows whether the JVM has a handler for them.
+     *	With an URI argument, the program reads from the URI and prints the content to STDOUT.
      */
     public static void main(String[] args) {
+   		System.setProperty("jdk.net.registerGopherProtocol", "true"); // does not work, not soon enough?
         Logger log = Logger.getLogger(URIReader.class.getName());
         int iarg = 0;
         try {
-	    /*
-	        System.out.println("previous gopher property = " + 
-	        		System.setProperty("jdk.net.registerGopherProtocol", "true")
-	        		);
-	    */
-        	if (iarg == args.length) {
+        	if (iarg == args.length) { // without an argument, several protocols are checked
         		new URIReader("http://www.teherba.org");
         		String protocols[] = 
-        				{ "http://www.teherba.org/"
-        				, "mailto:punctum@punctum.com"
+        				{ "http://www.teherba.org/index.html"
+        				, "mailto:punctum@punctum.com&subject=Test URIReader"
         				, "jar:file:///home/gfis/work/gits/dbat/dist/dbat.jar!/META-INF/LICENSE"
         				, "news://news.netcologne.de/alt.free.newsservers"
         				, "gopher://gopher.rbfh.de/0/Fun/500miles.txt"
         				, "file:///home/gfis/work/gits/dbat/web/noversion.txt"
-        				, "ftp://ftp.akk.uni-karlsruhe.de/pub/linux/README"
+        				, "ftp://ftp.gnu.org/README"
         				, "telnet:teherba.org"
         				, "verbatim:"
         				, "data:this+is%20the+text+to+be+read"
@@ -478,17 +487,7 @@ public class URIReader {
         			}
         			iprot ++;
         		} // while iprot
-			/*
-				URI unresid = new URI(args[iarg ++]);
-				URL url = unresid.toURL();
-				BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-				String line = "";
-				while ((line = in.readLine()) != null) {
-					System.out.println(line);
-				} // while reading
-				in.close();
-			*/
-			} else {
+			} else { // argument is a single URI which is read and printed to STDOUT
 				URIReader in = new URIReader(args[iarg ++]);
 				String line = "";
 				while ((line = in.readLine()) != null) {

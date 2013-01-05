@@ -23,12 +23,15 @@ package org.teherba.common;
 import  org.teherba.common.CommandTokenizer;
 import  org.teherba.common.TimestampFilterStream;
 import  org.teherba.common.URIReader;
+import  org.teherba.dbat.Configuration;
+import  org.teherba.dbat.Dbat;
 import  java.io.BufferedReader;
 import  java.io.File;
 import  java.io.FileOutputStream;
 import  java.io.FileReader;
 import  java.io.InputStreamReader;
 import  java.io.PrintStream;
+import  java.io.PrintWriter;
 import  java.lang.Process;
 import  java.lang.ProcessBuilder;
 import  java.lang.Runtime;
@@ -39,9 +42,9 @@ import  java.util.HashMap;
 import  java.util.regex.Matcher;
 import  java.util.regex.Pattern;
 import  java.text.SimpleDateFormat;
-import  org.apache.commons.exec.CommandLine;
-import  org.apache.commons.exec.DefaultExecutor;
-import  org.apache.commons.exec.ExecuteWatchdog;
+// import  org.apache.commons.exec.CommandLine;
+// import  org.apache.commons.exec.DefaultExecutor;
+// import  org.apache.commons.exec.ExecuteWatchdog;
 import  org.apache.log4j.Logger;
 
 /** Processess a file with test cases and either generates the test output reference
@@ -127,7 +130,7 @@ public class RegressionTester {
         String dataName = "XXX.data." + DATA_EXTENSION; // DATA file name for current test case
         File  thisFile = null;
         File  prevFile = null;
-        PrintStream thisStream = null;
+        TimestampFilterStream thisStream = null;
         String ext = ".tst.bad"; // extension for result files
         Runtime runtime = Runtime.getRuntime(); // for command execution
         Process process = null;
@@ -137,7 +140,7 @@ public class RegressionTester {
         Method mainMethod  = null;
         String classPrefix = "org.teherba."; // default for PACKAGE macro
         String argsPrefix  = ""; // default for ARGS macro
-        String baseURL     = "http://localhost:8080/dbat"; // default for URL macro
+        String baseURL     = "http://localhost:8080/dbat/servlet"; // default for URL macro
         String xsltPrefix  = "xsltproc ";
         String cmd         = null; // system command to be executed
         BufferedReader reader = null; // reader for stdout from 'cmd'
@@ -183,7 +186,7 @@ public class RegressionTester {
                 if (false) {
                 } else if (testLine.matches("\\s*#.*") || testLine.matches("\\s*")) { // comment line or empty line
                     // ignore
-                } else if (testLine.matches("\\s.*")) { // starts with whitespace => continuation of DATA
+                } else if (testLine.matches("[^A-Za-z].*")) { // starts with non-letter => continuation of DATA
                     dataBuffer.append(testLine);
                     dataBuffer.append(nl);
                 } else { // verb starting in column 1
@@ -202,7 +205,7 @@ public class RegressionTester {
                         if (dataBuffer.length() > 0) { // data buffer is filled
                             File dataFile = new File(dataName);
                             PrintStream dataStream = new PrintStream(dataFile, tcaEncoding);
-                            dataStream.println(dataBuffer.toString());
+                            dataStream.print(dataBuffer.toString());
                             dataStream.close();
                             dataBuffer.setLength(0);
                         } // data buffer was filled
@@ -309,15 +312,12 @@ public class RegressionTester {
                                     ipart ++;
                                 } // while parts
                             */
-                                logText = "java " 
-                                        + "-cp ../dist/dbat.jar "
-                                        + className
-                                        + " " + argsStr;
+                                logText = "java -cp ../dist/dbat.jar " + className + " " + argsStr;
                                 // System.out.println(logText);
                                 realStdOut.println(logText);
-                                targetClass = Class.forName(className);
-                                mainMethod = targetClass.getMethod("main", String[].class);
-                                mainMethod.invoke(null, (Object) parts);
+                                targetClass = Class.forName(className); //, true, RegressionTester.class.getClassLoader());
+   	                            mainMethod = targetClass.getMethod("main", String[].class);
+       	                        mainMethod.invoke(null, (Object) parts);
                             } else {
                                 System.err.println("CALL verb syntax error: " + testLine);
                             }
@@ -337,14 +337,15 @@ public class RegressionTester {
                                 // ignore
                              } // while ignoring
 
-                        } else if (verb.equals("HTTP")) { // deprecated
+                        } else if (verb.equals("HTTP")) {
+                        /*
                             String requestURL = baseURL + URLEncoder.encode(rest.trim().replaceAll("\\s+", "&"), tcaEncoding)
                                     .replaceAll("%3D", "=")
                                     .replaceAll("%26", "&")
                                     ;
-                            logText = "wget -q -O - \"" 
-                                    + baseURL + rest.trim().replaceAll("\\s+", "&")
-                                    + "\"";
+                        */
+                        	String requestURL = baseURL + rest.trim().replaceAll("\\s+", "&");
+                            logText = "wget -q -O - \"" + requestURL + "\"";
                             // System.out.println(logText);
                             realStdOut.println(logText);
                             URIReader urlReader = new URIReader(requestURL);
@@ -353,7 +354,7 @@ public class RegressionTester {
                                 thisStream.println(urlLine);
                             } // while urlLine
 
-                        } else if (verb.equals("WGET")) {
+                        } else if (verb.equals("WGET")) { // deprecated
                             cmd = "wget -q -O - \"" 
                         //  cmd = "lynx -source \"" 
                                     + baseURL + rest.trim().replaceAll("\\s+", "&")
@@ -362,11 +363,13 @@ public class RegressionTester {
                             System.out.println(logText);
                             realStdOut.println(logText);
 							if (false) { // new code
+							/*					
 								CommandLine cmdLine = CommandLine.parse(cmd);
 								DefaultExecutor executor = new DefaultExecutor();
 								ExecuteWatchdog watchdog = new ExecuteWatchdog(20000);
 								executor.setWatchdog(watchdog);
 								int exitValue = executor.execute(cmdLine);                            
+							*/
 	                        } else { // old code
     	                        process = runtime.exec(cmd);
     	                        // Thread.sleep(1000);
@@ -386,6 +389,7 @@ public class RegressionTester {
     	                        } // while iline
     	                        reader.close();
 							} // old code
+							
                         } else if (verb.equals("XSLT")) {
                             cmd = xsltPrefix + rest.trim();
                             logText = cmd;

@@ -315,47 +315,47 @@ TEST CT3 tokenizing from file with SQL syntax
 CRUN common.CommandTokenizer -sql CT2.data.tmp
 #-------------------------------
 # URIReader schema testing
-TEST U01 http schema
+TEST UR1 http schema
 CRUN common.URIReader http://localhost:8080/dbat/noversion.txt
 
 # the following works with an Internet connection only
-TEST U02 gopher schema
+TEST UR2 gopher schema
 CRUN common.URIReader gopher://gopher.rbfh.de/0/Fun/500miles.txt
 
 # the following works with an Internet connection only
-TEST U03 ftp schema
+TEST UR3 ftp schema
 CRUN common.URIReader ftp://ftp.gnu.org/README
 
-TEST U04 file schema
+TEST UR4 file schema
 CRUN common.URIReader file:///home/gfis/work/gits/dbat/web/noversion.txt
 
 TEST UR5 jar-file schema
 CRUN common.URIReader jar:file:///home/gfis/work/gits/dbat/dist/dbat.jar!/META-INF/LICENSE
 
-TEST U05 relative file
+TEST UR6 relative file
 CRUN common.URIReader ../web/noversion.txt
 
-TEST U06 data URI
+TEST UR7 data URI
 CRUN common.URIReader data:this+is%20the+text+to+be+read
-
-# TEST U07 describe tayloring variables
-# JRUN -m taylor -s "{}" -d c01
-
-TEST U08 file tayloring - head+tail
+#-------------------
+TEST TL1 file tayloring - head+tail
 DATA -- tayloring with surrounding escape
   {name} was born {birth}.
   The symbol is {gender}.
   Died in {univ} in year {year}.
-JRUN -m taylor -s "{}" -u U08.data.tmp "select * from c01"
+JRUN -m taylor -s "{}" -u TL1.data.tmp "select * from c01"
 
-TEST U09 file tayloring - head only
+TEST TL2 describe tayloring variables
+JRUN -m taylor -s "{}" -u TL1.data.tmp -d c01
+
+TEST TL3 file tayloring - head only
 DATA -- tayloring with leading escape
   [name was born [birth.
   The symbol is [gender.
   Died in [univ in year [year.
-JRUN -m taylor -s "[" -u U09.data.tmp "select * from c01"
+JRUN -m taylor -s "[" -u TL3.data.tmp "select * from c01"
 
-TEST U10 file tayloring - with data: URI template
+TEST TL4 file tayloring - with data: URI template
 #JRUN -m taylor -s "$" -u data:%09$name%09$univ+$year%0a "select name, univ, year from c01"
 JRUN -m taylor -s "ß" -u data:%09%c3%9fname%09in+%c3%9funiv+%c3%9fyear%0a "select name, univ, year from c01"
 #-------------------

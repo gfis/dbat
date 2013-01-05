@@ -23,7 +23,7 @@
     </form>
     
     
-<table><tr><td><pre>-- MySQL 5.1.62-0ubuntu0.11.10.1 with MySQL-AB JDBC Driver mysql-connector-java-5.1.11 ( Revision: ${svn.Revision} )
+<table><tr><td><pre>-- MySQL 5.1.66-0ubuntu0.11.10.3 with MySQL-AB JDBC Driver mysql-connector-java-5.1.11 ( Revision: ${svn.Revision} )
 DROP   TABLE product_order;
 CREATE TABLE product_order
 	( numb	INT NOT NULL
