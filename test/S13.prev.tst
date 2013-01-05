@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m wiki -f ../web/spec/test/selec02.xml
 
 	<!--Select from test table - with linked values-->
 	<!--Abfrage der Test-Tabelle mit Verweisen auf den Werten-->

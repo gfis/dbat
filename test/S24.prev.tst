@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m tsv -f ../web/spec/test/selec02.xml
 Year	Name	Year	Name	University	Gender	Birthdate
 1999	Martha	e.1999	f.Martha	Freiburg	&	1909-11-17
 1992	Johannes	e.1992	f.Johannes	Schramberg	<	1911-06-03

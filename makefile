@@ -21,13 +21,19 @@ TAB=relatives
 TESTER=all_tester.pl
 TESTDIR=test
 
-all: new_regression
+all: old_regression
 #------------------------------------------------
-java_regression:
+regression:
 	java -Djdk.net.registerGopherProtocol=true -cp dist/dbat.jar \
-			org.teherba.common.RegressionTester test2/all.tca $(TEST) \
+			org.teherba.common.RegressionTester test/all.tca $(TEST) 2>&1 \
 	| tee regr.log
-new_regression: comp eval
+	grep FAILED regr.log
+comp_test:
+	find test2 -iname "*.prev.tst" -printf "%P\n" | sort \
+	| xargs -l -ißß diff -w -C0  test/ßß test2/ßß \
+	| grep -vE " (wget|java|xsltproc) " \
+	| tee comp_test.tmp 
+old_regression: comp eval
 fill:
 	cd $(TESTDIR) ; perl $(TESTER) -fill all_test.cases
 comp:

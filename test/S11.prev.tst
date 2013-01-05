@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m xls -29 c01
 <?xml version="1.0" encoding="UTF-8" ?>
 <?mso-application progid="Excel.Sheet"?>
 <Workbook

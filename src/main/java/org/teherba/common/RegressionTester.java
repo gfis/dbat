@@ -1,6 +1,6 @@
 /*  Reader for text file, returns a string without any whitespace
  *  @(#) $Id$
- *  2013-01-04: with org.apache.commons.exec methods
+ *  2013-01-05: works with new CommandTokenizer.split()
  *  2012-11-24: copied from ramath/src...
  *  2012-11-06, Georg Fischer: copied from ExpressionReader
  */
@@ -27,16 +27,13 @@ import  org.teherba.dbat.Configuration;
 import  org.teherba.dbat.Dbat;
 import  java.io.BufferedReader;
 import  java.io.File;
-import  java.io.FileOutputStream;
 import  java.io.FileReader;
 import  java.io.InputStreamReader;
 import  java.io.PrintStream;
-import  java.io.PrintWriter;
 import  java.lang.Process;
 import  java.lang.ProcessBuilder;
 import  java.lang.Runtime;
 import  java.lang.reflect.Method;
-import  java.net.URLEncoder;
 import  java.util.Date;
 import  java.util.HashMap;
 import  java.util.regex.Matcher;
@@ -81,6 +78,9 @@ public class RegressionTester {
         macros = new HashMap<String, String>(16);
     } // no-args Constructor
 
+    //************************
+    // Utility methods
+    //************************
 
     /** Replaces macro calls of the form <em>$(macroname)</em> by the content of the macro
      *  which was previously defined by a line 
@@ -111,11 +111,34 @@ public class RegressionTester {
         return result.toString();
     } // replaceMacros
 
+    /** Joins a String array
+     *  @param separator String which separates the elements
+     *  @param elements array of Strings
+     *  @return elements joined by the separator
+     */ 
+    public String join(String separator, String[] elements) {
+        StringBuffer result = new StringBuffer(256);
+        int ielem = 0;
+        if (ielem < elements.length) {
+            result.append(elements[ielem ++]);
+        }
+        while (ielem < elements.length) {
+            result.append(separator);
+            result.append(elements[ielem ++]);
+        } // while ielem
+        return result.toString();
+    } // join
+
+    //************************
+    // Workhorse method
+    //************************
+
     /** Reads a text file and interprets the test instructions therein.
      *  @param args name of a file (or "-" for STDIN) which contains the test cases, and an optional 
      *  test case name pattern (with Linux or SQL wildcard characters)
      */
-    public void runTests(String[] args) {
+    public void runTests(String[] args) {  
+        long startMillis = System.currentTimeMillis();
         String directory = ".";
         String fileName = "-";
         boolean skipping = false; // whether to skip test cases because their names do not match 'testNamePattern'
@@ -131,7 +154,7 @@ public class RegressionTester {
         File  thisFile = null;
         File  prevFile = null;
         TimestampFilterStream thisStream = null;
-        String ext = ".tst.bad"; // extension for result files
+        String ext = ".tst"; // extension for result files
         Runtime runtime = Runtime.getRuntime(); // for command execution
         Process process = null;
         PrintStream realStdOut = System.out; // System.out is redirected (with setOut) 
@@ -202,7 +225,7 @@ public class RegressionTester {
                         String rest     = verbMatcher.group(2);
                         int ipart = 0;
                         // System.err.println("verb=" + verb + ", rest=" + rest);
-                        if (dataBuffer.length() > 0) { // data buffer is filled
+                        if (! skipping && dataBuffer.length() > 0) { // data buffer is filled
                             File dataFile = new File(dataName);
                             PrintStream dataStream = new PrintStream(dataFile, tcaEncoding);
                             dataStream.print(dataBuffer.toString());
@@ -243,7 +266,7 @@ public class RegressionTester {
                                     if (prevFile.exists()) { // run diff prev this
                                         cmd = "diff -C0 "   + prevName + " " + thisName;
                                         process = runtime.exec(cmd);
-                                        System.out.println(cmd);            
+                                        // System.out.println(cmd);            
                                         reader = new BufferedReader(new InputStreamReader(process.getInputStream(), logEncoding));
                                         int iline = 0;
                                         while ((line = reader.readLine()) != null) {
@@ -279,19 +302,13 @@ public class RegressionTester {
                             skipping = false;
                             if (! testName.matches(testNamePattern)) {
                                 skipping = true;
-                            /*
-                                realStdOut.print  ("Test " + testName + " " + testDesc);
-                                realStdOut.println(" -- skipped");
-                            */
                             } else if (! testName.equals("END")) {
                                 realStdOut.print  ("Test " + testName + " " + testDesc);
                                 realStdOut.println();
                                 thisName = directory + slash + testName + ".this" + ext;
-                                // thisFile = new File(thisName);
                                 thisStream = new TimestampFilterStream(thisName, logEncoding);
                                 System.setOut(thisStream);
-                                System.setErr(thisStream);
-                                // thisStream.println(testLine);
+                                System.setErr(System.out);
                                 dataBuffer.setLength(0);
                             } // not END
                             // TEST
@@ -304,20 +321,13 @@ public class RegressionTester {
                             if (callMatcher.matches()) {
                                 String className = classPrefix + callMatcher.group(1);
                                 String argsStr   = argsPrefix  + callMatcher.group(2);
-                                String[] parts   = CommandTokenizer.tokenize(argsStr);
-                            /*
-                                ipart = 0;
-                                while (ipart < parts.length) {
-                                    realStdOut.println("parts[" + ipart + "]=" + parts[ipart]);
-                                    ipart ++;
-                                } // while parts
-                            */
-                                logText = "java -cp ../dist/dbat.jar " + className + " " + argsStr;
-                                // System.out.println(logText);
+                                String[] parts   = CommandTokenizer.split(argsStr);
+                                logText = "java -cp dist/dbat.jar " + className + " " + argsStr;
                                 realStdOut.println(logText);
+                                // realStdErr.println("args: " + join("|", parts));
                                 targetClass = Class.forName(className); //, true, RegressionTester.class.getClassLoader());
-   	                            mainMethod = targetClass.getMethod("main", String[].class);
-       	                        mainMethod.invoke(null, (Object) parts);
+                                mainMethod = targetClass.getMethod("main", String[].class);
+                                mainMethod.invoke(null, (Object) parts);
                             } else {
                                 System.err.println("CALL verb syntax error: " + testLine);
                             }
@@ -338,15 +348,8 @@ public class RegressionTester {
                              } // while ignoring
 
                         } else if (verb.equals("HTTP")) {
-                        /*
-                            String requestURL = baseURL + URLEncoder.encode(rest.trim().replaceAll("\\s+", "&"), tcaEncoding)
-                                    .replaceAll("%3D", "=")
-                                    .replaceAll("%26", "&")
-                                    ;
-                        */
-                        	String requestURL = baseURL + rest.trim().replaceAll("\\s+", "&");
-                            logText = "wget -q -O - \"" + requestURL + "\"";
-                            // System.out.println(logText);
+                            String requestURL = baseURL + rest.trim().replaceAll("\\s+", "&");
+                            logText = "http \"" + requestURL + "\"";
                             realStdOut.println(logText);
                             URIReader urlReader = new URIReader(requestURL);
                             String urlLine = null;
@@ -354,46 +357,9 @@ public class RegressionTester {
                                 thisStream.println(urlLine);
                             } // while urlLine
 
-                        } else if (verb.equals("WGET")) { // deprecated
-                            cmd = "wget -q -O - \"" 
-                        //  cmd = "lynx -source \"" 
-                                    + baseURL + rest.trim().replaceAll("\\s+", "&")
-                                    + "\"";
-                            logText = cmd;
-                            System.out.println(logText);
-                            realStdOut.println(logText);
-							if (false) { // new code
-							/*					
-								CommandLine cmdLine = CommandLine.parse(cmd);
-								DefaultExecutor executor = new DefaultExecutor();
-								ExecuteWatchdog watchdog = new ExecuteWatchdog(20000);
-								executor.setWatchdog(watchdog);
-								int exitValue = executor.execute(cmdLine);                            
-							*/
-	                        } else { // old code
-    	                        process = runtime.exec(cmd);
-    	                        // Thread.sleep(1000);
-    	                        reader = new BufferedReader(new InputStreamReader(process.getInputStream(), logEncoding));
-    	                        int 
-    	                        iline = 0;
-    	                        while ((line = reader.readLine()) != null) {
-    	                            thisStream.println(line);
-    	                            iline ++;
-    	                        } // while iline
-    	                        reader.close();
-    	                        reader = new BufferedReader(new InputStreamReader(process.getErrorStream(), logEncoding));
-    	                        iline = 0;
-    	                        while ((line = reader.readLine()) != null) {
-    	                            thisStream.println(line);
-    	                            iline ++;
-    	                        } // while iline
-    	                        reader.close();
-							} // old code
-							
                         } else if (verb.equals("XSLT")) {
                             cmd = xsltPrefix + rest.trim();
                             logText = cmd;
-                            // System.out.println(logText);
                             realStdOut.println(logText);
                             process = runtime.exec(cmd);
                             reader = new BufferedReader(new InputStreamReader(process.getInputStream(), logEncoding));
@@ -410,18 +376,18 @@ public class RegressionTester {
                                 
                             } // defined macro
                         } // maybe macro
-                    } else { // no verb starts in column 1
-                        // System.err.println("testLine does not start with verb: " + testLine);
+                    } else if (! skipping) { // no verb starts in column 1
                         dataBuffer.append(testLine.substring(4)); // just behind "DATA"
                         dataBuffer.append(nl);
                     }
                 } // verb starting in column 1
             } // while ! eof
-            realStdOut.printf("%4d tests recreated" , recreatedCount); 
+            realStdOut.printf("%4d tests recreated," , recreatedCount); 
             realStdOut.println();
-            realStdOut.printf("%4d tests passed"    , passedCount); 
+            realStdOut.printf("%4d tests FAILED,"    , failedCount); 
             realStdOut.println();
-            realStdOut.printf("%4d tests FAILED"    , failedCount); 
+            realStdOut.printf("%4d tests passed"     , passedCount); 
+            realStdOut.print(" in " + (System.currentTimeMillis() - startMillis) + " ms");
             realStdOut.println();
             testCaseReader.close();           
             System.setOut(realStdOut);

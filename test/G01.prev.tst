@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -g sp1 -m tsv "select sp1, sp2 from pivot order by 1, 2"
 sp1	sp2
 	c1
 	c2

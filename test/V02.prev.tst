@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -f V02.data.tmp
 name	family	birth	gender	place	decease	changed	user
 Martha	Fischer	1909-11-17	F	Freiburg	1999	2012-06-28 19:47:06.000	testuser
 Johannes	Fischer	1911-06-03	M	Schramberg	1992	2012-06-28 19:47:06.000	testuser

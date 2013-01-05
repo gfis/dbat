@@ -1,4 +1,3 @@
-wget -q -O - "http://localhost:8080/dbat/servlet?spec=describe"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" [
@@ -24,7 +23,7 @@ wget -q -O - "http://localhost:8080/dbat/servlet?spec=describe"
     </form>
     
     
-<table><tr><td><pre>-- MySQL 5.1.62-0ubuntu0.11.10.1 with MySQL-AB JDBC Driver mysql-connector-java-5.1.11 ( Revision: ${svn.Revision} )
+<table><tr><td><pre>-- MySQL 5.1.66-0ubuntu0.11.10.3 with MySQL-AB JDBC Driver mysql-connector-java-5.1.11 ( Revision: ${svn.Revision} )
 DROP   TABLE spec_index;
 CREATE TABLE spec_index
 	( subdir	VARCHAR(16) NOT NULL

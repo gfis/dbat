@@ -1,4 +1,3 @@
-wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/includer&name=%25r&mode=csv&sep=*"
 Name*University*Year*Gender*Birthdate
 Martha*Freiburg*1999*&*1909-11-17
 Eberhard*Groß-Gerau*1945*>*1912-11-17

@@ -1,4 +1,3 @@
-xsltproc --stringparam alter 0 ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud01.iv.xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Interactive view definition for test form crud01.xml, with INT key

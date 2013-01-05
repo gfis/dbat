@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m taylor -s "[" -u TL3.data.tmp "select * from c01"
 -- tayloring with leading escape
   Martha was born 1909-11-17.
   The symbol is &.

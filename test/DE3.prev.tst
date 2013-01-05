@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -v -f DE3.data.tmp
 SQL:
 insert into de1 values('row3', 123456780123456789, 123456.345, {d '2011-08-01'}, {t '23:13:00'}, {ts '2011-08-01 23:13:00.000'});
 :SQL

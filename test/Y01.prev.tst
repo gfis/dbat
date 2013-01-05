@@ -1,4 +1,3 @@
-wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/wrong_spec_file"
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"

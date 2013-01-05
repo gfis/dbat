@@ -1,4 +1,3 @@
-wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/selec01&mode=xls"
 <?xml version="1.0" encoding="UTF-8" ?>
 <?mso-application progid="Excel.Sheet"?>
 <Workbook

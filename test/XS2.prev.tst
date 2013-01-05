@@ -1,4 +1,3 @@
-xsltproc ../etc/xslt/dbiv_spec.xsl ../web/spec/test/crud02.iv.xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 	Interactive view definition for crud02.xml; modification with stored procedure

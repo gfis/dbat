@@ -1,4 +1,3 @@
-wget -q -O - "http://localhost:8080/dbat/servlet?spec=test.crud03&view=upd2&search_name=&search_family=Ritter&name=Maria&family=Ritter&birth=1914-09-17&gender=F&place=Berlin-Hermsdorf&decease=1999&changed=current_timestamp&user=testuser"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" [

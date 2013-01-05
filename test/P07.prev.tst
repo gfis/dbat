@@ -1,4 +1,3 @@
-wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/pivot03&mode=tsv"
 Anwendung	S1	S2	S3	S4	S5
 A	A1	A2	A3	A4	A5
 B	B1	B2	B3	B4	B5

@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 "select * from b04"
 name	len	content
 +noversion	194706	noversion.txt: Test file for URIReader tests
 This file contains no SVN Id keyword for better comparision.
@@ -12,9 +11,9 @@ This file contains no SVN Id keyword for better comparision.
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
   COMMIT;
 
-+B06.data.tmp	64	+noversion 194706 ../web/noversion.txt
-+B04.data.tmp 2906 B04.data.tmp
-+B06.data.tmp 64 B06.data.tmp
++B06.data.tmp	64	+noversion 194706 web/noversion.txt
++B04.data.tmp 2906 test2/B04.data.tmp
++B06.data.tmp 64 test2/B06.data.tmp
 
 align01	194706	../web/spec/test/align01.xml
 index.jsp	2906	http://localhost:8080/dbat/index.jsp

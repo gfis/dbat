@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -v -sp "$" -f X00.data.tmp
 SQL:
 DROP   PROCEDURE if exists x00;
 :SQL

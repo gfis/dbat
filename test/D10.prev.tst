@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m spec -d c01
 <?xml version="1.0" encoding="UTF-8" ?>
 <dbat encoding="UTF-8"
 	xmlns="http://www.teherba.org/2007/dbat"

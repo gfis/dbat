@@ -1,4 +1,3 @@
-wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/with_cte&mode=echo"
 --[01]--dbat.format.EchoSQL on yyyy-mm-dd hh:mm:ss----
 WITH cte as
 		( select entry, enrel 

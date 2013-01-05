@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.common.URIReader ftp://ftp.gnu.org/README
 This is ftp.gnu.org, the FTP server of the the GNU project.
 
 Comments, suggestions, problems and complaints should be reported via

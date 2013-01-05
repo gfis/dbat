@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.common.URIReader jar:file:///home/gfis/work/gits/dbat/dist/dbat.jar!/META-INF/LICENSE
 
                                  Apache License
                            Version 2.0, January 2004

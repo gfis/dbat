@@ -1,4 +1,3 @@
-wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/selec01&mode=wiki"
 
 	<!--Select from test table-->
 	<!--Abfrage der Test-Tabelle-->

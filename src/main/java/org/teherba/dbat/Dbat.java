@@ -1,5 +1,6 @@
 /*  Dbat.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2013-01-05: fit for RegressionTester
  *  2012-08-04: outputFormat -> formatMode, becomes variable for -r
  *  2012-01-10: XML parsing error message with line+column numbers
  *  2011-11-11: set|getVerbose; Martini
@@ -592,10 +593,7 @@ public class Dbat implements Serializable {
             if (writer == null) { // write to System.out
                 WritableByteChannel target = Channels.newChannel(System.out);
                 tableWriter = new PrintWriter(Channels.newWriter(target, config.getEncoding(1)), true); // autoFlush
-            	// System.err.println("set PrintWriter=System.out");
-            /*
-            	tableWriter = new PrintWriter(new TimestampFilterStream(System.out)); // , true); // autoFlush
-            */
+                // System.err.println("set PrintWriter=System.out");
             } else {
                 tableWriter = writer; // servlet response or other writer opened by the caller
             }
@@ -678,6 +676,14 @@ public class Dbat implements Serializable {
                     break;
             } // switch mainAction
 
+            if (verbose > 0) { // System.err is mapped to System.out in RegressionTester, do not move this code
+                System.err.println(Messages.getTimingMessage(config.getLanguage()
+                        , startTime
+                        , sqlAction.getInstructionSum()
+                        , sqlAction.getManipulatedSum()
+                        , config.getDriverURL())
+                        );
+            }
             if (writer == null 
                     && ! (tableSerializer instanceof TableGenerator)
                     && ! (mainAction == 'f' && isSourceType(".xml"))) { // channel from System.out - flush it
@@ -687,13 +693,6 @@ public class Dbat implements Serializable {
                 tableWriter.close();
             }
 
-            if (verbose > 0) {
-                System.err.println(Messages.getTimingMessage(config.getLanguage()
-                        , startTime
-                        , sqlAction.getInstructionSum()
-                        , sqlAction.getManipulatedSum()
-                        , config.getDriverURL()));
-            } // verbose
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         } finally {

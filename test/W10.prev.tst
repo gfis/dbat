@@ -1,4 +1,3 @@
-wget -q -O - "http://localhost:8080/dbat/servlet?spec=test/selec01&mode=spec"
 <?xml version="1.0" encoding="UTF-8" ?>
 <dbat encoding="UTF-8"
 	xmlns="http://www.teherba.org/2007/dbat"

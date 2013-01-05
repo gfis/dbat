@@ -1,5 +1,6 @@
-/*  PrintStream which replaces ISO timestamps by constant strings for RegressionTester
+/*  PrintStream which replaces some patterns (ISO timestamps) by constant strings for RegressionTester
  *  @(#) $Id$
+ *  2013-01-05: redefine write methods
  *  2012-11-09, Georg Fischer: "Wende" in Germany 23 years ago
  */
 /*
@@ -27,22 +28,24 @@ import  java.io.UnsupportedEncodingException;
 import  java.util.Date;
 import  java.text.SimpleDateFormat;
 
-/** Filters a PrintStream and replaces all ISO timestamps of the form
- *  yyyy-mm-dd?hh:mm:ss[sss] by the constant string "yyyy-MM-dd hh:mm:ss".
+/** Filters a PrintStream and replaces a set of patterns (ISO timestamps of the form
+ *  yyyy-mm-dd?hh:mm:ss[.sss] and others) by constants (string "yyyy-MM-dd hh:mm:ss" and so on).
  *  @author Dr. Georg Fischer
  */
 public class TimestampFilterStream extends PrintStream {
     public final static String CVSID = "@(#) $Id$";
 
     /* local copy of the parent stream */
-    private PrintStream tfStream;
+    private static PrintStream tfStream;
     /* local copy of the encoding */
     private String encoding;
     
     /** Constructor with output stream
      *  @param pStream stream to be filtered for ISO timestamps
      */
-    public TimestampFilterStream(PrintStream pStream) {
+    public TimestampFilterStream(PrintStream pStream) 
+            throws FileNotFoundException,
+            UnsupportedEncodingException {
         super(pStream);
         tfStream = pStream;
     } // Constructor with output stream
@@ -56,7 +59,7 @@ public class TimestampFilterStream extends PrintStream {
             UnsupportedEncodingException {
         super(fileName, enc);
         encoding = enc;
-        tfStream = new PrintStream(super.out);
+        tfStream = new PrintStream(super.out, true, enc);
     } // Constructor with output stream and encoding
 
 	/** Replaces a set of patterns by constant strings
@@ -66,7 +69,6 @@ public class TimestampFilterStream extends PrintStream {
 	private String replacePatterns(String str) {
 		return  str
                 .replaceAll(" \\d{4}\\-\\d{2}\\-\\d{2} \\d{2}\\:\\d{2}\\:\\d{2}(\\.\\d+)?", " yyyy-mm-dd hh:mm:ss")
-            //  .replaceAll(" \\d{4}\\-\\d{2}\\-\\d{2}"                                   , " yyyy-mm-dd")
                 .replaceAll(" rows in \\d+ ms", " rows in ... ms")
                 .replaceAll("5.1.62-0ubuntu0.11.10.1", "5.1.66-0ubuntu0.11.10.3")
                 .replaceAll("web/spec/", "../web/spec/")

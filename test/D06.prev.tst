@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m fix -d c01
 name            VARCHAR     16      true    Name of the Relative            
 univ            VARCHAR     16      false   Town                            
 year            INT                 false   Decease Year                    

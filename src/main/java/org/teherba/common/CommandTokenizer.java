@@ -1,5 +1,6 @@
 /*  CommandTokenizer.java - some strange conversion (we don't comment it)
  *  @(#) $Id$
+ *  2013-01-05: split()
  *  2012-11-24: handling of '.' and '/'
  *  2012-11-09: remove superfluous code
  *  2011-07-21: '_' is also a word char
@@ -31,6 +32,8 @@ import  java.io.StreamTokenizer;
 import  java.io.StringReader;
 import  java.util.ArrayList;
 import  java.util.StringTokenizer;
+import  java.util.regex.Matcher;
+import  java.util.regex.Pattern;
 import  org.apache.log4j.Logger;
 
 /** Commandline and SQL tokenizing, and some additional, strange conversion 
@@ -51,13 +54,18 @@ public class CommandTokenizer implements Serializable {
         ArrayList/*<1.5*/<String>/*1.5>*/ result = new ArrayList/*<1.5*/<String>/*1.5>*/();
         try {
             StreamTokenizer tokenizer = new StreamTokenizer(new StringReader(command));
-            // Caution, real ranges will not work on a non-ASCII JVM !!
+            // Caution, real ranges would not work on a non-ASCII JVM !!
             tokenizer.wordChars('_', '_');
             // DB2 would allow '#', too?
             tokenizer.ordinaryChar('.'); // Better call this a bug than a feature: needed to deactivate the numerical interpretation.
             tokenizer.wordChars('.', '.');
             tokenizer.wordChars(':', ':');
+            tokenizer.wordChars('=', '=');
+            tokenizer.quoteChar('\'');
+            tokenizer.quoteChar('\"');
             tokenizer.wordChars('/', '/');
+            tokenizer.ordinaryChar(','); // Better call this a bug than a feature: needed to deactivate the numerical interpretation.
+            tokenizer.wordChars(',', ',');
             tokenizer.ordinaryChar('-'); // Better call this a bug than a feature: needed to deactivate the numerical interpretation.
             tokenizer.wordChars('-', '-'); // we want to prefix option words by "-"
             int token = tokenizer.nextToken();
@@ -113,6 +121,40 @@ public class CommandTokenizer implements Serializable {
                         break;
                     default:
                         result.add(token);
+                        break;
+                } // switch
+            }  // while tokens
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+        return result.toArray(new String[0]);
+    } // tokenizeSQL
+
+    /** Splits a command into words, options, numbers, strings (which were
+     *  single or double quoted)
+     *  @param cmd String to be splitted
+     */ 
+    public static String[] split(String cmd) {
+        ArrayList/*<1.5*/<String>/*1.5>*/ result = new ArrayList/*<1.5*/<String>/*1.5>*/();
+        try {
+            Pattern pattern = Pattern.compile("\\s+|[\\-\\w\\,\\/\\*\\%\\+\\.\\=\\:\\;\\!\\?\\&\\#\\|]+|\\\"[^\\\"]*\\\"|\\'[^\\']*'");
+                    // stupid, but [^'\"] did not work?
+            Matcher matcher = pattern.matcher(cmd);
+            while (matcher.find()) {
+                String part = cmd.substring(matcher.start(), matcher.end());
+                char ch0 = part.charAt(0);
+                switch (ch0) {
+                    case '\'': 
+                        result.add(part.substring(1, part.length() - 1));
+                        break;
+                    case '\"': 
+                        result.add(part.substring(1, part.length() - 1));
+                        break;
+                    case ' ':
+                        // ignore separating whitespace
+                        break;
+                    default:
+                        result.add(part);
                         break;
                 } // switch
             }  // while tokens

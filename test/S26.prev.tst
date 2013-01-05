@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m fix -f ../web/spec/test/selec02.xml
                         1999Martha                                         e.1999f.Martha                           Freiburg        &1909-11-17
                         1992Johannes                                       e.1992f.Johannes                         Schramberg      <1911-06-03
                         1945Eberhard                                       e.1945f.Eberhard                         Groß-Gerau      >1912-11-17

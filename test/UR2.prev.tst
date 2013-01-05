@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.common.URIReader gopher://gopher.rbfh.de/0/Fun/500miles.txt
 
                         The case of the 500-mile email
 

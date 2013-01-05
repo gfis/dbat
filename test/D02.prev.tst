@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m html -d c01
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" [
@@ -11,7 +10,7 @@ java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e U
 <link rel="stylesheet" type="text/css" href="stylesheet.css" />
 </head><body>
 
-<table><tr><td><pre>-- MySQL 5.1.62-0ubuntu0.11.10.1 with MySQL-AB JDBC Driver mysql-connector-java-5.1.11 ( Revision: ${svn.Revision} )
+<table><tr><td><pre>-- MySQL 5.1.66-0ubuntu0.11.10.3 with MySQL-AB JDBC Driver mysql-connector-java-5.1.11 ( Revision: ${svn.Revision} )
 DROP   TABLE c01;
 CREATE TABLE c01
 	( name	VARCHAR(16) NOT NULL -- Name of the Relative

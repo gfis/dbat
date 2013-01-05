@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.common.CommandTokenizer
 token 0 = "call"
 token 1 = "my.pr1"
 token 2 = "-in"

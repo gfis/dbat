@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 "select * from pivot order by 1,2,3;"
 sp1	sp2	sp3
 	c1	S1
 	c2	S2

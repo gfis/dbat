@@ -1,4 +1,3 @@
-java -cp ../dist/dbat.jar org.teherba.dbat.Dbat -c ../etc/worddb.properties -e UTF-8 -m csv -s ";" -d c01
 name;type;width;nullable;remark
 name;VARCHAR;16;true;Name of the Relative
 univ;VARCHAR;16;false;Town
