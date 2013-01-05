@@ -198,7 +198,7 @@ public class RegressionTester {
                 directory = testCases.getParent();
                 testCaseReader = new BufferedReader(new FileReader(testCases));
             } // not STDIN
-            // System.err.println("fileName=" + fileName + ", directory=" + directory);
+            System.err.println("fileName=" + fileName + ", directory=" + directory);
 
             boolean busy = true; // used to read a fictional "TEST" line at the end
             while ((testLine = testCaseReader.readLine()) != null || busy) { // read and process lines              

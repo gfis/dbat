@@ -55,8 +55,8 @@ CALL Dbat -d b04
 
 TEST B06 insert from URI into CLOB
 DATA +noversion 194706 web/noversion.txt
-+B04.data.tmp 2906 test2/B04.data.tmp
-+B06.data.tmp 64 test2/B06.data.tmp
++B04.data.tmp 2906 test/B04.data.tmp
++B06.data.tmp 64 test/B06.data.tmp
 CALL Dbat -r b04 $(DATA)
 
 # TEST B07 select from CLOB
