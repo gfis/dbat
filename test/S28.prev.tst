@@ -40,5 +40,5 @@ WHERE Year='1984' AND Name='Lucie' AND Year='e.1984' AND Name='f.Lucie'
  AND University='Lübars' AND Gender='''' AND Birthdate='1887-07-09';
 -- 8 persons
 COMMIT;
--- Output on yyyy-mm-dd hh:mm:ss by Dbat script ../web/spec/test/selec02.xml, Excel, more
+-- Output on yyyy-mm-dd hh:mm:ss by Dbat script web/spec/test/selec02.xml, Excel, more
 --

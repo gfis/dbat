@@ -24,9 +24,10 @@
 -->
 
 <project name="dbat" default="dist" basedir=".">
-    <property name="app.name"           value="dbat"/>
-    <property name="app.version"        value="5.0"/>
-    <property name="app.main-class"     value="org.teherba.dbat.Dbat"/>
+    <property name="app.name"           value="dbat" />
+    <property name="app.version"        value="5.0" />
+    <property name="app.main-class"     value="org.teherba.dbat.Dbat" />
+    <property name="test"               value="%" />
     <import file="build-import.xml" />
     
     <target name="generate">
@@ -66,9 +67,12 @@
 		</copy>
     </target>                                               
 
-    <target name="regression_test"><!-- run a regression test -->
+    <target name="regression" depends="regression_mysql" /><!-- run a regression test -->
+    <target name="regression_mysql">
 		<java classname="org.teherba.common.RegressionTester" classpathref="compile.classpath" fork="true">
-			<arg line="test/all.tca" />
+			<jvmarg value="-Djdk.net.registerGopherProtocol=true" /><!-- strange, but gopher is usually disabled because of a security problem -->
+			<arg value="test/mysql.tests" />
+			<arg value="${test}" />
 		</java>
 	</target>
 

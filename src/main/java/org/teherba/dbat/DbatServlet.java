@@ -337,6 +337,7 @@ public class DbatServlet extends HttpServlet {
                             session.setAttribute("messno", "301"); // moved permanently
                             session.setAttribute("par2" , targetName);
                             session.setAttribute("lang" , language);
+                            session.setAttribute("par3" , waitTime);
                             session.setAttribute("wait" , waitTime);
                             // redir line != null
                         } else { // error, => 404

@@ -15,5 +15,5 @@ This file contains no SVN Id keyword for better comparision.
 +B04.data.tmp 2906 test/B04.data.tmp
 +B06.data.tmp 64 test/B06.data.tmp
 
-align01	194706	../web/spec/test/align01.xml
+align01	194706	web/spec/test/align01.xml
 index.jsp	2906	http://localhost:8080/dbat/index.jsp

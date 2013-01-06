@@ -34,6 +34,7 @@ import  java.lang.Process;
 import  java.lang.ProcessBuilder;
 import  java.lang.Runtime;
 import  java.lang.reflect.Method;
+import  java.util.ArrayList;
 import  java.util.Date;
 import  java.util.HashMap;
 import  java.util.regex.Matcher;
@@ -44,9 +45,12 @@ import  java.text.SimpleDateFormat;
 // import  org.apache.commons.exec.ExecuteWatchdog;
 import  org.apache.log4j.Logger;
 
-/** Processess a file with test cases and either generates the test output reference
+/** Processes a file with test cases and either generates the test output reference
  *  files (*.prev.tst) or generates new output files (*.this.tst) and compares them
- *  to the reference files.
+ *  to the reference files. A typical activation is:
+ *  <pre>
+ *	java -cp dist/dbat.jar org.teherba.common.RegressionTester test/mysql.tests "*" 2>&1 | tee regression_mysql.log.tmp
+ *  </pre>
  *  @author Dr. Georg Fischer
  */
 public class RegressionTester { 
@@ -167,11 +171,12 @@ public class RegressionTester {
         String xsltPrefix  = "xsltproc ";
         String cmd         = null; // system command to be executed
         BufferedReader reader = null; // reader for stdout from 'cmd'
-        String line        = null; // a line read from 'reader'
+        String line        = null; // a line read from some Reader
         int    passedCount = 0; // number of tests which were run successfully
         int    failedCount = 0; // number of tests which showed a 'diff'erence
         int    recreatedCount = 0; // number of tests for which there was no previous result file
-        String logText = null; // for test files and stdout
+        String logText = null; // for test files and STDOUT
+    	String[] replacements = null; /* replacement patterns and their substitutions in consecutive elements */
 
         int iarg = 0;
         if (args.length > iarg) {
@@ -190,6 +195,8 @@ public class RegressionTester {
             Pattern verbPattern = Pattern.compile("(\\w+=?)\\s*(.*)"); // Pattern for verbs at start of testLine  
             Pattern callPattern = Pattern.compile("(\\S+)\\s*(.*)"); // CALL className arguments
             Pattern testPattern = Pattern.compile("(\\S+)\\s*(.*)"); // TEST testName comment
+
+			// Open the file with the testcases
             BufferedReader testCaseReader = null;
             if(fileName.equals("-")) { // STDIN
                 testCaseReader = new BufferedReader(new InputStreamReader(System.in, tcaEncoding));
@@ -198,7 +205,23 @@ public class RegressionTester {
                 directory = testCases.getParent();
                 testCaseReader = new BufferedReader(new FileReader(testCases));
             } // not STDIN
-            System.err.println("fileName=" + fileName + ", directory=" + directory);
+            // System.err.println("fileName=" + fileName + ", directory=" + directory);
+
+			// read the replacement patterns, if possible
+            File replFile = new File(directory + "/regression.properties");
+            if (replFile.exists()) {
+                BufferedReader replReader = new BufferedReader(new FileReader(replFile));
+                ArrayList<String> result = new ArrayList<String>(16);
+                while ((line = replReader.readLine()) != null) {
+                	if (! line.matches("\\A\\s*\\#.*")) { // ignore comments
+                		// System.err.println("\"" + line + "\"");
+	                    result.add(line);
+                	}
+                } // while lines
+                replReader.close();
+                replacements = result.toArray(new String[0]);
+	            // System.err.println(replacements.length + " elements in replacements[]");
+			} // replFile exists
 
             boolean busy = true; // used to read a fictional "TEST" line at the end
             while ((testLine = testCaseReader.readLine()) != null || busy) { // read and process lines              
@@ -306,7 +329,11 @@ public class RegressionTester {
                                 realStdOut.print  ("Test " + testName + " " + testDesc);
                                 realStdOut.println();
                                 thisName = directory + slash + testName + ".this" + ext;
-                                thisStream = new TimestampFilterStream(thisName, logEncoding);
+                                if (replacements == null) {
+	                                thisStream = new TimestampFilterStream(thisName, logEncoding);
+	                            } else {
+	                                thisStream = new TimestampFilterStream(thisName, logEncoding, replacements);
+	                            }
                                 System.setOut(thisStream);
                                 System.setErr(System.out);
                                 dataBuffer.setLength(0);
@@ -405,11 +432,11 @@ public class RegressionTester {
 
     /** Commandline activation:
      *  <pre>
-     *  java -cp dist/dbat.jar org.teherba.dbat.common.RegressionTester [test/all.tca [testNamePattern]]
+     *  java -cp dist/dbat.jar org.teherba.dbat.common.RegressionTester [test/mysql.tests [testNamePattern]]
      *  </pre>
      *  @param args command line arguments: filename for testcases (or "-" for STDIN),
      *  and testNamePattern for testcase names to be run, where the
-     *  testNamePattern may use Linux or SQL wildcard characters.
+     *  testNamePattern may use Linux or SQL wildcard characters (% = wildcard).
      */
     public static void main(String[] args) {
         (new RegressionTester()).runTests(args); 

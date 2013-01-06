@@ -60,11 +60,11 @@ public class MessagePage {
         hash = new HashMap<String, String>();
         hash.put("en.301", "Specification file <em>{parm}</em> was moved to <em><a href=\"/dbat/servlet?spec={par2}\">{par2}</a></em>."
 		        + "<br />Please update your bookmarks."
-        		+ "<br />You will be redirected to the new page.");
+        		+ "<br />You will be redirected to the new page in {par3} s.");
         hash.put("de.301", "Die Spezifikationsdatei <em>{parm}</em> wurde nach <em><a href=\"/dbat/servlet?spec={par2}\">{par2}</a>"
 		        + "</em> verschoben."
         		+ "<br />Bitte &auml;ndern Sie Ihre Favoriten/Lesezeichen."
-		        + "<br />Sie werden auf die neue Seite umgelenkt.");
+		        + "<br />Sie werden in {par3} s auf die neue Seite umgelenkt.");
         hash.put("en.404", "A specification file <em>{parm}</em> was not found."
         		+ "<br />Please check the <a href=\"/dbat\">Dbat</a> home page.");
         hash.put("de.404", "Eine Spezifikationsdatei <em>{parm}</em> wurde nicht gefunden."
@@ -96,6 +96,10 @@ public class MessagePage {
         if (par2 == null) {
         	par2 = "";
         }
+        String par3		= (String) session.getAttribute("par3");
+        if (par3 == null) {
+        	par3 = "";
+        }
         String text = hash.get(lang + "." + messno);
         if (text == null) { // invalid messno
             text = hash.get(lang + "." + "505");
@@ -104,6 +108,7 @@ public class MessagePage {
         } else {
             text = text.replaceAll(Pattern.quote("{parm}"), parm);
             text = text.replaceAll(Pattern.quote("{par2}"), par2);
+            text = text.replaceAll(Pattern.quote("{par3}"), par3);
         }
 
 		try {
@@ -128,16 +133,12 @@ public class MessagePage {
                 out.write("<meta http-equiv=\"refresh\" content=\"" + waitTime 
                 		+ "; URL=/dbat/servlet?spec=" + par2 + "\" />\n");
             }
-            out.write("</head>\n<body>\n<!--lang=");
-            out.write(lang);
-            out.write(", messno=");
-            out.write(messno);
-            out.write(", text=");
-            out.write(text);
-            out.write(", parm=");
-            out.write(parm);
-            out.write(", par2=");
-            out.write(par2);
+            out.write("</head>\n<body>\n<!--lang=" + lang);
+            out.write(", messno=" + messno);
+            out.write(", text=" + text);
+            out.write(", parm=" + parm);
+            out.write(", par2=" + par2);
+            out.write(", par3=" + par3);
             out.write("-->\n<h3>");
             out.write(messno);
             out.write(": ");

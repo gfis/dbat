@@ -120,16 +120,15 @@ public class MorePage {
                     inputFields.append("\" /></td><td>&nbsp;</td></tr>\n");
                 } // unknown
             } // while parmIter
+            
             int index = 0;
-            out.write("<body>\n<!--\nenc=\"");
-            out.write(encoding);
-            out.write("\", mode=\"");
-            out.write(mode);
-            out.write("\", lang=\"");
-            out.write(language);
-            out.write("\", spec=\"");
-            out.write(specName);
-            out.write("\" \n-->\n<h3><a href=\"index.html\">Dbat</a>");
+            out.write("<body>\n<!--\nenc=\"" + encoding);
+            out.write("\", mode=\"" + mode);
+            out.write("\", lang=\"" + language);
+            out.write("\", spec=\"" + specName);
+            out.write("\" \n-->\n");
+            //----------------------------------------
+            out.write("<h3><a href=\"index.html\">Dbat</a>");
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("-Spezifikation ");
@@ -141,14 +140,12 @@ public class MorePage {
             out.write(".xml\">");
             out.write(specName);
             out.write("</a></em>\n</h3>\n");
-            
+            //----------------------------------------
             out.write("<form action=\"servlet\" method=\"get\">\n");
             out.write("<input type = \"hidden\" name=\"view\" value=\"\" />\n");
-            out.write("<input type = \"hidden\" name=\"spec\" value=\"");
-            out.write(specName);
-            out.write("\" />\n");
+            out.write("<input type = \"hidden\" name=\"spec\" value=\"" + specName + "\" />\n");
 
-            out.write("<table cellpadding=\"8\">\n<tr><td class=\"bold\">\n");
+            out.write("<table cellpadding=\"8\"><tr><td class=\"bold\">\n");
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("Parametername");
@@ -164,7 +161,9 @@ public class MorePage {
             }
             out.write("</td>\n<td>&nbsp;</td>\n</tr>\n");
             out.write(inputFields.toString());
-            out.write("\n<tr><td>&nbsp;</td>\n<td>&nbsp;</td>\n<td>&nbsp;</td>\n</tr>\n");
+            out.write("\n");
+            out.write("<tr><td>&nbsp;</td>\n<td>&nbsp;</td>\n<td>&nbsp;</td>\n</tr>\n");
+            //----------------------------------------
             out.write("<tr><td class=\"bold\">Encoding</td>\n<td class=\"bold\">\n");
             if (false) {
             } else if (language.startsWith("de")) {
@@ -172,7 +171,9 @@ public class MorePage {
             } else {
                 out.write("Output Format");
             }
-            out.write("</td>\n<td>&nbsp;</td>\n</tr>\n<tr valign=\"top\">\n<td>\n<select name=\"enc\" size=\"");
+            out.write("</td>\n<td>&nbsp;</td>\n</tr>\n");
+            //----------------------------------------
+            out.write("<tr valign=\"top\">\n<td>\n<select name=\"enc\" size=\"");
             out.write(String.valueOf(optEnc.length));
             out.write("\">\n");
             index = 0;
@@ -184,14 +185,17 @@ public class MorePage {
                           + enEnc[index] + "</option>\n");
                 index ++;
             } // while index
-            out.write("</select>\n<br />\n<br />\n <span class=\"bold\">\n");
+            out.write("</select>\n<br />\n<br />\n");
+            //----------------------------------------
+            out.write("<span class=\"bold\">\n");
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("Sprache");
             } else {
                 out.write("Language");
             }
-            out.write("</span>\n<br />\n<select name=\"lang\" size=\"");
+            out.write("</span>\n<br />\n");
+            out.write("<select name=\"lang\" size=\"");
             out.write(String.valueOf(optLang.length));
             out.write("\">\n");
             index = 0;
@@ -203,106 +207,115 @@ public class MorePage {
                           + enLang[index] + "</option>\n");
                 index ++;
             } // while index
-            out.write("</select>\n</td>\n<td>\n<select name=\"mode\" size=\"");
+            out.write("</select>\n</td>\n");
+            //----------------------------------------
+            out.write("<td>\n<select name=\"mode\" size=\"");
             out.write(String.valueOf(tableFactory.getCount()));
             out.write("\">\n");
             Iterator /*<1.5*/<BaseTable>/*1.5>*/ iter = tableFactory.getIterator();
             while (iter.hasNext()) {
                 BaseTable tableFormat = (BaseTable) iter.next();
                 String code = tableFormat.getFirstFormatCode();
-                out.write("<option value=\"" + code + "\""
-                          + (code.equals(mode) ? " selected=\"1\"" : "")
-                          + ">"
-                          + code + " - " + tableFormat.getDescription(language) + "</option>\n");
+                out.write(  "<option value=\"" + code + "\""
+                          + (code.equals(mode) ? " selected=\"1\"" : "") + ">"
+                          + code + " - " + tableFormat.getDescription(language) 
+                          + "</option>\n");
             } // while iter
-            out.write("</select><p />&nbsp;\n</td><td>");
-            out.write("<ul>\n");
-
-            out.write("<li><a href=\"servlet?view=con\">");
+            out.write("</select><p />&nbsp;\n</td>\n");
+            //----------------------------------------
+            out.write("<td>\n");
+            //----------------------------------------
+            out.write("<a href=\"index.html\">");
             if (false) {
             } else if (language.startsWith("de")) {
-                out.write("SQL-Konsole");
+                out.write("Dbat-Startseite");
             } else {
-                out.write("SQL Console");
+                out.write("Dbat Home");
             }
-            out.write("\n</li>\n");
-
-            out.write("<li><a href=\"index.html\">");
-            if (false) {
-            } else if (language.startsWith("de")) {
-                out.write("&Uuml;bersicht");
-            } else {
-                out.write("Overview");
-            }
-            out.write("</a>, <a href=\"servlet?view=validate&value=M&regex=\\w\">");
-            if (false) {
-            } else if (language.startsWith("de")) {
-                out.write("Regex-Validierung</a>");
-            } else {
-                out.write("Regex Validation</a>");
-            }
-            out.write("\n</li>\n");
-
-            out.write("<li><a href=\"servlet?spec=describe\">");
-            if (false) {
-            } else if (language.startsWith("de")) {
-                out.write("DDL</a> einer Tabelle oder View");
-            } else {
-                out.write("DDL</a> of a table or view");
-            }
-            out.write("\n</li>\n<li><a href=\"servlet?spec=index\">");
+            out.write("</a><br />\n");
+            //----------------------------------------
+            out.write("<a href=\"servlet?spec=index\">");
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("Liste</a> der abrufbaren Spezifikationen");
             } else {
                 out.write("List</a> of available specifications");
             }
-            out.write("\n</li>\n<li><a href=\"servlet?view=help&lang=");
+            out.write("<br />\n");
+            //----------------------------------------
+            out.write("<a href=\"servlet?view=con\">");
+            if (false) {
+            } else if (language.startsWith("de")) {
+                out.write("SQL-Konsole");
+            } else {
+                out.write("SQL Console");
+            }
+            out.write("<br />\n");
+            //----------------------------------------
+			out.write("<a href=\"servlet?view=validate&value=M&regex=\\w\">");
+            if (false) {
+            } else if (language.startsWith("de")) {
+                out.write("Regex-Validierung</a>");
+            } else {
+                out.write("Regex Validation</a>");
+            }
+            out.write("<br />\n");
+            //----------------------------------------
+            out.write("<a href=\"servlet?spec=describe\">describe</a> - ");
+            if (false) {
+            } else if (language.startsWith("de")) {
+                out.write("DDL einer Tabelle oder View");
+            } else {
+                out.write("DDL of a table or view");
+            }
+            out.write("\n<br />\n");
+            //----------------------------------------
+            out.write("<a href=\"servlet?view=help&lang=");
             out.write(language);
             if (false) {
             } else if (language.startsWith("de")) {
-                out.write("\">Hilfe - Kommandozeilen-Optionen");
+                out.write("\">Hilfe</a> - Kommandozeilen-Optionen");
             } else {
-                out.write("\">Help - Commandline Options");
+                out.write("\">Help</a> - Commandline Options");
             }
-            out.write("\n</a>\n</li>\n<li>");
+            out.write("<br />\n");
+            //----------------------------------------
+            out.write("<a href=\"https://github.com/gfis/dbat/wiki\" target=\"_new\">Wiki</a>");
+            out.write(", <a href=\"https://github.com/gfis/dbat\" target=\"_new\">Git Repository</a>");
             if (false) {
             } else if (language.startsWith("de")) {
-                out.write("<a href=\"docs/Dbat.html\">Allgemeine Beschreibung</a>");
+                out.write(" auf");
             } else {
-                out.write("<a href=\"docs/Dbat.html\">General Description</a>");
+                out.write(" on");
             }
-            out.write(",\n");
-            if (false) {
-            } else if (language.startsWith("de")) {
-                out.write("<a href=\"docs/Dbat-Spezifikation.html\">Spezifikationsdateien</a>");
-            } else {
-                out.write("<a href=\"docs/Dbat-Spezifikation.html\">Specification Files</a>");
-            }
-            out.write("\n</li>\n<li><a href=\"docs/api/index.html\">");
+            out.write(" github.com<br />\n");
+            //----------------------------------------
+            out.write("<a href=\"docs/api/index.html\">");
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("API-Dokumentation</a>");
             } else {
                 out.write("API Documentation</a>");
             }
-            out.write("\n(Javadoc)\n</li>");
-            out.write("\n<li><a href=\"servlet?view=manifest\">\nManifest\n</a>");
-            out.write(", \n<a href=\"servlet?view=license\">");
+            out.write(" (Javadoc)\n<br />\n");
+            //----------------------------------------
+            out.write("<a href=\"servlet?view=manifest\">Manifest</a>");
+            out.write(", <a href=\"servlet?view=license\">");
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("Lizenz</a>");
             } else {
                 out.write("License</a>");
             }
-            out.write(", \n<a href=\"servlet?view=notice\"  >");
+            out.write(", <a href=\"servlet?view=notice\"  >");
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("Referenzen</a>");
             } else {
                 out.write("References</a>");
             }
-            out.write("\n</li>\n</ul>\n");
+            out.write("<br />\n");
+            //----------------------------------------
             out.write("<input type=\"submit\" value=\"");
             if (false) {
             } else if (language.startsWith("de")) {
@@ -310,16 +323,17 @@ public class MorePage {
             } else {
                 out.write("Submit");
             }
-            out.write("\" />\n</td>\n</tr>\n");
-            out.write("</table>\n</form>\n");
-            out.write("<p>\n<span style=\"font-size:small\">\n");
+            out.write("\" />\n");
+            //----------------------------------------
+            out.write("</td></tr>\n</table>\n</form>\n");
+            out.write("<p><span style=\"font-size:small\">\n");
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("Fragen, Hinweise:");
             } else {
                 out.write("Questions, remarks:");
             }
-            out.write("\n<a href=\"mailto:punctum@punctum.com\">Dr. Georg Fischer</a>\n</span>\n</p>\n");
+            out.write(" <a href=\"mailto:punctum@punctum.com\">Dr. Georg Fischer</a></span>\n</p>\n");
             out.write("</body>\n</html>\n");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);

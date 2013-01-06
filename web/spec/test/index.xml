@@ -21,7 +21,7 @@
         <col name="subdir" label="Area" style="visible">subdir</col>
         <col label="Script" href="servlet?&amp;spec=">concat(concat(subdir, '.'), name)</col>
         <col label="Description">concat(concat(concat('<ht:strong>', title), '</ht:strong> &amp;mdash; '), comment)</col>
-        <col label="Parameter(s)">params</col>
+        <col label="Parameters with defaults">params</col>
         <from>spec_index
         </from>
         <where>subdir = 'test'

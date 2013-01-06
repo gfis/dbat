@@ -5,7 +5,7 @@
     
 ===Select from test table <em>c01</em> - with linked values===
 
-    <!--<input name="spec" type="hidden" value="../web/spec/test/selec02.xml" />
+    <!--<input name="spec" type="hidden" value="web/spec/test/selec02.xml" />
 
         Name: <input name="name" maxsize="20" size="10" init="%" value="%"></input>
         <input type="submit" value="Submit"></input>
@@ -46,5 +46,5 @@ WHERE name like '%';
 |-
 |}
 
-<!-- Output on yyyy-mm-dd hh:mm:ss by Dbat script ../web/spec/test/selec02.xml, Excel, more
+<!-- Output on yyyy-mm-dd hh:mm:ss by Dbat script web/spec/test/selec02.xml, Excel, more
  -->

@@ -11,6 +11,6 @@
 <meta http-equiv="refresh" content="3; URL=/dbat/servlet?spec=test/selec01" />
 </head>
 <body>
-<!--lang=en, messno=301, text=Specification file <em>test/select01</em> was moved to <em><a href="/dbat/servlet?spec=test/selec01">test/selec01</a></em>.<br />Please update your bookmarks.<br />You will be redirected to the new page., parm=test/select01, par2=test/selec01-->
-<h3>301: Specification file <em>test/select01</em> was moved to <em><a href="/dbat/servlet?spec=test/selec01">test/selec01</a></em>.<br />Please update your bookmarks.<br />You will be redirected to the new page.</h3>
+<!--lang=en, messno=301, text=Specification file <em>test/select01</em> was moved to <em><a href="/dbat/servlet?spec=test/selec01">test/selec01</a></em>.<br />Please update your bookmarks.<br />You will be redirected to the new page in 3 s., parm=test/select01, par2=test/selec01, par3=3-->
+<h3>301: Specification file <em>test/select01</em> was moved to <em><a href="/dbat/servlet?spec=test/selec01">test/selec01</a></em>.<br />Please update your bookmarks.<br />You will be redirected to the new page in 3 s.</h3>
 </body></html>

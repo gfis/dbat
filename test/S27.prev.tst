@@ -94,6 +94,6 @@ WHERE name like '%';
 <!-- 8 persons -->
 </Table>
 </Worksheet>
-<!-- Output on yyyy-mm-dd hh:mm:ss by Dbat script ../web/spec/test/selec02.xml, Excel, more
+<!-- Output on yyyy-mm-dd hh:mm:ss by Dbat script web/spec/test/selec02.xml, Excel, more
  -->
 </Workbook>

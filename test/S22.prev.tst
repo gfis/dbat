@@ -30,6 +30,6 @@ WHERE name like '%';
 <tr><td>1984</td><td>Lucie</td><td>e.1984</td><td>f.Lucie</td><td>Lübars</td><td>'</td><td>1887-07-09</td></tr>
 <!-- 8 persons -->
 </table>
-<!-- Output on yyyy-mm-dd hh:mm:ss by Dbat script ../web/spec/test/selec02.xml, Excel, more
+<!-- Output on yyyy-mm-dd hh:mm:ss by Dbat script web/spec/test/selec02.xml, Excel, more
  -->
 </dbat>

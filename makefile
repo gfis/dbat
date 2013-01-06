@@ -1,7 +1,8 @@
 #!/usr/bin/make
 
-# test dbat functions with SQLite and MySQL
+# Test Dbat functions with MySQL, and other utility targets
 # @(#) $Id$
+# 2013-01-05: RegressionTester replaces all_tester.pl
 # 2012-06-27: all_tester.pl replaces batch_test.pl; etc/schema
 # 2012-01-20: parm_xref
 # 2011-07-27: target only
@@ -18,49 +19,37 @@ SRC=src/main/java/org/teherba/dbat
 TOMC=/var/lib/tomcat/webapps/dbat
 METHOD=get
 TAB=relatives
-TESTER=all_tester.pl
 TESTDIR=test
+# the following can be overriden outside for single or subset tests, 
+# for example make regression TEST=U%
+TEST="*"
 
-all: old_regression
-#------------------------------------------------
-regression:
+all: regression
+#-------------------------------------------------------------------
+# Perform a regression test (a complete run > 200 testcases with TEST=% takes > 12 s)
+regression: regression_mysql
+regression_mysql:
 	java -Djdk.net.registerGopherProtocol=true -cp dist/dbat.jar \
-			org.teherba.common.RegressionTester test/all.tca $(TEST) 2>&1 \
-	| tee regr.log
-	grep FAILED regr.log
-comp_test:
-	find test2 -iname "*.prev.tst" -printf "%P\n" | sort \
-	| xargs -l -ißß diff -w -C0  test/ßß test2/ßß \
-	| grep -vE " (wget|java|xsltproc) " \
-	| tee comp_test.tmp 
-old_regression: comp eval
-fill:
-	cd $(TESTDIR) ; perl $(TESTER) -fill all_test.cases
-comp:
-	cd $(TESTDIR) ; perl $(TESTER) -comp all_test.cases | tee all_regression.log 
-eval:
-	rm -f [pF]*[dD].tests
-	grep -E "FAILED" 			$(TESTDIR)/all_regression.log
-	grep -E "passed" 			$(TESTDIR)/all_regression.log > passed.tests
-	grep -E "FAILED" 			$(TESTDIR)/all_regression.log > FAILED.tests
-	echo ================== >>  $(TESTDIR)/all_regression.log
-	cat *.tests 	   		>>	$(TESTDIR)/all_regression.log
-	wc -l *.tests | head -2 >> 	$(TESTDIR)/all_regression.log
-	wc -l *.tests | head -2
-fill_only:
-	cd $(TESTDIR) ; perl $(TESTER) -fill -only $(TEST) all_test.cases
-only: 
-	cd $(TESTDIR) ; perl $(TESTER) -comp -only $(TEST) all_test.cases
-show:
-	make -i show1 TEST=$(TEST) | less
-show1:
-	diff -C0 $(TESTDIR)/$(TEST).prev.tst $(TESTDIR)/$(TEST).this.tst | cat -vET
-	head -2000 $(TESTDIR)/$(TEST).*.tst
+			org.teherba.common.RegressionTester $(TESTDIR)/mysql.tests $(TEST) 2>&1 \
+	| tee regression_mysql.log.tmp
+	grep FAILED regression_mysql.log.tmp
+#
+# Recreate all testcases which failed (i.e. remove xxx.prev.tst)
+# Handle with care! 
+# Failing testcases are turned into "passed" and are manifested by this target!
+recreate: recr1 regr2 regression
+recr1:
+	grep -E '> FAILED' regression_*.log.tmp | cut -f 3 -d ' ' | xargs -l -ißß rm -v test/ßß.prev.tst
+regr2:
+	make regression TEST=$(TEST) > x.tmp
+#--------------------------------------
+# generate a short constant file
 nosvn:
 	echo nosvn.txt: Test file for URIReader tests 						>  web/nosvn.txt
 	echo This file contains no SVN Id keyword for better comparision.	>> web/nosvn.txt
 	echo 2011-07-27, Dr. Georg Fischer. Do not change this date.		>> web/nosvn.txt
 #--------------------------------------------------
+# create the documentation files
 doc: javadoc wikidoc
 javadoc:
 	ant javadoc

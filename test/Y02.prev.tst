@@ -10,6 +10,6 @@
 <title>Message 404</title>
 </head>
 <body>
-<!--lang=de, messno=404, text=Eine Spezifikationsdatei <em>test/wrong_spec_file</em> wurde nicht gefunden.<br />Bitte rufen Sie die <a href="/dbat">Dbat</a>-Startseite auf., parm=test/wrong_spec_file, par2=-->
+<!--lang=de, messno=404, text=Eine Spezifikationsdatei <em>test/wrong_spec_file</em> wurde nicht gefunden.<br />Bitte rufen Sie die <a href="/dbat">Dbat</a>-Startseite auf., parm=test/wrong_spec_file, par2=, par3=-->
 <h3>404: Eine Spezifikationsdatei <em>test/wrong_spec_file</em> wurde nicht gefunden.<br />Bitte rufen Sie die <a href="/dbat">Dbat</a>-Startseite auf.</h3>
 </body></html>

@@ -7,14 +7,14 @@
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
 <title>column02</title>
-<link rel="stylesheet" type="text/css" href="./../web/spec/test/stylesheet.css" />
+<link rel="stylesheet" type="text/css" href="./web/spec/test/stylesheet.css" />
 </head><body>
 
 	<!--Select from test table - same as <em>selec02</em>-->
 	<!--Abfrage der Test-Tabelle - wie <em>selec02</em>-->
 
     <h3>Select from test table <em>c01</em> - same as <em>selec02, with <column> elements</em></h3>
-    <form method="get" action="servlet?spec=../web/spec/test/column02.xml"><input name="spec" type="hidden" value="../web/spec/test/column02.xml" />
+    <form method="get" action="servlet?spec=web/spec/test/column02.xml"><input name="spec" type="hidden" value="web/spec/test/column02.xml" />
 
         Name: <input name="name" maxsize="20" size="10" init="%" value="%"></input>
         <input type="submit" value="Submit"></input>
@@ -44,7 +44,7 @@ WHERE name like '%';
 <tr><td class="counter" colspan="7">8 persons</td></tr>
 </table>
 
-<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./../web/spec/test/column02.xml" type="text/plain">../web/spec/test/column02.xml</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./web/spec/test/column02.xml" type="text/plain">web/spec/test/column02.xml</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;name=%25&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;name=%25&amp;lang=en">more</a>
 

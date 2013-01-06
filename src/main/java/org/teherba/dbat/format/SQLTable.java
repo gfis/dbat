@@ -182,8 +182,8 @@ public class SQLTable extends BaseTable {
      */
     public void startDescription(DatabaseMetaData dbMetaData, String schema, String tableName, String tableType) {
         try {
-            writeComment(dbMetaData.getDatabaseProductName() + " " + dbMetaData.getDatabaseProductVersion()
-                    + " with " +  dbMetaData.getDriverName() + " " + dbMetaData.getDriverVersion()
+            writeComment(dbMetaData.getDatabaseProductName() // + " " + dbMetaData.getDatabaseProductVersion()
+                    + " with " +  dbMetaData.getDriverName() // + " " + dbMetaData.getDriverVersion()
                     );
             charWriter.print("DROP   " + tableType + " ");
             if (schema != null && ! schema.equals("")) {

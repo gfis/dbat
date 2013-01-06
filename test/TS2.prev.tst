@@ -8,14 +8,14 @@
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
 <title>xslt_brackets</title>
-<link rel="stylesheet" type="text/css" href="./../web/spec/test/stylesheet.css" />
+<link rel="stylesheet" type="text/css" href="./web/spec/test/stylesheet.css" />
 </head><body>
 
 	<!--Select from test table with XSLT-->
 	<!--Abfrage der Test-Tabelle mit XSLT-->
 	
     <h3>Select from test table c01 with XSLT</h3>
-    <form method="get" action="servlet?spec=../web/spec/test/xslt_brackets.xml"><input name="spec" type="hidden" value="../web/spec/test/xslt_brackets.xml" />
+    <form method="get" action="servlet?spec=web/spec/test/xslt_brackets.xml"><input name="spec" type="hidden" value="web/spec/test/xslt_brackets.xml" />
 
         Name: <input name="name" maxsize="20" size="10" init="%r" value="%r"></input>
         <input type="submit" value="Submit"></input>
@@ -39,7 +39,7 @@ WHERE name like '%r%';
 <tr><td class="counter" colspan="5">5 Persons</td></tr>
 </table>
 
-<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./../web/spec/test/xslt_brackets.xml" type="text/plain">../web/spec/test/xslt_brackets.xml</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./web/spec/test/xslt_brackets.xml" type="text/plain">web/spec/test/xslt_brackets.xml</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;name=%25r&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;name=%25r&amp;lang=en">more</a>
 

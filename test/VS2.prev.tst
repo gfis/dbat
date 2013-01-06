@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
 <title>visible05</title>
-<link rel="stylesheet" type="text/css" href="./../web/spec/test/stylesheet.css" />
+<link rel="stylesheet" type="text/css" href="./web/spec/test/stylesheet.css" />
 </head><body>
 
 	<!--Select from test table - suppress subsequent column values in groups-->
@@ -29,7 +29,7 @@ FROM c01
 <tr><td class="invisible">Lübars</td><td>'</td><td>1887-07-09</td></tr>
 </table>
 
-<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./../web/spec/test/visible05.xml" type="text/plain">../web/spec/test/visible05.xml</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./web/spec/test/visible05.xml" type="text/plain">web/spec/test/visible05.xml</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;lang=en">more</a>
 

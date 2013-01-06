@@ -8,9 +8,9 @@
 <meta name="robots" content="noindex, nofollow" />
 <link rel="stylesheet" type="text/css" href="stylesheet.css" />
 <title>Message 301</title>
-<meta http-equiv="refresh" content="9; URL=/dbat/servlet?spec=test/selec01" />
+<meta http-equiv="refresh" content="3; URL=/dbat/servlet?spec=test/selec01" />
 </head>
 <body>
-<!--lang=de, messno=301, text=Die Spezifikationsdatei <em>test/redir9</em> wurde nach <em><a href="/dbat/servlet?spec=test/selec01">test/selec01</a></em> verschoben.<br />Bitte &auml;ndern Sie Ihre Favoriten/Lesezeichen.<br />Sie werden auf die neue Seite umgelenkt., parm=test/redir9, par2=test/selec01-->
-<h3>301: Die Spezifikationsdatei <em>test/redir9</em> wurde nach <em><a href="/dbat/servlet?spec=test/selec01">test/selec01</a></em> verschoben.<br />Bitte &auml;ndern Sie Ihre Favoriten/Lesezeichen.<br />Sie werden auf die neue Seite umgelenkt.</h3>
+<!--lang=de, messno=301, text=Die Spezifikationsdatei <em>test/redir3</em> wurde nach <em><a href="/dbat/servlet?spec=test/selec01">test/selec01</a></em> verschoben.<br />Bitte &auml;ndern Sie Ihre Favoriten/Lesezeichen.<br />Sie werden in 3 s auf die neue Seite umgelenkt., parm=test/redir3, par2=test/selec01, par3=3-->
+<h3>301: Die Spezifikationsdatei <em>test/redir3</em> wurde nach <em><a href="/dbat/servlet?spec=test/selec01">test/selec01</a></em> verschoben.<br />Bitte &auml;ndern Sie Ihre Favoriten/Lesezeichen.<br />Sie werden in 3 s auf die neue Seite umgelenkt.</h3>
 </body></html>

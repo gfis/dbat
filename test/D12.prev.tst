@@ -23,7 +23,7 @@
     </form>
     
     
-<table><tr><td><pre>-- MySQL 5.1.66-0ubuntu0.11.10.3 with MySQL-AB JDBC Driver mysql-connector-java-5.1.11 ( Revision: ${svn.Revision} )
+<table><tr><td><pre>-- MySQL with MySQL-AB JDBC Driver
 DROP   TABLE spec_index;
 CREATE TABLE spec_index
 	( subdir	VARCHAR(16) NOT NULL

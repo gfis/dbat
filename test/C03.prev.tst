@@ -7,14 +7,14 @@
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
 <title>color04</title>
-<link rel="stylesheet" type="text/css" href="./../web/spec/test/stylesheet.css" />
+<link rel="stylesheet" type="text/css" href="./web/spec/test/stylesheet.css" />
 </head><body>
 
 	<!--Select from test table - with colors and linked values-->
 	<!--Abfrage der Test-Tabelle mit farbigem Hintergrund und Verweisen auf den Werten-->
 
     <h3>Select from test table c01 - with colors and linked values</h3>
-    <form method="get" action="servlet?spec=../web/spec/test/color04.xml"><input name="spec" type="hidden" value="../web/spec/test/color04.xml" />
+    <form method="get" action="servlet?spec=web/spec/test/color04.xml"><input name="spec" type="hidden" value="web/spec/test/color04.xml" />
 
         Name: <input name="name" maxsize="20" size="10" init="%r" value="%r"></input>
         <input type="submit" value="Submit"></input>
@@ -44,7 +44,7 @@ FROM c01;
 <tr><td class="counter" colspan="8">8 persons</td></tr>
 </table>
 
-<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./../web/spec/test/color04.xml" type="text/plain">../web/spec/test/color04.xml</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./web/spec/test/color04.xml" type="text/plain">web/spec/test/color04.xml</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;name=%25r&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;name=%25r&amp;lang=en">more</a>
 

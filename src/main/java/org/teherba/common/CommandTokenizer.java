@@ -137,8 +137,8 @@ public class CommandTokenizer implements Serializable {
     public static String[] split(String cmd) {
         ArrayList/*<1.5*/<String>/*1.5>*/ result = new ArrayList/*<1.5*/<String>/*1.5>*/();
         try {
-            Pattern pattern = Pattern.compile("\\s+|[\\-\\w\\,\\/\\*\\%\\+\\.\\=\\:\\;\\!\\?\\&\\#\\|]+|\\\"[^\\\"]*\\\"|\\'[^\\']*'");
-                    // stupid, but [^'\"] did not work?
+            Pattern pattern = Pattern.compile("\\s+|[^ \"']+|\\\"[^\\\"]*\\\"|\\'[^\\']*'"); 
+            		// whitespace, words+punctuation, double or single quoted strings (without nested quotes)
             Matcher matcher = pattern.matcher(cmd);
             while (matcher.find()) {
                 String part = cmd.substring(matcher.start(), matcher.end());

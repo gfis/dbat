@@ -1,5 +1,6 @@
 /*  PrintStream which replaces some patterns (ISO timestamps) by constant strings for RegressionTester
  *  @(#) $Id$
+ *  2013-01-06: hashmap for replacement patterns
  *  2013-01-05: redefine write methods
  *  2012-11-09, Georg Fischer: "Wende" in Germany 23 years ago
  */
@@ -26,6 +27,8 @@ import  java.io.IOException;
 import  java.io.OutputStream;
 import  java.io.UnsupportedEncodingException;
 import  java.util.Date;
+import  java.util.HashMap;
+import  java.util.Iterator;
 import  java.text.SimpleDateFormat;
 
 /** Filters a PrintStream and replaces a set of patterns (ISO timestamps of the form
@@ -35,44 +38,55 @@ import  java.text.SimpleDateFormat;
 public class TimestampFilterStream extends PrintStream {
     public final static String CVSID = "@(#) $Id$";
 
-    /* local copy of the parent stream */
+    /** local copy of the parent stream */
     private static PrintStream tfStream;
-    /* local copy of the encoding */
+    /** local copy of the encoding */
     private String encoding;
+    /** replacement patterns and their substitutions in consecutive elements */
+    private String[] replacements = null;
     
-    /** Constructor with output stream
-     *  @param pStream stream to be filtered for ISO timestamps
-     */
-    public TimestampFilterStream(PrintStream pStream) 
-            throws FileNotFoundException,
-            UnsupportedEncodingException {
-        super(pStream);
-        tfStream = pStream;
-    } // Constructor with output stream
-
-    /** Constructor with output file name and encoding
+    /** Constructor with output file
      *  @param fileName name of the file to be written
      *  @param enc character set name
      */
     public TimestampFilterStream(String fileName, String enc) 
             throws FileNotFoundException,
             UnsupportedEncodingException {
+        this(fileName, enc, new String[] 
+        		{ " \\d{4}\\-\\d{2}\\-\\d{2} \\d{2}\\:\\d{2}\\:\\d{2}([.,0-9]*)?"
+        		, " yyyy-mm-dd hh:mm:ss"
+				, " rows in \\d+ ms"
+				, " rows in ... ms"
+				}
+        		);
+    } // Constructor(2)
+
+    /** Constructor with file and replacements
+     *  @param fileName name of the file to be written
+     *  @param enc character set name
+     *  @param replacements replacement patterns and their substitutions in consecutive elements 
+     */
+    public TimestampFilterStream(String fileName, String enc, String[] replacements) 
+            throws FileNotFoundException,
+            UnsupportedEncodingException {
         super(fileName, enc);
         encoding = enc;
         tfStream = new PrintStream(super.out, true, enc);
-    } // Constructor with output stream and encoding
+        this.replacements = replacements;
+    } // Constructor(3)
 
 	/** Replaces a set of patterns by constant strings
 	 *  @param str input string where replacements take place
 	 *  @return output string with constants
 	 */
 	private String replacePatterns(String str) {
-		return  str
-                .replaceAll(" \\d{4}\\-\\d{2}\\-\\d{2} \\d{2}\\:\\d{2}\\:\\d{2}(\\.\\d+)?", " yyyy-mm-dd hh:mm:ss")
-                .replaceAll(" rows in \\d+ ms", " rows in ... ms")
-                .replaceAll("5.1.62-0ubuntu0.11.10.1", "5.1.66-0ubuntu0.11.10.3")
-                .replaceAll("web/spec/", "../web/spec/")
-                ;
+		int irepl = 0;
+		String result = str;
+		while (irepl < replacements.length) {
+			result = result.replaceAll(replacements[irepl], replacements[irepl + 1]);
+			irepl += 2;
+		} // while irepl
+		return result;
 	} // replacePatterns
 	
     /** Flushes the stream
