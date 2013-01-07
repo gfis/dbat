@@ -51,5 +51,6 @@ INSERT INTO table_not_specified (sp1,sp2,sp3)
 VALUES ('D','c5','D5');
 -- 25 rows
 COMMIT;
+-- 25 ;
 -- Output on yyyy-mm-dd hh:mm:ss by Dbat script test/grouping, Excel, more
 --

@@ -16,3 +16,4 @@ birth='1907-08-08'
 WHERE name='Fritz' AND univ='Waldshut' AND year=1995 AND gender='<'
  AND birth='1907-08-08';
 COMMIT;
+-- 4 ;

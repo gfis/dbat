@@ -24,5 +24,6 @@ VALUES ('1984','Lucie','e.1984','f.Lucie','Lübars','''',{d'1887-07-09'}
 );
 -- 8 persons
 COMMIT;
+-- 8 ;
 -- Output on yyyy-mm-dd hh:mm:ss by Dbat script web/spec/test/selec02.xml, Excel, more
 --

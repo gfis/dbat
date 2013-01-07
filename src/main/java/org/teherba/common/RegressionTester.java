@@ -23,15 +23,12 @@ package org.teherba.common;
 import  org.teherba.common.CommandTokenizer;
 import  org.teherba.common.TimestampFilterStream;
 import  org.teherba.common.URIReader;
-import  org.teherba.dbat.Configuration;
-import  org.teherba.dbat.Dbat;
 import  java.io.BufferedReader;
 import  java.io.File;
 import  java.io.FileReader;
 import  java.io.InputStreamReader;
 import  java.io.PrintStream;
 import  java.lang.Process;
-import  java.lang.ProcessBuilder;
 import  java.lang.Runtime;
 import  java.lang.reflect.Method;
 import  java.util.ArrayList;
@@ -40,9 +37,6 @@ import  java.util.HashMap;
 import  java.util.regex.Matcher;
 import  java.util.regex.Pattern;
 import  java.text.SimpleDateFormat;
-// import  org.apache.commons.exec.CommandLine;
-// import  org.apache.commons.exec.DefaultExecutor;
-// import  org.apache.commons.exec.ExecuteWatchdog;
 import  org.apache.log4j.Logger;
 
 /** Processes a file with test cases and either generates the test output reference

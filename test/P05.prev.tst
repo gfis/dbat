@@ -8,5 +8,6 @@ VALUES ('C','C1','C2','C3','C4','C5');
 INSERT INTO table_not_specified (sp1,sp3,sp3,sp3,sp3,sp3)
 VALUES ('D','D1','D2','D3','D4','D5');
 COMMIT;
+-- 25 ;
 -- Output on yyyy-mm-dd hh:mm:ss by Dbat script test/pivot03, Excel, more
 --

@@ -32,3 +32,4 @@ UPDATE c01 SET name='Lucie',univ='Lübars',year=1984,gender='''',birth=
 WHERE name='Lucie' AND univ='Lübars' AND year=1984 AND gender='''' AND 
 birth='1887-07-09';
 COMMIT;
+-- 8 ;

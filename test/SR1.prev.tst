@@ -11,7 +11,7 @@
 <script src="spec/sorttable.js" type="text/javascript"></script>
 </head><body>
 
-	<!--Select from test table wirth sorttable.js-->
+	<!--Select from test table with sorttable.js-->
 	<!--Abfrage der Test-Tabelle mit sortierbaren Spalten-->
 
     <h3>Select from test table c01 - with sorttable</h3>

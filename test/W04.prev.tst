@@ -11,5 +11,6 @@ INSERT INTO table_not_specified (name,univ,year,gender,birth)
 VALUES ('Dorothea','Lübars',1985,'$',{d'1910-02-07'});
 -- 5 Persons
 COMMIT;
+-- 5 ;
 -- Output on yyyy-mm-dd hh:mm:ss by Dbat script test/selec01, Excel, more
 --

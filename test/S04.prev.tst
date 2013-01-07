@@ -16,3 +16,4 @@ VALUES ('Dorothea','Lübars',1985,'$',{d'1910-02-07'});
 INSERT INTO c01 (name,univ,year,gender,birth)
 VALUES ('Lucie','Lübars',1984,'''',{d'1887-07-09'});
 COMMIT;
+-- 8 ;

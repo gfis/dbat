@@ -1528,6 +1528,7 @@ public class SQLAction implements Serializable {
                 tbSerializer.writeTableFooter(htmlRowCount, sqlRowCount >= fetchLimit, tbMetaData);
             } // withHeaders
             if (! intoParm) {
+            	tbSerializer.writeCommit(sqlRowCount);
                 tbSerializer.endTable();
             }
         } catch (Exception exc) {

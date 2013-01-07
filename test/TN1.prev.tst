@@ -8,3 +8,4 @@ VALUES ('Eberhard','Groß-Gerau',1945,'>','1912-11-17');
 INSERT INTO tartable (name,univ,year,gender,birth)
 VALUES ('Fritz','Waldshut',1995,'<','1907-08-08');
 COMMIT;
+-- 4 ;

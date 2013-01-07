@@ -64,16 +64,6 @@ public class SQLUpdateTable extends SQLTable {
         rowCount = 0;
     } // startTable
     
-    /** Terminates  a table
-     */
-    public void endTable() {
-        try {
-            charWriter.println("COMMIT;");
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-        }
-    } // endTable
-
     /** Writes a complete header, data or alternate data row with all tags and cell contents.
      *  @param rowType type of the generic row
      *  @param tbMetaData meta data for the table

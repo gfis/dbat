@@ -165,8 +165,8 @@ public class SQLTable extends BaseTable {
      *  @param rowCount number of INSERT/UPDATE statements already generated
      */
     public void writeCommit(int rowCount) {
-        charWriter.println("-- " + rowCount + ";");
         charWriter.println("COMMIT;");
+        charWriter.println("-- " + rowCount + " ;");
     } // writeCommit
 
     //======================================
@@ -522,16 +522,6 @@ public class SQLTable extends BaseTable {
         rowCount = 0;
     } // startTable
     
-    /** Terminates  a table
-     */
-    public void endTable() {
-        try {
-            charWriter.println("COMMIT;");
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-        }
-    } // endTable
-
     /** Gets an JDBC escaped time value 
      *  @param escapeTag string to be used to construct the escape
      *  @param value time value
