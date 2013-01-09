@@ -1034,12 +1034,21 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 }
                 //--------
                 String connectionId = attrs.getValue("conn");
-                if (connectionId    != null) {
+                if (connectionId != null) {
                     config.addProperties(connectionId + ".properties");
                     config.setConnectionId(connectionId);
                 } else {
-                    config.setConnectionId(); // default: take first in list
+                    obj             = parameterMap.get("conn");
+	                if (obj != null) {
+	                    connectionId = ((String[]) obj)[0]; // override it from the HttpRequest
+	                    config.addProperties(connectionId + ".properties");
+    	                config.setConnectionId(connectionId);
+	                    setParameter("conn", connectionId); // store it in links and subsequent requests
+	                } else { // &conn= not set in HttpRequest
+	                    config.setConnectionId(); // default: take first in list
+	                }
                 }
+                //--------
                 int lastSlashPos = specName.lastIndexOf("/");
                 String subDirectory = urlPath + (lastSlashPos < 0 ? "" : specName.substring(0, lastSlashPos + 1));
                 //--------

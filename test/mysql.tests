@@ -130,6 +130,13 @@ CALL Dbat -f $(DATA)
 TEST I02 include with system entities
 HTTP spec=test/includer
 #-------------------
+# Connection Id from HTTP request
+TEST CI1 connection id worddb in request
+HTTP spec=test/minusconn tabname=c01 conn=worddb
+
+TEST CI2 connection id mysql in request
+HTTP spec=test/minusconn tabname=c01 conn=mysql
+#-------------------
 # counter tests
 TEST CN1 default counter en
 HTTP spec=test/counter01 name=x lang=en

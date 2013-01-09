@@ -282,21 +282,28 @@ public class DbatServlet extends HttpServlet {
         Configuration config = new Configuration();
         config.configure(config.WEB_CALL, dsMap); 
         request.setCharacterEncoding("UTF-8");
-        String specName = getInputField(request, "spec", "index").replaceAll("\\.", "/"); 
+        String specName 			= getInputField(request, "spec"		, "index").replaceAll("\\.", "/"); 
                 // spec subdirectories may be separated by "/" or by "."
+        String connectionId 		= getInputField(request, "conn"     , "");
+        if (connectionId.length() > 0) {
+            config.addProperties(connectionId + ".properties");
+            config.setConnectionId(connectionId);
+        }                
+        
         String view = request.getParameter("view");
+        // The empty view is the default, and the DBIV view are handled likewise
         if (view == null || view.length() == 0 || view.matches("del|del2|dat|ins|ins2|upd|upd2|sear")) {
             try {
                 HttpSession session = request.getSession();
-                String waitTime = "3";
-                String mode     = getInputField(request, "mode"     , "html"    );
-                String encoding = getInputField(request, "enc"      , "UTF-8"   );
-                String language = getInputField(request, "lang"     , "en"      );
-                String separator= getInputField(request, "sep"      , ";"       );
+                String waitTime     = "3"; // default
+                String mode         = getInputField(request, "mode"     , "html"    );
+                String encoding     = getInputField(request, "enc"      , "UTF-8"   );
+                String language     = getInputField(request, "lang"     , "en"      );
+                String separator    = getInputField(request, "sep"      , ";"       );
                 if (mode.compareToIgnoreCase("tsv") == 0) {
                     separator   = "\t";
                 }
-                int fetchLimit  = getInputField(request, "fetch"    , 0x7fffffff); // "unlimited"
+                int fetchLimit      = getInputField(request, "fetch"    , 0x7fffffff); // "unlimited"
                 // response.setContentType(config.getHtmlMimeType()); // default
                 setResponseHeaders(response, mode, specName, encoding);
     
@@ -379,6 +386,11 @@ public class DbatServlet extends HttpServlet {
                 log.error(exc.getMessage(), exc);
             } finally {
             }
+
+		// View "con" collects the parameters from the SQL Console
+        } else if (view.equals("con")) {
+            (new ConsolePage    ()).forward(request, response, tableFactory, dsMap);
+        // View "con2" is for the result of the SQL console
         } else if (view.equals("con2")) {
             try {
                 HttpSession session = request.getSession();
@@ -388,7 +400,6 @@ public class DbatServlet extends HttpServlet {
                 String language = getInputField(request, "lang"     , "en"      );
                 String separator= getInputField(request, "sep"      , ";"       );
                 String intext   = getInputField(request, "intext"   , ";"       );
-                String connectionId = request.getParameter("conn"); // maybe null = not set
                 int fetchLimit  = getInputField(request, "fetch"    , 64        );
                 if (mode.compareToIgnoreCase("tsv") == 0) {
                     separator   = "\t";
@@ -431,8 +442,8 @@ public class DbatServlet extends HttpServlet {
                 log.error(exc.getMessage(), exc);
             } finally {
             }
-        } else if (view.equals("con")) {
-            (new ConsolePage    ()).forward(request, response, tableFactory, dsMap);
+
+        // now the views for the auxiliary pages
         } else if (view.equals("help")) {
             (new HelpPage       ()).forward(request, response, tableFactory);
         } else if (view.equals("license")
