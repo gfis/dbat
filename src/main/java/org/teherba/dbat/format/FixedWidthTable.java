@@ -98,6 +98,8 @@ public class FixedWidthTable extends BaseTable {
      *	@param columnList contains the row to be written
      */
     public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList/*<1.5*/<TableColumn>/*1.5>*/ columnList) {
+        TableColumn column = null;
+        String pseudo = null;
     	int ncol = columnList.size();
     	int icol = 0;
     	switch (rowType) {
@@ -108,6 +110,8 @@ public class FixedWidthTable extends BaseTable {
     			} // while icol
 				charWriter.println();
     			break;
+			default: 
+				break;
     	} // switch rowType
     } // writeGenericRow
 

@@ -2,6 +2,7 @@
 <!--
     Interactive view definition for test form crud01.xml, with AJAX subquery
     @(#) $Id$
+    2013-01-14: references to test.crud03 replaced
     2012-05-21: with help URLs on field names
     2012-05-30, Dr. Georg Fischer: copied from crud01.iv.xml
 -->
@@ -22,7 +23,8 @@
         upd2 - SQL UPDATE + search form
     --><ht:h3><ht:a href="servlet?spec=test.index">Test</ht:a> Form - Relatives (with AJAX subquery)
     </ht:h3><ht:p>
-        You may search for relatives and update / delete / insert their data.
+        You may search for relatives and update / delete / insert their data. 
+        The family is inserted from the database table.
     </ht:p>
   
   <ht:h2/>
@@ -31,7 +33,7 @@
   </when><!--== d e l ==============-->
   <when name="view" match="del">
     <select limit="512">
-      <col name="name" label="Name" href="servlet?&amp;spec=&amp;search_family=&amp;search_name=">'test.crud03=' || family || '=' || name
+      <col name="name" label="Name" href="servlet?&amp;spec=&amp;search_family=&amp;search_name=">'test.crud04=' || family || '=' || name
       </col>
       <col name="decease" label="Died">
         decease
@@ -148,7 +150,7 @@
       <ht:table>
       <ht:tr><ht:td valign="top" title="name" id="a0">Name:</ht:td>
         <ht:td id="a1"><ht:input name="name" size="40" init="" id="a2" title="[\w\-%]*" onkeyup="this.form.name.className = (this.form.name.value.match('^[\\w\\-%]*$')) ? 'valid': 'invalid'" onblur="ajaxRequest('test.ajax02' + '&amp;amp;family=' + this.form.family.value + '&amp;amp;name=' + this.form.name.value);"/>
-        <ht:span><ht:input type="button" value="Search for Relative" onclick="location.href='servlet?spec=test.crud03' + '&amp;amp;search_family=' + this.form.family.value + '&amp;amp;search_name=' + this.form.name.value;"/>
+        <ht:span><ht:input type="button" value="Search for Relative" onclick="location.href='servlet?spec=test.crud04' + '&amp;amp;search_family=' + this.form.family.value + '&amp;amp;search_name=' + this.form.name.value;"/>
         </ht:span>
         </ht:td></ht:tr>
       <ht:tr><ht:td colspan="2" id="b0"><!-- will be modified by AJAX -->
@@ -300,7 +302,7 @@
       <ht:table>
       <ht:tr><ht:td valign="top" title="name" id="a0">Name:</ht:td>
         <ht:td id="a1"><ht:input name="search_name" size="40" init="" id="a2" title="[\w\-%]*" onkeyup="this.form.name.className = (this.form.name.value.match('^[\\w\\-%]*$')) ? 'valid': 'invalid'" onblur="ajaxRequest('test.ajax02' + '&amp;amp;family=' + this.form.family.value + '&amp;amp;name=' + this.form.name.value);"/>
-        <ht:span><ht:input type="button" value="Search for Relative" onclick="location.href='servlet?spec=test.crud03' + '&amp;amp;search_family=' + this.form.family.value + '&amp;amp;search_name=' + this.form.name.value;"/>
+        <ht:span><ht:input type="button" value="Search for Relative" onclick="location.href='servlet?spec=test.crud04' + '&amp;amp;search_family=' + this.form.family.value + '&amp;amp;search_name=' + this.form.name.value;"/>
         </ht:span>
         </ht:td></ht:tr>
       <ht:tr><ht:td valign="top" title="decease">Died:</ht:td>
@@ -350,7 +352,7 @@
          || CAST(decease AS CHAR(4)) || '=' 
          || family || '=' || 'del' 
       </col>
-      <col name="name" label="Name" href="servlet?&amp;spec=&amp;search_family=&amp;search_name=">'test.crud03=' || family || '=' || name
+      <col name="name" label="Name" href="servlet?&amp;spec=&amp;search_family=&amp;search_name=">'test.crud04=' || family || '=' || name
       </col>
       <col name="decease" label="Died">
         decease

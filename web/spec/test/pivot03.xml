@@ -21,7 +21,7 @@
     </ht:form>
     
     <select headers="yes" aggregate="sp2" with="pivot">
-        <col label="Anwendung" name="sp1" href="servlet?spec=test/selec01&amp;name=">sp1</col>
+        <col label="Application" name="sp1" href="servlet?spec=test/selec01&amp;name=">sp1</col>
         <col label="sp2" name="sp2">sp2</col>
         <col label="sp3" name="sp3" align="right" link="test/selec01&amp;alpha=&amp;beta=&amp;sp3=">
         	concat(sp1, concat('=', concat(sp2, concat('=', sp3))))

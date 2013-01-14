@@ -674,13 +674,36 @@ HTTP spec=test/order02
 TEST O03 Order probe
 HTTP spec=test/order02 mode=probe
 #-------------------
-TEST P01 aggregation test
+# Column aggregation
+TEST AG1 aggregation test
 CALL Dbat -a sp2 -sa "/" -m tsv  "select sp1, sp2 from pivot order by 1, 2"
 
-TEST P02 aggregation test with HTML
+TEST AG2 aggregation test with HTML
 CALL Dbat -a sp2 -sa "+" -m html "select sp1, sp2 from pivot order by 1, 2"
 
-TEST P03 pivot test with HTML
+TEST AG3 aggregation from spec
+CALL Dbat -sa "; " -f web/spec/test/aggr01.xml
+
+TEST AG4 Web aggregation test with HTML
+HTTP spec=test.aggr01
+
+TEST AG5 Web aggregation test with SQL
+HTTP spec=test.aggr01 mode=sql
+
+TEST AG6 Web aggregation test with fixed format
+HTTP spec=test.aggr01 mode=fix
+
+TEST AG7 Web aggregation test with TSV
+HTTP spec=test.aggr01 mode=tsv
+
+TEST AG8 Web aggregation test with XLS
+HTTP spec=test.aggr01 mode=xls
+
+TEST AG9 Web aggregation test with fetchLimit
+HTTP spec=test.aggr01 fetch=3
+#-------------------
+#Pivot tables
+TEST P03 aggregation test with HTML
 CALL Dbat -a sp2 -sa "pivot" -m html "select sp1, sp2, sp3 from pivot order by 1, 2"
 
 TEST P04 Web pivot test with HTML

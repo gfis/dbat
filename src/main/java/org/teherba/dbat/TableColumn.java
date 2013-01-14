@@ -41,8 +41,6 @@ import  org.apache.log4j.Logger;
  *  <ul>
  *  <li>pseudo columns used to set a style on the next HTML table 
  *  =&gt; SQL result set has more columns than HTML</li>
- *  <li>pseudo columns used to display a (delete, update) HTML button
- *  =&gt; SQL result set has less columns than HTML</li>
  *  </ul>
  *  Initially, all properties are undefined. They are either filled from
  *  an XML specification, from the metadata of the SQL table, or they are
@@ -321,7 +319,7 @@ public class TableColumn implements Cloneable {
         this.index = index;
     } // setIndex
     //----------------    
-    /** key for update/delete pseudo columns */
+    /** key for update/delete actions */
     private String key;
     /** Gets the key 
      *  @return comma separated string of key column names
@@ -396,18 +394,17 @@ public class TableColumn implements Cloneable {
         this.nullable = nullable;
     } // setNullable
     //----------------    
-    /** if the current SQL column yields some pseudo value 
-     *  to be imposed on the following HTML column 
+    /** if the current SQL column needs some special processing
      */
     private String pseudo;
-    /** Gets the pseudo facet of an (SQL) column
-     *  @return (for example) "style", "delete", "insert" 
+    /** Gets the pseudo property of a column
+     *  @return (for example) "style", "image" 
      */
     public String getPseudo() {
         return pseudo;
     } // getPseudo
-    /** Sets the pseudo facet of an (SQL) column
-     *  @param pseudo facet, for example "style", "delete", "insert" 
+    /** Sets the pseudo property of a column
+     *  @param pseudo attribute, for example "style", "image" 
      */
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
@@ -428,16 +425,18 @@ public class TableColumn implements Cloneable {
         this.remark = remark;
     } // setRemark
     //----------------    
-    /** CSS style for HTML data cell value */
+    /** CSS style or class for HTML data cell value */
     private String style;
-    /** Gets the CSS style
-     *  @return (for example) ".grn", ".red"
+    /** Gets the CSS style or class from CSS file
+     *  @return (for example) "visible", "border:0"
+     *  A class is assumed when the parameter contains a ":".
      */
     public String getStyle() {
         return style;
     } // getStyle
-    /** Sets the CSS style
-     *  @param style from web/stylesheet.css
+    /** Sets the CSS style or class
+     *  @param style or class from CSS file (for example) "visible", "border:0".
+     *  A class is assumed when the parameter contains a ":".
      */
     public void setStyle(String style) {
         this.style = style;

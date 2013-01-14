@@ -304,10 +304,10 @@ public class WikiTable extends BaseTable {
 			            if (false) {
 			            } else if (pseudo.equals("style")) {
 			                nextStyle = column.getValue();
+			        /*
 			            } else if (pseudo.equals("url")) {
 			                nextLobURL = column.getValue();
-			            } else { 
-			            	// ignore if (pseudo.equals("delete") || pseudo.equals("update")) {
+			        */
 			            } 
 			        } else { // pseudo == null
 			            result.append((icol<= 0 ? "" : "|") + "|");
@@ -326,7 +326,6 @@ public class WikiTable extends BaseTable {
 					*/
 				        nextStyle = null;
 				       	result.append(getContent(column));
-    					// result.append("|");
     				} // pseudo == null
     				icol ++;
     			} // while icol

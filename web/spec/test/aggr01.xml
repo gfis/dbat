@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Dbat specification - Aggregation test
+    @(#) $Id$
+    2013-01-14: Dr. Georg Fischer
+-->
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="en" 
+		conn="worddb" 
+		headers="false"
+		title="aggr01"
+		>
+	<comment lang="en">Column Aggregation with linked values</comment>
+	<comment lang="de">Aggregierte Spalte mit Verweisen auf den Werten</comment>
+
+    <ht:h3>Column Aggregation test - with linked values</ht:h3>
+    
+    <select headers="yes" aggregate="sp2" with=", ">    	
+        <col label="Application" name="sp1" href="servlet?spec=test/selec01&amp;name=">sp1</col>
+        <col label="sp2" name="sp2" link="test/selec01&amp;alpha=&amp;beta=&amp;gamma=">
+        	concat(sp1, concat('=', concat(sp2, concat('=', sp3))))
+        </col>
+        <from>pivot</from>
+    </select>
+
+</dbat>

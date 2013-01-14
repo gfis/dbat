@@ -28,7 +28,7 @@ SELECT sp1
 FROM pivot;
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
-<tr><th title="sp1">Anwendung</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">S1</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">S2</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">S3</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">S4</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">S5</th></tr>
+<tr><th title="sp1">Application</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">S1</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">S2</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">S3</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">S4</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">S5</th></tr>
 <tr><td><a href="servlet?spec=test/selec01&amp;name=A">A</a></td><td align="right"><a href="servlet?spec=test/selec01&amp;alpha=A&amp;beta=c1&amp;sp3=A1">A1</a></td><td align="right"><a href="servlet?spec=test/selec01&amp;alpha=A&amp;beta=c2&amp;sp3=A2">A2</a></td><td align="right"><a href="servlet?spec=test/selec01&amp;alpha=A&amp;beta=c3&amp;sp3=A3">A3</a></td><td align="right"><a href="servlet?spec=test/selec01&amp;alpha=A&amp;beta=c4&amp;sp3=A4">A4</a></td><td align="right"><a href="servlet?spec=test/selec01&amp;alpha=A&amp;beta=c5&amp;sp3=A5">A5</a></td></tr>
 </table>
 

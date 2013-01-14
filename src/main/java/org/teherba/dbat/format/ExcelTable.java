@@ -212,10 +212,10 @@ public class ExcelTable extends BaseTable {
 			            if (false) {
 			            } else if (pseudo.equals("style")) {
 			                nextStyle = column.getValue();
+			        /*
 			            } else if (pseudo.equals("url")) {
 			                nextLobURL = column.getValue();
-			            } else { 
-			            	// ignore if (pseudo.equals("delete") || pseudo.equals("update")) {
+			        */
 			            } 
 			        } else { // pseudo == null
 						result.append("<Cell");
@@ -236,6 +236,7 @@ public class ExcelTable extends BaseTable {
 				        }
 				        result.append("\">");
 				        result.append(column.getValue());
+				        nextStyle = null;
 						result.append("</Data></Cell>");
 						result.append(newline);
 		    			charWriter.print(result.toString());

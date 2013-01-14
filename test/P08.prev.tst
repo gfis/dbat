@@ -14,7 +14,7 @@ FROM pivot;
 :SQL -->
 <Worksheet ss:Name="Select1">
 <Table>
-<Row><Cell><Data ss:Type="String">Anwendung</Data></Cell>
+<Row><Cell><Data ss:Type="String">Application</Data></Cell>
 <Cell><Data ss:Type="String">S1</Data></Cell>
 <Cell><Data ss:Type="String">S2</Data></Cell>
 <Cell><Data ss:Type="String">S3</Data></Cell>

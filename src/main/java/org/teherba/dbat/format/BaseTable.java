@@ -330,6 +330,7 @@ public abstract class BaseTable {
         setMimeType         ("text/plain");
         setDescription      ("en", format.toUpperCase());
         newline             = System.getProperty("line.separator");
+        pseudoAttributes      = new StringBuffer(64);
     } // Constructor(format)
 
     //===================
@@ -397,7 +398,7 @@ public abstract class BaseTable {
 
     /** Row for table descriptions */
     protected TableMetaData metaRow;
-
+	//---------------------------------
     /** URL for next real  LOB column, from a column with the <code>pseudo="url"</code> attribute,
      *  used to store the  LOB value under that URL
      *  and to replace the LOB value by that URL.
@@ -425,7 +426,60 @@ public abstract class BaseTable {
         String result = nextLobURL;
         return result;
     } // replaceClobByURL
-
+	//---------------------------------
+    /** Attributes for the next real cell, from an SQL column with <code>pseudo="attr"</code> attribute,
+     *  used to accumulate style, title and other attributes and to apply them on the next real cell
+     */
+    private StringBuffer pseudoAttributes;
+    /** Gets the remembered attributes string
+     *  @return concatenated attributes in the form <pre> attr1="val1" attr2="val2"</pre> 
+     */
+    protected String getPseudoAttrs() {
+        return pseudoAttributes.toString();
+    } // getPseudoAttrs
+    /** Append an attribute for the next real cell
+     *  @param name attribute name, taken from the col element's name
+     *  @param value attribute value
+     */
+    protected void appendPseudoAttr(String name, String value) {
+        pseudoAttributes.append(" ");
+		pseudoAttributes.append(name);
+		pseudoAttributes.append("=\"");
+		pseudoAttributes.append(value);
+		pseudoAttributes.append("\"");        
+    } // appendPseudoAttr
+    /** Clears the remembered attributes string
+     */
+    protected void clearPseudoAttrs() {
+        pseudoAttributes.setLength(0);
+    } // clearPseudoAttrs
+	//---------------------------------
+    /** Parameters for the next real cell, from an SQL column with <code>pseudo="parm"</code> attribute,
+     *  used as the HTTP parameters in the query string of a link on the next real cell
+     */
+    private StringBuffer pseudoParameters;
+    /** Gets the remembered parameters string
+     *  @return concatenated parameters in the form <pre>&parm1=val1&parm2=val2</pre> 
+     */
+    protected String getPseudoParms() {
+        return pseudoParameters.toString();
+    } // getPseudoParms
+    /** Append a parameter for the next real cell
+     *  @param name parameter name, taken from the col element's name
+     *  @param value parameter value
+     */
+    protected void appendPseudoParm(String name, String value) {
+        pseudoParameters.append("&amp;");
+		pseudoParameters.append(name);
+		pseudoParameters.append("=");
+		pseudoParameters.append(value);
+    } // appendPseudoParm
+    /** Clears the remembered parameters string
+     */
+    protected void clearPseudoParms() {
+        pseudoParameters.setLength(0);
+    } // clearPseudoParms
+	//---------------------------------
     /** Style for next real column, from a column with <code>pseudo="style"</code> attribute,
      *  used to apply font styles and colors on cell contents
      */
@@ -442,7 +496,7 @@ public abstract class BaseTable {
     protected void setNextStyle(String style) {
         nextStyle = style;
     } // setNextStyle
-
+	//---------------------------------
     /** Returns a block of DTD ENTITIY definition lines, one for each request parameter
      *  @param parameterMap map of request parameters to values
      *  @return a block of lines of ENTITY definitions terminated by newlines

@@ -170,11 +170,14 @@ public class TableMetaData {
             int icol = 0;
             while (aggregateIndex < 0 && icol < columnList.size()) { 
                 TableColumn column = this.getColumn(icol);
-                String name  = column.getName ();
-                String label = column.getLabel();
-                if  (  (name  != null && name .equals(aggregateName))
-                    || (label != null && label.equals(aggregateName))   
-                    ) {
+                String name   = column.getName ();
+                String label  = column.getLabel();
+                String pseudo = column.getPseudo();
+                if  (pseudo == null
+	                &&  (  (name  != null && name .equals(aggregateName))
+    	                || (label != null && label.equals(aggregateName))   
+        	            ) 
+        	        ) {
                     aggregateIndex = icol;
                 } 
                 if (debug >= 1) {
@@ -715,13 +718,16 @@ public class TableMetaData {
                 int ihead = 0;
                 while (icol < columnList.size()) {
                     TableColumn column = this.getColumn(icol);
-                    String style = column.getStyle();
-                    String name  = column.getName ();
-                    String label = column.getLabel();
+                    String style  = column.getStyle();
+                    String name   = column.getName ();
+                    String label  = column.getLabel();
+                    String pseudo = column.getPseudo();
                 //  || --> improve performance
-                    if  (       (name  != null && groupColumns.indexOf("," + name   + ",") >= 0)
-                            ||  (label != null && groupColumns.indexOf("," + label  + ",") >= 0)
-                            ) { // participates in group change
+                    if (pseudo == null 
+                            &&  (   (name  != null && groupColumns.indexOf("," + name   + ",") >= 0)
+                            	||  (label != null && groupColumns.indexOf("," + label  + ",") >= 0)
+                            	)
+                        ) { // participates in group change
                         if (hasColumnChange(icol)) {
                             if (false) {
                             } else if (ihead < numHeadingColumns) {

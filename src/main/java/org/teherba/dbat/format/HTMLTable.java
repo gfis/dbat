@@ -367,15 +367,19 @@ public class HTMLTable extends XMLTable {
             result.append("\">");
         }
         String pseudo = column.getPseudo();
-        if (pseudo == null) {
+        if (pseudo == null) { // this is a real cell, attach any accumulated strings from previous pseudo columns
             result.append(value);
-        } else if (pseudo.equals("image") && value.matches("[\\w\\.]+")) {
-            result.append("<img src=\"img/");
-            result.append(value);
-            if (value.matches("\\w+")) {
-                result.append(".png");
+        } else if (pseudo.equals("image")) { // special handling for pseudo="image"
+			String srcAttr = value;
+        	if (value.matches("[\\w]+")) { // for compatibility: images for DBIV actions
+        		srcAttr = "img/" + srcAttr + ".png";
+        	} else { // explicit, complete relative filename or URL
+			    // done 
             }
+            result.append("<img src=\"");
+            result.append(srcAttr);
             result.append("\" />");
+    /*
         } else if (pseudo.equals("input")) {
             result.append("<input type=\"text\" size=\"");
             int width = column.getWidth();
@@ -390,6 +394,7 @@ public class HTMLTable extends XMLTable {
             result.append("\">");
             result.append(value);
             result.append("</textarea>");
+    */
         } else {
         }
         if (hrefValue != null) {
@@ -433,7 +438,7 @@ public class HTMLTable extends XMLTable {
                     pseudo = column.getPseudo();
                     if (pseudo != null && pseudo.equals("style")) {
                         nextStyle = null;
-                    } else {
+                    } else { // non-pseudo
                         if (header == null) {
                             header = "&nbsp;";
                         }
@@ -474,15 +479,8 @@ public class HTMLTable extends XMLTable {
                 while (icol < ncol) {
                     column = columnList.get(icol);
                     pseudo = column.getPseudo();
-                    if (pseudo == null) {
-                        pseudo = "";
-                    }
                     if (false) {
-                    } else if (pseudo.equals("style")) {
-                        nextStyle = column.getValue();
-                    } else if (pseudo.equals("url")) {
-                        nextLobURL = column.getValue();
-                    } else { // pseudo == "image", "input", "textarea"
+                    } else if (pseudo == null || pseudo.equals("image")) {
                         result.append("<td");
                         String align = column.getAlign();
                         if (align != null && ! align.equals("left")) {
@@ -492,7 +490,7 @@ public class HTMLTable extends XMLTable {
                         if (style != null && style.endsWith(VISIBLE)) {
                             column.setStyle(INVISIBLE);
                         }
-                        if (false) {
+                        if (false) { // several classes separated by space?
                         } else if (nextStyle != null && nextStyle.length() > 0) {
                             result.append(" class=\"" + nextStyle + "\"");
                         } else if (style     != null && style    .length() > 0) {
@@ -502,6 +500,12 @@ public class HTMLTable extends XMLTable {
                         result.append('>');
                         result.append(getContent(column));
                         result.append("</td>");
+                    } else if (pseudo.equals("style")) {
+                        nextStyle = column.getValue();
+                /*
+                    } else if (pseudo.equals("url")) {
+                        nextLobURL = column.getValue();
+                */
                     } // pseudo == null
                     icol ++;
                 } // while icol
@@ -533,15 +537,8 @@ public class HTMLTable extends XMLTable {
                     result.append("</th>");
 
                     pseudo = column.getPseudo();
-                    if (pseudo == null) {
-                        pseudo = "";
-                    }
                     if (false) {
-                    } else if (pseudo.equals("style")) {
-                        nextStyle = column.getValue();
-                    } else if (pseudo.equals("url")) {
-                        nextLobURL = column.getValue();
-                    } else { // pseudo == "image", "input", "textarea"
+                    } else if (pseudo == null || pseudo.equals("image")) {
                         result.append("<td class=\"vert\"");
                         String style = column.getStyle();
                         if (style != null && style.endsWith(VISIBLE)) {
@@ -557,6 +554,12 @@ public class HTMLTable extends XMLTable {
                         result.append('>');
                         result.append(getContent(column));
                         result.append("</td>");
+                    } else if (pseudo.equals("style")) {
+                        nextStyle = column.getValue();
+                /*
+                    } else if (pseudo.equals("url")) {
+                        nextLobURL = column.getValue();
+                */
                     } // pseudo == null
                     result.append("</tr>");
                     icol ++;

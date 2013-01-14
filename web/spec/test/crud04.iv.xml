@@ -2,6 +2,7 @@
 <!--
     Interactive view definition for test form crud01.xml, with AJAX subquery
     @(#) $Id$
+    2013-01-14: references to test.crud03 replaced
     2012-05-21: with help URLs on field names
     2012-05-30, Dr. Georg Fischer: copied from crud01.iv.xml
 -->
@@ -17,7 +18,8 @@
     <ht:h3><ht:a href="servlet?spec=test.index">Test</ht:a> Form - Relatives (with AJAX subquery)
     </ht:h3>
     <ht:p>
-        You may search for relatives and update / delete / insert their data.
+        You may search for relatives and update / delete / insert their data. 
+        The family is inserted from the database table.
     </ht:p>
     <view   name="relatives" 
             help="servlet?spec=test.iv_help&amp;NAME="
@@ -35,12 +37,12 @@
                 href="servlet?&amp;spec=&amp;search_family=&amp;search_name="
                 valid="[\w\-%]*"
                 >   
-            <read>'test.crud03=' || family || '=' || name</read>
+            <read>'test.crud04=' || family || '=' || name</read>
             <subquery link="test.ajax02">
                 <urlparm name="family" field="family" />
                 <urlparm name="name"   field="name"   />
             </subquery>
-            <search label="Search for Relative" link="test.crud03">
+            <search label="Search for Relative" link="test.crud04">
                 <urlparm name="search_family" field="family" />
                 <urlparm name="search_name"   field="name"   />
             </search>
