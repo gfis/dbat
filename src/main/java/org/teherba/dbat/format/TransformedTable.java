@@ -330,19 +330,6 @@ public class TransformedTable extends BaseTable {
         }
     } // writeProcessingInstruction
         
-    /** Gets the string content of a header or data cell.
-     *	The strings obtained by this method can be aggregated 
-     *	(with some separator) in order to form the contents of an aggregated column.
-     *  @param column attributes of this column, containing the value also
-     */
-    public String getContent(TableColumn column) {
-        StringBuffer result = new StringBuffer(128);
-       	String value     = column.getValue(); 
-		// cannot remember hrefValue - ignore it
-	    result.append(value);
-        return result.toString();
-    } // getContent
-        
     /** Writes a complete header, data or alternate data row with all tags and cell contents.
      *  @param rowType type of the generic row
      *  @param tbMetaData meta data for the table

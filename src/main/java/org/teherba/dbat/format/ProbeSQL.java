@@ -75,7 +75,7 @@ public class ProbeSQL extends BaseTable {
     	switch (rowType) {
     		case DATA:
     			while (icol < ncol) {
-    				charWriter.print(getContent(columnList.get(icol)));
+                    charWriter.print(columnList.get(icol).getValue()); // impl1: getContent(columnList.get(icol)));
     				icol ++;
     			} // while icol
 				charWriter.println();

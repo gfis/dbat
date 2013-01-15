@@ -493,7 +493,7 @@ public class SQLTable extends BaseTable {
     
     /** Appends a string to {@link #cellBuffer}, but inserts a newline before
      *  if the maximum line length would be exceeded
-     *  @param value string to be inserted
+     *  @param value string to be appended
      */ 
     protected void appendCell(String value) {
         try {
@@ -510,37 +510,13 @@ public class SQLTable extends BaseTable {
         }
     } // appendCell
     
-    /** Initializes a table - with meta data, currently only implemented in SQLTable and its subclasses.
-     *  For subclasses which do not override this method, the meta data are ignored.
-     *  @param name name of the table
-     *  @param tbMetaData meta data of the table
-     */
-    public void startTable(String name, TableMetaData tbMetaData) {
-        super.startTable(name, tbMetaData);
-        tableName = name;
-        cellBuffer.setLength(0);
-        rowCount = 0;
-    } // startTable
-    
-    /** Gets an JDBC escaped time value 
-     *  @param escapeTag string to be used to construct the escape
-     *  @param value time value
-     */
-    protected String getJDBCescape(String escapeTag, String value) {
-        return ((isJDBC ? escapeTag : "") + "\'" + value + "\'"+ (isJDBC ? "}" : ""));
-    } // getJDBCescape
-
-    /** data type of current column */
-    protected int currentDataType;
-    
-    /** Gets the string content of a header or data cell.
-     *  The strings obtained by this method can be aggregated 
-     *  (with some separator) in order to form the contents of an aggregated column.
-     *  @param column attributes of this column, containing the value also
-     */
-    public String getContent(TableColumn column) {
-        String value = column.getValue(); // for many formats it is simply the column's value
-        StringBuffer result = new StringBuffer(128);
+    /** Appends a column's value to {@link #cellBuffer}, but inserts a newline before
+     *  if the maximum line length would be exceeded
+     *  @param column the value of which is to be appended
+     */ 
+    protected void appendValue(TableColumn column) {
+        StringBuffer result = new StringBuffer(256);
+        String value = column.getValue(); 
         if (value == null) {
             result.append("NULL");
         } else {
@@ -566,8 +542,40 @@ public class SQLTable extends BaseTable {
                     break;
             } // switch type
         } // not NULL
-        return result.toString();
-    } // getContent
+        appendCell(result.toString()); // impl1: getContent(columnList.get(icol)));
+    } // appendValue
+    
+    /** Initializes a table - with meta data, currently only implemented in SQLTable and its subclasses.
+     *  For subclasses which do not override this method, the meta data are ignored.
+     *  @param name name of the table
+     *  @param tbMetaData meta data of the table
+     */
+/*
+    public void startTable(String name, TableMetaData tbMetaData) {
+        super.startTable(name, tbMetaData);
+        tableName = name;
+        cellBuffer.setLength(0);
+        rowCount = 0;
+    } // startTable
+*/
+    public void startTable(String name, TableMetaData tbMetaData) {
+        super.startTable(name, tbMetaData);
+        tableName = name;
+        cellBuffer.setLength(0);
+        lenCell = cellBuffer.length();
+        rowCount = 0;
+    } // startTable
+   
+    /** Gets an JDBC escaped time value 
+     *  @param escapeTag string to be used to construct the escape
+     *  @param value time value
+     */
+    protected String getJDBCescape(String escapeTag, String value) {
+        return ((isJDBC ? escapeTag : "") + "\'" + value + "\'"+ (isJDBC ? "}" : ""));
+    } // getJDBCescape
+
+    /** data type of current column */
+    protected int currentDataType;
     
     /** Writes a complete header, data or alternate data row with all tags and cell contents.
      *  @param rowType type of the generic row
@@ -575,6 +583,8 @@ public class SQLTable extends BaseTable {
      *  @param columnList contains the row to be written
      */
     public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList/*<1.5*/<TableColumn>/*1.5>*/ columnList) {
+        TableColumn column = null;
+        String pseudo = null;
         int ncol = columnList.size();
         int icol = 0;
         switch (rowType) {
@@ -598,7 +608,7 @@ public class SQLTable extends BaseTable {
                 appendCell("VALUES "); 
                 while (icol < ncol) {
                     appendCell(icol > 0 ? "," : "(");
-                    appendCell(getContent(columnList.get(icol)));
+                    appendValue(columnList.get(icol));
                     icol ++;
                 } // while icol
                 appendCell(");");

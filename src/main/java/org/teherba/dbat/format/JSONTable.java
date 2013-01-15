@@ -170,39 +170,6 @@ public class JSONTable extends BaseTable {
    		return 0; 
 	} // getEscapingRule
     
-    /** Gets the string content of a header or data cell.
-     *	The strings obtained by this method can be aggregated 
-     *	(with some separator) in order to form the contents of an aggregated column.
-     *  @param column attributes of this column, containing the value also
-     */
-    public String getContent(TableColumn column) {
-       	String value = column.getValue(); // for many formats it is simply the column's value
-        StringBuffer result = new StringBuffer(128);
-        if (value == null) {
-            result.append("null");
-        } else {
-            switch (column.getDataType()) {
-                case Types.CHAR: // fall thru
-                case Types.VARCHAR:
-                    result.append("\""); 
-                    result.append(value.replaceAll("\"", "\\\"").replaceAll("\'", "\\\'")); // escape quotes and apostrophes
-                    result.append("\"");
-                    break;
-                case Types.DATE:
-                case Types.TIME:
-                case Types.TIMESTAMP:
-                    result.append("\""); 
-                    result.append(value);
-                    result.append("\"");
-                    break;
-                default: // all numeric types: INT, DECIMAL, and BOOLEAN
-                    result.append(value);
-                    break;
-            } // switch type
-        } // not NULL
-        return result.toString();
-    } // getContent
-    
     /** current row number */
     private int irow;
     
@@ -212,8 +179,11 @@ public class JSONTable extends BaseTable {
      *	@param columnList contains the row to be written
      */
     public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList/*<1.5*/<TableColumn>/*1.5>*/ columnList) {
-    	int ncol = columnList.size();
-    	int icol = 0;
+        TableColumn column = null;
+        String pseudo = null;
+        int ncol = columnList.size();
+        int icol = 0;
+        StringBuffer result = new StringBuffer(256);
     	switch (rowType) {
     		case HEADER:
     			charWriter.print  ("  , \"thead\": ");
@@ -229,7 +199,32 @@ public class JSONTable extends BaseTable {
     			charWriter.print((irow > 0 ? "    , " : "    [ "));
     			irow ++;
     			while (icol < ncol) {
-    				charWriter.print((icol > 0 ? "," : "[") + getContent(columnList.get(icol)));
+                    column = columnList.get(icol);
+			       	String value = column.getValue(); // for many formats it is simply the column's value
+					result.setLength(0);
+			        if (value == null) {
+			            result.append("null");
+			        } else {
+			            switch (column.getDataType()) {
+			                case Types.CHAR: // fall thru
+			                case Types.VARCHAR:
+			                    result.append("\""); 
+			                    result.append(value.replaceAll("\"", "\\\"").replaceAll("\'", "\\\'")); // escape quotes and apostrophes
+			                    result.append("\"");
+			                    break;
+			                case Types.DATE:
+			                case Types.TIME:
+			                case Types.TIMESTAMP:
+			                    result.append("\""); 
+			                    result.append(value);
+			                    result.append("\"");
+			                    break;
+			                default: // all numeric types: INT, DECIMAL, and BOOLEAN
+			                    result.append(value);
+			                    break;
+			            } // switch type
+			        } // not NULL
+     				charWriter.print((icol > 0 ? "," : "[") + result.toString());
     				icol ++;
     			} // while icol
     			charWriter.println("]");

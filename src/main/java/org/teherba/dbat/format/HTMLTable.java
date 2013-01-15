@@ -354,7 +354,10 @@ public class HTMLTable extends XMLTable {
     /** Gets the string content of a header or data cell.
      *  The strings obtained by this method can be aggregated
      *  (with some separator) in order to form the contents of an aggregated column.
+     *  Pivot tables and aggregation store the result back into the cell's value.
+     *	Repeated calls of this method may not lengthen the resulting value.
      *  @param column attributes of this column, containing the value also
+     *  @return string content of a cell
      */
     public String getContent(TableColumn column) {
         StringBuffer result = new StringBuffer(128);
@@ -370,35 +373,24 @@ public class HTMLTable extends XMLTable {
         if (pseudo == null) { // this is a real cell, attach any accumulated strings from previous pseudo columns
             result.append(value);
         } else if (pseudo.equals("image")) { // special handling for pseudo="image"
-			String srcAttr = value;
-        	if (value.matches("[\\w]+")) { // for compatibility: images for DBIV actions
-        		srcAttr = "img/" + srcAttr + ".png";
-        	} else { // explicit, complete relative filename or URL
-			    // done 
+            String srcAttr = value;
+            if (value.matches("[\\w]+")) { // for compatibility: images for DBIV actions
+                srcAttr = "img/" + srcAttr + ".png";
+            } else { // explicit, complete relative filename or URL
+                // done 
             }
             result.append("<img src=\"");
             result.append(srcAttr);
             result.append("\" />");
-    /*
-        } else if (pseudo.equals("input")) {
-            result.append("<input type=\"text\" size=\"");
-            int width = column.getWidth();
-            result.append(String.valueOf(width));
-            result.append("\" value=\"");
-            result.append(value);
-            result.append("\" />");
-        } else if (pseudo.equals("textarea")) {
-            result.append("<textarea rows=\"2\" cols=\"");
-            int width = column.getWidth();
-            result.append(String.valueOf(width));
-            result.append("\">");
-            result.append(value);
-            result.append("</textarea>");
-    */
-        } else {
+        } else if (pseudo.equals("style")) {
+            nextStyle = value;
+            result.append(value); // because getContent is called once more with this
+        } else { // other pseudo attribute
+            // ignore
         }
         if (hrefValue != null) {
             result.append("</a>");
+            column.setHrefValue(null);
         }
         return result.toString();
     } // getContent
@@ -498,7 +490,7 @@ public class HTMLTable extends XMLTable {
                         }
                         nextStyle = null;
                         result.append('>');
-                        result.append(getContent(column));
+                        result.append(column.getValue()); // impl1: getContent(column));
                         result.append("</td>");
                     } else if (pseudo.equals("style")) {
                         nextStyle = column.getValue();
@@ -552,7 +544,7 @@ public class HTMLTable extends XMLTable {
                         }
                         nextStyle = null;
                         result.append('>');
-                        result.append(getContent(column));
+                        result.append(column.getValue()); // impl1: getContent(column));
                         result.append("</td>");
                     } else if (pseudo.equals("style")) {
                         nextStyle = column.getValue();

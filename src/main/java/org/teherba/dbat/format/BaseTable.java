@@ -398,7 +398,7 @@ public abstract class BaseTable {
 
     /** Row for table descriptions */
     protected TableMetaData metaRow;
-	//---------------------------------
+    //---------------------------------
     /** URL for next real  LOB column, from a column with the <code>pseudo="url"</code> attribute,
      *  used to store the  LOB value under that URL
      *  and to replace the LOB value by that URL.
@@ -426,7 +426,7 @@ public abstract class BaseTable {
         String result = nextLobURL;
         return result;
     } // replaceClobByURL
-	//---------------------------------
+    //---------------------------------
     /** Attributes for the next real cell, from an SQL column with <code>pseudo="attr"</code> attribute,
      *  used to accumulate style, title and other attributes and to apply them on the next real cell
      */
@@ -443,17 +443,17 @@ public abstract class BaseTable {
      */
     protected void appendPseudoAttr(String name, String value) {
         pseudoAttributes.append(" ");
-		pseudoAttributes.append(name);
-		pseudoAttributes.append("=\"");
-		pseudoAttributes.append(value);
-		pseudoAttributes.append("\"");        
+        pseudoAttributes.append(name);
+        pseudoAttributes.append("=\"");
+        pseudoAttributes.append(value);
+        pseudoAttributes.append("\"");        
     } // appendPseudoAttr
     /** Clears the remembered attributes string
      */
     protected void clearPseudoAttrs() {
         pseudoAttributes.setLength(0);
     } // clearPseudoAttrs
-	//---------------------------------
+    //---------------------------------
     /** Parameters for the next real cell, from an SQL column with <code>pseudo="parm"</code> attribute,
      *  used as the HTTP parameters in the query string of a link on the next real cell
      */
@@ -470,16 +470,16 @@ public abstract class BaseTable {
      */
     protected void appendPseudoParm(String name, String value) {
         pseudoParameters.append("&amp;");
-		pseudoParameters.append(name);
-		pseudoParameters.append("=");
-		pseudoParameters.append(value);
+        pseudoParameters.append(name);
+        pseudoParameters.append("=");
+        pseudoParameters.append(value);
     } // appendPseudoParm
     /** Clears the remembered parameters string
      */
     protected void clearPseudoParms() {
         pseudoParameters.setLength(0);
     } // clearPseudoParms
-	//---------------------------------
+    //---------------------------------
     /** Style for next real column, from a column with <code>pseudo="style"</code> attribute,
      *  used to apply font styles and colors on cell contents
      */
@@ -496,7 +496,7 @@ public abstract class BaseTable {
     protected void setNextStyle(String style) {
         nextStyle = style;
     } // setNextStyle
-	//---------------------------------
+    //---------------------------------
     /** Returns a block of DTD ENTITIY definition lines, one for each request parameter
      *  @param parameterMap map of request parameters to values
      *  @return a block of lines of ENTITY definitions terminated by newlines
@@ -546,7 +546,7 @@ public abstract class BaseTable {
         while (icol < ncol) {
             TableColumn column = columnList.get(icol);
             String name = column.getName();
-            String newValue = columnList.get(icol).getValue(); // getContent(columnList.get(icol));
+            String newValue = columnList.get(icol).getValue(); 
             Object obj = parameterMap.get(name);
             if (obj == null || rowIndex == 0) { // parameter undefined so far, or first row
                 parameterMap.put(name, new String[] { newValue });
@@ -863,7 +863,10 @@ public abstract class BaseTable {
     /** Gets the string content of a header or data cell.
      *  The strings obtained by this method can be aggregated
      *  (with some separator) in order to form the contents of an aggregated column.
+     *  Pivot tables and aggregation store the result back into the cell's value.
+     *	Repeated calls of this method may not lengthen the resulting value.
      *  @param column attributes of this column, containing the value also
+     *  @return string content of a cell
      */
     public String getContent(TableColumn column) {
         String value = column.getValue();
@@ -900,7 +903,7 @@ public abstract class BaseTable {
                     if (icol > 0) {
                         charWriter.print(separator);
                     }
-                    charWriter.print(getContent(columnList.get(icol)));
+                    charWriter.print(columnList.get(icol).getValue()); // impl1: getContent(columnList.get(icol)));
                     icol ++;
                 } // while icol
                 charWriter.println();

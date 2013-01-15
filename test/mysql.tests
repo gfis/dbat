@@ -24,10 +24,20 @@ ARGS=-c etc/worddb.properties -e UTF-8
 # normally the main method of class Dbat in the following package is CALLed
 PACKAGE=org.teherba.dbat
 
-ECHO A00
+ECHO 000
 #-------------------
-TEST A01 parameterized link
+# Parameters in <a /> elements
+TEST A01 parameterized link with defaults
 CALL Dbat -m html -f web/spec/test/parmlink.xml
+
+TEST A02 parameterized link with parameters
+CALL Dbat -m html -p name=F -p year=2013 -f web/spec/test/parmlink.xml
+
+TEST A03 Web parameterized link with defaults
+HTTP spec=test/parmlink 
+
+TEST A04 Web parameterized link with parameters
+HTTP spec=test/parmlink name=F year=2013
 #-------------------
 TEST B01 create table with BLOB
 DATA drop table if exists b01 ;
@@ -185,6 +195,21 @@ DATA
   select * from de1 order by name0;
   commit;
 CALL Dbat -v -f $(DATA)
+
+TEST DE4 decimal table as sql
+CALL Dbat -m sql    -200 de1
+
+TEST DE5 decimal table as jdbc
+CALL Dbat -m jdbc   -200 de1
+
+TEST DE6 decimal table as sql updates
+CALL Dbat -m update -200 de1
+
+TEST DE7 decimal table as json
+CALL Dbat -m json   -200 de1
+
+TEST DE8 decimal table as fix
+CALL Dbat -m fix    -200 de1
 #-------------------
 # stored procedures
 TEST X00 create procedure x00
@@ -276,6 +301,13 @@ XSLT --stringparam alter 0 etc/xslt/dbiv_spec.xsl web/spec/test/crud01.iv.xml
 
 TEST XS6 whereClause copied with parm
 XSLT etc/xslt/dbiv_spec.xsl web/spec/test/crud05.iv.xml
+#-------------------
+# Ajax tests
+TEST AX1 get an insert form containing an Ajax request
+HTTP spec=test.ajax01 name=Ilse
+
+TEST AX2 get an Ajax request in JSON
+HTTP spec=test.ajax02 name=Ilse mode=json
 #-------------------
 # list box fields
 TEST L01 List Box and List Parameters - init values
@@ -475,6 +507,9 @@ CALL Dbat -m wiki -d c01
 
 TEST D08 describe semicolon separated
 CALL Dbat -m csv -s ";" -d c01
+
+TEST D09 describe table in JDBC
+CALL Dbat -m jdbc -d c01
 
 TEST D10 output default specification
 CALL Dbat -m spec -d c01
@@ -706,23 +741,32 @@ HTTP spec=test.aggr01 fetch=3
 TEST P03 aggregation test with HTML
 CALL Dbat -a sp2 -sa "pivot" -m html "select sp1, sp2, sp3 from pivot order by 1, 2"
 
-TEST P04 Web pivot test with HTML
+TEST P04 Web pivot test with html
 HTTP spec=test/pivot03
 
-TEST P05 Web pivot test with SQL
+TEST P05 Web pivot test with sql
 HTTP spec=test/pivot03 mode=sql
 
-TEST P06 Web pivot test with fixed format
+TEST P06 Web pivot test with fix
 HTTP spec=test/pivot03 mode=fix
 
-TEST P07 Web pivot test with TSV
+TEST P07 Web pivot test with tsv
 HTTP spec=test/pivot03 mode=tsv
 
-TEST P08 Web pivot test with XLS
+TEST P08 Web pivot test with xls
 HTTP spec=test/pivot03 mode=xls
 
 TEST P09 Web pivot test with fetchLimit
 HTTP spec=test/pivot03 fetch=10
+
+TEST P10 Web pivot test with jdbc
+HTTP spec=test/pivot03 mode=jdbc
+
+TEST P11 Web pivot test with json
+HTTP spec=test/pivot03 mode=json
+
+TEST P12 Web pivot test with wiki
+HTTP spec=test/pivot03 mode=wiki
 #-------------------
 TEST TN1 specify table name in SQL INSERTs
 CALL Dbat -m sql    -t tartable -4 "select * from c01"
@@ -747,6 +791,15 @@ CALL Dbat -g sp1 -m html -f web/spec/test/visible05.xml
 
 TEST VS3 Web visible grouping test
 HTTP spec=test/visible05
+
+TEST VS4 Web visible grouping test - sql
+HTTP spec=test/visible05 mode=sql
+
+TEST VS5 Web visible grouping test - jdbc
+HTTP spec=test/visible05 mode=jdbc
+
+TEST VS6 Web visible grouping test - update
+HTTP spec=test/visible05 mode=update
 #-------------------
 TEST CH1 choose conditional compilation, "yes"
 CALL Dbat -m csv -s "-" -p switch=yes -f web/spec/test/choose06.xml

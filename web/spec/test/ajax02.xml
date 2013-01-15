@@ -9,7 +9,7 @@
         encoding="UTF-8" 
         conn="worddb" 
         lang="en"
-        title="test/ajax02"
+        title="ajax02"
         >
     <comment lang="en">Data to be retrieved by specification <ht:em>ajax01.xml</ht:em></comment>
     <comment lang="de">Daten f&#xfc;r          Spezifikation <ht:em>ajax01.xml</ht:em></comment>

@@ -1,9 +1,9 @@
 /*  Generator for a table with fixed width columns
     @(#) $Id$
-	2011-08-24: writeGenericRow
-	2011-05-24: avoid empty header line
-	2011-02-14: without headers and comments
-	2010-03-17: MAX_WIDTH=512
+    2011-08-24: writeGenericRow
+    2011-05-24: avoid empty header line
+    2011-02-14: without headers and comments
+    2010-03-17: MAX_WIDTH=512
     2010-02-25: charWriter.write -> .print
     2007-01-17: copied from BaseTable
 */
@@ -29,7 +29,7 @@ import  org.teherba.dbat.TableMetaData;
 import  java.util.ArrayList;
 
 /** Generator for a table with fixed width columns.
- *	For &lt;describe&gt;, this format generates an IBM DB2 LOAD specification,
+ *  For &lt;describe&gt;, this format generates an IBM DB2 LOAD specification,
  *  Example (from http://www.clever-sys.de/fua8.htm):
  *  <pre>
 //DSNUPROC.SYSIN DD *
@@ -57,72 +57,70 @@ public class FixedWidthTable extends BaseTable {
     public FixedWidthTable() {
         super();
         setFormatCodes("fix");
-		setDescription("en", "Fixed width columns");
-		setDescription("de", "Spalten fester Breite");
+        setDescription("en", "Fixed width columns");
+        setDescription("de", "Spalten fester Breite");
     } // Constructor
 
-    /** Gets the string content of a header or data cell.
-     *	The strings obtained by this method can be aggregated 
-     *	(with some separator) in order to form the contents of an aggregated column.
-     *  @param column attributes of this column, containing the value also
-     */
-    public String getContent(TableColumn column) {
-       	String value = column.getValue(); // for many formats it is simply the column's value
-		int width = column.getWidth();
-        if (value == null) {
-            value = "";
-        }
-        if (value.length() < width) { // padding necessary
-        	String align = column.getAlign();
-        	if (align == null) {
-        		align = ""; // default: left
-        	}
-    		int pad = width - value.length();
-        	if (false) {
-        	} else if (align.equals("right")) {
-		        value = spaces(pad) + value;
-        	} else if (align.equals("center")) {
-		        value = spaces(pad >> 1) + value + spaces(pad - (pad >> 1));
-        	} else { // default, if (align.equals("left")) {
-		        value = value + spaces(pad);
-        	}
-	    } else if (value.length() > width) { // truncation, always on the right
-	    	value = value.substring(0, width); 
-	    }
-        return value;
-    } // getContent
-        
     /** Writes a complete header, data or alternate data row with all tags and cell contents.
      *  @param rowType type of the generic row
      *  @param tbMetaData meta data for the table
-     *	@param columnList contains the row to be written
+     *  @param columnList contains the row to be written
      */
     public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList/*<1.5*/<TableColumn>/*1.5>*/ columnList) {
         TableColumn column = null;
         String pseudo = null;
-    	int ncol = columnList.size();
-    	int icol = 0;
-    	switch (rowType) {
-    		case DATA:
-    			while (icol < ncol) {
-    				charWriter.print(getContent(columnList.get(icol)));
-    				icol ++;
-    			} // while icol
-				charWriter.println();
-    			break;
-			default: 
-				break;
-    	} // switch rowType
+        int ncol = columnList.size();
+        int icol = 0;
+        StringBuffer result = new StringBuffer(256);
+        switch (rowType) {
+            case DATA:
+                while (icol < ncol) {
+                    column = columnList.get(icol);
+			        String value = column.getValue(); // for many formats it is simply the column's value
+			        int width = column.getWidth();
+			        if (value == null) {
+			            value = "";
+			        }
+			        if (value.length() < width) { // padding necessary
+			            String align = column.getAlign();
+			            if (align == null) {
+			                align = ""; // default: left
+			            }
+			            int pad = width - value.length();
+			            if (false) {
+			            } else if (align.equals("right")) {
+			                result.append(spaces(pad));
+			                result.append(value);
+			            } else if (align.equals("center")) {
+			                result.append(spaces(pad >> 1));
+			                result.append(value);
+			                result.append(spaces(pad - (pad >> 1)));
+			            } else { // default, if (align.equals("left")) {
+			                result.append(value);
+			                result.append(spaces(pad));
+			            }
+			        } else if (value.length() > width) { // truncation, always on the right
+			            result.append(value.substring(0, width)); 
+			        } else { // value.length() == width
+			        	result.append(value);
+			        }
+                    icol ++;
+                } // while icol
+                charWriter.println(result.toString());
+                break;
+            default: 
+                break;
+        } // switch rowType
     } // writeGenericRow
 
     /** Writes a comment, but only if the "verbose" level is > 0.
      *  @param line string to be output as a comment
-     *	@param verbose level of output detail
+     *  @param verbose level of output detail
      */
     public void writeComment(String line, int verbose) {
-    	if (verbose > 0) {
-    		charWriter.println(line);
-    	}
+        if (verbose > 0) {
+            charWriter.println(line);
+        }
     } // writeComment(2)
 
 } // FixedWidthTable

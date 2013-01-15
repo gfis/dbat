@@ -169,19 +169,19 @@ public class TableMetaData {
         if (aggregateName != null) { // feature is set
             int icol = 0;
             while (aggregateIndex < 0 && icol < columnList.size()) { 
-                TableColumn column = this.getColumn(icol);
+                TableColumn column = columnList.get(icol);
                 String name   = column.getName ();
                 String label  = column.getLabel();
                 String pseudo = column.getPseudo();
                 if  (pseudo == null
-	                &&  (  (name  != null && name .equals(aggregateName))
-    	                || (label != null && label.equals(aggregateName))   
-        	            ) 
-        	        ) {
+                    &&  (  (name  != null && name .equals(aggregateName))
+                        || (label != null && label.equals(aggregateName))   
+                        ) 
+                    ) {
                     aggregateIndex = icol;
                 } 
                 if (debug >= 1) {
-                    System.err.println("setAggregateColumn: " + this.getColumn(icol).getName() 
+                    System.err.println("setAggregateColumn: " + columnList.get(icol).getName() 
                             + " ? " + aggregateName + " => " + aggregateIndex);
                 }
                 icol ++;
@@ -658,7 +658,7 @@ public class TableMetaData {
             } // while icol
         } // not filled so far
     } // initOldValues
-    
+    //-----------------------------------    
     /** Copies the properties of all columns to the {@link #oldValueList}.
      */
     public void rememberRow() {
@@ -668,15 +668,93 @@ public class TableMetaData {
             } // not filled so far
             int icol = 0;
             while (icol < columnList.size()) { // copy
-                while (icol >= oldValueList.size()) { // columnList may contain additional pivot columns in the meantime
+                while (oldValueList.size() <= icol) { // columnList may contain additional pivot columns in the meantime
                     oldValueList.add(new TableColumn(icol));
                 } // while icol
                 oldValueList.set(icol, columnList.get(icol).clone());
                 icol ++;
             } // while copying
         } // only if feature is active
-    } // rememberRow
+    } // rememberRow()
     
+    /** Copies the properties of all columns to the {@link #oldValueList}.
+     *  @param tbSerializer the desired output formatter
+     */
+    public void rememberRow(BaseTable tbSerializer) {
+        if (groupColumns != null || aggregateIndex >= 0) { // feature is active
+            if (oldValueList == null) { // not filled so far
+                initOldValues();
+            } // not filled so far
+            int icol = 0;
+            while (icol < columnList.size()) { // copy
+                while (oldValueList.size() <= icol) { // columnList may contain additional pivot columns in the meantime
+                    oldValueList.add(new TableColumn(icol));
+                } // while icol
+                TableColumn column = columnList.get(icol);
+                column.setValue(tbSerializer.getContent(column));
+                // column.setHrefValue(null);
+                oldValueList.set(icol, column.clone());
+                icol ++;
+            } // while copying
+        } // only if feature is active
+    } // rememberRow(1)
+    //-----------------------------------    
+    /** Aggregates the specified column by appending the 
+     *  aggregation separator and the current column to the aggregation column's previous value.
+     *  The caller must ensure that the feature is set (aggregateIndex >= 0).
+     */
+    public void aggregateColumn() {
+        if (oldValueList == null) {
+            initOldValues();
+        }
+        TableColumn column = columnList.get(aggregateIndex);
+        column.setValue
+                ( oldValueList.get(aggregateIndex).getValue() 
+                + this.aggregationSeparator
+                + column.getValue()
+                );
+    } // aggregateColumn()
+    
+    /** Aggregates the specified column by appending the 
+     *  aggregation separator and the current column to the aggregation column's previous value.
+     *  The caller must ensure that the feature is set (aggregateIndex >= 0).
+     *  @param tbSerializer the desired output formatter
+     */
+    public void aggregateColumn(BaseTable tbSerializer) {
+        if (oldValueList == null) {
+            initOldValues();
+        }
+        TableColumn column = columnList.get(aggregateIndex);
+        column.setValue
+                ( oldValueList.get(aggregateIndex).getValue()
+                + this.aggregationSeparator
+                + tbSerializer.getContent(column)
+                );
+        // column.setHrefValue(null);
+    } // aggregateColumn(1)
+    //-----------------------------------    
+    /** Appends another pivot table column, with the label from the {@link #aggregateIndex} column,
+     *  and the value (and all other attributes) from the next column.
+     *  The caller must ensure that the feature is set (aggregateIndex >= 0).
+     */
+    public void addPivotColumn() {
+        TableColumn column = columnList.get(aggregateIndex + 1).clone();
+        column.setLabel(column.getValue());
+        columnList.add(column);
+    } // addPivotColumn
+
+    /** Appends another pivot table column, with the label from the {@link #aggregateIndex} column,
+     *  and the value (and all other attributes) from the next column.
+     *  The caller must ensure that the feature is set (aggregateIndex >= 0).
+     *  @param tbSerializer the desired output formatter
+     */
+    public void addPivotColumn(BaseTable tbSerializer) {
+        TableColumn column = columnList.get(aggregateIndex + 1).clone();
+        column.setLabel(tbSerializer.getContent(column));
+        // column.setHrefValue(null);
+        columnList.add(column);
+    } // addPivotColumn
+    //-----------------------------------    
     /** Determines whether there is a change in a certain column.
      *  @param index index of the column to be investigated, 0 based.
      *  The method must be called only if oldValueList != null
@@ -686,7 +764,8 @@ public class TableMetaData {
     private boolean hasColumnChange(int index) {
         boolean result = false; // assume there is no group change
         String oldValue = oldValueList.get(index).getValue();
-        String newValue = this.getColumn(index)  .getValue();   
+        String newValue = columnList  .get(index).getValue();  
+        // System.err.println(oldValue + " <> " + newValue); 
         if (oldValue != null) {
             if (newValue != null) {
                 result = ! oldValue.equals(newValue);
@@ -717,7 +796,7 @@ public class TableMetaData {
                 int icol  = 0;
                 int ihead = 0;
                 while (icol < columnList.size()) {
-                    TableColumn column = this.getColumn(icol);
+                    TableColumn column = columnList.get(icol);
                     String style  = column.getStyle();
                     String name   = column.getName ();
                     String label  = column.getLabel();
@@ -725,8 +804,8 @@ public class TableMetaData {
                 //  || --> improve performance
                     if (pseudo == null 
                             &&  (   (name  != null && groupColumns.indexOf("," + name   + ",") >= 0)
-                            	||  (label != null && groupColumns.indexOf("," + label  + ",") >= 0)
-                            	)
+                                ||  (label != null && groupColumns.indexOf("," + label  + ",") >= 0)
+                                )
                         ) { // participates in group change
                         if (hasColumnChange(icol)) {
                             if (false) {
@@ -781,32 +860,6 @@ public class TableMetaData {
         } // feature is set
         return result;
     } // getAggregateChange
-
-    /** Aggregates the specified column by appending the 
-     *  aggregation separator and the current column to the aggregation column's previous value.
-     *  The caller must ensure that the feature is set (aggregateIndex >= 0).
-     */
-    public void aggregateColumn() {
-        if (oldValueList == null) {
-            initOldValues();
-        }
-        TableColumn column = this.getColumn(aggregateIndex);
-        column.setValue
-                ( oldValueList.get(aggregateIndex).getValue() 
-                + this.aggregationSeparator
-                + column.getValue()
-                );
-    } // aggregate
-    
-    /** Appends another pivot table column, with the label from the {@link #aggregateIndex} column,
-     *  and the value (and all other attributes) from the next column.
-     *  The caller must ensure that the feature is set (aggregateIndex >= 0).
-     */
-    public void addPivotColumn() {
-        TableColumn column = getColumn(aggregateIndex + 1).clone();
-        column.setLabel(column.getValue());
-        columnList.add(column);
-    } // addPivotColumn
 
     /** Writes the previous row in the specified output format.
      *  @param tbSerializer one of HTMLTable, SQLTable, XMLTable etc.

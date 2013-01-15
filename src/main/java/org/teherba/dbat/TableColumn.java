@@ -394,7 +394,7 @@ public class TableColumn implements Cloneable {
         this.nullable = nullable;
     } // setNullable
     //----------------    
-    /** if the current SQL column needs some special processing
+    /** whether the current SQL column needs some special processing, and which one
      */
     private String pseudo;
     /** Gets the pseudo property of a column

@@ -11,7 +11,7 @@
 		conn="worddb" 
 		lang="en"
 		javascript="http_request.js" 
-		title="test/ajax01"
+		title="ajax01"
 		>
 	<comment lang="en">First  Ajax Test</comment>
 	<comment lang="de">Erster Ajax-Test</comment>

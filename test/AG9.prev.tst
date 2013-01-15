@@ -13,7 +13,7 @@
 	<!--Column Aggregation with linked values-->
 	<!--Aggregierte Spalte mit Verweisen auf den Werten-->
 
-    <h3>Column Aggregation test - with linked values</h3>
+    <h3>Column aggregation test - with linked values</h3>
     
     <!-- SQL:
 SELECT sp1
@@ -21,8 +21,8 @@ SELECT sp1
 FROM pivot;
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
-<tr><th title="sp1">Application</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">sp2</th></tr>
-<tr><td><a href="servlet?spec=test/selec01&amp;name="></a></td><td><a href="servlet?spec=test/selec01&amp;alpha=&amp;beta=c3&amp;gamma=S3">S1, S2, S3</a></td></tr>
+<tr><th title="sp1">Application</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">Aggr. Column</th></tr>
+<tr><td><a href="servlet?spec=test/selec01&amp;name="></a></td><td><a href="servlet?spec=test/selec01&amp;alpha=&amp;beta=c1&amp;gamma=S1">S1</a>, <a href="servlet?spec=test/selec01&amp;alpha=&amp;beta=c2&amp;gamma=S2">S2</a>, <a href="servlet?spec=test/selec01&amp;alpha=&amp;beta=c3&amp;gamma=S3">S3</a></td></tr>
 </table>
 
 

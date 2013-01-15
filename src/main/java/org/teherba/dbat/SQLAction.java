@@ -1223,7 +1223,7 @@ public class SQLAction implements Serializable {
             } else {
                 link = href; // cannot be null
             }
-            if (debug >= 1) System.err.println("link=\"" + link + "\", values=\"" + values + "\"");
+            if (debug >= 2) System.err.println("link=\"" + link + "\", values=\"" + values + "\"");
             int lampos1 = link.indexOf('&'); // leading ampersand introduces first parameter
             if (lampos1 < 0) { // no parameters
                 urlBuffer.append(link); // copy whole link to URL, remove whitespace
@@ -1292,7 +1292,7 @@ public class SQLAction implements Serializable {
                 } // while lampos1
             } // with parameters
             column.setHrefValue (urlBuffer.toString());
-            if (debug >= 1) System.err.println("urlBuffer=\"" + urlBuffer.toString() + "\", displayValue=\"" + displayValue + "\"");
+            if (debug >= 2) System.err.println("urlBuffer=\"" + urlBuffer.toString() + "\", displayValue=\"" + displayValue + "\"");
         } // link != null
         if (displayValue != null) {
             switch (escapingRule) {
@@ -1347,7 +1347,7 @@ public class SQLAction implements Serializable {
             } // switch nullText
         } // displayValue == null
         column.setValue(displayValue);
-        if (debug >= 1) System.err.println("separateURLfromValue, hrefValue=\"" + column.getHrefValue() + "\", value=\"" + column.getValue() + "\"");
+        if (debug >= 2) System.err.println("separateURLfromValue, hrefValue=\"" + column.getHrefValue() + "\", value=\"" + column.getValue() + "\"");
     } // separateURLfromValue
 
     /** Sets the string value of one column from a query result set,
@@ -1439,6 +1439,8 @@ public class SQLAction implements Serializable {
      *  @param stResults result set from JDBC execute
      */
     private void serializeQueryResults(TableMetaData tbMetaData, String selectSql, ResultSet stResults) {
+        boolean impl2 = false;
+        // debug = 1;
         String value = "";
         TableColumn column = null;
         BaseTable tbSerializer  = config.getTableSerializer();
@@ -1471,12 +1473,24 @@ public class SQLAction implements Serializable {
                 int icol = 0;
                 while (icol < columnCount) { // #1
                     // we count from 0, but JDBC counts from 1 (c.f. "icol + 1" below)
-                    setColumnResult(tbMetaData.getColumn(icol), stResults, icol);
-                    if (debug >= 2) System.err.println("serializeQueryResults.while, hrefValue=\"" + tbMetaData.getColumn(icol).getHrefValue() + "\", value=\"" + tbMetaData.getColumn(icol).getValue() + "\"");
+                    column = tbMetaData.getColumn(icol);
+                    setColumnResult(column, stResults, icol);
+                    if (debug >= 1) {
+                    	System.err.println("1QR.hrefValue=\"" + column.getHrefValue() 
+                    				+ "\", value=\""          + column.getValue() + "\""
+                    				);
+                  	}
+                    column.setValue(tbSerializer.getContent(column));
+                    // column.setHrefValue(null);
+                    if (debug >= 1) {
+                    	System.err.println("2QR.hrefValue=\"" + column.getHrefValue() 
+                    				+ "\", value=\""          + column.getValue() + "\""
+                    				);
+                  	}
                     icol ++;
                 } // while icol #1
                 int aggregateChange = tbMetaData.getAggregateChange();
-                if (debug >= 1) tbSerializer.writeComment("htmlRowCount=" + htmlRowCount + ", aggregateChange=" + aggregateChange + ", fetchLimit=" + fetchLimit);
+                if (debug >= 1) System.err.println("htmlRowCount=" + htmlRowCount + ", aggregateChange=" + aggregateChange);
                 switch (aggregateChange) {
                     case TableMetaData.AGGR_CHANGED: // some change in non-aggregate columns, print old (aggregated) row
                         tbMetaData.writePreviousRow(tbSerializer, this.isWithHeaders(), htmlRowCount, columnCount);
@@ -1484,7 +1498,11 @@ public class SQLAction implements Serializable {
                         break;
                     case TableMetaData.AGGR_EMPTY: // first input row - remember it only (below)
                         if (tbMetaData.isPivot()) {
-                            tbMetaData.addPivotColumn();
+                        	if (impl2) {
+	                            tbMetaData.addPivotColumn();
+	                        } else {
+                            	tbMetaData.addPivotColumn(tbSerializer);
+                            }
                         }
                         break;
                     case TableMetaData.AGGR_NOT_SET: // feature not set, print current row unconditionally
@@ -1505,13 +1523,25 @@ public class SQLAction implements Serializable {
                         break;
                     default: // >= 0, no change in non-aggregate columns, must aggregate
                         if (tbMetaData.isPivot()) {
-                            tbMetaData.addPivotColumn();
+                        	if (impl2) {
+	                            tbMetaData.addPivotColumn();
+	                        } else {
+	                            tbMetaData.addPivotColumn(tbSerializer);
+	                        }
                         } else {
-                            tbMetaData.aggregateColumn();
+                        	if (impl2) {
+	                            tbMetaData.aggregateColumn();
+	                        } else {
+                            	tbMetaData.aggregateColumn(tbSerializer);
+							}
                         }
                         break;
                 } // switch aggregateChange
-                tbMetaData.rememberRow();
+               	if (impl2) {
+	                tbMetaData.rememberRow();
+    			} else {
+                	tbMetaData.rememberRow(tbSerializer);
+                }
                 if (sqlRowCount % maxCommit == 0) { 
                     tbSerializer.writeCommit(sqlRowCount); // some modes insert a COMMIT statement here
                 }

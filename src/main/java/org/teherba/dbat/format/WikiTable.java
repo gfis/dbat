@@ -261,6 +261,7 @@ public class WikiTable extends BaseTable {
 	    result.append(value);
 		if (hrefValue != null) {
 	        result.append("]");
+            column.setHrefValue(null);
         }
         return result.toString();
     } // getContent
@@ -325,7 +326,7 @@ public class WikiTable extends BaseTable {
 						}
 					*/
 				        nextStyle = null;
-				       	result.append(getContent(column));
+				       	result.append(column.getValue()); // impl1: getContent(column));
     				} // pseudo == null
     				icol ++;
     			} // while icol

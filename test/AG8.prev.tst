@@ -14,7 +14,7 @@ FROM pivot;
 <Worksheet ss:Name="Select1">
 <Table>
 <Row><Cell><Data ss:Type="String">Application</Data></Cell>
-<Cell><Data ss:Type="String">sp2</Data></Cell>
+<Cell><Data ss:Type="String">Aggr. Column</Data></Cell>
 </Row>
 <Row><Cell ss:HRef="servlet?spec=test/selec01&name="><Data ss:Type="String"></Data></Cell>
 <Cell ss:HRef="servlet?spec=test/selec01&alpha=&beta=c5&gamma=S5"><Data ss:Type="String">S1, S2, S3, S4, S5</Data></Cell>
