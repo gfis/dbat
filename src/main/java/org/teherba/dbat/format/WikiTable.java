@@ -248,7 +248,7 @@ public class WikiTable extends BaseTable {
      *	(with some separator) in order to form the contents of an aggregated column.
      *  @param column attributes of this column, containing the value also
      */
-    public String getContent(TableColumn column) {
+    public String getFlatValue(TableColumn column) {
         StringBuffer result = new StringBuffer(128);
        	String value     = column.getValue(); 
     	String hrefValue = column.getHrefValue();
@@ -264,7 +264,7 @@ public class WikiTable extends BaseTable {
             column.setHrefValue(null);
         }
         return result.toString();
-    } // getContent
+    } // getFlatValue
         
     /** Writes a complete header, data or alternate data row with all tags and cell contents.
      *  @param rowType type of the generic row
@@ -326,7 +326,7 @@ public class WikiTable extends BaseTable {
 						}
 					*/
 				        nextStyle = null;
-				       	result.append(column.getValue()); // impl1: getContent(column));
+				       	result.append(column.getValue());
     				} // pseudo == null
     				icol ++;
     			} // while icol

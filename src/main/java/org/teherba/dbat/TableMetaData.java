@@ -660,24 +660,6 @@ public class TableMetaData {
     } // initOldValues
     //-----------------------------------    
     /** Copies the properties of all columns to the {@link #oldValueList}.
-     */
-    public void rememberRow() {
-        if (groupColumns != null || aggregateIndex >= 0) { // feature is active
-            if (oldValueList == null) { // not filled so far
-                initOldValues();
-            } // not filled so far
-            int icol = 0;
-            while (icol < columnList.size()) { // copy
-                while (oldValueList.size() <= icol) { // columnList may contain additional pivot columns in the meantime
-                    oldValueList.add(new TableColumn(icol));
-                } // while icol
-                oldValueList.set(icol, columnList.get(icol).clone());
-                icol ++;
-            } // while copying
-        } // only if feature is active
-    } // rememberRow()
-    
-    /** Copies the properties of all columns to the {@link #oldValueList}.
      *  @param tbSerializer the desired output formatter
      */
     public void rememberRow(BaseTable tbSerializer) {
@@ -691,7 +673,7 @@ public class TableMetaData {
                     oldValueList.add(new TableColumn(icol));
                 } // while icol
                 TableColumn column = columnList.get(icol);
-                column.setValue(tbSerializer.getContent(column));
+                column.setValue(tbSerializer.getFlatValue(column));
                 // column.setHrefValue(null);
                 oldValueList.set(icol, column.clone());
                 icol ++;
@@ -699,22 +681,6 @@ public class TableMetaData {
         } // only if feature is active
     } // rememberRow(1)
     //-----------------------------------    
-    /** Aggregates the specified column by appending the 
-     *  aggregation separator and the current column to the aggregation column's previous value.
-     *  The caller must ensure that the feature is set (aggregateIndex >= 0).
-     */
-    public void aggregateColumn() {
-        if (oldValueList == null) {
-            initOldValues();
-        }
-        TableColumn column = columnList.get(aggregateIndex);
-        column.setValue
-                ( oldValueList.get(aggregateIndex).getValue() 
-                + this.aggregationSeparator
-                + column.getValue()
-                );
-    } // aggregateColumn()
-    
     /** Aggregates the specified column by appending the 
      *  aggregation separator and the current column to the aggregation column's previous value.
      *  The caller must ensure that the feature is set (aggregateIndex >= 0).
@@ -728,7 +694,7 @@ public class TableMetaData {
         column.setValue
                 ( oldValueList.get(aggregateIndex).getValue()
                 + this.aggregationSeparator
-                + tbSerializer.getContent(column)
+                + tbSerializer.getFlatValue(column)
                 );
         // column.setHrefValue(null);
     } // aggregateColumn(1)
@@ -736,21 +702,11 @@ public class TableMetaData {
     /** Appends another pivot table column, with the label from the {@link #aggregateIndex} column,
      *  and the value (and all other attributes) from the next column.
      *  The caller must ensure that the feature is set (aggregateIndex >= 0).
-     */
-    public void addPivotColumn() {
-        TableColumn column = columnList.get(aggregateIndex + 1).clone();
-        column.setLabel(column.getValue());
-        columnList.add(column);
-    } // addPivotColumn
-
-    /** Appends another pivot table column, with the label from the {@link #aggregateIndex} column,
-     *  and the value (and all other attributes) from the next column.
-     *  The caller must ensure that the feature is set (aggregateIndex >= 0).
      *  @param tbSerializer the desired output formatter
      */
     public void addPivotColumn(BaseTable tbSerializer) {
         TableColumn column = columnList.get(aggregateIndex + 1).clone();
-        column.setLabel(tbSerializer.getContent(column));
+        column.setLabel(tbSerializer.getFlatValue(column));
         // column.setHrefValue(null);
         columnList.add(column);
     } // addPivotColumn
@@ -885,7 +841,7 @@ public class TableMetaData {
             while (icol > columnCount) { // truncate to result set size
                 columnList.remove(-- icol);
             } // while icol
-            addPivotColumn();
+            addPivotColumn(tbSerializer);
         }
     } // writePreviousRow
 

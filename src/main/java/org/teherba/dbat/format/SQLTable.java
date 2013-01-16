@@ -542,7 +542,7 @@ public class SQLTable extends BaseTable {
                     break;
             } // switch type
         } // not NULL
-        appendCell(result.toString()); // impl1: getContent(columnList.get(icol)));
+        appendCell(result.toString());
     } // appendValue
     
     /** Initializes a table - with meta data, currently only implemented in SQLTable and its subclasses.

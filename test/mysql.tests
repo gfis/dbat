@@ -661,6 +661,9 @@ HTTP spec=test/column02
 
 TEST C08 web with colors on rows
 HTTP spec=test/color08
+
+TEST C09 web with class/style colors on columns and rows
+HTTP spec=test/color09
 #-------------------
 # Raw input tests (-r)
 TEST R00 clear pivot table for raw input test

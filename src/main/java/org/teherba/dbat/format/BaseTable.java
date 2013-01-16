@@ -636,7 +636,7 @@ public abstract class BaseTable {
     /** Writes the value of the simple table cell
      */
     public void writeSingleCell() {
-        charWriter.print(getContent(singleCell));
+        charWriter.print(getFlatValue(singleCell));
     } // writeSingleCell
 
     //======================================
@@ -864,19 +864,14 @@ public abstract class BaseTable {
      *  The strings obtained by this method can be aggregated
      *  (with some separator) in order to form the contents of an aggregated column.
      *  Pivot tables and aggregation store the result back into the cell's value.
-     *	Repeated calls of this method may not lengthen the resulting value.
+     *  Repeated calls of this method may not lengthen the resulting value.
      *  @param column attributes of this column, containing the value also
      *  @return string content of a cell
      */
-    public String getContent(TableColumn column) {
+    public String getFlatValue(TableColumn column) {
         String value = column.getValue();
-    /*
-        if (value == null) {
-            value = "Null";
-        }
-    */
         return value; // for many formats it is simply the column's value (not enclosed in a link)
-    } // getContent
+    } // getFlatValue
 
     /** Writes a complete header, data or alternate data row with all tags and cell contents.
      *  @param rowType type of the generic row
@@ -903,7 +898,7 @@ public abstract class BaseTable {
                     if (icol > 0) {
                         charWriter.print(separator);
                     }
-                    charWriter.print(columnList.get(icol).getValue()); // impl1: getContent(columnList.get(icol)));
+                    charWriter.print(columnList.get(icol).getValue());
                     icol ++;
                 } // while icol
                 charWriter.println();

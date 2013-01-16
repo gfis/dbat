@@ -359,7 +359,7 @@ public class HTMLTable extends XMLTable {
      *  @param column attributes of this column, containing the value also
      *  @return string content of a cell
      */
-    public String getContent(TableColumn column) {
+    public String getFlatValue(TableColumn column) {
         StringBuffer result = new StringBuffer(128);
         String value     = column.getValue();
         String hrefValue = column.getHrefValue();
@@ -382,18 +382,72 @@ public class HTMLTable extends XMLTable {
             result.append("<img src=\"");
             result.append(srcAttr);
             result.append("\" />");
-        } else if (pseudo.equals("style")) {
-            nextStyle = value;
-            result.append(value); // because getContent is called once more with this
         } else { // other pseudo attribute
-            // ignore
+            result.append(value); // because getFlatValue is called once more with this
         }
         if (hrefValue != null) {
             result.append("</a>");
             column.setHrefValue(null);
         }
         return result.toString();
-    } // getContent
+    } // getFlatValue
+    
+    /** Gets a string assignment suitable for the <em>style=</em> or <em>style=</em> attribute
+     *  of an HTML element, or for Javascript.
+     *  @param js whether to generate the assignment for Javascript
+     *  @param styleOrClass either a single word which becomes the className, 
+     *  or a string containing a colon which becomes the CSS style definition(s)
+     *  @return resulting attribute assignment as a string, for example
+     *  <pre>
+     *     class="red"
+     *     style="color:white;background-color:red;" 
+     *
+     *     ){className="red";}
+     *     .style){color="white";backgroundColor="red";} 
+     *  </pre>
+     */
+    private String getStyleOrClass(boolean js, String styleOrClass) {
+    	StringBuffer result = new StringBuffer(64);
+    	int colonPos = styleOrClass.indexOf(':');
+    	if (js) {
+			if (colonPos < 0) { // class
+	   			result.append("){className=\"");
+    			result.append(styleOrClass);
+    			result.append("\";");
+			} else { // style(s)
+	   			result.append(".style){");
+				String[] pairs = styleOrClass.split("\\;");
+				int ipair = 0;
+				while (ipair < pairs.length) {
+					String style[] = pairs[ipair].split("\\:");
+					if (style.length == 2) {
+						int minusPos = style[0].indexOf("-");
+						if (minusPos >= 0 && minusPos < style[0].length() - 2) {
+							result.append(style[0].substring(0, minusPos));
+							result.append(style[0].substring(minusPos + 1, minusPos + 2).toUpperCase());
+							result.append(style[0].substring(minusPos + 2));
+						} else {
+							result.append(style[0]);
+						}
+						result.append("=\"");						
+						result.append(style[1]);
+						result.append("\";");						
+					} else {
+						// silently ignore pairs with no or more than 2 colons
+					}
+					ipair ++;
+				} // while isty
+			} // style(s)
+			result.append("}"); // for 'with' statement
+    		// Javascript
+    	} else { // normale style or class attribute
+   			result.append(colonPos < 0 ? " class" : " style");
+	    	result.append("=\"");
+    		result.append(styleOrClass);
+    		result.append("\"");
+    	} // normal
+    	return result.toString();
+	} // getStyleOrClass
 
     /** Name of class in stylesheet which causes visible   values in control change columns */
     private static final String VISIBLE   = "visible";
@@ -484,13 +538,13 @@ public class HTMLTable extends XMLTable {
                         }
                         if (false) { // several classes separated by space?
                         } else if (nextStyle != null && nextStyle.length() > 0) {
-                            result.append(" class=\"" + nextStyle + "\"");
+                            result.append(getStyleOrClass(false, nextStyle));
                         } else if (style     != null && style    .length() > 0) {
-                            result.append(" class=\"" + style + "\"");
+                            result.append(getStyleOrClass(false,     style));
                         }
                         nextStyle = null;
                         result.append('>');
-                        result.append(column.getValue()); // impl1: getContent(column));
+                        result.append(column.getValue());
                         result.append("</td>");
                     } else if (pseudo.equals("style")) {
                         nextStyle = column.getValue();
@@ -503,15 +557,14 @@ public class HTMLTable extends XMLTable {
                 } // while icol
                 if (nextStyle != null) { // pseudo column with style behind all real columns => Javascript sets style on row
                     result.append("\n<script type=\"text/javascript\">");
-                    result.append("document.getElementById(\"tab");
+                    result.append("with(document.getElementById(\"tab");
                     result.append(String.valueOf(tableSeqNo));
                     result.append("\").rows[");
                     result.append(String.valueOf(tableRowNo));
-                    result.append("].className = \"");
-                    result.append(nextStyle);
-                    result.append("\";</script>");
+                    result.append("]");
+                    result.append(getStyleOrClass(true, nextStyle));
+                    result.append("</script>");
                 } // behind all => apply it to entire <tr> element (row)
-
                 result.append("</tr>");
                 charWriter.println(result.toString());
                 tableRowNo ++;
@@ -544,7 +597,7 @@ public class HTMLTable extends XMLTable {
                         }
                         nextStyle = null;
                         result.append('>');
-                        result.append(column.getValue()); // impl1: getContent(column));
+                        result.append(column.getValue());
                         result.append("</td>");
                     } else if (pseudo.equals("style")) {
                         nextStyle = column.getValue();

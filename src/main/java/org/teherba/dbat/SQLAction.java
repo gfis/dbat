@@ -1439,8 +1439,6 @@ public class SQLAction implements Serializable {
      *  @param stResults result set from JDBC execute
      */
     private void serializeQueryResults(TableMetaData tbMetaData, String selectSql, ResultSet stResults) {
-        boolean impl2 = false;
-        // debug = 1;
         String value = "";
         TableColumn column = null;
         BaseTable tbSerializer  = config.getTableSerializer();
@@ -1461,7 +1459,6 @@ public class SQLAction implements Serializable {
             if (aggregateName != null) {
                 tbMetaData.setAggregateColumn(aggregateName, tbMetaData.getAggregationSeparator());
             }
-
             boolean intoParm = tbMetaData.getAggregateIndex() == TableMetaData.AGGR_PARAMS;
             if (! intoParm) {
                 tbSerializer.startTable(showTableName, tbMetaData);
@@ -1475,22 +1472,10 @@ public class SQLAction implements Serializable {
                     // we count from 0, but JDBC counts from 1 (c.f. "icol + 1" below)
                     column = tbMetaData.getColumn(icol);
                     setColumnResult(column, stResults, icol);
-                    if (debug >= 1) {
-                    	System.err.println("1QR.hrefValue=\"" + column.getHrefValue() 
-                    				+ "\", value=\""          + column.getValue() + "\""
-                    				);
-                  	}
-                    column.setValue(tbSerializer.getContent(column));
-                    // column.setHrefValue(null);
-                    if (debug >= 1) {
-                    	System.err.println("2QR.hrefValue=\"" + column.getHrefValue() 
-                    				+ "\", value=\""          + column.getValue() + "\""
-                    				);
-                  	}
+                    column.setValue(tbSerializer.getFlatValue(column));
                     icol ++;
                 } // while icol #1
                 int aggregateChange = tbMetaData.getAggregateChange();
-                if (debug >= 1) System.err.println("htmlRowCount=" + htmlRowCount + ", aggregateChange=" + aggregateChange);
                 switch (aggregateChange) {
                     case TableMetaData.AGGR_CHANGED: // some change in non-aggregate columns, print old (aggregated) row
                         tbMetaData.writePreviousRow(tbSerializer, this.isWithHeaders(), htmlRowCount, columnCount);
@@ -1498,11 +1483,7 @@ public class SQLAction implements Serializable {
                         break;
                     case TableMetaData.AGGR_EMPTY: // first input row - remember it only (below)
                         if (tbMetaData.isPivot()) {
-                        	if (impl2) {
-	                            tbMetaData.addPivotColumn();
-	                        } else {
-                            	tbMetaData.addPivotColumn(tbSerializer);
-                            }
+                           	tbMetaData.addPivotColumn(tbSerializer);
                         }
                         break;
                     case TableMetaData.AGGR_NOT_SET: // feature not set, print current row unconditionally
@@ -1523,25 +1504,13 @@ public class SQLAction implements Serializable {
                         break;
                     default: // >= 0, no change in non-aggregate columns, must aggregate
                         if (tbMetaData.isPivot()) {
-                        	if (impl2) {
-	                            tbMetaData.addPivotColumn();
-	                        } else {
-	                            tbMetaData.addPivotColumn(tbSerializer);
-	                        }
+                            tbMetaData.addPivotColumn(tbSerializer);
                         } else {
-                        	if (impl2) {
-	                            tbMetaData.aggregateColumn();
-	                        } else {
-                            	tbMetaData.aggregateColumn(tbSerializer);
-							}
+                           	tbMetaData.aggregateColumn(tbSerializer);
                         }
                         break;
                 } // switch aggregateChange
-               	if (impl2) {
-	                tbMetaData.rememberRow();
-    			} else {
-                	tbMetaData.rememberRow(tbSerializer);
-                }
+               	tbMetaData.rememberRow(tbSerializer);
                 if (sqlRowCount % maxCommit == 0) { 
                     tbSerializer.writeCommit(sqlRowCount); // some modes insert a COMMIT statement here
                 }

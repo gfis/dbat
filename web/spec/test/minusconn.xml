@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2012-10-19: Dr. Georg Fischer
+-->
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		title="minusconn"
+		>
+	<comment lang="en">Spec without Connection Id</comment>
+	
+    <ht:h3>Spec without Connection Id</ht:h3>
+    Current connection id: <ht:strong><ht:em><parm name="conn" /></ht:em></ht:strong>
+    <ht:form method="get">
+        <ht:input label="Table Name" name="tabname" maxsize="20" size="10" init="c01" />
+        <ht:input name="conn" type="hidden" />
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+
+    <select>
+        <col label="Number of Rows"    	>count(*)</col>
+        <from><parm name="tabname" /></from>
+	</select>
+
+</dbat>

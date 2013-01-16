@@ -525,7 +525,7 @@ public class XMLTable extends BaseTable {
                     TableColumn column = columnList.get(icol);
                     if (! column.getValue().equals("null")) { // c.f. SQLAction.separateURLfromValue.displayValue
                         charWriter.print("<td>" 
-                        		+ columnList.get(icol).getValue() // impl1: + getContent(columnList.get(icol)) 
+                        		+ columnList.get(icol).getValue()
                         		+ "</td>");
                     } else { // == null
                         charWriter.print("<td isnull=\"yes\"></td>");

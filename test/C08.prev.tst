@@ -33,15 +33,15 @@ WHERE name like '%r%';
 <table id="tab1"><!-- table_not_specified -->
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1999</td><td>Martha</td><td>Freiburg</td><td>&amp;</td><td>1909-11-17</td>
-<script type="text/javascript">document.getElementById("tab1").rows[1].className = "red";</script></tr>
+<script type="text/javascript">with(document.getElementById("tab1").rows[1]){className="red";}</script></tr>
 <tr><td align="right">1945</td><td>Eberhard</td><td>Groß-Gerau</td><td>&gt;</td><td>1912-11-17</td>
-<script type="text/javascript">document.getElementById("tab1").rows[2].className = "blu";</script></tr>
+<script type="text/javascript">with(document.getElementById("tab1").rows[2]){className="blu";}</script></tr>
 <tr><td align="right">1995</td><td>Fritz</td><td>Waldshut</td><td>&lt;</td><td>1907-08-08</td>
-<script type="text/javascript">document.getElementById("tab1").rows[3].className = "red";</script></tr>
+<script type="text/javascript">with(document.getElementById("tab1").rows[3]){className="red";}</script></tr>
 <tr><td align="right">1999</td><td>Maria</td><td>Hermsdorf</td><td>#</td><td>1914-09-17</td>
-<script type="text/javascript">document.getElementById("tab1").rows[4].className = "red";</script></tr>
+<script type="text/javascript">with(document.getElementById("tab1").rows[4]){className="red";}</script></tr>
 <tr><td align="right">1985</td><td>Dorothea</td><td>Lübars</td><td>$</td><td>1910-02-07</td>
-<script type="text/javascript">document.getElementById("tab1").rows[5].className = "blu";</script></tr>
+<script type="text/javascript">with(document.getElementById("tab1").rows[5]){className="blu";}</script></tr>
 <tr><td class="counter" colspan="6">5 Persons</td></tr>
 </table>
 

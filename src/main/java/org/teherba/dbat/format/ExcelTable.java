@@ -235,7 +235,7 @@ public class ExcelTable extends BaseTable {
                             result.append("String");
                         }
                         result.append("\">");
-                        result.append(getContent(column));
+                        result.append(column.getValue());
                         nextStyle = null;
                         result.append("</Data></Cell>");
                         result.append(newline);
