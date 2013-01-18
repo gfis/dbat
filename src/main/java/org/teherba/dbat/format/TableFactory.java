@@ -31,26 +31,9 @@
  */
 package org.teherba.dbat.format;
 import  org.teherba.dbat.format.BaseTable;
-import  org.teherba.dbat.format.DefaultSpecTable; // XML files suitable for processing by SpecificationHandler
-import  org.teherba.dbat.format.EchoSQL;
-import  org.teherba.dbat.format.ExcelTable;
-import  org.teherba.dbat.format.FixedWidthTable;
-import  org.teherba.dbat.format.GenerateSQLJ;
-import  org.teherba.dbat.format.HTMLTable;
-import  org.teherba.dbat.format.JDBCTable;
-import  org.teherba.dbat.format.JSONTable;
-import  org.teherba.dbat.format.ProbeSQL;
-import  org.teherba.dbat.format.SeparatedTable;
-import  org.teherba.dbat.format.SQLTable;
-import  org.teherba.dbat.format.SQLUpdateTable;
-import  org.teherba.dbat.format.TableGenerator;
-import  org.teherba.dbat.format.TayloredTable;
-import  org.teherba.dbat.format.TransformedTable;
-import  org.teherba.dbat.format.WikiTable;
-import  org.teherba.dbat.format.XMLTable;
-import  java.util.Arrays; // asList
+import  org.teherba.dbat.format.HTMLTable; // this is the default
+import  java.util.ArrayList;
 import  java.util.Iterator;
-import  java.util.List;
 import  java.util.StringTokenizer;
 import  org.apache.log4j.Logger;
 
@@ -67,48 +50,61 @@ public class TableFactory {
     /** Set of Tables for different file formats */
     private BaseTable[] allTables;
     
+    /** Array of serializers for different output formats */
+    private ArrayList<BaseTable> serializers;
+
+    /** Attempts to instantiate the serializer for some output format
+     *  @param serializerName name of the class for the serializer
+     */
+    private void addSerializer(String serializerName) {
+        try {
+            BaseTable serializer = (BaseTable) Class.forName("org.teherba.dbat.format." + serializerName).newInstance();
+            serializers.add(serializer);
+        } catch (Exception exc) {
+        	// ignore any error silently - this output format will not be known
+        }
+    } // addSerializer
+
     /** No-args Constructor
      */
     public TableFactory() {
         log = Logger.getLogger(TableFactory.class.getName());
-        allTables = new BaseTable[] { null
-                // the following order is HTML first, then by pleasant descriptions 
-                // this order defines the one in the menue of more.jsp 
-                , new HTMLTable         ()     // [0] is the default
-                , new ExcelTable        ()
-                , new XMLTable          () 
-                , new FixedWidthTable   () 
-                , new SeparatedTable    () 
-                , new SQLTable          () 
-                , new SQLUpdateTable    () 
-                , new JDBCTable         () 
-                , new JSONTable         () 
-                , new DefaultSpecTable  () 
-                , new TayloredTable     () 
-                , new TransformedTable  () 
-                , new TableGenerator    ()
-                , new WikiTable         ()
-                , new EchoSQL           ()
-                , new GenerateSQLJ      ()
-                , new ProbeSQL          ()
-                }; 
-    } // Constructor
+        try {
+            serializers = new ArrayList<BaseTable>(32);
+            addSerializer("HTMLTable"         );
+            addSerializer("ExcelTable"        );
+            addSerializer("XMLTable"          ); 
+            addSerializer("FixedWidthTable"   ); 
+            addSerializer("SeparatedTable"    ); 
+            addSerializer("SQLTable"          ); 
+            addSerializer("SQLUpdateTable"    ); 
+            addSerializer("JDBCTable"         ); 
+            addSerializer("JSONTable"         ); 
+            addSerializer("DefaultSpecTable"  ); 
+            addSerializer("TayloredTable"     ); 
+            addSerializer("TransformedTable"  ); 
+            addSerializer("TableGenerator"    );
+            addSerializer("WikiTable"         );
+            addSerializer("EchoSQL"           );
+            addSerializer("GenerateSQLJ"      );
+            addSerializer("ProbeSQL"          );
+        } catch (Exception exc) {
+        	log.error(exc.getMessage(), exc);
+        }
+    } // Constructor(0)
 
     /** Gets an iterator over all implemented Tables.
      *  @return list iterator over <em>allTables</em>
      */
     public Iterator /*<1.5*/<BaseTable>/*1.5>*/ getIterator() {
-        List /*<1.5*/<BaseTable>/*1.5>*/ list = Arrays.asList(allTables);
-        Iterator /*<1.5*/<BaseTable>/*1.5>*/ result = list.iterator();
-        result.next(); // skip initial null element
-        return result;
+        return serializers.iterator();
     } // getIterator
     
     /** Gets the number of available Tables
      *  @return number of formats which can be spelled
      */
     public int getCount() {
-        return allTables.length - 1; // omit element [0] (== null)
+        return serializers.size(); // omit element [0] (== null)
     } // getCount
     
     /** Determines whether the format code denotes this 
@@ -133,29 +129,28 @@ public class TableFactory {
      *  format was not found
      */
     public BaseTable getTableSerializer(String format) {
-        BaseTable baseTable = allTables[0];
+        BaseTable result = null;
         // determine the applicable BaseTable for 'format'
-        int itab = 1;
-        boolean found = false;
-        while (itab < allTables.length) {
-            if (isApplicable(allTables[itab], format)) { // found
-                baseTable = allTables[itab];
-                itab = allTables.length; // break loop
-                found = true;
+        Iterator<BaseTable> siter = getIterator();
+        boolean notFound = true;
+        while (notFound && siter.hasNext()) {
+            BaseTable serializer = siter.next();
+            if (isApplicable(serializer, format)) { // found
+				result = serializer;
+                notFound = false;
             } // if found
-            itab ++;
-        } //  while itab
-        if (! found) {
+        } //  while not found
+        if (notFound) {
             log.error("unknown format " + format);
+            result = new HTMLTable();
             format = "html";
-            baseTable = allTables[1]; // HTML = default
         } 
-        baseTable.setOutputFormat(format);
-        return baseTable;
+        result.setOutputFormat(format);
+        return result;
     } // getTableSerializer
 
     /** Gets a plain text list of formatting codes and
-     *  their descrioption, for help text output
+     *  their description, for help text output
      *  @param language ISO country code: "de", "en"
      *  @return plain text list with one line per format
      */
@@ -165,7 +160,7 @@ public class TableFactory {
         }
         StringBuffer result = new StringBuffer(256);
         final String SPACES = "                "; // 16 x ' '     
-        Iterator /*<1.5*/<BaseTable>/*1.5>*/ titer = this.getIterator();
+        Iterator <BaseTable> titer = getIterator();
         while (titer.hasNext()) {
             BaseTable tableFormat = (BaseTable) titer.next();
             result.append("  ");

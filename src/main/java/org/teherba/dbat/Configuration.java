@@ -28,7 +28,6 @@
 package org.teherba.dbat;
 import  org.teherba.common.CommandTokenizer;
 import  org.teherba.dbat.format.BaseTable;
-import  org.teherba.dbat.format.TableFactory;
 import  org.teherba.xtrans.BaseTransformer;
 import  java.io.Serializable;
 import  java.io.File;
@@ -441,13 +440,13 @@ public class Configuration implements Serializable {
     /** Output format serializer */
     private BaseTable tableSerializer;
     /** Gets the output format serializer
-     *  @return tableSerializer a format class delivered from {@link TableFactory}
+     *  @return tableSerializer an output format class
      */
     public BaseTable getTableSerializer() {
         return tableSerializer;
     } // getTableSerializer
     /** Sets the output format serializer
-     *  @param tableSerializer a format class delivered from {@link TableFactory}
+     *  @param tableSerializer an output format class
      */
     public void setTableSerializer(BaseTable tableSerializer) {
         this.tableSerializer = tableSerializer;
