@@ -1483,7 +1483,7 @@ public class SQLAction implements Serializable {
                         break;
                     case TableMetaData.AGGR_EMPTY: // first input row - remember it only (below)
                         if (tbMetaData.isPivot()) {
-                           	tbMetaData.addPivotColumn(tbSerializer);
+                            tbMetaData.addPivotColumn(tbSerializer);
                         }
                         break;
                     case TableMetaData.AGGR_NOT_SET: // feature not set, print current row unconditionally
@@ -1506,11 +1506,11 @@ public class SQLAction implements Serializable {
                         if (tbMetaData.isPivot()) {
                             tbMetaData.addPivotColumn(tbSerializer);
                         } else {
-                           	tbMetaData.aggregateColumn(tbSerializer);
+                            tbMetaData.aggregateColumn(tbSerializer);
                         }
                         break;
                 } // switch aggregateChange
-               	tbMetaData.rememberRow(tbSerializer);
+                tbMetaData.rememberRow(tbSerializer);
                 if (sqlRowCount % maxCommit == 0) { 
                     tbSerializer.writeCommit(sqlRowCount); // some modes insert a COMMIT statement here
                 }
@@ -1527,7 +1527,7 @@ public class SQLAction implements Serializable {
                 tbSerializer.writeTableFooter(htmlRowCount, sqlRowCount >= fetchLimit, tbMetaData);
             } // withHeaders
             if (! intoParm) {
-            	tbSerializer.writeCommit(sqlRowCount);
+                tbSerializer.writeCommit(sqlRowCount);
                 tbSerializer.endTable();
             }
         } catch (Exception exc) {

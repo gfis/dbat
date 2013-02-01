@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2013-02-01: Dr. Georg Fischer
+-->
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang="en" 
+        conn="worddb" 
+        title="fragment01"
+        >
+    <comment lang="en">Select with fragment in link</comment>
+    <comment lang="de">Abfrage mit Fragment im Link</comment>
+    
+    <ht:h3>Select with fragment in link</ht:h3>
+    <ht:form method="get">
+        <ht:input label="Name" name="name" maxsize="20" size="10" init="%" />
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+    <select limit="2048">
+        <col label="Name" link="test.color09&amp;fragment=&amp;name=">
+            concat(concat(concat('#block', mod((select count(name) from c01 where name like '<parm name="name" />%'), 4)), '='), name)
+        </col>
+        <col label="University" >univ</col>
+        <col label="Year"  align="right">year</col>
+        <col label="Gender"     >gender</col>
+        <col label="Birthdate"  >birth</col>
+        <from>c01</from>
+        <where>name like '<parm name="name" />%'
+        </where>
+        <counter desc="Person,s"/>
+    </select>
+</dbat>

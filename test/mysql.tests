@@ -2,6 +2,7 @@
 
 # Collection of Testcases for Dbat with MySQL driver
 # @(#) $Id: all.tca 955 2012-06-05 07:22:59Z gfis $
+# 2013-02-01: web/spec/test/fragment01.xml
 # 2013-01-05: rm U0*, add TL1-4, UR1-7
 # 2012-11-24: for RegressionTester
 # 2012-11-22: new H03, H04, TN1, TN2; explicit QUERY_STRING 
@@ -664,6 +665,10 @@ HTTP spec=test/color08
 
 TEST C09 web with class/style colors on columns and rows
 HTTP spec=test/color09
+#-------------------
+# Fragment test
+TEST FR1 fragment at the end of the URL
+HTTP spec=test.color09 fragment= name=Johannes#block2
 #-------------------
 # Raw input tests (-r)
 TEST R00 clear pivot table for raw input test

@@ -1,5 +1,6 @@
 /*  Selects the applicable table generator
     @(#) $Id$
+    2013-01-18: dynamic, with Class.forName
     2012-06-16: GenerateSQLJ
     2012-05-22: JSONTable for Ajax 
     2011-09-10: TableGenerator, -m gen
@@ -9,7 +10,7 @@
     2011-04-08: TransformedTable
     2010-07-24: ExcelTable, -m xls
     2010-06-16: EchoSQL, -m echo
-    2010-02-26: default HTML; getTableSerializer in favour of getTableWriter (now deprecated)
+    2010-02-26: default HTML; getTableSerializer in favour of getTableWriter 
     2010-02-23: DefaultSpecTable, -m spec
     2008-02-07: Sassnitz, Dorothea * 98 Jahre
     2007-01-12: copied from XtransFactory
@@ -100,11 +101,11 @@ public class TableFactory {
         return serializers.iterator();
     } // getIterator
     
-    /** Gets the number of available Tables
+    /** Gets the number of available Tables (for example for HTML listboxes)
      *  @return number of formats which can be spelled
      */
     public int getCount() {
-        return serializers.size(); // omit element [0] (== null)
+        return serializers.size(); // omit element [0] (= null)
     } // getCount
     
     /** Determines whether the format code denotes this 

@@ -1,5 +1,6 @@
 /*  TableColumn - bean with properties of an abstract column 
     @(#) $Id$
+    2013-02-01: getHrefValue: move fragment to the end
     2012-05-08: {s|g}etDir(char) vs. {s|g}etDirection(String)
     2012-01-16: setDir, setWidth(String)
     2012-01-10: whitespace in URL makes no sense
@@ -295,13 +296,29 @@ public class TableColumn implements Cloneable {
      *  @return link with parameters
      */
     public String getHrefValue() {
-        return hrefValue;
+      return this.hrefValue;
     } // getHrefValue
     /** Sets the value of the HTML link to another servlet, with filled parameters 
      *  @param hrefValue URL with filled parameters for the current column
      */
     public void setHrefValue(String hrefValue) {
-        this.hrefValue = hrefValue;
+        String result = hrefValue;
+        if (hrefValue != null) {
+            int fragPos = hrefValue.indexOf("%23"); // '#'
+            if (fragPos < 0) {
+            	fragPos = hrefValue.indexOf('#'); 
+            }
+            if (fragPos >= 0) { // with fragment
+            	System.err.println("fragmented: " + hrefValue);
+                int ampPos = hrefValue.indexOf('&', fragPos);
+                if (ampPos >= 0) { // there are parameters behind '#': move fragment to the end
+                    result = hrefValue.substring(0, fragPos) 
+                           + hrefValue.substring(ampPos) 
+                           + hrefValue.substring(fragPos, ampPos).replaceAll("%23", "#");
+                } // move fragment
+            } // with '#'
+        } // != null
+        this.hrefValue = result;
     } // setHrefValue
     //----------------    
     /** index in an output (HTML) table: 0, 1, 2 */
