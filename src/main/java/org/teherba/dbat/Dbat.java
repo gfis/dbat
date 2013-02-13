@@ -225,7 +225,7 @@ public class Dbat implements Serializable {
             XMLReader xmlReader = saxParser.getXMLReader();
             xmlReader.setFeature("http://xml.org/sax/features/namespaces"           , true);
             xmlReader.setFeature("http://xml.org/sax/features/validation"           , true);
-            xmlReader.setFeature("http://xml.org/sax/features/use-entity-resolver2" , true);
+            // xmlReader.setFeature("http://xml.org/sax/features/use-entity-resolver2" , true);
             xmlReader.setEntityResolver(handler.getEntityResolver());
             try { // protect against XML errors
                 saxParser.parse(new InputSource(charReader), handler);

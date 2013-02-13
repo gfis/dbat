@@ -354,6 +354,12 @@ HTTP spec=test.redir0
 
 TEST Y09 redirected spec file, wait time 3 s, German
 HTTP spec=test.redir3
+
+TEST Y10 rewriting with JavaScript - when
+HTTP spec=test.rewrite DB2SYS=DB2N
+
+TEST Y11 rewriting with JavaScript - otherwise
+HTTP spec=test.rewrite DB2SYS=DB2I
 #-------------------
 # console page
 TEST SC1 show SQL console page
