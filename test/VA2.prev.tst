@@ -10,8 +10,8 @@
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
 </head><body>
 
-    <!--Test of a <var> element with data types-->
-    <!--Test des <var>-Elements mit Datentypen-->
+    <!--Test of a &lt;var&gt; element with data types-->
+    <!--Test des &lt;var&gt;-Elements mit Datentypen-->
             
     <h2><a href="servlet?spec=test.index">Test</a> - Test of a <var> element with data types</h2>
     <form method="get" action="servlet?spec=test/var02"><input name="spec" type="hidden" value="test/var02" />

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     @(#) $Id$
+    2013-08-14: no &lt; in comment
     2012-05-25, Dr. Georg Fischer
 -->
 <dbat 	xmlns   ="http://www.teherba.org/2007/dbat" 
@@ -11,8 +12,8 @@
 		lang="en"
 		title="test/var01"
 		>
-	<comment lang="en">Test of a &lt;var&gt; element</comment>
-	<comment lang="de">Test des &lt;var&gt;-Elements</comment>
+	<comment lang="en">Test of the var element</comment>
+	<comment lang="de">Test des var-Elements</comment>
 			
 	<ht:h2><ht:a href="servlet?spec=test.index">Test</ht:a> - Test of a &lt;var&gt; element</ht:h2>
     <ht:form method="get">

@@ -159,7 +159,7 @@ TEST CN3 counter with 1 result
 HTTP spec=test/counter01 name=Ilse
 
 TEST CN4 counter with 2 results
-HTTP spec=test/counter01 name=Ma%25
+HTTP spec=test/counter01 name=Ma%
 
 TEST CN5 counter with 0 results
 HTTP spec=test/counter01 name=x
@@ -488,7 +488,7 @@ TEST S13 select as Wiki text
 CALL Dbat -m wiki  -f web/spec/test/selec02.xml
 
 TEST W14 select as CSV, separator=semicolon
-HTTP spec=test/includer&name=%25r&mode=csv&sep=*
+HTTP spec=test/includer&name=%r&mode=csv&sep=*
 #-------------------
 # describe table
 TEST D01 describe table
@@ -660,7 +660,7 @@ HTTP spec=test/color04
 TEST C05 web colors, Excel
 HTTP spec=test/color04 mode=xls
 
-TEST C06 CLI with column element
+TEST C06 CLI with column element (fails if MySQL does not know "||" concatenation)
 CALL Dbat -m html -f web/spec/test/column02.xml
 
 TEST C07 web with column element
@@ -981,7 +981,7 @@ TEST V03 search for M
 HTTP spec=test.crud03 view=sear search_name=M family=Ritter birth= gender=M place= decease=
 
 TEST V04 update place of Maria
-HTTP spec=test.crud03 search_value_1=M search_gender=%27 name=Maria family=Ritter view=upd
+HTTP spec=test.crud03 search_value_1=M search_gender=' name=Maria family=Ritter view=upd
 
 TEST V05 place updated
 HTTP spec=test.crud03 view=upd2 search_name= search_family=Ritter name=Maria family=Ritter birth=1914-09-17 gender=F place=Berlin-Hermsdorf decease=1999 changed=current_timestamp user=testuser
@@ -1000,7 +1000,7 @@ HTTP spec=test.crud03 view=del2 search_name= search_family=Ritter name=Teherba f
 #-------------------
 # static SQL
 TEST VA1 var element
-HTTP spec=test.var01 name=%25
+HTTP spec=test.var01 name=%
 
 TEST VA2 var elements with data types
 HTTP spec=test.var02 name=M

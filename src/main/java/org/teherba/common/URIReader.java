@@ -174,8 +174,17 @@ public class URIReader {
 				} else if (unresid.matches("\\w+\\:.*")) { 
 					// the JVM has handlers in rt.jar!/sun/net/www/protocol/* for 
 					//   file: ftp: gopher: http: https: jar: mailto: netdoc:
-					inputURI = new URI(unresid);
-					URL url = inputURI.toURL();
+					int colonPos = unresid.indexOf(':');
+					int sharpPos = unresid.indexOf('#');
+					if (sharpPos < 0) {
+						sharpPos = unresid.length(); // behind the end
+					}
+					inputURI = new URI(unresid.substring(0, colonPos)
+							, unresid.substring(colonPos + 1, sharpPos)
+							, (sharpPos >= unresid.length() ? null : unresid.substring(sharpPos + 1))
+							);
+					// URL url = inputURI.toURL();
+					URL url = new URL(inputURI.toASCIIString());
 					if (! unresid.startsWith("mailto:")) { 
 						charReader = new BufferedReader(new InputStreamReader(url.openStream(), this.encoding));
 					} // else still unreadable

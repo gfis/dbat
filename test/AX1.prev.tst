@@ -66,7 +66,7 @@ ORDER BY 1;
 		&#xa0;&#xa0;<a href="servlet?spec=test/crud01">Back</a> to the search form
 	</form>
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/ajax01.xml" type="text/plain">test/ajax01</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.ajax01&amp;search_crit_2=&amp;birth=&amp;search_crit_3=&amp;search_crit_1=&amp;display=female&amp;display=male&amp;code=F&amp;code=M&amp;lang=en&amp;family=&amp;name=Ilse&amp;gender=M&amp;decease=&amp;place=">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.ajax01&amp;search_crit_2=&amp;birth=&amp;search_crit_3=&amp;search_crit_1=&amp;display=female&amp;display=male&amp;code=F&amp;code=M&amp;lang=en&amp;family=&amp;name=Ilse&amp;gender=M&amp;decease=&amp;place=">more</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.ajax01&amp;birth=&amp;search_crit_2=&amp;search_crit_3=&amp;search_crit_1=&amp;family=&amp;name=Ilse&amp;gender=M&amp;display=female&amp;display=male&amp;code=F&amp;code=M&amp;decease=&amp;place=&amp;lang=en">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.ajax01&amp;birth=&amp;search_crit_2=&amp;search_crit_3=&amp;search_crit_1=&amp;family=&amp;name=Ilse&amp;gender=M&amp;display=female&amp;display=male&amp;code=F&amp;code=M&amp;decease=&amp;place=&amp;lang=en">more</a>
 
 </body></html>

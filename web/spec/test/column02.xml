@@ -39,7 +39,7 @@
         <column>
         	<label>Name</label>
  			<href>servlet?spec=test/selec01&amp;name=&amp;year=</href>
-       		<sql>concat(name, concat('=f.', name))</sql>
+       		<sql>name || '=f.' || name</sql>
        		</column>
         <column>
         	<label>University</label>

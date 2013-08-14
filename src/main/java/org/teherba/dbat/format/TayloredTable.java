@@ -4,7 +4,7 @@
 	2011-08-12: revised, print the template in end row
     2011-07-19, Dr. Georg Fischer: copied from SeparatedTable
     
-    Uses URIREader for the template file behind -u, and test cases U*
+    Uses URIReader for the template file behind -u, and test cases U*
 */
 /*
  * Copyright 2011 Dr. Georg Fischer <punctum at punctum dot kom>

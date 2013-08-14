@@ -1,5 +1,7 @@
 /*  Reader for text file, returns a string without any whitespace
  *  @(#) $Id$
+ *	2013-08-15: classpath from System property
+ *  2013-07-03: URL encoding
  *  2013-01-05: works with new CommandTokenizer.split()
  *  2012-11-24: copied from ramath/src...
  *  2012-11-06, Georg Fischer: copied from ExpressionReader
@@ -31,6 +33,7 @@ import  java.io.PrintStream;
 import  java.lang.Process;
 import  java.lang.Runtime;
 import  java.lang.reflect.Method;
+import  java.net.URLEncoder;
 import  java.util.ArrayList;
 import  java.util.Date;
 import  java.util.HashMap;
@@ -43,11 +46,11 @@ import  org.apache.log4j.Logger;
  *  files (*.prev.tst) or generates new output files (*.this.tst) and compares them
  *  to the reference files. A typical activation is:
  *  <pre>
- *	java -cp dist/dbat.jar org.teherba.common.RegressionTester test/mysql.tests "*" 2>&1 | tee regression_mysql.log.tmp
+ *  java -cp dist/dbat.jar org.teherba.common.RegressionTester test/mysql.tests "*" 2>&1 | tee regression_mysql.log.tmp
  *  </pre>
  *  @author Dr. Georg Fischer
  */
-public class RegressionTester { 
+public class RegressionTester {
     public final static String CVSID = "@(#) $Id$";
 
     /** log4j logger (category) */
@@ -55,7 +58,7 @@ public class RegressionTester {
 
     /** current date and time when this class is instatiated */
     private String timestamp;
-    
+
     /** extension of files generated for DATA */
     private static final String DATA_EXTENSION = "tmp";
 
@@ -67,7 +70,7 @@ public class RegressionTester {
     private static final String nl      = System.getProperty("line.separator");
     /** System-specific file separator ("/" for Unix, "\" for Windows */
     private static final String slash   = System.getProperty("file.separator");
-    
+
     /** No-args Constructor
      */
     public RegressionTester() {
@@ -81,20 +84,20 @@ public class RegressionTester {
     //************************
 
     /** Replaces macro calls of the form <em>$(macroname)</em> by the content of the macro
-     *  which was previously defined by a line 
+     *  which was previously defined by a line
      *  <pre>
      *      macroname=content
      *  </pre>
      *  @param line string where macro calls should be replaced
      *  @return line with macro calls replaced
-     */ 
+     */
     public String replaceMacros(String line) {
         StringBuffer result = new StringBuffer(line);
         int pos1 = 0;
         String replacement = "";
         while ((pos1 = result.indexOf("$(")) >= 0) {
             int pos2 = result.indexOf(")", pos1);
-            if (pos2 > pos1 + 2) { // 
+            if (pos2 > pos1 + 2) { //
                 String macroName = result.substring(pos1 + 2, pos2); // at least 1 char
                 replacement = macros.get(macroName);
                 if (replacement == null) {
@@ -113,7 +116,7 @@ public class RegressionTester {
      *  @param separator String which separates the elements
      *  @param elements array of Strings
      *  @return elements joined by the separator
-     */ 
+     */
     public String join(String separator, String[] elements) {
         StringBuffer result = new StringBuffer(256);
         int ielem = 0;
@@ -132,10 +135,10 @@ public class RegressionTester {
     //************************
 
     /** Reads a text file and interprets the test instructions therein.
-     *  @param args name of a file (or "-" for STDIN) which contains the test cases, and an optional 
+     *  @param args name of a file (or "-" for STDIN) which contains the test cases, and an optional
      *  test case name pattern (with Linux or SQL wildcard characters)
      */
-    public void runTests(String[] args) {  
+    public void runTests(String[] args) {
         long startMillis = System.currentTimeMillis();
         String directory = ".";
         String fileName = "-";
@@ -155,8 +158,8 @@ public class RegressionTester {
         String ext = ".tst"; // extension for result files
         Runtime runtime = Runtime.getRuntime(); // for command execution
         Process process = null;
-        PrintStream realStdOut = System.out; // System.out is redirected (with setOut) 
-        PrintStream realStdErr = System.err; // System.err is redirected (with setErr) 
+        PrintStream realStdOut = System.out; // System.out is redirected (with setOut)
+        PrintStream realStdErr = System.err; // System.err is redirected (with setErr)
         Class<?> targetClass = null; // for reflective method invocation
         Method mainMethod  = null;
         String classPrefix = "org.teherba."; // default for PACKAGE macro
@@ -170,7 +173,7 @@ public class RegressionTester {
         int    failedCount = 0; // number of tests which showed a 'diff'erence
         int    recreatedCount = 0; // number of tests for which there was no previous result file
         String logText = null; // for test files and STDOUT
-    	String[] replacements = null; /* replacement patterns and their substitutions in consecutive elements */
+        String[] replacements = null; /* replacement patterns and their substitutions in consecutive elements */
 
         int iarg = 0;
         if (args.length > iarg) {
@@ -179,18 +182,17 @@ public class RegressionTester {
         String testNamePattern = "*";
         if (args.length > iarg) {
             testNamePattern = args[iarg ++];
-        }                      
+        }
         testNamePattern = testNamePattern
                 .replaceAll("[\\*\\%]", ".*")
                 .replaceAll("[\\?]", ".")
                 ;
-        
         try {
-            Pattern verbPattern = Pattern.compile("(\\w+=?)\\s*(.*)"); // Pattern for verbs at start of testLine  
+            Pattern verbPattern = Pattern.compile("(\\w+=?)\\s*(.*)"); // Pattern for verbs at start of testLine
             Pattern callPattern = Pattern.compile("(\\S+)\\s*(.*)"); // CALL className arguments
             Pattern testPattern = Pattern.compile("(\\S+)\\s*(.*)"); // TEST testName comment
 
-			// Open the file with the testcases
+            // Open the file with the testcases
             BufferedReader testCaseReader = null;
             if(fileName.equals("-")) { // STDIN
                 testCaseReader = new BufferedReader(new InputStreamReader(System.in, tcaEncoding));
@@ -201,24 +203,24 @@ public class RegressionTester {
             } // not STDIN
             // System.err.println("fileName=" + fileName + ", directory=" + directory);
 
-			// read the replacement patterns, if possible
+            // read the replacement patterns, if possible
             File replFile = new File(directory + "/regression.properties");
             if (replFile.exists()) {
                 BufferedReader replReader = new BufferedReader(new FileReader(replFile));
                 ArrayList<String> result = new ArrayList<String>(16);
                 while ((line = replReader.readLine()) != null) {
-                	if (! line.matches("\\A\\s*\\#.*")) { // ignore comments
-                		// System.err.println("\"" + line + "\"");
-	                    result.add(line);
-                	}
+                    if (! line.matches("\\A\\s*\\#.*")) { // ignore comments
+                        // System.err.println("\"" + line + "\"");
+                        result.add(line);
+                    }
                 } // while lines
                 replReader.close();
                 replacements = result.toArray(new String[0]);
-	            // System.err.println(replacements.length + " elements in replacements[]");
-			} // replFile exists
+                // System.err.println(replacements.length + " elements in replacements[]");
+            } // replFile exists
 
             boolean busy = true; // used to read a fictional "TEST" line at the end
-            while ((testLine = testCaseReader.readLine()) != null || busy) { // read and process lines              
+            while ((testLine = testCaseReader.readLine()) != null || busy) { // read and process lines
                 if (testLine == null && busy) {
                     testLine = "TEST END";
                     busy = false;
@@ -234,12 +236,12 @@ public class RegressionTester {
                     Matcher verbMatcher = verbPattern.matcher(testLine);
                     if (verbMatcher.matches()) {
                         String verb     = verbMatcher.group(1).toUpperCase();
+                        String rest     = verbMatcher.group(2).trim();
                         String separ    = " ";
                         if (verb.endsWith("=")) {
                             separ = "=";
                             verb = verb.substring(0, verb.length() - 1);
                         } // endsWith =
-                        String rest     = verbMatcher.group(2);
                         int ipart = 0;
                         // System.err.println("verb=" + verb + ", rest=" + rest);
                         if (! skipping && dataBuffer.length() > 0) { // data buffer is filled
@@ -249,11 +251,11 @@ public class RegressionTester {
                             dataStream.close();
                             dataBuffer.setLength(0);
                         } // data buffer was filled
-                        
+
                         if (separ.startsWith("=")) { // macro definition
                             if (false) {
                             } else if (verb.equals("ARGS")) {
-                                argsPrefix = rest.trim() + (rest.length() == 0 ? "" : " ");
+                                argsPrefix = rest + (rest.length() == 0 ? "" : " ");
                                 macros.put(verb, argsPrefix);
                             } else if (verb.equals("PACKAGE")) {
                                 classPrefix = rest + (rest.endsWith(".") ? "" : ".");
@@ -262,7 +264,7 @@ public class RegressionTester {
                                 baseURL     = rest + (rest.endsWith("?") ? "" : "?");
                                 macros.put(verb, baseURL);
                             } else if (verb.equals("XSLT")) {
-                                xsltPrefix = rest.trim() + " ";
+                                xsltPrefix = rest + " ";
                                 macros.put(verb, xsltPrefix);
                             } else {
                                 macros.put(verb, rest);
@@ -283,7 +285,7 @@ public class RegressionTester {
                                     if (prevFile.exists()) { // run diff prev this
                                         cmd = "diff -C0 "   + prevName + " " + thisName;
                                         process = runtime.exec(cmd);
-                                        // System.out.println(cmd);            
+                                        // System.out.println(cmd);
                                         reader = new BufferedReader(new InputStreamReader(process.getInputStream(), logEncoding));
                                         int iline = 0;
                                         while ((line = reader.readLine()) != null) {
@@ -301,13 +303,13 @@ public class RegressionTester {
                                     } else { // no prevFile - copy this file to prevFile
                                         cmd = "cp "         + thisName + " " + prevName;
                                         process = runtime.exec(cmd);
-                                        System.out.println(cmd);            
+                                        System.out.println(cmd);
                                         recreatedCount ++;
                                         realStdOut.println("========> recreated  "                          + testName + " " + testDesc);
-                                    } // copy   
+                                    } // copy
                                 } // ! skipping
                             } // previous TEST
-                            
+
                             // now start of a new TEST
                             Matcher testMatcher = testPattern.matcher(rest);
                             if (testMatcher.matches()) {
@@ -324,10 +326,10 @@ public class RegressionTester {
                                 realStdOut.println();
                                 thisName = directory + slash + testName + ".this" + ext;
                                 if (replacements == null) {
-	                                thisStream = new TimestampFilterStream(thisName, logEncoding);
-	                            } else {
-	                                thisStream = new TimestampFilterStream(thisName, logEncoding, replacements);
-	                            }
+                                    thisStream = new TimestampFilterStream(thisName, logEncoding);
+                                } else {
+                                    thisStream = new TimestampFilterStream(thisName, logEncoding, replacements);
+                                }
                                 System.setOut(thisStream);
                                 System.setErr(System.out);
                                 dataBuffer.setLength(0);
@@ -343,7 +345,8 @@ public class RegressionTester {
                                 String className = classPrefix + callMatcher.group(1);
                                 String argsStr   = argsPrefix  + callMatcher.group(2);
                                 String[] parts   = CommandTokenizer.split(argsStr);
-                                logText = "java -cp dist/dbat.jar " + className + " " + argsStr;
+                                logText = "java -cp " + System.getProperty("java.class.path") + " "
+                                        + className + " " + argsStr;
                                 realStdOut.println(logText);
                                 // realStdErr.println("args: " + join("|", parts));
                                 targetClass = Class.forName(className); //, true, RegressionTester.class.getClassLoader());
@@ -369,7 +372,18 @@ public class RegressionTester {
                              } // while ignoring
 
                         } else if (verb.equals("HTTP")) {
-                            String requestURL = baseURL + rest.trim().replaceAll("\\s+", "&");
+                        /*
+                            String requestURL = baseURL +
+                                    URLEncoder.encode(rest.trim().replaceAll("\\s+", "&"), "UTF-8")
+                                    .replaceAll("%3[Dd]", "=")
+                                    .replaceAll("%23", "#")
+                                    .replaceAll("%26", "&")
+                                    ;
+                        */
+                            String requestURL = baseURL + rest.trim()
+                            		.replaceAll("\\s+", "&")
+                            		.replaceAll("\\+", " ")
+                                    ;
                             logText = "http \"" + requestURL + "\"";
                             realStdOut.println(logText);
                             URIReader urlReader = new URIReader(requestURL);
@@ -394,7 +408,7 @@ public class RegressionTester {
                         } else { // maybe it is a defined macro activation
                             String value = macros.get(verb);
                             if (value != null) { // macro is defined
-                                
+
                             } // defined macro
                         } // maybe macro
                     } else if (! skipping) { // no verb starts in column 1
@@ -403,14 +417,14 @@ public class RegressionTester {
                     }
                 } // verb starting in column 1
             } // while ! eof
-            realStdOut.printf("%4d tests recreated," , recreatedCount); 
+            realStdOut.printf("%4d tests recreated," , recreatedCount);
             realStdOut.println();
-            realStdOut.printf("%4d tests FAILED,"    , failedCount); 
+            realStdOut.printf("%4d tests FAILED,"    , failedCount);
             realStdOut.println();
-            realStdOut.printf("%4d tests passed"     , passedCount); 
+            realStdOut.printf("%4d tests passed"     , passedCount);
             realStdOut.print(" in " + (System.currentTimeMillis() - startMillis) + " ms");
             realStdOut.println();
-            testCaseReader.close();           
+            testCaseReader.close();
             System.setOut(realStdOut);
             System.setErr(realStdErr);
         } catch (Exception exc) {
@@ -433,7 +447,7 @@ public class RegressionTester {
      *  testNamePattern may use Linux or SQL wildcard characters (% = wildcard).
      */
     public static void main(String[] args) {
-        (new RegressionTester()).runTests(args); 
+        (new RegressionTester()).runTests(args);
     } // main
 
 } // RegressionTester

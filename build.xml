@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!--
  * Copyright 2006 Dr. Georg Fischer <punctum at punctum dot kom>
  *
@@ -55,26 +55,26 @@
     </target>                                               
 
     <target name="not_yet_generate">
-	<!-- 
-		generate content.xml and a fragment for web.xml from *.properties, as described in
-		http://stackoverflow.com/questions/162079/how-to-merge-jsp-pre-compiled-web-xml-fragment-with-main-web-xml-using-ant
-	-->
-		<loadfile property="generated.web.xml.fragment" srcFile="${generated.fragment.file}" />
-		<copy file="${orig-web-content.dir}/WEB-INF/web.xml" toFile="${generated-web-content.dir}/WEB-INF/web.xml">
-			<filterset>
-		    	<filter token="JDBC_MAP" value=" --&gt; ${generated.web.xml.fragment} &lt;!-- " />
-		    </filterset>
-		</copy>
+    <!-- 
+        generate content.xml and a fragment for web.xml from *.properties, as described in
+        http://stackoverflow.com/questions/162079/how-to-merge-jsp-pre-compiled-web-xml-fragment-with-main-web-xml-using-ant
+    -->
+        <loadfile property="generated.web.xml.fragment" srcFile="${generated.fragment.file}" />
+        <copy file="${orig-web-content.dir}/WEB-INF/web.xml" toFile="${generated-web-content.dir}/WEB-INF/web.xml">
+            <filterset>
+                <filter token="JDBC_MAP" value=" --&gt; ${generated.web.xml.fragment} &lt;!-- " />
+            </filterset>
+        </copy>
     </target>                                               
 
     <target name="regression" depends="regression_mysql" /><!-- run a regression test -->
     <target name="regression_mysql">
-		<java classname="org.teherba.common.RegressionTester" classpathref="compile.classpath" fork="true">
-			<jvmarg value="-Djdk.net.registerGopherProtocol=true" /><!-- strange, but gopher is usually disabled because of a security problem -->
-			<arg value="test/mysql.tests" />
-			<arg value="${test}" />
-		</java>
-	</target>
+        <java classname="org.teherba.common.RegressionTester" classpathref="compile.classpath" fork="true">
+            <jvmarg value="-Djdk.net.registerGopherProtocol=true" /><!-- strange, but gopher is usually disabled because of a security problem -->
+            <arg value="test/mysql.tests" />
+            <arg value="${test}" />
+        </java>
+    </target>
 
     <target name="test" depends="deploy,test.command,test.servlet,test.service" />
     <target name="test.command"><!-- run the program from the commandline -->
