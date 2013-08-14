@@ -37,7 +37,7 @@ ORDER BY 1;
 </table>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/order01.xml" type="text/plain">test/order01</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Forder01&amp;name=Mar&amp;lang=en">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Forder01&amp;name=Mar&amp;lang=en">more</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Forder01&amp;lang=en&amp;name=Mar">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Forder01&amp;lang=en&amp;name=Mar">more</a>
 
 </body></html>

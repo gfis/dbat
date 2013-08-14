@@ -62,7 +62,7 @@ WHERE name = 'Maria'
 
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/crud03.xml" type="text/plain">test/crud03</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;lang=en&amp;search_family=&amp;family=Ritter&amp;name=Maria&amp;gender=M&amp;search_value_1=M&amp;decease=&amp;place=&amp;search_gender=%27">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;lang=en&amp;search_family=&amp;family=Ritter&amp;name=Maria&amp;gender=M&amp;search_value_1=M&amp;decease=&amp;place=&amp;search_gender=%27">more</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.crud03&amp;family=Ritter&amp;name=Maria&amp;search_value_1=M&amp;search_gender=%27&amp;lang=en&amp;search_name=&amp;search_family=&amp;gender=M&amp;birth=&amp;place=&amp;decease=">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.crud03&amp;family=Ritter&amp;name=Maria&amp;search_value_1=M&amp;search_gender=%27&amp;lang=en&amp;search_name=&amp;search_family=&amp;gender=M&amp;birth=&amp;place=&amp;decease=">more</a>
 
 </body></html>

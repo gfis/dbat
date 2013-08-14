@@ -25,7 +25,7 @@
    		
    	
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/choose07.xml" type="text/plain">test/choose07</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;par=29-06&amp;spec=test%2Fchoose07&amp;lang=en">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;par=29-06&amp;spec=test%2Fchoose07&amp;lang=en">more</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fchoose07&amp;par=29-06&amp;lang=en">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fchoose07&amp;par=29-06&amp;lang=en">more</a>
 
 </body></html>

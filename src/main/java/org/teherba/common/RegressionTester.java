@@ -1,6 +1,6 @@
 /*  Reader for text file, returns a string without any whitespace
  *  @(#) $Id$
- *	2013-08-15: classpath from System property
+ *  2013-08-14: classpath from System property, URL encoding
  *  2013-07-03: URL encoding
  *  2013-01-05: works with new CommandTokenizer.split()
  *  2012-11-24: copied from ramath/src...
@@ -381,8 +381,8 @@ public class RegressionTester {
                                     ;
                         */
                             String requestURL = baseURL + rest.trim()
-                            		.replaceAll("\\s+", "&")
-                            		.replaceAll("\\+", " ")
+                                    .replaceAll("\\s+", "&")
+                                    .replaceAll("\\+", " ")
                                     ;
                             logText = "http \"" + requestURL + "\"";
                             realStdOut.println(logText);

@@ -38,7 +38,7 @@ COMMIT;
 </pre></td></tr></table>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/describe.xml" type="text/plain">describe</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=describe&amp;table=spec_ind&amp;lang=en">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=describe&amp;table=spec_ind&amp;lang=en">more</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=describe&amp;lang=en&amp;table=spec_ind">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=describe&amp;lang=en&amp;table=spec_ind">more</a>
 
 </body></html>

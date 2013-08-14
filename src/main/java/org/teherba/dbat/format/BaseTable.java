@@ -43,6 +43,7 @@ import  java.sql.DatabaseMetaData;
 import  java.sql.Types;
 import  java.util.ArrayList; // for 'columns'
 import  java.util.HashMap;
+import  java.util.Map;
 import  java.util.Iterator;
 import  java.util.TreeMap;
 import  org.apache.log4j.Logger;
@@ -501,7 +502,7 @@ public abstract class BaseTable {
      *  @param parameterMap map of request parameters to values
      *  @return a block of lines of ENTITY definitions terminated by newlines
      */
-    public String getEntitiesFromParameters(HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
+    public String getEntitiesFromParameters(Map/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
         StringBuffer result = new StringBuffer(256);
         Iterator<String> parmIter = parameterMap.keySet().iterator();
         while (parmIter.hasNext()) {

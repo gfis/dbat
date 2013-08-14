@@ -119,7 +119,7 @@ ORDER BY 1,2;
 	
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/crud03.xml" type="text/plain">test/crud03</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;display=female&amp;display=male&amp;code=F&amp;code=M&amp;lang=en&amp;search_family=Ritter&amp;family=Ritter&amp;name=Teherba&amp;gender=M&amp;decease=&amp;place=&amp;user=&amp;update_count=0&amp;search_gender=">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.crud03&amp;birth=&amp;search_name=&amp;display=female&amp;display=male&amp;code=F&amp;code=M&amp;lang=en&amp;search_family=Ritter&amp;family=Ritter&amp;name=Teherba&amp;gender=M&amp;decease=&amp;place=&amp;user=&amp;update_count=0&amp;search_gender=">more</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.crud03&amp;search_family=Ritter&amp;birth=&amp;family=Ritter&amp;name=Teherba&amp;search_name=&amp;gender=M&amp;decease=&amp;place=&amp;lang=en&amp;update_count=0&amp;code=F&amp;code=M&amp;display=female&amp;display=male&amp;search_gender=&amp;user=">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.crud03&amp;search_family=Ritter&amp;birth=&amp;family=Ritter&amp;name=Teherba&amp;search_name=&amp;gender=M&amp;decease=&amp;place=&amp;lang=en&amp;update_count=0&amp;code=F&amp;code=M&amp;display=female&amp;display=male&amp;search_gender=&amp;user=">more</a>
 
 </body></html>

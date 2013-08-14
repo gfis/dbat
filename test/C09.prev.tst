@@ -132,7 +132,7 @@ WHERE name like '%';
 
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/color09.xml" type="text/plain">test/color09</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fcolor09&amp;name=&amp;lang=en">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fcolor09&amp;name=&amp;lang=en">more</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fcolor09&amp;lang=en&amp;name=">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fcolor09&amp;lang=en&amp;name=">more</a>
 
 </body></html>

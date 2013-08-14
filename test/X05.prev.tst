@@ -27,7 +27,7 @@
 </table>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/callproc.xml" type="text/plain">test/callproc</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fcallproc&amp;part=&amp;update_count=1&amp;lang=en">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fcallproc&amp;part=&amp;update_count=1&amp;lang=en">more</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fcallproc&amp;lang=en&amp;part=&amp;update_count=1">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fcallproc&amp;lang=en&amp;part=&amp;update_count=1">more</a>
 
 </body></html>

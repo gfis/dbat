@@ -10,8 +10,8 @@
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
 </head><body>
 
-    <!--Test of a &lt;var&gt; element with data types-->
-    <!--Test des &lt;var&gt;-Elements mit Datentypen-->
+    <!--Test of the var element with data types-->
+    <!--Test des var-Elements mit Datentypen-->
             
     <h2><a href="servlet?spec=test.index">Test</a> - Test of a <var> element with data types</h2>
     <form method="get" action="servlet?spec=test/var02"><input name="spec" type="hidden" value="test/var02" />
@@ -44,7 +44,7 @@ ORDER BY 1;
 </table>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/var02.xml" type="text/plain">test/var02</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.var02&amp;birth=1800-01-01&amp;name=M&amp;decease=1800&amp;lang=en&amp;changed=1900-01-01+00%3A00%3A00">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.var02&amp;birth=1800-01-01&amp;name=M&amp;decease=1800&amp;lang=en&amp;changed=1900-01-01+00%3A00%3A00">more</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.var02&amp;name=M&amp;lang=en&amp;birth=1800-01-01&amp;decease=1800&amp;changed=1900-01-01+00%3A00%3A00">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.var02&amp;name=M&amp;lang=en&amp;birth=1800-01-01&amp;decease=1800&amp;changed=1900-01-01+00%3A00%3A00">more</a>
 
 </body></html>

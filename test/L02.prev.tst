@@ -80,7 +80,7 @@ ORDER BY 3;
 </table>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/listbox.xml" type="text/plain">test/listbox</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Flistbox&amp;birthchar=1914&amp;namebox=J&amp;namebox=E&amp;lang=en&amp;birthint=1910">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Flistbox&amp;birthchar=1914&amp;namebox=J&amp;namebox=E&amp;lang=en&amp;birthint=1910">more</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Flistbox&amp;birthchar=1914&amp;namebox=J&amp;namebox=E&amp;birthint=1910&amp;lang=en">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Flistbox&amp;birthchar=1914&amp;namebox=J&amp;namebox=E&amp;birthint=1910&amp;lang=en">more</a>
 
 </body></html>

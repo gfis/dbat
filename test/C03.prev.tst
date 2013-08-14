@@ -45,7 +45,7 @@ FROM c01;
 </table>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./web/spec/test/color04.xml" type="text/plain">web/spec/test/color04.xml</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;name=%25r&amp;lang=en">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;name=%25r&amp;lang=en">more</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;lang=en&amp;name=%25r">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;lang=en&amp;name=%25r">more</a>
 
 </body></html>

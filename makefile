@@ -38,6 +38,8 @@ regression_mysql:
 # Handle with care! 
 # Failing testcases are turned into "passed" and are manifested by this target!
 recreate: recr1 regr2 regression
+recr0:
+	grep -E '> FAILED' regression_*.log.tmp | cut -f 3 -d ' ' | xargs -l -ißß echo rm -v test/ßß.prev.tst
 recr1:
 	grep -E '> FAILED' regression_*.log.tmp | cut -f 3 -d ' ' | xargs -l -ißß rm -v test/ßß.prev.tst
 regr2:

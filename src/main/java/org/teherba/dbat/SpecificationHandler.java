@@ -69,6 +69,7 @@ import  java.text.SimpleDateFormat;
 import  java.util.ArrayList;
 import  java.util.HashMap;
 import  java.util.Iterator;
+import  java.util.LinkedHashMap;
 import  java.util.Map;
 import  javax.servlet.ServletContext;
 import  javax.servlet.http.HttpServletRequest;
@@ -162,11 +163,11 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
      *  The SAX handler will take parameter values from here when
      *  it encounters a <code>&lt;parm&gt;</code> element.
      */
-    private HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap;
+    private LinkedHashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap;
     /** Gets the parameter (placeholder) map
      *  @return the locally stored parameter map
      */
-    public HashMap/*<1.5*/<String, String[]>/*1.5>*/ getParameterMap() {
+    public Map/*<1.5*/<String, String[]>/*1.5>*/ getParameterMap() {
         return parameterMap;
     } // getParameterMap
 
@@ -174,7 +175,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
      *  @param map set the parameter map to this object
      */
     public void setParameterMap(Map/*<1.5*/<String, String[]>/*1.5>*/  map) {
-        parameterMap = new HashMap/*<1.5*/<String, String[]>/*1.5>*/();
+        parameterMap = new LinkedHashMap/*<1.5*/<String, String[]>/*1.5>*/();
         Iterator<String> piter = map.keySet().iterator();
         while (piter.hasNext()) {
             String key = piter.next();

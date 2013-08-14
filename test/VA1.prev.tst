@@ -10,8 +10,8 @@
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
 </head><body>
 
-	<!--Test of a &lt;var&gt; element-->
-	<!--Test des &lt;var&gt;-Elements-->
+	<!--Test of the var element-->
+	<!--Test des var-Elements-->
 			
 	<h2><a href="servlet?spec=test.index">Test</a> - Test of a <var> element</h2>
     <form method="get" action="servlet?spec=test/var01"><input name="spec" type="hidden" value="test/var01" />

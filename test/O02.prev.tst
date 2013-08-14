@@ -35,7 +35,7 @@ WHERE name like '%r%' ORDER by birth limit 2;
 </table>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/order02.xml" type="text/plain">test/order02</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Forder02&amp;name=%25r&amp;lang=en">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Forder02&amp;name=%25r&amp;lang=en">more</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Forder02&amp;lang=en&amp;name=%25r">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Forder02&amp;lang=en&amp;name=%25r">more</a>
 
 </body></html>
