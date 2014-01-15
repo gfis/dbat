@@ -112,6 +112,30 @@ public class RegressionTester {
         return result.toString();
     } // replaceMacros
 
+    /** Replaces percent encoding by the corresponding ASCII character.
+     *  @param line string with embedded percent encoded ASCII characters
+     *  @return string with replaced characters
+     */
+    public String unPercent(String line) {
+        StringBuffer result = new StringBuffer(line);
+        int pos1 = 0;
+        while ((pos1 = result.indexOf("%", pos1)) >= 0) {
+        	pos1 ++;
+        	int ich = 32; // ' '
+        	if (pos1 < line.length() - 1 && Character.isLetterOrDigit(line.charAt(pos1))) { // hex pair follows
+        		try {
+        			ich = Integer.parseInt(result.substring(pos1, pos1 + 2), 16);
+        			if (ich != 0x2b) { // '+'
+		            	result.replace(pos1 - 1, pos1 + 2, new String(new byte[] { (byte) ich }));
+		            }
+        		} catch (Exception exc) { // no digits - continue
+        		}
+        	} // hex pair follows
+        	// pos1 is already behind the inserted character
+        } // while pos1
+        return result.toString();
+    } // unPercent
+
     /** Joins a String array
      *  @param separator String which separates the elements
      *  @param elements array of Strings
@@ -380,10 +404,12 @@ public class RegressionTester {
                                     .replaceAll("%26", "&")
                                     ;
                         */
-                            String requestURL = baseURL + rest.trim()
-                                    .replaceAll("\\s+", "&")
+                            String requestURL = baseURL + 
+                            		// unPercent
+                            		(rest.trim()
+                            		.replaceAll("\\s+", "&")
                                     .replaceAll("\\+", " ")
-                                    ;
+                                    );
                             logText = "http \"" + requestURL + "\"";
                             realStdOut.println(logText);
                             URIReader urlReader = new URIReader(requestURL);

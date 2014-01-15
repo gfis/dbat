@@ -1,5 +1,6 @@
-/*  TableColumn - bean with properties of an abstract column 
+/*  TableColumn - bean with properties of an abstract column
     @(#) $Id$
+    2014-01-15: inactivate fragment logic
     2013-02-01: getHrefValue: move fragment to the end
     2012-05-08: {s|g}etDir(char) vs. {s|g}etDirection(String)
     2012-01-16: setDir, setWidth(String)
@@ -36,33 +37,33 @@ import  org.apache.log4j.Logger;
 /** Bean with properties of an column of an abstract (internal) table definition
  *  (or for the parameter of a Stored Procedure),
  *  which is used to map database (SQL) columns to presentation (HTML, XML) table columns.
- *  The position of the column in the table's rows is not neccessarily the same as 
- *  the position in the corresponding SQL result set, nor is it the same as the 
+ *  The position of the column in the table's rows is not neccessarily the same as
+ *  the position in the corresponding SQL result set, nor is it the same as the
  *  column position in the resulting HTML table, because of:
  *  <ul>
- *  <li>pseudo columns used to set a style on the next HTML table 
+ *  <li>pseudo columns used to set a style on the next HTML table
  *  =&gt; SQL result set has more columns than HTML</li>
  *  </ul>
  *  Initially, all properties are undefined. They are either filled from
  *  an XML specification, from the metadata of the SQL table, or they are
- *  deduced from other properties of the same column. 
- *  For each output format,  only a subset of properties is needed and stored in 
+ *  deduced from other properties of the same column.
+ *  For each output format,  only a subset of properties is needed and stored in
  *  <code>BaseTable.currentColumn</code>.
  *  @author Dr. Georg Fischer
  */
-public class TableColumn implements Cloneable { 
+public class TableColumn implements Cloneable {
     public final static String CVSID = "@(#) $Id$";
     /** Debugging switch */
     private int debug = 0;
-    
+
     /** undefined SQL type (check against java.sql.Types) */
     public final static int NO_TYPE = 0x77777777;
-    
+
     //================
     // Construction
     //================
-    
-    /** No-argument constructor 
+
+    /** No-argument constructor
      */
     public TableColumn() {
     /*
@@ -75,7 +76,7 @@ public class TableColumn implements Cloneable {
         name        = "";
         pseudo      = "";
         remark      = "";
-    */              
+    */
         autoIncrement = -1; // unknown
         dataType    = NO_TYPE;
         decimal     = 0;
@@ -87,9 +88,9 @@ public class TableColumn implements Cloneable {
         style       = "";
         typeName    = "";
         value       = "";
-        width       = 0; // indicates that it can still be overriden from dbMetaData 
+        width       = 0; // indicates that it can still be overriden from dbMetaData
     } // no-args constructor
-    
+
     /** Constructor with name
      *  @param name name of the new column
      */
@@ -97,7 +98,7 @@ public class TableColumn implements Cloneable {
         this();
         setName(name);
     } // constructor(name)
-    
+
     /** Constructor with index
      *  @param index sequential number of the column: 0, 1, 2
      */
@@ -106,21 +107,21 @@ public class TableColumn implements Cloneable {
         this.index = index;
     //  setName("col" + index);
     } // Constructor(index)
-    
+
     /** Creates a deep copy of the object
      *  @return a new column with all properties of <em>this</em> column
      */
     public TableColumn clone() {
         TableColumn result = new TableColumn();
-        result.align        = this.align    ;   
-        result.autoIncrement= this.autoIncrement  ;     
+        result.align        = this.align    ;
+        result.autoIncrement= this.autoIncrement  ;
         result.dataType     = this.dataType ;
         result.decimal      = this.decimal  ;
         result.defaultValue = this.defaultValue   ;
-        result.dir          = this.dir;   
+        result.dir          = this.dir;
         result.expr         = this.expr     ;
         result.href         = this.href      ;
-        result.hrefValue    = this.hrefValue;   
+        result.hrefValue    = this.hrefValue;
         result.index        = this.index    ;
         result.key          = this.key      ;
         result.label        = this.label    ;
@@ -128,18 +129,18 @@ public class TableColumn implements Cloneable {
         result.name         = this.name     ;
         result.nullable     = this.nullable ;
         result.pseudo       = this.pseudo   ;
-        result.remark       = this.remark    ;   
+        result.remark       = this.remark    ;
         result.style        = this.style    ;
-        result.typeName     = this.typeName ;   
-        result.value        = this.value    ;   
+        result.typeName     = this.typeName ;
+        result.value        = this.value    ;
         result.width        = this.width    ;
         return result;
     } // clone
-    
+
     //=================================
     // Properties, setters and getters
     //=================================
-    
+
     /** HTML alignment for column values */
     private String align;
     /** Gets the alignment
@@ -154,22 +155,22 @@ public class TableColumn implements Cloneable {
     public void setAlign(String align) {
         this.align = align;
     } // setAlign
-    //----------------    
+    //----------------
     /** code for auto increment property of the column */
     private short autoIncrement;
     /** Gets the aut increment property
-     *  @return -1: unknown, 0: no auto increment, 1: auto increment 
+     *  @return -1: unknown, 0: no auto increment, 1: auto increment
      */
     public short getAutoIncrement() {
         return autoIncrement;
     } // getAutoIncremtent
     /** Sets the auto increment property of the column
-     *  @param autoIncrement = -1: unknown, 0: no auto increment, 1: auto increment 
+     *  @param autoIncrement = -1: unknown, 0: no auto increment, 1: auto increment
      */
     public void setAutoIncrement(short autoIncrement) {
         this.autoIncrement = autoIncrement;
     } // setAutoIncrement
-    //----------------    
+    //----------------
     /** SQL data type codes for the column */
     private int dataType;
     /** Gets the SQL data type of the column
@@ -184,7 +185,7 @@ public class TableColumn implements Cloneable {
     public void setDataType(int dataType) {
         this.dataType = dataType;
     } // setDataType
-    //----------------    
+    //----------------
     /** number of decimal places for numeric fields */
     private int decimal;
     /** Gets the number of decimal places
@@ -202,19 +203,19 @@ public class TableColumn implements Cloneable {
 
     /** default value for a column */
     private String defaultValue;
-    /** Gets the default value 
+    /** Gets the default value
      *  @return some string value
      */
     public String getDefault() {
         return defaultValue;
     } // getValue
-    /** Sets the default value 
+    /** Sets the default value
      *  @param defaultValue some string value
      */
     public void setDefault(String defaultValue) {
         this.defaultValue = defaultValue;
     } // setDefault
-    //----------------    
+    //----------------
     /** Direction for parameters of Stored Procedures: "in" ('i'), "out" ('o') or "inout" ('b') */
     private char dir;
     /** Gets the direction for parameters of Stored Procedures
@@ -230,7 +231,7 @@ public class TableColumn implements Cloneable {
         this.dir = dir;
     } // setDir
     /** Gets the direction for parameters of Stored Procedures
-     *  @return one of "in", "out" or "inout" 
+     *  @return one of "in", "out" or "inout"
      */
     public String getDirection() {
         String result = "in";
@@ -259,7 +260,7 @@ public class TableColumn implements Cloneable {
             }
         } // direction is filled
     } // setDirection
-    //----------------    
+    //----------------
     /** expression for SQL SELECT */
     private String expr;
     /** Gets the SQL expression
@@ -274,31 +275,31 @@ public class TableColumn implements Cloneable {
     public void setExpr(String expr) {
         this.expr = expr;
     } // setExpr
-    //----------------    
+    //----------------
     /** specification of an HTML link to another servlet */
     private String href;
-    /** Gets the HTML link to another servlet 
+    /** Gets the HTML link to another servlet
      *  @return link with parameters
      */
     public String getHref() {
         return href;
     } // getHref
-    /** Sets the HTML link to another servlet 
+    /** Sets the HTML link to another servlet
      *  @param href link with parameter name for current column
      */
     public void setHref(String href) {
         this.href = href.replaceAll("\\s",""); // whitespace in URL makes no sense
     } // setHref
-    //----------------    
+    //----------------
     /** the value of an HTML link to another servlet, with filled parameters */
     private String hrefValue;
-    /** Gets the value of the HTML link to another servlet, with filled parameters 
+    /** Gets the value of the HTML link to another servlet, with filled parameters
      *  @return link with parameters
      */
     public String getHrefValue() {
       return this.hrefValue;
     } // getHrefValue
-    /** Sets the value of the HTML link to another servlet, with filled parameters 
+    /** Sets the value of the HTML link to another servlet, with filled parameters
      *  @param hrefValue URL with filled parameters for the current column
      */
     public void setHrefValue(String hrefValue) {
@@ -306,21 +307,21 @@ public class TableColumn implements Cloneable {
         if (hrefValue != null) {
             int fragPos = hrefValue.indexOf("%23"); // '#'
             if (fragPos < 0) {
-            	fragPos = hrefValue.indexOf('#'); 
+            	fragPos = hrefValue.indexOf('#');
             }
             if (fragPos >= 0) { // with fragment
             	System.err.println("fragmented: " + hrefValue);
                 int ampPos = hrefValue.indexOf('&', fragPos);
-                if (ampPos >= 0) { // there are parameters behind '#': move fragment to the end
-                    result = hrefValue.substring(0, fragPos) 
-                           + hrefValue.substring(ampPos) 
+                if (false && ampPos >= 0) { // there are parameters behind '#': move fragment to the end
+                    result = hrefValue.substring(0, fragPos)
+                           + hrefValue.substring(ampPos)
                            + hrefValue.substring(fragPos, ampPos).replaceAll("%23", "#");
                 } // move fragment
             } // with '#'
         } // != null
         this.hrefValue = result;
     } // setHrefValue
-    //----------------    
+    //----------------
     /** index in an output (HTML) table: 0, 1, 2 */
     private int index;
     /** Gets the index in the HTML table
@@ -335,40 +336,40 @@ public class TableColumn implements Cloneable {
     public void setIndex(int index) {
         this.index = index;
     } // setIndex
-    //----------------    
+    //----------------
     /** key for update/delete actions */
     private String key;
-    /** Gets the key 
+    /** Gets the key
      *  @return comma separated string of key column names
      */
     public String getKey() {
         return key;
     } // getKey
-    /** Sets the key 
+    /** Sets the key
      *  @param key comma separated string of key column names
      */
     public void setKey(String key) {
         this.key = key;
     } // setKey
-    //----------------    
+    //----------------
     /** Label for table header */
     private String label;
-    /** Gets the label 
+    /** Gets the label
      *  @return string to be displayed in table header
      */
     public String getLabel() {
         return label;
     } // getLabel
-    /** Sets the label 
+    /** Sets the label
      *  @param label string to be displayed in table header
      */
     public void setLabel(String label) {
         this.label = label;
     } // setLabel
-    //----------------    
+    //----------------
     /** HTML link to another specification */
     private String link;
-    /** Gets the HTML link to another specification 
+    /** Gets the HTML link to another specification
      *  @return link with parameter name
      */
     public String getLink() {
@@ -380,7 +381,7 @@ public class TableColumn implements Cloneable {
     public void setLink(String link) {
         this.link = link.replaceAll("\\s",""); // whitespace in URL makes no sense
     } // setLink
-    //----------------    
+    //----------------
     /** name of the column */
     private String name;
     /** Gets the name of the column
@@ -395,10 +396,10 @@ public class TableColumn implements Cloneable {
     public void setName(String name) {
         this.name = name;
     } // setName
-    //----------------    
+    //----------------
     /** whether the (SQL) column is nullable */
     private boolean nullable;
-    /** Determines whether the column is nullable 
+    /** Determines whether the column is nullable
      *  @return true if the (SQL) column may contain NULL
      */
     public boolean isNullable() {
@@ -410,26 +411,26 @@ public class TableColumn implements Cloneable {
     public void setNullable(boolean nullable) {
         this.nullable = nullable;
     } // setNullable
-    //----------------    
+    //----------------
     /** whether the current SQL column needs some special processing, and which one
      */
     private String pseudo;
     /** Gets the pseudo property of a column
-     *  @return (for example) "style", "image" 
+     *  @return (for example) "style", "image"
      */
     public String getPseudo() {
         return pseudo;
     } // getPseudo
     /** Sets the pseudo property of a column
-     *  @param pseudo attribute, for example "style", "image" 
+     *  @param pseudo attribute, for example "style", "image"
      */
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
     } // setPseudo
-    //----------------    
+    //----------------
     /** Remark / comment for the column */
     private String remark;
-    /** Gets the remark 
+    /** Gets the remark
      *  @return comment for the column
      */
     public String getRemark() {
@@ -441,7 +442,7 @@ public class TableColumn implements Cloneable {
     public void setRemark(String remark) {
         this.remark = remark;
     } // setRemark
-    //----------------    
+    //----------------
     /** CSS style or class for HTML data cell value */
     private String style;
     /** Gets the CSS style or class from CSS file
@@ -458,7 +459,7 @@ public class TableColumn implements Cloneable {
     public void setStyle(String style) {
         this.style = style;
     } // setStyle
-    //----------------    
+    //----------------
     /** SQL data type names for the column */
     private String typeName;
     /** Gets the SQL data type name of the column
@@ -473,7 +474,7 @@ public class TableColumn implements Cloneable {
     public void setTypeName(String typeName) {
         this.typeName = typeName;
     } // setTypeName
-    //----------------    
+    //----------------
     /** String value of the column */
     private String value;
     /** Gets the value
@@ -488,7 +489,7 @@ public class TableColumn implements Cloneable {
     public void setValue(String value) {
         this.value = value;
     } // setValue
-    //----------------    
+    //----------------
     /** width of the column (in characters), or 0 if not defined */
     private int width;
     /** Gets the width of the column (in characters)
@@ -509,7 +510,7 @@ public class TableColumn implements Cloneable {
     public void setWidth(String width) {
         if (width != null && width.length() > 0) {
             try {
-                this.width = Integer.parseInt(width); 
+                this.width = Integer.parseInt(width);
             } catch (Exception exc) {
                 // ignore any wrong value
             }
@@ -549,12 +550,12 @@ public class TableColumn implements Cloneable {
                     }
                 }
             } // DECIMAL
-    
+
             int width = dbResults.getInt("COLUMN_SIZE");
             if (this.getWidth() == 0) {
                 this.setWidth(width);
             } // width
-            
+
             String align = this.getAlign();
             if (align == null) { // determine alignment
                 align = "left";
@@ -568,22 +569,22 @@ public class TableColumn implements Cloneable {
                 }
                 this.setAlign(align);
             } // determine alignment
-            
+
             String name = this.getName();
             if (name == null) {
                 name = dbResults.getString("COLUMN_NAME");
                 this.setName(name);
             } // name
-    
+
             this.setNullable(dbResults.getString("IS_NULLABLE").equalsIgnoreCase("NO"));
             this.setDefault (dbResults.getString("COLUMN_DEF"));
-    
+
             String remark = this.getRemark();
             if (remark == null) {
                 remark = dbResults.getString("REMARKS");
                 this.setRemark(remark);
             } // name
-            
+
             if (debug >= 2) {
                 System.err.println("TableColumn.completeColumn: " + toString());
             }
@@ -592,11 +593,11 @@ public class TableColumn implements Cloneable {
         }
     } // completeColumn
 
-    /** Gets a textual representation of the column attributes 
+    /** Gets a textual representation of the column attributes
      */
     public String toString() {
         StringBuffer result = new StringBuffer(128);
-        result.append("<column name=\""     + getName() 
+        result.append("<column name=\""     + getName()
                 + "\" index=\""             + getIndex()
                 + "\" typeName=\""          + getTypeName()
                 + "\" dataType=\""          + getDataType()
@@ -604,5 +605,5 @@ public class TableColumn implements Cloneable {
                 + "\" />");
         return result.toString();
     } // toString
-    
+
 } // TableColumn
