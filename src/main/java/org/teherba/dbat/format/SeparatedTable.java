@@ -1,7 +1,7 @@
 /*  Generator for a table with (comma, tab) separated values
     @(#) $Id$
-	2011-11-11: writeComment(line, verbose)
-	2011-08-24: writeGenericRow
+    2011-11-11: writeComment(line, verbose)
+    2011-08-24: writeGenericRow
     2011-02-02: writeRowCounter removed, writeComment prints a line
     2010-02-25: charWriter.write -> .print
     2007-01-12: copied from BaseTable
@@ -26,7 +26,7 @@ package org.teherba.dbat.format;
 import  org.teherba.dbat.format.BaseTable;
 
 /** Generator for a table with (comma, tab) separated values.
- *	This format is by default implemented in {@link BaseTable}.
+ *  This format is by default implemented in {@link BaseTable}.
  *  @author Dr. Georg Fischer
  */
 public class SeparatedTable extends BaseTable {
@@ -37,18 +37,18 @@ public class SeparatedTable extends BaseTable {
     public SeparatedTable() {
         super();
         setFormatCodes("csv,tsv");
-		setDescription("en", "Separated Values");
-		setDescription("de", "Werte mit Trennzeichen");
+        setDescription("en", "Separated Values");
+        setDescription("de", "Werte mit Trennzeichen");
     } // Constructor
 
     /** Writes a comment, but only if the "verbose" level is > 0.
      *  @param line string to be output as a comment
-     *	@param verbose level of output detail
+     *  @param verbose level of output detail
      */
     public void writeComment(String line, int verbose) {
-    	if (verbose > 0) {
-    		charWriter.println(line);
-    	}
+        if (verbose > 0) {
+            charWriter.println(line);
+        }
     } // writeComment(2)
 
 } // SeparatedTable

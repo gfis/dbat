@@ -1,5 +1,6 @@
 /*  Base class for file format representing table descriptions or results sets
     @(#) $Id$
+    2014-03-04: ignore pseudo columns
     2012-11-27: writeCommit
     2012-05-14: appendToParameters should not apply links
     2012-02-17: exception handling if stylesheet could not be compiled
@@ -433,7 +434,7 @@ public abstract class BaseTable {
      */
     private StringBuffer pseudoAttributes;
     /** Gets the remembered attributes string
-     *  @return concatenated attributes in the form <pre> attr1="val1" attr2="val2"</pre> 
+     *  @return concatenated attributes in the form <pre> attr1="val1" attr2="val2"</pre>
      */
     protected String getPseudoAttrs() {
         return pseudoAttributes.toString();
@@ -447,7 +448,7 @@ public abstract class BaseTable {
         pseudoAttributes.append(name);
         pseudoAttributes.append("=\"");
         pseudoAttributes.append(value);
-        pseudoAttributes.append("\"");        
+        pseudoAttributes.append("\"");
     } // appendPseudoAttr
     /** Clears the remembered attributes string
      */
@@ -460,7 +461,7 @@ public abstract class BaseTable {
      */
     private StringBuffer pseudoParameters;
     /** Gets the remembered parameters string
-     *  @return concatenated parameters in the form <pre>&parm1=val1&parm2=val2</pre> 
+     *  @return concatenated parameters in the form <pre>&parm1=val1&parm2=val2</pre>
      */
     protected String getPseudoParms() {
         return pseudoParameters.toString();
@@ -547,7 +548,7 @@ public abstract class BaseTable {
         while (icol < ncol) {
             TableColumn column = columnList.get(icol);
             String name = column.getName();
-            String newValue = columnList.get(icol).getValue(); 
+            String newValue = columnList.get(icol).getValue();
             Object obj = parameterMap.get(name);
             if (obj == null || rowIndex == 0) { // parameter undefined so far, or first row
                 parameterMap.put(name, new String[] { newValue });
@@ -880,26 +881,43 @@ public abstract class BaseTable {
      *  @param columnList contains the row to be written
      */
     public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList/*<1.5*/<TableColumn>/*1.5>*/ columnList) {
+        TableColumn column = null;
+        String pseudo = null;
         int ncol = columnList.size();
         int icol = 0;
+        boolean first = true;
         String separator = getSeparator();
         switch (rowType) {
             case HEADER:
+                first = true;
                 while (icol < ncol) {
-                    if (icol > 0) {
-                        charWriter.print(separator);
-                    }
-                    charWriter.print(columnList.get(icol).getLabel());
+                    column = columnList.get(icol);
+                    pseudo = column.getPseudo();
+                    if (pseudo == null) {
+                        if (first) {
+                            first = false;
+                        } else {
+                            charWriter.print(separator);
+                        }
+                        charWriter.print(columnList.get(icol).getLabel());
+                    } // ! pseudo
                     icol ++;
                 } // while icol
                 charWriter.println();
                 break;
             case DATA:
+                first = true;
                 while (icol < ncol) {
-                    if (icol > 0) {
-                        charWriter.print(separator);
-                    }
-                    charWriter.print(columnList.get(icol).getValue());
+                    column = columnList.get(icol);
+                    pseudo = column.getPseudo();
+                    if (pseudo == null) {
+                        if (first) {
+                            first = false;
+                        } else {
+                            charWriter.print(separator);
+                        }
+                        charWriter.print(columnList.get(icol).getValue());
+                    } // ! pseudo
                     icol ++;
                 } // while icol
                 charWriter.println();

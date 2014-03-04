@@ -5,7 +5,7 @@
 # 2013-02-01: web/spec/test/fragment01.xml
 # 2013-01-05: rm U0*, add TL1-4, UR1-7
 # 2012-11-24: for RegressionTester
-# 2012-11-22: new H03, H04, TN1, TN2; explicit QUERY_STRING 
+# 2012-11-22: new H03, H04, TN1, TN2; explicit QUERY_STRING
 # 2012-10-19: <counter> tests
 # 2012-06-19: GREP ... d{2})T => d{2})T
 # 2012-06-12: all clean again for github
@@ -35,7 +35,7 @@ TEST A02 parameterized link with parameters
 CALL Dbat -m html -p name=F -p year=2013 -f web/spec/test/parmlink.xml
 
 TEST A03 Web parameterized link with defaults
-HTTP spec=test/parmlink 
+HTTP spec=test/parmlink
 
 TEST A04 Web parameterized link with parameters
 HTTP spec=test/parmlink name=F year=2013
@@ -359,7 +359,7 @@ TEST Y10 rewriting with JavaScript - when
 HTTP spec=test.rewrite DB2SYS=DB2N
 
 TEST Y11 rewriting with JavaScript - otherwise
-HTTP spec=test.rewrite DB2SYS=DB2I
+HTTP spec=test.rewrite DB2SYS=DB2Iw
 #-------------------
 # console page
 TEST SC1 show SQL console page
@@ -417,7 +417,7 @@ CALL URIReader "web/noversion.txt"
 TEST UR7 data URI
 CALL URIReader "data:this+is%20the+text+to+be+read"
 #======================================================================
-# back to the main method of class Dbat 
+# back to the main method of class Dbat
 PACKAGE=org.teherba.dbat
 ARGS=-c etc/worddb.properties -e UTF-8
 
@@ -825,7 +825,7 @@ TEST CH3 choose conditional compilation, "other"
 CALL Dbat -m csv -s "-" -p switch=other -f web/spec/test/choose06.xml
 
 TEST CH4 choose conditional compilation, numeric
-HTTP spec=test/choose07 par=29 
+HTTP spec=test/choose07 par=29
 
 TEST CH5 choose conditional compilation, alphanumeric
 HTTP spec=test/choose07 par=gf
@@ -997,6 +997,27 @@ HTTP spec=test.crud03 search_name= search_family=Ritter name=Teherba family=Ritt
 
 TEST V09 Teherba deleted
 HTTP spec=test.crud03 view=del2 search_name= search_family=Ritter name=Teherba family=Ritter birth= gender=M place= decease=
+
+TEST V10 Show dbiv in wiki format
+HTTP spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=xml
+
+TEST V11 Show dbiv in Excel format
+HTTP spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=xls
+
+TEST V12 Show dbiv in fixed format
+HTTP spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=fix
+
+TEST V13 Show dbiv in separated format
+HTTP spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=csv
+
+TEST V14 Show dbiv in JSON format
+HTTP spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=json
+
+TEST V15 Show dbiv in SQL INSERT format
+HTTP spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=sql
+
+TEST V16 Show dbiv in SQL UPDATE format
+HTTP spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=update
 #-------------------
 # static SQL
 TEST VA1 var element

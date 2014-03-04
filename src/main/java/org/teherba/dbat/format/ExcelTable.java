@@ -1,4 +1,4 @@
-/*  Generator for an Excel 2003 XML table 
+/*  Generator for an Excel 2003 XML table
     @(#) $Id$
     2011-08-24: writeGenericRow
     2011-01-21: sheet names Select1, Select2 ...; translate to &apos; in character strings
@@ -30,7 +30,7 @@ import  java.util.HashMap;
 
 /** Generator for an Excel 2002 (Office 2003) XML table.
  *  The format is described in <a href="http://msdn.microsoft.com/en-us/library/aa140066%28office.10%29.aspx">http://msdn.microsoft.com/en-us/library/aa140066%28office.10%29.aspx</a>
- *  This is not to be confused with the <em>Office Open XML</em> of Office 2007, c.f. 
+ *  This is not to be confused with the <em>Office Open XML</em> of Office 2007, c.f.
  *  <a href="http://en.wikipedia.org/wiki/Microsoft_Office_XML_formats">http://en.wikipedia.org/wiki/Microsoft_Office_XML_formats</a>.
  *  <p>
  *  In contrast to the CSV import into Excel, this format avoids unwanted date format
@@ -46,7 +46,7 @@ public class ExcelTable extends BaseTable {
     private String encoding;
     /** sequential counter for Worksheets in a Workbook */
     private int sheetCounter;
-    
+
     /** No-args Constructor
      */
     public ExcelTable() {
@@ -110,7 +110,7 @@ public class ExcelTable extends BaseTable {
             log.error(exc.getMessage(), exc);
         }
     } // writeEnd
-    
+
     /** Initializes a table
      *  @param tableName name of the table
      */
@@ -118,8 +118,8 @@ public class ExcelTable extends BaseTable {
         try {
             sheetCounter ++;
             if (! xmlDeclared) {
-                writeStart(new String[] 
-                        { "encoding", encoding 
+                writeStart(new String[]
+                        { "encoding", encoding
                         }
                         , null
                         );
@@ -133,7 +133,7 @@ public class ExcelTable extends BaseTable {
             log.error(exc.getMessage(), exc);
         }
     } // startTable
-    
+
     /** Terminates  a table
      */
     public void endTable() {
@@ -168,9 +168,9 @@ public class ExcelTable extends BaseTable {
      *  </ul>
      */
     public int getEscapingRule() {
-        return 3; 
+        return 3;
     } // getEscapingRule
-    
+
     /** Writes a complete header, data or alternate data row with all tags and cell contents.
      *  @param rowType type of the generic row
      *  @param tbMetaData meta data for the table
@@ -188,11 +188,17 @@ public class ExcelTable extends BaseTable {
                 charWriter.print("<Row>");
                 while (icol < ncol) {
                     column = columnList.get(icol);
-                    String header = column.getLabel();
                     pseudo = column.getPseudo();
-                    if (pseudo != null && pseudo.equals("style")) {
-                        header = "col" + column.getIndex();
-                    } else {
+                    if (pseudo != null) {
+                        if (false) {
+                        } else if (pseudo.equals("style")) {
+                            nextStyle = null;
+                        }
+                    } else { // pseudo == null
+                        String header = column.getLabel();
+                        if (header == null) {
+                            header = "&nbsp;";
+                        }
                         charWriter.print("<Cell><Data ss:Type=\"String\">");
                         charWriter.print(header);
                         charWriter.println("</Data></Cell>");
@@ -216,7 +222,7 @@ public class ExcelTable extends BaseTable {
                         } else if (pseudo.equals("url")) {
                             nextLobURL = column.getValue();
                     */
-                        } 
+                        }
                     } else { // pseudo == null
                         result.append("<Cell");
                         if (column.getHrefValue() != null) {

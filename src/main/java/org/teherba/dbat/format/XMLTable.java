@@ -1,10 +1,11 @@
-/*  Generator for an XML table 
+/*  Generator for an XML table
     @(#) $Id$
+    2014-03-04: ignore pseudo columns
     2012-07-09: null values mit isnull="yes" attribute
     2011-12-16: describeProcedureColumns; 12 Jahre oo
     2011-08-24: writeGenericRow
     2011-04-27: excape < & >
-    2011-04-01: output of SpecHandler.DBAT_URI is suppressed with an attribute <dbat namespace="no" ...> 
+    2011-04-01: output of SpecHandler.DBAT_URI is suppressed with an attribute <dbat namespace="no" ...>
     2011-03-29: writeProcessingInstruction
     2011-03-23: <dbat xmlns=\"" + SpecHandler.DBAT_URI
     2010-02-25: charWriter.write -> .print
@@ -54,7 +55,7 @@ public class XMLTable extends BaseTable {
     protected boolean xmlDeclared;
     /** encoding for output */
     private String encoding;
-    
+
     /** No-args Constructor
      */
     public XMLTable() {
@@ -131,7 +132,7 @@ public class XMLTable extends BaseTable {
             log.error(exc.getMessage(), exc);
         }
     } // writeEnd
-    
+
     /** Initializes a table
      *  @param tableName name of the table
      */
@@ -148,7 +149,7 @@ public class XMLTable extends BaseTable {
             log.error(exc.getMessage(), exc);
         }
     } // startTable
-    
+
     /** Terminates  a table
      */
     public void endTable() {
@@ -160,7 +161,7 @@ public class XMLTable extends BaseTable {
     } // endTable
 
     /** Starts the description of a table with DROP table and CREATE TABLE
-     *  @param dbMetaData database metadata 
+     *  @param dbMetaData database metadata
      *  as obtained with <code>con.getMetaData()</code>
      *  @param schema    name of the table's schema, or null if none
      *  @param tableName name of the table
@@ -206,7 +207,7 @@ public class XMLTable extends BaseTable {
             int    dataType = column.getDataType();
             buffer.append(typeName);
             buffer.append("\"");
-            
+
             int width = column.getWidth();
             if (dataType == Types.CHAR || dataType == Types.VARCHAR || dataType == Types.DECIMAL) {
                 buffer.append(" width=\"");
@@ -237,7 +238,7 @@ public class XMLTable extends BaseTable {
             log.error(exc.getMessage(), exc);
         }
     } // describeColumn
-    
+
     /** Writes the description of any primary key of the table, for example (for SQL):
      *  <pre>
      *  , PRIMARY KEY (COL1, COL2)
@@ -264,8 +265,8 @@ public class XMLTable extends BaseTable {
                     pkName = "PK29"; // replace by some dummy constraint name
                 }
                 if (pkName.length() > 0) { // not first control change
-                    charWriter.println("\t<constraint name=\"" + pkName + "\" type=\"primary\">\n" 
-                            + pkColumnNames 
+                    charWriter.println("\t<constraint name=\"" + pkName + "\" type=\"primary\">\n"
+                            + pkColumnNames
                             + "\t</constraint>\n");
                 } // not first
                 pkName = newName;
@@ -274,12 +275,12 @@ public class XMLTable extends BaseTable {
             pkColumnNames += "\t\t\t<key name=\"" + oldRow.get("COLUMN_NAME") + "\" />\n";
         } // while all rows
     } // describePrimaryKey
-            
+
     /** Writes the closing bracket (if any) behind the column descriptions.
      */
     public void describeColumnsEnd() {
     } // describeColumnsEnd
-    
+
     /** Writes the description of all indexes
      *  @param tableName fully qualified name of the table
      *  @param cstRows array for the result set of <em>DatabaseMetaData.getIndexInfo</em>, properly sorted
@@ -302,7 +303,7 @@ public class XMLTable extends BaseTable {
             if (! newName.equals(ixName)) { // control change
                 String unique = oldRow.get("NON_UNIQUE");
                 if (ixName.length() > 0) { // not first control change
-                    charWriter.println("CREATE " 
+                    charWriter.println("CREATE "
                             + (unique == null ? "" : unique)
                             + "INDEX " + ixName + " ON " + tableName);
                     charWriter.println(ixColumnNames + "\t);");
@@ -314,10 +315,10 @@ public class XMLTable extends BaseTable {
         } // while all rows
     */
     } // describeIndexes
-    
+
     /** Writes the descriptions of all imported (foreign) key constraints as SQL of the form
      *  <pre>
-     *  ALTER TABLE tabname 
+     *  ALTER TABLE tabname
      *      ADD CONSTRAINT fkname1 REFERENCES pkTableName (fkColumnName1, ...)
      *          ON UPDATE ...
      *  </pre>
@@ -375,7 +376,7 @@ public class XMLTable extends BaseTable {
             , short  procedureType
             , String procSeparator
             , TreeMap<String, HashMap<String, String>> cstRows) {
-        
+
         charWriter.print("<create");
         if (schema != null) {
             charWriter.print(" schema=\"" + schema + "\"");
@@ -457,7 +458,7 @@ public class XMLTable extends BaseTable {
         } // while all column descriptions
         charWriter.println("</create>");
     } // describeProcedureColumns
-    
+
     /** Writes a comment line.
      *  @param line string to be output as a comment line
      */
@@ -488,11 +489,11 @@ public class XMLTable extends BaseTable {
     public int getEscapingRule() {
         return 4; // escape & < > if expr.matches(".*[<&>].*") ? 1 : 0;
     } // getEscapingRule
-    
+
     /** Writes an XML processing instruction, or nothing for other formats.
      *  @param target the processing instruction target
-     *  @param data the processing instruction data, or null if none was supplied. 
-     *  The data does not include any whitespace separating it from the target 
+     *  @param data the processing instruction data, or null if none was supplied.
+     *  The data does not include any whitespace separating it from the target
      */
     public void writeProcessingInstruction(String target, String data) {
         try {
@@ -501,20 +502,26 @@ public class XMLTable extends BaseTable {
             log.error(exc.getMessage(), exc);
         }
     } // writeProcessingInstruction
-        
+
     /** Writes a complete header, data or alternate data row with all tags and cell contents.
      *  @param rowType type of the generic row
      *  @param tbMetaData meta data for the table
      *  @param columnList contains the row to be written
      */
     public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList/*<1.5*/<TableColumn>/*1.5>*/ columnList) {
+        TableColumn column = null;
+        String pseudo = null;
         int ncol = columnList.size();
         int icol = 0;
         switch (rowType) {
             case HEADER:
                 charWriter.print("<tr>");
                 while (icol < ncol) {
-                    charWriter.println("<th>" + columnList.get(icol).getLabel() + "</th>");
+                    column = columnList.get(icol);
+                    pseudo = column.getPseudo();
+                    if (true || pseudo == null) {
+                        charWriter.println("<th>" + column.getLabel() + "</th>");
+                    } // ! pseudo
                     icol ++;
                 } // while icol
                 charWriter.println("</tr>");
@@ -522,14 +529,17 @@ public class XMLTable extends BaseTable {
             case DATA:
                 charWriter.print("<tr>");
                 while (icol < ncol) {
-                    TableColumn column = columnList.get(icol);
-                    if (! column.getValue().equals("null")) { // c.f. SQLAction.separateURLfromValue.displayValue
-                        charWriter.print("<td>" 
-                        		+ columnList.get(icol).getValue()
-                        		+ "</td>");
-                    } else { // == null
-                        charWriter.print("<td isnull=\"yes\"></td>");
-                    }
+                    column = columnList.get(icol);
+                    pseudo = column.getPseudo();
+                    if (true || pseudo == null) {
+                       if (! column.getValue().equals("null")) { // c.f. SQLAction.separateURLfromValue.displayValue
+                            charWriter.print("<td>"
+                                    + column.getValue()
+                                    + "</td>");
+                        } else { // == null
+                            charWriter.print("<td isnull=\"yes\"></td>");
+                        }
+                    } // ! pseudo
                     icol ++;
                 } // while icol
                 charWriter.println("</tr>");

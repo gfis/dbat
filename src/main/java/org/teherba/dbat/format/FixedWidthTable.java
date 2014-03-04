@@ -1,5 +1,6 @@
 /*  Generator for a table with fixed width columns
     @(#) $Id$
+    2014-03-04: ignore pseudo columns
     2011-08-24: writeGenericRow
     2011-05-24: avoid empty header line
     2011-02-14: without headers and comments
@@ -76,39 +77,42 @@ public class FixedWidthTable extends BaseTable {
             case DATA:
                 while (icol < ncol) {
                     column = columnList.get(icol);
-			        String value = column.getValue(); // for many formats it is simply the column's value
-			        int width = column.getWidth();
-			        if (value == null) {
-			            value = "";
-			        }
-			        if (value.length() < width) { // padding necessary
-			            String align = column.getAlign();
-			            if (align == null) {
-			                align = ""; // default: left
-			            }
-			            int pad = width - value.length();
-			            if (false) {
-			            } else if (align.equals("right")) {
-			                result.append(spaces(pad));
-			                result.append(value);
-			            } else if (align.equals("center")) {
-			                result.append(spaces(pad >> 1));
-			                result.append(value);
-			                result.append(spaces(pad - (pad >> 1)));
-			            } else { // default, if (align.equals("left")) {
-			                result.append(value);
-			                result.append(spaces(pad));
-			            }
-			        } else if (value.length() > width) { // truncation, always on the right
-			            result.append(value.substring(0, width)); 
-			        } else { // value.length() == width
-			        	result.append(value);
-			        }
+                    pseudo = column.getPseudo();
+                    if (pseudo == null) {
+                        String value = column.getValue(); // for many formats it is simply the column's value
+                        int width = column.getWidth();
+                        if (value == null) {
+                            value = "";
+                        }
+                        if (value.length() < width) { // padding necessary
+                            String align = column.getAlign();
+                            if (align == null) {
+                                align = ""; // default: left
+                            }
+                            int pad = width - value.length();
+                            if (false) {
+                            } else if (align.equals("right")) {
+                                result.append(spaces(pad));
+                                result.append(value);
+                            } else if (align.equals("center")) {
+                                result.append(spaces(pad >> 1));
+                                result.append(value);
+                                result.append(spaces(pad - (pad >> 1)));
+                            } else { // default, if (align.equals("left")) {
+                                result.append(value);
+                                result.append(spaces(pad));
+                            }
+                        } else if (value.length() > width) { // truncation, always on the right
+                            result.append(value.substring(0, width));
+                        } else { // value.length() == width
+                            result.append(value);
+                        }
+                    } // pseudo == null
                     icol ++;
                 } // while icol
                 charWriter.println(result.toString());
                 break;
-            default: 
+            default:
                 break;
         } // switch rowType
     } // writeGenericRow

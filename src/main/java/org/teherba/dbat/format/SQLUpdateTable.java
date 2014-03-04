@@ -1,5 +1,6 @@
-/*  Generator for UPDATE statements against an SQL table 
+/*  Generator for UPDATE statements against an SQL table
     @(#) $Id$
+    2014-03-04: column names instead of labels, ignore pseudo columns
     2011-08-24: writeGenericRow
     2011-06-01: mode="update" instead of mode="sqlupdate"
     2011-05-04: rowCount incremented locally
@@ -27,7 +28,7 @@ import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  java.util.ArrayList;
 
-/** Generator for SQL UPDATE statements for the rows of a result set. 
+/** Generator for SQL UPDATE statements for the rows of a result set.
  *  @author Dr. Georg Fischer
  */
 public class SQLUpdateTable extends SQLTable {
@@ -64,26 +65,35 @@ public class SQLUpdateTable extends SQLTable {
         lenCell = cellBuffer.length();
         rowCount = 0;
     } // startTable
-*/    
+*/
     /** Writes a complete header, data or alternate data row with all tags and cell contents.
      *  @param rowType type of the generic row
      *  @param tbMetaData meta data for the table
      *  @param columnList contains the row to be written
      */
     public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList/*<1.5*/<TableColumn>/*1.5>*/ columnList) {
+        TableColumn column = null;
+        String pseudo = null;
         int ncol = columnList.size();
         int icol = 0;
+        boolean first = true;
         switch (rowType) {
             case DATA:
                 cellBuffer.setLength(0);
                 lenCell = 0;
-                appendCell("UPDATE "); 
+                appendCell("UPDATE ");
                 appendCell(tableName);
+                first = true;
                 while (icol < ncol) {
-                    appendCell(icol > 0 ? "," : " SET ");
-                    appendCell(columnList.get(icol).getLabel());
-                    appendCell("=");
-                    appendValue(columnList.get(icol));
+                    column = columnList.get(icol);
+                    pseudo = column.getPseudo();
+                    if (pseudo == null) {
+                        appendCell(first ? " SET " : ",");
+                        first = false;
+                        appendCell(column.getName());
+                        appendCell("=");
+                        appendValue(column);
+                    } // ! pseudo
                     icol ++;
                 } // while icol
                 charWriter.println(cellBuffer.toString());
@@ -91,11 +101,17 @@ public class SQLUpdateTable extends SQLTable {
             case DATA2:
                 cellBuffer.setLength(0);
                 lenCell = 0;
+                first = true;
                 while (icol < ncol) {
-                    appendCell(icol > 0 ? " AND " : "WHERE ");
-                    appendCell(columnList.get(icol).getLabel());
-                    appendCell("=");
-                    appendValue(columnList.get(icol));
+                    column = columnList.get(icol);
+                    pseudo = column.getPseudo();
+                    if (pseudo == null) {
+                        appendCell(first ? "WHERE " : " AND ");
+                        first = false;
+                        appendCell(column.getName());
+                        appendCell("=");
+                        appendValue(column);
+                    } // ! pseudo
                     icol ++;
                 } // while icol
                 appendCell(";");
