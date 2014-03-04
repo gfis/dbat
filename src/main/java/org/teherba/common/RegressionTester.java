@@ -1,5 +1,6 @@
 /*  Reader for text file, returns a string without any whitespace
  *  @(#) $Id$
+ *  2014-02-16: encoding for all BufferedReaders
  *  2013-08-14: classpath from System property, URL encoding
  *  2013-07-03: URL encoding
  *  2013-01-05: works with new CommandTokenizer.split()
@@ -27,13 +28,15 @@ import  org.teherba.common.TimestampFilterStream;
 import  org.teherba.common.URIReader;
 import  java.io.BufferedReader;
 import  java.io.File;
-import  java.io.FileReader;
+import  java.io.FileInputStream;
 import  java.io.InputStreamReader;
 import  java.io.PrintStream;
 import  java.lang.Process;
 import  java.lang.Runtime;
 import  java.lang.reflect.Method;
 import  java.net.URLEncoder;
+import  java.nio.channels.Channels;
+import  java.nio.channels.ReadableByteChannel;
 import  java.util.ArrayList;
 import  java.util.Date;
 import  java.util.HashMap;
@@ -120,18 +123,18 @@ public class RegressionTester {
         StringBuffer result = new StringBuffer(line);
         int pos1 = 0;
         while ((pos1 = result.indexOf("%", pos1)) >= 0) {
-        	pos1 ++;
-        	int ich = 32; // ' '
-        	if (pos1 < line.length() - 1 && Character.isLetterOrDigit(line.charAt(pos1))) { // hex pair follows
-        		try {
-        			ich = Integer.parseInt(result.substring(pos1, pos1 + 2), 16);
-        			if (ich != 0x2b) { // '+'
-		            	result.replace(pos1 - 1, pos1 + 2, new String(new byte[] { (byte) ich }));
-		            }
-        		} catch (Exception exc) { // no digits - continue
-        		}
-        	} // hex pair follows
-        	// pos1 is already behind the inserted character
+            pos1 ++;
+            int ich = 32; // ' '
+            if (pos1 < line.length() - 1 && Character.isLetterOrDigit(line.charAt(pos1))) { // hex pair follows
+                try {
+                    ich = Integer.parseInt(result.substring(pos1, pos1 + 2), 16);
+                    if (ich != 0x2b) { // '+'
+                        result.replace(pos1 - 1, pos1 + 2, new String(new byte[] { (byte) ich }));
+                    }
+                } catch (Exception exc) { // no digits - continue
+                }
+            } // hex pair follows
+            // pos1 is already behind the inserted character
         } // while pos1
         return result.toString();
     } // unPercent
@@ -217,20 +220,24 @@ public class RegressionTester {
             Pattern testPattern = Pattern.compile("(\\S+)\\s*(.*)"); // TEST testName comment
 
             // Open the file with the testcases
-            BufferedReader testCaseReader = null;
+            BufferedReader tcaReader = null;
             if(fileName.equals("-")) { // STDIN
-                testCaseReader = new BufferedReader(new InputStreamReader(System.in, tcaEncoding));
+                tcaReader = new BufferedReader(new InputStreamReader(System.in, tcaEncoding));
             } else {
                 File testCases = new File(fileName);
                 directory = testCases.getParent();
-                testCaseReader = new BufferedReader(new FileReader(testCases));
+                ReadableByteChannel tcaChannel = (new FileInputStream(fileName)).getChannel();
+                tcaReader = new BufferedReader(Channels.newReader(tcaChannel, tcaEncoding));
             } // not STDIN
             // System.err.println("fileName=" + fileName + ", directory=" + directory);
 
             // read the replacement patterns, if possible
-            File replFile = new File(directory + "/regression.properties");
+            String replName = directory + "/regression.properties";
+            BufferedReader replReader = null;
+            File replFile = new File(replName);
             if (replFile.exists()) {
-                BufferedReader replReader = new BufferedReader(new FileReader(replFile));
+                ReadableByteChannel replChannel = (new FileInputStream(replName)).getChannel();
+                replReader = new BufferedReader(Channels.newReader(replChannel, tcaEncoding));
                 ArrayList<String> result = new ArrayList<String>(16);
                 while ((line = replReader.readLine()) != null) {
                     if (! line.matches("\\A\\s*\\#.*")) { // ignore comments
@@ -244,7 +251,7 @@ public class RegressionTester {
             } // replFile exists
 
             boolean busy = true; // used to read a fictional "TEST" line at the end
-            while ((testLine = testCaseReader.readLine()) != null || busy) { // read and process lines
+            while ((testLine = tcaReader.readLine()) != null || busy) { // read and process lines
                 if (testLine == null && busy) {
                     testLine = "TEST END";
                     busy = false;
@@ -307,7 +314,7 @@ public class RegressionTester {
                                 boolean passed = true; // Think positive!
                                 if (! skipping) {
                                     if (prevFile.exists()) { // run diff prev this
-                                        cmd = "diff -C0 "   + prevName + " " + thisName;
+                                        cmd = "diff -Z -C0 "   + prevName + " " + thisName; // -Z = ignore line ends
                                         process = runtime.exec(cmd);
                                         // System.out.println(cmd);
                                         reader = new BufferedReader(new InputStreamReader(process.getInputStream(), logEncoding));
@@ -391,7 +398,7 @@ public class RegressionTester {
                             System.out.println(verb + " " + timestamp);
 
                         } else if (verb.equals("EXIT")) { // skip all remaining lines
-                             while ((testLine = testCaseReader.readLine()) != null) {
+                             while ((testLine = tcaReader.readLine()) != null) {
                                 // ignore
                              } // while ignoring
 
@@ -404,10 +411,10 @@ public class RegressionTester {
                                     .replaceAll("%26", "&")
                                     ;
                         */
-                            String requestURL = baseURL + 
-                            		// unPercent
-                            		(rest.trim()
-                            		.replaceAll("\\s+", "&")
+                            String requestURL = baseURL +
+                                    // unPercent
+                                    (rest.trim()
+                                    .replaceAll("\\s+", "&")
                                     .replaceAll("\\+", " ")
                                     );
                             logText = "http \"" + requestURL + "\"";
@@ -450,7 +457,7 @@ public class RegressionTester {
             realStdOut.printf("%4d tests passed"     , passedCount);
             realStdOut.print(" in " + (System.currentTimeMillis() - startMillis) + " ms");
             realStdOut.println();
-            testCaseReader.close();
+            tcaReader.close();
             System.setOut(realStdOut);
             System.setErr(realStdErr);
         } catch (Exception exc) {

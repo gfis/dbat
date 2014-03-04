@@ -307,10 +307,10 @@ public class TableColumn implements Cloneable {
         if (hrefValue != null) {
             int fragPos = hrefValue.indexOf("%23"); // '#'
             if (fragPos < 0) {
-            	fragPos = hrefValue.indexOf('#');
+                fragPos = hrefValue.indexOf('#');
             }
             if (fragPos >= 0) { // with fragment
-            	System.err.println("fragmented: " + hrefValue);
+                System.err.println("fragmented: " + hrefValue);
                 int ampPos = hrefValue.indexOf('&', fragPos);
                 if (false && ampPos >= 0) { // there are parameters behind '#': move fragment to the end
                     result = hrefValue.substring(0, fragPos)

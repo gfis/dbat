@@ -1,5 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$
+ *  2014-02-16: application/xhtml+xml if System.getProperty("os.name"       ).startsWith("Windows 8")
  *  2012-06-19: manner = JDBC or SQLJ; for DB2: TRANSACTION_READ_UNCOMMITTED
  *  2012-06-12: Javadoc cleaned for github
  *  2012-03-12: DBAN_URI; works for Geronimo, WASCE
@@ -560,7 +561,8 @@ public class Configuration implements Serializable {
     public void configure(int callType) {
         this.callType   = callType;
         con             = null;
-        htmlMimeType    = System.getProperty("file.separator").startsWith("/")
+        htmlMimeType    =  System.getProperty("file.separator").startsWith("/")
+                        || System.getProperty("os.name"       ).startsWith("Windows 8")
                         ? "application/xhtml+xml"   // for Unix, Firefox
                         : "text/html";              // for Windows, InternetExplorer <= V6.x
         con             = null;
