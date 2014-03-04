@@ -224,10 +224,16 @@
       <ht:input name="search_name" type="hidden" init=""/>
       <ht:input name="search_decease" type="hidden" init=""/>
       <ht:input name="search_family" type="hidden" init=""/>
-      <ht:table>
+      
       <ht:input name="name" type="hidden" init=""/>
       <ht:input name="decease" type="hidden" init=""/>
       <ht:input name="family" type="hidden" init=""/>
+      <ht:input name="gender" type="hidden" init="M"/>
+      <ht:input name="birth" type="hidden" init=""/>
+      <ht:input name="place" type="hidden" init=""/>
+      <ht:input name="changed" type="hidden" init=""/>
+      <ht:input name="user" type="hidden" init=""/>
+      <ht:table>
       <ht:tr><ht:td valign="top" title="name" id="na0">Name:</ht:td>
         <ht:td id="na1"><parm name="name"/>
         </ht:td></ht:tr>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Interactive view definition for test form crud03.xml
+    @(#) $Id$
+    2014-03-04, Dr. Georg Fischer: copied from crud03.iv.xml
+-->
+<dbiv   xmlns   ="http://www.teherba.org/2011/dbiv"
+        xmlns:db="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang    ="en"
+        conn    ="worddb"
+        script  ="test/crud06"
+        >
+    <view name="relatives">
+        <title><ht:a href="servlet?spec=test.index">Test</ht:a> Form - Relatives (not all fields editable)</title>
+        <counter desc="Person,s" />
+
+        <action name="ins"      label="New Relative"    remark="insert" position="middle" />
+        <action name="upd"      label="Upd."            remark="update" position="result" />
+        <action name="del"      label="Del."            remark="delete" position="result" />
+
+        <field name="name"      label="Name"   key="1"  init=""         type="char"         size="40"
+            valid="[\w\-%]*"    remark="Letters and &quot;-&quot;">
+            </field>
+        <field name="family"    label="Family" key="2"  init=""         type="char"         size="40"
+            valid="Fischer|Ritter"  >
+            <enumeration height="2">
+                <enum code="Ritter"     lang="en" display="Ritter Family"           >Ritter fam.</enum>
+                <enum code="Fischer"    lang="en" display="Fischer Family"          >Fischer fam.</enum>
+                <enum code="Ritter"     lang="de" display="Familie Ritter"          >Fam. Ritter</enum>
+                <enum code="Fischer"    lang="de" display="Familie Fischer"         >Fam. Fischer</enum>
+            </enumeration>
+            </field>
+        <field name="gender"    label="Gender" key="3"  init="M"        type="char"         size="1"
+            valid="M|F"         align="center"  >
+            <listbox height="2">
+                <select distinct="yes" into="parm">
+                    <db:col name="code">gender</db:col>
+                    <db:col name="display">case
+                        when gender = 'M' then 'male'
+                        else                   'female' end
+                    </db:col>
+                    <db:from>relatives</db:from>
+                    <db:order by="1" />
+                </select>
+            </listbox>
+            </field>
+        <field name="birth"     label="Birthdate"                       type="char"         size="10"
+            >
+            </field>
+        <field name="place"     label="Place"                           type="textarea"     size="20" rows="5"
+            valid="\w[\w \.\-\(\)]*"    remark="Letters space . - ( )">
+            </field>
+        <field name="decease"   label="Died" align="right"              type="int"          size="4"
+            valid="\d{4}"               remark="Year yyyy">
+            </field>
+        <where></where>
+        <order by="1,2" />
+    </view>
+
+    <ht:h3>Help text follows here</ht:h3>
+</dbiv>

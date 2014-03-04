@@ -2,6 +2,7 @@
 <!--
     Generates a Dbat specification for an interactive view (C/R/U/D) äöü
     @(#) $Id: dbiv_spec.xsl 958 2012-06-06 06:02:39Z gfis $
+    2014-03-04: do not update fields which are not editable
     2013-01-04: commenting of parameters
     2012-07-10: copy <where> condition with <parm>
     2012-06-27: timestamp(19) with space
@@ -46,7 +47,7 @@
         extension-element-prefixes="func date str"
         >
 <!--==================================================
-    Global variables and declarations 
+    Global variables and declarations
 -->
     <xsl:param name="lang"  >de</xsl:param><!-- language; default: de -->
     <xsl:param name="method">post</xsl:param><!-- post or get -->
@@ -55,7 +56,7 @@
     <xsl:param name="valid" >0</xsl:param><!-- whether to insert validation code: 1 = true -->
     <xsl:param name="alter" >1</xsl:param><!-- or 0 = false: do not enable any alter functionality -->
     <xsl:param name="rdbms" >mysql</xsl:param><!-- for fine-tuning stored procs et al.: mysql, db2zos, db2luw, oracle ... -->
-    
+
     <xsl:output method="xml" indent="yes" encoding="UTF-8" />
     <xsl:strip-space elements="*"/>
     <xsl:key name="fieldNameKey" match="iv:field" use="@name"/>
@@ -108,13 +109,13 @@
         upd2 - SQL UPDATE + search form
     </xsl:text>
         </xsl:comment>
-        
+
         <xsl:apply-templates select="iv:view" />
         <xsl:value-of select='"&#10;"' />
     </dbat>
 </xsl:template>
 
-<xsl:template match="iv:view">  
+<xsl:template match="iv:view">
         <xsl:apply-templates select="./preceding-sibling::*" />
         <xsl:value-of select='"&#10;&#32;&#x20;"' />
         <xsl:apply-templates select="iv:title" />
@@ -122,12 +123,12 @@
         <xsl:if test="$alter != 0">
         <choose>
             <xsl:value-of select='"&#10;&#32;&#x20;"' />
-            <when name="view" match="sear">  
+            <when name="view" match="sear">
                 <xsl:value-of select='"&#10;&#32;&#x20;"' />
             </when>
             <xsl:comment><xsl:text>== d e l ==============</xsl:text></xsl:comment>
             <xsl:value-of select='"&#10;&#32;&#x20;"' />
-            <when name="view" match="del">   
+            <when name="view" match="del">
                 <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
                 <select limit="512">
                     <xsl:for-each select="iv:field[(string-length(@show) = 0 or @show != 'search')]">
@@ -172,13 +173,13 @@
                     <xsl:text> </xsl:text>
                     <xsl:call-template name="startOver" />
                     <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
-                </ht:form>    
+                </ht:form>
 
                 <xsl:value-of select='"&#10;&#32;&#x20;"' />
             </when>
             <xsl:comment><xsl:text>== d e l 2 ==============</xsl:text></xsl:comment>
             <xsl:value-of select='"&#10;&#32;&#x20;"' />
-            <when name="view" match="del2">  
+            <when name="view" match="del2">
                 <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
                 <xsl:choose>
                     <xsl:when test="string-length(@proc) &gt; 0">
@@ -204,7 +205,7 @@
             </when>
             <xsl:comment><xsl:text>== d a t ==============</xsl:text></xsl:comment>
             <xsl:value-of select='"&#10;&#32;&#x20;"' />
-            <when name="view" match="dat">   
+            <when name="view" match="dat">
                 <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
                 <select into="parm">
                     <xsl:for-each select="iv:field[string-length(@key) = 0 and (string-length(@show) = 0 or @show != 'search')]">
@@ -221,7 +222,7 @@
                     </xsl:call-template>
                     <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
                 </select>
-        
+
                 <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
                 <ht:form name="form1">
                     <xsl:attribute name="method"><xsl:value-of select="$method" /></xsl:attribute>
@@ -243,7 +244,7 @@
             </when>
             <xsl:comment><xsl:text>== i n s ==============</xsl:text></xsl:comment>
             <xsl:value-of select='"&#10;&#32;&#x20;"' />
-            <when name="view" match="ins">   
+            <when name="view" match="ins">
                 <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
                 <ht:h4>
                     <xsl:for-each select="iv:action[starts-with(@name, 'ins')]">
@@ -288,7 +289,7 @@
                     <xsl:choose>
                         <xsl:when test="../@lang = 'en'"><ht:input type="submit" value="Save"       /></xsl:when>
                         <xsl:when test="../@lang = 'de'"><ht:input type="submit" value="Speichern"  /></xsl:when>
-                    </xsl:choose>                   
+                    </xsl:choose>
                     <xsl:text> </xsl:text>
                     <xsl:call-template name="startOver" />
                     <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
@@ -297,7 +298,7 @@
             </when>
             <xsl:comment><xsl:text>== i n s 2 ==============</xsl:text></xsl:comment>
             <xsl:value-of select='"&#10;&#32;&#x20;"' />
-            <when name="view" match="ins2">  
+            <when name="view" match="ins2">
                 <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
                 <xsl:choose>
                     <xsl:when test="string-length(@proc) &gt; 0">
@@ -324,7 +325,7 @@
             </when>
             <xsl:comment><xsl:text>== u p d ==============</xsl:text></xsl:comment>
             <xsl:value-of select='"&#10;&#32;&#x20;"' />
-            <when name="view" match="upd">   
+            <when name="view" match="upd">
                 <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
                 <select into="parm">
                     <xsl:for-each select="iv:field[string-length(@key) = 0 and (string-length(@show) = 0 or @show != 'search')]">
@@ -341,7 +342,7 @@
                     </xsl:call-template>
                     <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
                 </select>
-        
+
                 <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
                 <ht:h4>
                     <xsl:choose>
@@ -368,12 +369,13 @@
                         </xsl:call-template>
                     </xsl:for-each>
                     <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
+                    <xsl:for-each select="iv:field[string-length(@key) &gt; 0 or string-length(@valid) = 0]">
+                        <xsl:call-template name="wrap_hiddenField">
+                            <xsl:with-param name="field"  select="." />
+                        </xsl:call-template>
+                    </xsl:for-each>
+                    <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
                     <ht:table>
-                        <xsl:for-each select="iv:field[string-length(@key) &gt; 0]">
-                            <xsl:call-template name="wrap_hiddenField">
-                                <xsl:with-param name="field"  select="." />
-                            </xsl:call-template>
-                        </xsl:for-each>
                         <xsl:for-each select="iv:field[(string-length(@show) = 0 or @show != 'search')]|iv:text">
                             <xsl:call-template name="wrap_inputField">
                                 <xsl:with-param name="field"  select="." />
@@ -395,7 +397,7 @@
             </when>
             <xsl:comment><xsl:text>== u p d 2 ==============</xsl:text></xsl:comment>
             <xsl:value-of select='"&#10;&#32;&#x20;"' />
-            <when name="view" match="upd2">  
+            <when name="view" match="upd2">
                 <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
                 <xsl:choose>
                     <xsl:when test="string-length(@proc) &gt; 0">
@@ -426,18 +428,18 @@
             <xsl:value-of select='"&#10;"' />
         </choose>
         </xsl:if>
-        
+
         <xsl:value-of select='"&#10;"' />
         <xsl:comment><xsl:text>== s e a r  etc. ==============================</xsl:text></xsl:comment>
-        <xsl:value-of select='"&#10;"' />  
+        <xsl:value-of select='"&#10;"' />
         <choose>
             <xsl:value-of select='"&#10;&#32;&#x20;"' />
-            <when name="view" match="(sear|ins2|upd2|del2|)"> 
+            <when name="view" match="(sear|ins2|upd2|del2|)">
                 <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
 
                 <xsl:if test="count(iv:action[@name = 'ins' and @position = 'first']) != 0"><!-- button for new entry form -->
                     <xsl:call-template name="insertButton" />
-                </xsl:if>  
+                </xsl:if>
 
                 <ht:form><!-- search form -->
                     <xsl:attribute name="method"><xsl:value-of select="$method" /></xsl:attribute>
@@ -452,7 +454,7 @@
                             </xsl:call-template>
                         </xsl:for-each>
                         <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
-                    </ht:table>             
+                    </ht:table>
                     <xsl:for-each select="iv:field[string-length(@key) = 0]">
                         <xsl:call-template name="wrap_hiddenField">
                             <xsl:with-param name="field"  select="." />
@@ -464,12 +466,12 @@
                         <xsl:when test="../@lang = 'de'"><ht:input type="submit" value="Suchen" /></xsl:when>
                     </xsl:choose>
                     <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
-                </ht:form> 
+                </ht:form>
                 <ht:br />
-                
+
                 <xsl:if test="count(iv:action[@name = 'ins' and @position = 'middle']) != 0"><!-- button for new entry form -->
                     <xsl:call-template name="insertButton" />
-                </xsl:if>  
+                </xsl:if>
 
                 <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' /><!-- table with search results -->
                 <select limit="2048">
@@ -497,11 +499,11 @@
 
                 <xsl:if test="count(iv:action[@name = 'ins' and @position = 'last']) != 0"><!-- button for new entry form -->
                     <xsl:call-template name="insertButton" />
-                </xsl:if>  
+                </xsl:if>
                 <!-- view="sear"-->
             </when>
             <xsl:value-of select='"&#10;&#32;&#x20;"' />
-            <when name="view" match="(sear|)"> 
+            <when name="view" match="(sear|)">
                 <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
                 <xsl:apply-templates select="./following-sibling::*" />
                 <xsl:value-of select='"&#10;&#32;&#x20;"' />
@@ -616,10 +618,10 @@
     <xsl:value-of select='concat(" + &apos;&amp;amp;", @name, "=&apos;")' />
     <xsl:choose>
         <xsl:when test="count(@field) != 0">
-            <xsl:value-of select='concat(" + this.form.", @field, ".value")' /> 
+            <xsl:value-of select='concat(" + this.form.", @field, ".value")' />
         </xsl:when>
         <xsl:when test="count(@value) != 0">
-            <xsl:value-of select='concat(" + &apos;", @value, "&apos;")' /> 
+            <xsl:value-of select='concat(" + &apos;", @value, "&apos;")' />
         </xsl:when>
         <xsl:otherwise>
             <xsl:comment><xsl:text>??? neither @field nor @value in subquery/search/urlparm element</xsl:text></xsl:comment>
@@ -635,10 +637,10 @@
     <xsl:param name="action"    />
 <!--generated dbat code:
     <col pseudo="image" label="Upd." align="center"
-            link="test.crud02&amp;search_crit_1=&amp;search_crit_2=&amp;name=&amp;gender=&amp;view=" 
+            link="test.crud02&amp;search_crit_1=&amp;search_crit_2=&amp;name=&amp;gender=&amp;view="
             >
-        '<parm name="search_crit_1" />' || '=' 
-        '<parm name="search_crit_2" />' || '=' 
+        '<parm name="search_crit_1" />' || '='
+        '<parm name="search_crit_2" />' || '='
         || name   || '='
         || gender || '='
         || 'upd'
@@ -655,10 +657,10 @@
         <xsl:attribute name="link"  >
             <xsl:choose>
                 <xsl:when test="count(@link) != 0">
-                    <xsl:value-of select='@link' /> 
+                    <xsl:value-of select='@link' />
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="/iv:dbiv/@script" />       
+                    <xsl:value-of select="/iv:dbiv/@script" />
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:for-each select="/iv:dbiv/iv:view/iv:field[string-length(@key) &gt; 0]">
@@ -681,7 +683,7 @@
             <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
             <xsl:if test="position() &gt; 1">
                 <xsl:text> || </xsl:text>
-            </xsl:if>    
+            </xsl:if>
             <xsl:text>&apos;</xsl:text>
             <parm>
                 <xsl:attribute name="name">
@@ -690,14 +692,14 @@
                     </xsl:call-template>
                 </xsl:attribute>
             </parm>
-            <xsl:value-of select='concat("&apos;", " || ", "&apos;=&apos; ")' />       
+            <xsl:value-of select='concat("&apos;", " || ", "&apos;=&apos; ")' />
         </xsl:for-each>
         <xsl:for-each select="/iv:dbiv/iv:view/iv:field[string-length(@key) &gt; 0]">
             <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;&#32;&#x20; || "' />
             <xsl:call-template name="wrap_castToChar">
                 <xsl:with-param name="field" select="." />
             </xsl:call-template>
-            <xsl:value-of select='" || &apos;=&apos; "' />       
+            <xsl:value-of select='" || &apos;=&apos; "' />
         </xsl:for-each>
         <xsl:value-of select='concat("|| &apos;", $action/@name, "&apos; ")' />
         <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
@@ -708,16 +710,16 @@
 <xsl:template name="callProcedure">
     <xsl:param name="variant" />
 
-    <call into="parm"> 
-        <xsl:attribute name="name"><xsl:value-of select="/iv:dbiv/iv:view/@proc" /></xsl:attribute> 
+    <call into="parm">
+        <xsl:attribute name="name"><xsl:value-of select="/iv:dbiv/iv:view/@proc" /></xsl:attribute>
         <xsl:value-of  select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
         <col dir="in"  name="opcode" type="char" />
-<!--        
+<!--
         <xsl:value-of  select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
         <col dir="out" name="sql_state" type="char" />
         <xsl:value-of  select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
         <col dir="out" name="update_count" type="int" />
--->        
+-->
         <xsl:for-each  select="iv:field[(string-length(@show) = 0 or @show != 'search')]">
             <xsl:call-template name="wrap_callColumn">
                 <xsl:with-param name="field" select="." />
@@ -744,7 +746,7 @@
                 <xsl:with-param name="field" select="." />
             </xsl:call-template>
         </xsl:for-each>
-        
+
         <xsl:choose>
             <xsl:when test="$variant = 'del'">
                 <xsl:choose>
@@ -793,7 +795,7 @@
                 </xsl:attribute>
             </ht:input>
             <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
-        </ht:form>  
+        </ht:form>
     </xsl:if>
     <!-- insertButton -->
 </xsl:template>
@@ -801,7 +803,7 @@
 <xsl:template name="whereClause">
     <xsl:param name="view" /><!-- surrounding iv:view element -->
     <xsl:param name="cond" /><!-- 'like' or '=' -->
-    
+
     <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
     <where>
         <xsl:if test="string-length($view/iv:where) &gt; 0">
@@ -956,7 +958,7 @@
 
 <xsl:template name="wrap_inputField">
     <xsl:param name="field"  />
-    <xsl:param name="variant" /><!-- ins, upd, sear -->                     
+    <xsl:param name="variant" /><!-- ins, upd, sear -->
 
     <xsl:choose>
         <xsl:when test="string-length($field/@ref) != 0">
@@ -1077,7 +1079,7 @@
         <xsl:when test="string-length($field/iv:write) = 0"><!-- without write -->
             <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
             <col>
-                <xsl:attribute name="dir"   ><xsl:value-of select="'in'"    /></xsl:attribute> 
+                <xsl:attribute name="dir"   ><xsl:value-of select="'in'"    /></xsl:attribute>
                 <xsl:attribute name="name"  ><xsl:value-of select="$field/@name"    /></xsl:attribute>
                 <xsl:attribute name="label" ><xsl:value-of select="$field/@label"   /></xsl:attribute>
                 <xsl:attribute name="type"  ><xsl:value-of select="$field/@type"    /></xsl:attribute>
@@ -1088,7 +1090,7 @@
                 <xsl:when test="count($field/iv:write/descendant::*) != 0">
                     <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
                     <col>
-                        <xsl:attribute name="dir"   ><xsl:value-of select="'in'"    /></xsl:attribute> 
+                        <xsl:attribute name="dir"   ><xsl:value-of select="'in'"    /></xsl:attribute>
                         <xsl:attribute name="name"  ><xsl:value-of select="$field/@name"    /></xsl:attribute>
                         <xsl:attribute name="label" ><xsl:value-of select="$field/@label"   /></xsl:attribute>
                         <xsl:attribute name="type"  ><xsl:value-of select="$field/@type"    /></xsl:attribute>
@@ -1153,7 +1155,7 @@
     <ht:em><xsl:text> </xsl:text>
         <parm>
             <xsl:attribute name="name"  ><xsl:value-of select="$field/@name" /></xsl:attribute>
-        </parm>    
+        </parm>
     </ht:em>
     <!-- headerField -->
 </xsl:template>
@@ -1161,14 +1163,14 @@
 <xsl:template name="searchFieldName">
     <xsl:param name="field" />
     <!-- generate the name of some search field -->
-    
+
     <xsl:choose>
         <xsl:when test="$field/@name = translate($field/@name, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')">
-            <!-- is all uppercase: generate prefix "SEARCH_NAME" --> 
+            <!-- is all uppercase: generate prefix "SEARCH_NAME" -->
             <xsl:value-of select="concat(translate($prefix,  'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), $field/@name)" />
         </xsl:when>
         <xsl:otherwise>
-            <!-- contains some lowercase: take prefix "search_" unchanged --> 
+            <!-- contains some lowercase: take prefix "search_" unchanged -->
             <xsl:value-of select="concat($prefix, $field/@name)" />
         </xsl:otherwise>
     </xsl:choose>
@@ -1178,7 +1180,7 @@
 <xsl:template name="fieldName">
     <xsl:param name="field" />
     <!-- generate the name of some field -->
-    
+
     <xsl:value-of select="$field/@name" />
     <!-- fieldName -->
 </xsl:template>
@@ -1186,7 +1188,7 @@
 <xsl:template name="inputField">
     <xsl:param name="field"  />
     <xsl:param name="key"    />
-    <xsl:param name="variant" /><!-- ins, upd, sear -->                     
+    <xsl:param name="variant" /><!-- ins, upd, sear -->
     <!-- a table row with the label and the value, either directly or in an HTML input or select element -->
 
     <xsl:variable name="nameAttr">
@@ -1201,7 +1203,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
-    
+
     <xsl:choose>
         <xsl:when test="local-name($field) = 'text'">
             <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
@@ -1373,10 +1375,10 @@
                                         </xsl:attribute>
                                 -->
                                         <xsl:attribute name="onkeyup"       >
-                                            <xsl:value-of select='concat("this.form.", $field/@name, ".className = ")' /> 
+                                            <xsl:value-of select='concat("this.form.", $field/@name, ".className = ")' />
                                             <xsl:value-of select='concat("(this.form.", $field/@name, ".value.match(&apos;^")' />
-                                            <xsl:value-of select='concat(str:replace($field/@valid, "\", "\\") , "$&apos;)) ")' /> 
-                                            <xsl:value-of select='concat("? &apos;valid&apos;", ": &apos;invalid&apos;")' /> 
+                                            <xsl:value-of select='concat(str:replace($field/@valid, "\", "\\") , "$&apos;)) ")' />
+                                            <xsl:value-of select='concat("? &apos;valid&apos;", ": &apos;invalid&apos;")' />
                                         </xsl:attribute>
                                     </xsl:if>
                                 </ht:textarea>
@@ -1399,10 +1401,10 @@
                                         </xsl:attribute>
                                     -->
                                         <xsl:attribute name="onkeyup"       >
-                                            <xsl:value-of select='concat("this.form.", $field/@name, ".className = ")' /> 
+                                            <xsl:value-of select='concat("this.form.", $field/@name, ".className = ")' />
                                             <xsl:value-of select='concat("(this.form.", $field/@name, ".value.match(&apos;^")'  />
-                                            <xsl:value-of select='concat(str:replace($field/@valid, "\", "\\") , "$&apos;)) ")' /> 
-                                            <xsl:value-of select='concat("? &apos;valid&apos;", ": &apos;invalid&apos;")' /> 
+                                            <xsl:value-of select='concat(str:replace($field/@valid, "\", "\\") , "$&apos;)) ")' />
+                                            <xsl:value-of select='concat("? &apos;valid&apos;", ": &apos;invalid&apos;")' />
                                         </xsl:attribute>
                                     </xsl:if>
                                     <xsl:for-each select="$field/iv:subquery">
@@ -1514,14 +1516,14 @@
                     <xsl:value-of select='concat($field/@name, " ", $cond, " ")' />
                     <parm>
                         <xsl:attribute name="name"><xsl:value-of select="$field/@name" /></xsl:attribute>
-                    </parm>  
+                    </parm>
                 </xsl:when>
                 <xsl:otherwise><!-- @type = 'char', enum, timestamp etc. -->
                     <xsl:value-of select='concat($field/@name, " ", $cond, " ")' />
                     <xsl:text>&apos;</xsl:text>
                     <parm>
                         <xsl:attribute name="name"><xsl:value-of select="$field/@name" /></xsl:attribute>
-                    </parm>  
+                    </parm>
                     <xsl:text>&apos;</xsl:text>
                 </xsl:otherwise>
             </xsl:choose>
@@ -1543,7 +1545,7 @@
                                 <xsl:with-param name="field"  select="$field" />
                             </xsl:call-template>
                         </xsl:attribute>
-                    </parm>  
+                    </parm>
                     <xsl:value-of select='"%"' />
                     <xsl:text>&apos;</xsl:text>
                 </xsl:otherwise>
@@ -1563,7 +1565,7 @@
     <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
     <col>
         <xsl:if test="string-length(/iv:dbiv/iv:view/@proc) &gt; 0">
-            <xsl:attribute name="dir"><xsl:value-of select="'in'" /></xsl:attribute> 
+            <xsl:attribute name="dir"><xsl:value-of select="'in'" /></xsl:attribute>
         </xsl:if>
         <xsl:attribute name="name"><xsl:value-of select="$field/@name" /></xsl:attribute>
         <xsl:choose>
@@ -1629,15 +1631,15 @@
         <xsl:when test="$field/@type != 'char'">
             <xsl:choose>
                 <xsl:when test="$rdbms = 'mysql'">
-                    <xsl:value-of select='concat("CAST(", $field/@name, " AS CHAR(", $field/@size, "))")' />       
+                    <xsl:value-of select='concat("CAST(", $field/@name, " AS CHAR(", $field/@size, "))")' />
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select='concat("CHAR(", $field/@name, ")")' />       
+                    <xsl:value-of select='concat("CHAR(", $field/@name, ")")' />
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:when>
         <xsl:otherwise><!-- is already a CHAR datatype -->
-            <xsl:value-of select='$field/@name' />       
+            <xsl:value-of select='$field/@name' />
         </xsl:otherwise>
     </xsl:choose>
 </xsl:template>
@@ -1671,7 +1673,7 @@
             <xsl:when test="/iv:dbiv/@lang = 'en'"><xsl:text>Back</xsl:text></xsl:when>
             <xsl:when test="/iv:dbiv/@lang = 'de'"><xsl:text>Zur&amp;#xfc;ck</xsl:text></xsl:when>
         </xsl:choose>
-    </ht:a>                                                
+    </ht:a>
     <xsl:choose>
             <xsl:when test="/iv:dbiv/@lang = 'en'"><xsl:text> to the search form</xsl:text></xsl:when>
             <xsl:when test="/iv:dbiv/@lang = 'de'"><xsl:text> zum Suchformular</xsl:text></xsl:when>
