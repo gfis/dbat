@@ -232,7 +232,6 @@
       <ht:input name="search_name" type="hidden" init=""/>
       <ht:input name="search_family" type="hidden" init=""/>
       <ht:input name="search_gender" type="hidden" init="M"/>
-      
       <ht:input name="name" type="hidden" init=""/>
       <ht:input name="family" type="hidden" init=""/>
       <ht:input name="gender" type="hidden" init="M"/>

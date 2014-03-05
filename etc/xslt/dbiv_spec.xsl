@@ -2,7 +2,7 @@
 <!--
     Generates a Dbat specification for an interactive view (C/R/U/D) äöü
     @(#) $Id: dbiv_spec.xsl 958 2012-06-06 06:02:39Z gfis $
-    2014-03-04: do not update fields which are not editable
+    2014-03-05: do not update fields which are not editable
     2013-01-04: commenting of parameters
     2012-07-10: copy <where> condition with <parm>
     2012-06-27: timestamp(19) with space
@@ -313,6 +313,7 @@
                                 <xsl:for-each select="iv:field[(string-length(@show) = 0 or @show != 'search')]">
                                     <xsl:call-template name="wrap_writeColumn">
                                         <xsl:with-param name="field"  select="." />
+	                                    <xsl:with-param name="view"   select="ins2" />
                                     </xsl:call-template>
                                 </xsl:for-each>
                                 <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
@@ -368,8 +369,7 @@
                             <xsl:with-param name="field"  select="." />
                         </xsl:call-template>
                     </xsl:for-each>
-                    <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
-                    <xsl:for-each select="iv:field[string-length(@key) &gt; 0 or string-length(@valid) = 0]">
+                    <xsl:for-each select="iv:field[string-length(@key) &gt; 0 or string-length(./iv:write) != 0]">
                         <xsl:call-template name="wrap_hiddenField">
                             <xsl:with-param name="field"  select="." />
                         </xsl:call-template>
@@ -410,6 +410,7 @@
                             <xsl:for-each select="iv:field[string-length(@key) = 0 and (string-length(@show) = 0 or @show != 'search')]">
                                 <xsl:call-template name="wrap_writeColumn">
                                     <xsl:with-param name="field"  select="." />
+                                    <xsl:with-param name="view"   select="upd2" />
                                 </xsl:call-template>
                             </xsl:for-each>
                             <xsl:call-template name="whereClause">
@@ -1029,6 +1030,7 @@
 
 <xsl:template name="wrap_writeColumn">
     <xsl:param name="field" />
+    <xsl:param name="view"  />
     <!-- parm with optional quoting -->
 
     <xsl:choose>
@@ -1037,12 +1039,14 @@
             <xsl:for-each select="document($catalogFile)/iv:dbiv/iv:catalog">
                 <xsl:call-template  name="writeColumn">
                     <xsl:with-param name="field"    select="key('fieldNameKey', $field/@ref)" />
+                    <xsl:with-param name="view"     select="$view"   />
                 </xsl:call-template>
             </xsl:for-each>
         </xsl:when>
         <xsl:otherwise>
                 <xsl:call-template  name="writeColumn">
                     <xsl:with-param name="field"    select="$field"  />
+                    <xsl:with-param name="view"     select="$view"   />
                 </xsl:call-template>
         </xsl:otherwise>
     </xsl:choose>
@@ -1560,8 +1564,10 @@
 
 <xsl:template name="writeColumn">
     <xsl:param name="field" />
+    <xsl:param name="view"  />
     <!-- parm with optional quoting -->
 
+	<xsl:if test="string-length($field/@valid) != 0 or string-length($field/iv:write) != 0 or $view != 'upd2'">
     <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
     <col>
         <xsl:if test="string-length(/iv:dbiv/iv:view/@proc) &gt; 0">
@@ -1621,6 +1627,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </col>
+    </xsl:if>
     <!-- writeColumn -->
 </xsl:template>
 

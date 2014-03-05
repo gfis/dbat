@@ -2,6 +2,7 @@
 
 # Collection of Testcases for Dbat with MySQL driver
 # @(#) $Id: all.tca 955 2012-06-05 07:22:59Z gfis $
+# 2014-03-05: + XS7, +V1*
 # 2013-02-01: web/spec/test/fragment01.xml
 # 2013-01-05: rm U0*, add TL1-4, UR1-7
 # 2012-11-24: for RegressionTester
@@ -20,7 +21,6 @@ URL=http://localhost:8080/dbat/servlet
 ARGS=-c etc/worddb.properties -e UTF-8
 # (3) Test cases UR2 (gopher) and UR3 (ftp) access sites on the Internet; check all URLs in UR1-UR5.
 # (4) Y06 throws a lot of Java stackdump messages to STDERR on purpose.
-#
 #======================================================================
 # normally the main method of class Dbat in the following package is CALLed
 PACKAGE=org.teherba.dbat
@@ -362,7 +362,7 @@ TEST Y10 rewriting with JavaScript - when
 HTTP spec=test.rewrite DB2SYS=DB2N
 
 TEST Y11 rewriting with JavaScript - otherwise
-HTTP spec=test.rewrite DB2SYS=DB2Iw
+HTTP spec=test.rewrite DB2SYS=DB2I
 #-------------------
 # console page
 TEST SC1 show SQL console page

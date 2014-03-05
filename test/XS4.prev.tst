@@ -232,7 +232,6 @@
       <ht:input name="search_name" type="hidden" init=""/>
       <ht:input name="search_decease" type="hidden" init=""/>
       <ht:input name="search_family" type="hidden" init="Ritter"/>
-      
       <ht:input name="name" type="hidden" init=""/>
       <ht:input name="decease" type="hidden" init=""/>
       <ht:input name="family" type="hidden" init="Ritter"/>
