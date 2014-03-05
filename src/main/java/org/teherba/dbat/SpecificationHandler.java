@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+    2014-03-05: use (ordered) TreeSet for parameterMap, for better reproducibility of web tests
     2012-10-19: use Messages.getDefaultCounterDesc
     2012-09-17: if <dbat stylesheet="..."> attribute is present, it is taken as is
     2012-08-04: pass urlPath to HTML stylesheet declaration
@@ -71,6 +72,7 @@ import  java.util.HashMap;
 import  java.util.Iterator;
 import  java.util.LinkedHashMap;
 import  java.util.Map;
+import  java.util.TreeSet;
 import  javax.servlet.ServletContext;
 import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;
@@ -176,7 +178,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
      */
     public void setParameterMap(Map/*<1.5*/<String, String[]>/*1.5>*/  map) {
         parameterMap = new LinkedHashMap/*<1.5*/<String, String[]>/*1.5>*/();
-        Iterator<String> piter = map.keySet().iterator();
+        Iterator<String> piter = (new TreeSet/*<1.5*/<String>/*1.5>*/(map.keySet())).iterator();
         while (piter.hasNext()) {
             String key = piter.next();
             if (key.startsWith("amp;")) {
@@ -203,7 +205,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     /** Dumps the parameter map
      *  @param map set the parameter map to this object
      */
-    private String dumpParameterMap(Map/*<1.5*/<String, String[]>/*1.5>*/  map) {
+    private String dumpMap(Map/*<1.5*/<String, String[]>/*1.5>*/  map) {
         StringBuffer result = new StringBuffer(256);
         Iterator<String> piter = map.keySet().iterator();
         while (piter.hasNext()) {
@@ -225,7 +227,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             result.append("\n");
         } // while key
         return result.toString();
-    } // dumpParameterMap
+    } // dumpMap
 
     /** the remote user calling the web interface,
      *  returned from the Web Server (Apache, mod_auth_sspi, mod_jk, TomCat)
@@ -1089,7 +1091,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                             , parameterMap
                             );
                 if (debug >= 1) {
-                    tbSerializer.writeComment("SpecificationHandler.parameterMap: " + dumpParameterMap(parameterMap));
+                    tbSerializer.writeComment("SpecificationHandler.parameterMap: " + dumpMap(parameterMap));
                 }
                 // ROOT_TAG
 

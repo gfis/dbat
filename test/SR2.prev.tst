@@ -57,7 +57,7 @@ WHERE name like '%%';
 </table>
 
 <br />Ausgabe am yyyy-mm-dd hh:mm:ss durch <a href="index.html">Dbat</a>-Skript <a target="_blank" href="spec/test/color07.xml" type="text/plain">test/color07</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fcolor07&amp;lang=de&amp;name=%25">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fcolor07&amp;lang=de&amp;name=%25">mehr</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;lang=de&amp;spec=test%2Fcolor07&amp;name=%25">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;lang=de&amp;spec=test%2Fcolor07&amp;name=%25">mehr</a>
 
 </body></html>

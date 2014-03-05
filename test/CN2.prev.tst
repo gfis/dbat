@@ -59,7 +59,7 @@ WHERE name like 'x%';
 </table>
 
 <br />Ausgabe am yyyy-mm-dd hh:mm:ss durch <a href="index.html">Dbat</a>-Skript <a target="_blank" href="spec/test/counter01.xml" type="text/plain">test/counter01</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fcounter01&amp;lang=de&amp;name=x">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fcounter01&amp;lang=de&amp;name=x">mehr</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;lang=de&amp;name=x&amp;spec=test%2Fcounter01">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;lang=de&amp;name=x&amp;spec=test%2Fcounter01">mehr</a>
 
 </body></html>

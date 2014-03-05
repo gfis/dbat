@@ -32,7 +32,7 @@ FROM c01;
 
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/minusconn.xml" type="text/plain">test/minusconn</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fminusconn&amp;conn=worddb&amp;tabname=c01&amp;lang=en">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fminusconn&amp;conn=worddb&amp;tabname=c01&amp;lang=en">more</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;conn=worddb&amp;spec=test%2Fminusconn&amp;tabname=c01&amp;lang=en">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;conn=worddb&amp;spec=test%2Fminusconn&amp;tabname=c01&amp;lang=en">more</a>
 
 </body></html>

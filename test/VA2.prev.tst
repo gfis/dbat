@@ -44,7 +44,7 @@ ORDER BY 1;
 </table>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/var02.xml" type="text/plain">test/var02</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.var02&amp;name=M&amp;lang=en&amp;birth=1800-01-01&amp;decease=1800&amp;changed=1900-01-01+00%3A00%3A00">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.var02&amp;name=M&amp;lang=en&amp;birth=1800-01-01&amp;decease=1800&amp;changed=1900-01-01+00%3A00%3A00">more</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;name=M&amp;spec=test.var02&amp;lang=en&amp;birth=1800-01-01&amp;decease=1800&amp;changed=1900-01-01+00%3A00%3A00">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;name=M&amp;spec=test.var02&amp;lang=en&amp;birth=1800-01-01&amp;decease=1800&amp;changed=1900-01-01+00%3A00%3A00">more</a>
 
 </body></html>
