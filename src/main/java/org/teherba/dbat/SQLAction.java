@@ -1,5 +1,6 @@
 /*  SQLAction.java - Properties and methods specific for one elementary sequence of SQL instructions
     @(#) $Id$
+    2014-03-10: insertFromURI, no Date/Time/Timestamp escape sequences
     2012-11-27: COMMIT if max_commit % 250 = 0
     2012-06-27: without references to com.ibm.db2.jcc.*; printSQLError commented out
     2012-06-13: prepare PreparedStatements
@@ -1399,7 +1400,7 @@ public class SQLAction implements Serializable {
                             case 2: // both sides
                                 value = value.trim();
                                 break;
-                        } // switch 
+                        } // switch
                     }
                     break;
                 case Types.DECIMAL:
@@ -1446,7 +1447,7 @@ public class SQLAction implements Serializable {
         targetEncoding  = tbSerializer.getTargetEncoding();
         if (tbSerializer instanceof SQLTable) { // write 'null' and not '"null"' for SQL derived formats
             setNullText(-1);
-        } 
+        }
         try {
             tbMetaData.putAttributes(stResults);
             int columnCount      = tbMetaData.getColumnCount();
@@ -1511,7 +1512,7 @@ public class SQLAction implements Serializable {
                         break;
                 } // switch aggregateChange
                 tbMetaData.rememberRow(tbSerializer);
-                if (sqlRowCount % maxCommit == 0) { 
+                if (sqlRowCount % maxCommit == 0) {
                     tbSerializer.writeCommit(sqlRowCount); // some modes insert a COMMIT statement here
                 }
             } // while results
@@ -1865,21 +1866,21 @@ public class SQLAction implements Serializable {
                                 }
                                 switch (trimSides) {
                                     case 0: // notrim
-                                        columnValues[rawCount] = (      line.substring(spos, epos))                    ; 
+                                        columnValues[rawCount] = (      line.substring(spos, epos))                    ;
                                         break;
                                     case 1: // rtrim
-                                        columnValues[rawCount] = ("x" + line.substring(spos, epos)).trim().substring(1); 
+                                        columnValues[rawCount] = ("x" + line.substring(spos, epos)).trim().substring(1);
                                         break;
                                     default:
                                     case 2:
-                                        columnValues[rawCount] = (      line.substring(spos, epos)).trim()             ; 
+                                        columnValues[rawCount] = (      line.substring(spos, epos)).trim()             ;
                                         break;
                                 } // switch trimSides
                                 spos = epos;
                             } // not pseudo
                             rawCount ++;
                         } // while rawCount
-                        break;       
+                        break;
                     case 'c': // "csv" with separator
                         columnValues = line.split(config.getSeparator());
                         rawCount = columnValues.length;
@@ -1890,7 +1891,7 @@ public class SQLAction implements Serializable {
                         rawCount = columnValues.length;
                         break;
                 } // switch formatCode
-                
+
                 if (debug >= 2) {
                     System.err.println("insertFromURI.rawCount=" + rawCount + ", columnCount=" + columnCount);
                 }
@@ -1930,16 +1931,13 @@ public class SQLAction implements Serializable {
                                     break;
                         // time
                                 case Types.DATE:
-                                    insertStmt.setDate
-                                            (scol ++, java.sql.Date     .valueOf("{d \'"  + value + "\'}"));
+                                    insertStmt.setDate     (scol ++, java.sql.Date     .valueOf(value));
                                     break;
                                 case Types.TIME:
-                                    insertStmt.setTime
-                                            (scol ++, java.sql.Time     .valueOf("{t \'"  + value + "\'}"));
+                                    insertStmt.setTime     (scol ++, java.sql.Time     .valueOf(value));
                                     break;
                                 case Types.TIMESTAMP:
-                                    insertStmt.setTimestamp
-                                            (scol ++, java.sql.Timestamp.valueOf("{ts \'"  + value + "\'}"));
+                                    insertStmt.setTimestamp(scol ++, java.sql.Timestamp.valueOf(value));
                                     break;
                         // LOBs
                                 case Types.CLOB:

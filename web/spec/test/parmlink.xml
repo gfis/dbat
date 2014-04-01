@@ -3,23 +3,23 @@
     @(#) $Id$
     2011-08-09, Dr. Georg Fischer: Vr 30
 -->
-<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
-		xmlns:ht="http://www.w3.org/1999/xhtml"
-		encoding="UTF-8"
-		lang="en" 
-		conn="worddb" 
-		title="parmlink"
-		>
-	<comment lang="en">Test of an HTML Link with Parameter Substitution</comment>
-	<comment lang="de">Test eines HTML-Links mit Parameter-Ersetzung</comment>
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang="en"
+        conn="worddb"
+        title="parmlink"
+        >
+    <comment lang="en">Test of an HTML Link with Parameter Substitution</comment>
+    <comment lang="de">Test eines HTML-Links mit Parameter-Ersetzung</comment>
 
     <ht:h3>Select from test table c01 - with alignment</ht:h3>
     <ht:form method="get">
-        <ht:input label="Name" name="name" maxsize="20" size="10" init="M" 		/>% &#xa0;&#xa0;
-        <ht:input label="Year" name="year" maxsize="20" size="10" init="1995" 	/> &#xa0;&#xa0;
+        <ht:input label="Name" name="name" maxsize="20" size="10" init="M"      />% &#xa0;&#xa0;
+        <ht:input label="Year" name="year" maxsize="20" size="10" init="1995"   /> &#xa0;&#xa0;
         <ht:input type="submit" value="Submit" />
     </ht:form>
-    
+
     <!-- this should work outside of a <select> element -->
     <ht:h3><a href="servlet?spec=test.align01&amp;name=&amp;year="><parm name="name" />=<parm name="year" /></a>
     </ht:h3>

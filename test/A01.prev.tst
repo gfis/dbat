@@ -10,8 +10,8 @@
 <link rel="stylesheet" type="text/css" href="./web/spec/test/stylesheet.css" />
 </head><body>
 
-	<!--Test of an HTML Link with Parameter Substitution-->
-	<!--Test eines HTML-Links mit Parameter-Ersetzung-->
+    <!--Test of an HTML Link with Parameter Substitution-->
+    <!--Test eines HTML-Links mit Parameter-Ersetzung-->
 
     <h3>Select from test table c01 - with alignment</h3>
     <form method="get" action="servlet?spec=web/spec/test/parmlink.xml"><input name="spec" type="hidden" value="web/spec/test/parmlink.xml" />
@@ -20,7 +20,7 @@
         Year: <input name="year" maxsize="20" size="10" init="1995" value="1995"></input>   
         <input type="submit" value="Submit"></input>
     </form>
-    
+
     
     <h3><a href="servlet?spec=test.align01&amp;name=M&amp;year=1995">1995</a>
     </h3>

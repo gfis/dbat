@@ -2,6 +2,7 @@
 
 # Collection of Testcases for Dbat with MySQL driver
 # @(#) $Id: all.tca 955 2012-06-05 07:22:59Z gfis $
+# 2014-03-10: + DF1-3
 # 2014-03-05: + XS7, +V1*
 # 2013-02-01: web/spec/test/fragment01.xml
 # 2013-01-05: rm U0*, add TL1-4, UR1-7
@@ -211,6 +212,16 @@ CALL Dbat -m json   -200 de1
 
 TEST DE8 decimal table as fix
 CALL Dbat -m fix    -200 de1
+
+TEST DF1 raw input of decimal and date/time formats
+DATA row5;194706290530000005;194706.295;1981-08-05;11:30:05;1981-08-05 11:30:05.005
+CALL Dbat -m csv -s ";" -r de1 test/DF1.data.tmp
+
+TEST DF2 check raw input of decimal and date/time formats
+CALL Dbat -m csv -s ";" -222 de1
+
+TEST DF3 cleanup
+CALL Dbat "delete from de1 where name0 = 'row5';"
 #-------------------
 # stored procedures
 TEST X00 create procedure x00

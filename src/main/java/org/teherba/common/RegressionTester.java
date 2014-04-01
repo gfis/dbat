@@ -1,6 +1,9 @@
 /*  Reader for text file, returns a string without any whitespace
  *  @(#) $Id$
+ *  2014-03-30: diff -Z
  *  2014-02-16: encoding for all BufferedReaders
+ *  2013-09-13: EXIT effective only if testNamePattern != "*"
+ *  2013-09-11: SORT instruction
  *  2013-08-14: classpath from System property, URL encoding
  *  2013-07-03: URL encoding
  *  2013-01-05: works with new CommandTokenizer.split()
@@ -192,6 +195,7 @@ public class RegressionTester {
         String classPrefix = "org.teherba."; // default for PACKAGE macro
         String argsPrefix  = ""; // default for ARGS macro
         String baseURL     = "http://localhost:8080/dbat/servlet"; // default for URL macro
+        String sortPrefix  = "sort ";
         String xsltPrefix  = "xsltproc ";
         String cmd         = null; // system command to be executed
         BufferedReader reader = null; // reader for stdout from 'cmd'
@@ -398,9 +402,11 @@ public class RegressionTester {
                             System.out.println(verb + " " + timestamp);
 
                         } else if (verb.equals("EXIT")) { // skip all remaining lines
-                             while ((testLine = tcaReader.readLine()) != null) {
-                                // ignore
-                             } // while ignoring
+                            if (testNamePattern.matches("\\W+")) { // no specific tests are selected
+                                while ((testLine = tcaReader.readLine()) != null) {
+                                    // ignore
+                                } // while ignoring
+                            } // only if no specific tests selected
 
                         } else if (verb.equals("HTTP")) {
                         /*
@@ -424,6 +430,19 @@ public class RegressionTester {
                             while ((urlLine = urlReader.readLine()) != null) {
                                 thisStream.println(urlLine);
                             } // while urlLine
+
+                        } else if (verb.equals("SORT")) {
+                            cmd = sortPrefix + rest.trim();
+                            logText = cmd;
+                            realStdOut.println(logText);
+                            process = runtime.exec(cmd);
+                            reader = new BufferedReader(new InputStreamReader(process.getInputStream(), logEncoding));
+                            int iline = 0;
+                            while ((line = reader.readLine()) != null) {
+                                thisStream.println(line);
+                                iline ++;
+                            } // while iline
+                            reader.close();
 
                         } else if (verb.equals("XSLT")) {
                             cmd = xsltPrefix + rest.trim();
