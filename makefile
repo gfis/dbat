@@ -17,10 +17,10 @@ DIFF=diff -w -rs -C0
 MAX=`unzip -p dist/dbat.war | ident | gawk -F ' ' '{ print $$3 }' | sort -rn | head -1 | tr -d " \r\n"`
 SRC=src/main/java/org/teherba/dbat
 TOMC=/var/lib/tomcat/webapps/dbat
-METHOD=get
+METHOD=post
 TAB=relatives
 TESTDIR=test
-# the following can be overriden outside for single or subset tests, 
+# the following can be overriden outside for single or subset tests,
 # for example make regression TEST=U%
 TEST="*"
 
@@ -35,7 +35,7 @@ regression_mysql:
 	grep FAILED regression_mysql.log.tmp
 #
 # Recreate all testcases which failed (i.e. remove xxx.prev.tst)
-# Handle with care! 
+# Handle with care!
 # Failing testcases are turned into "passed" and are manifested by this target!
 recreate: recr1 regr2 regression
 recr0:
@@ -55,7 +55,7 @@ nosvn:
 doc: javadoc wikidoc
 javadoc:
 	ant javadoc
-wikidoc:	
+wikidoc:
 	cd target/docs ; wget -E -H -k -K -p -nd -nc http://localhost/wiki/index.php/Dbat	             || true
 	cd target/docs ; wget -E -H -k -K -p -nd -nc http://localhost/wiki/index.php/Dbat-Spezifikation  || true
 identify:
@@ -139,7 +139,7 @@ jsp2:
 	make jspstyle JSP=metaInf CLASS=ViewMetaInf
 jspstyle:
 #	astyle --style=java -x < target/WEB-INF/src/org/apache/jsp/help_jsp.java > src/main/java/org/teherba/dbat/ViewHelp.java
-#	svn add src/main/java/org/teherba/dbat/ViewHelp.java	
+#	svn add src/main/java/org/teherba/dbat/ViewHelp.java
 #	astyle --style=java -x < target/WEB-INF/src/org/apache/jsp/more_jsp.java > src/main/java/org/teherba/dbat/ViewMore.java
 #	svn add src/main/java/org/teherba/dbat/ViewMore.java
 	tr -d "\r" < target/WEB-INF/src/org/apache/jsp/$(JSP)_jsp.java > x.tmp
@@ -154,16 +154,16 @@ valid_dbat:
 	| grep -v ".iv.xml"\
 	| grep -v "/incl"\
 	| grep -v "/bad"\
-	| xargs -l xmllint --noout --schema etc/schema/dbat.2007.xsd 2>&1 
+	| xargs -l xmllint --noout --schema etc/schema/dbat.2007.xsd 2>&1
 valid_dbiv:
 	find web/spec -iname "*.iv.xml"\
-	| xargs -l xmllint --noout --schema etc/schema/dbiv.2011.xsd 2>&1 
+	| xargs -l xmllint --noout --schema etc/schema/dbiv.2011.xsd 2>&1
 #--------------------------------------
 form_gen_xalan:
 	xalan -in web/spec/test/crud03.iv.xml -xsl etc/xslt/dbiv_spec.xsl\
 	| tee web/spec/test/crud03.xml
 #--------------------------------------
-ajax: 
+ajax:
 	sudo cp -v web/spec/test/ajax*.xml	 	$(TOMC)/spec/test/
 	sudo cp -v web/spec/http_request.js 	$(TOMC)/spec/
 #-------------------------------------
