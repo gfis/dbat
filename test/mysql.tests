@@ -141,6 +141,9 @@ CALL Dbat -f $(DATA)
 
 TEST I02 include with system entities
 HTTP spec=test/includer
+
+TEST I03 check for ANSI concatenation with '||'
+CALL Dbat "SELECT name || ' ' || univ FROM c01 order by 1"
 #-------------------
 # Connection Id from HTTP request
 TEST CI1 connection id worddb in request
