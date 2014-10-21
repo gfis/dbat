@@ -16,17 +16,17 @@ ORDER BY 1;
 :SQL -->
 <!-- SQL:
 SELECT '' || '=' 
-				 || '' || '=' 
-				 || '' || '=' 
-				 || name || '=' 
-				 || family || '=' 
-				 || gender || '=' || 'upd'
+         || '' || '=' 
+         || '' || '=' 
+         || name || '=' 
+         || family || '=' 
+         || gender || '=' || 'upd'
 , '' || '=' 
-				 || '' || '=' 
-				 || '' || '=' 
-				 || name || '=' 
-				 || family || '=' 
-				 || gender || '=' || 'del'
+         || '' || '=' 
+         || '' || '=' 
+         || name || '=' 
+         || family || '=' 
+         || gender || '=' || 'del'
 , name
 , family
 , gender
@@ -35,8 +35,8 @@ SELECT '' || '='
 , decease 
 FROM relatives 
 WHERE name like '%'
-				and family like '%'
-				and gender like '%' 
+        and family like '%'
+        and gender like '%' 
 ORDER BY 1,2;
 :SQL -->
 <Worksheet ss:Name="Select1">

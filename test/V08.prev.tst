@@ -10,11 +10,11 @@
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
 </head><body>
 
-	
-	
-	<h2><a href="servlet?spec=test.index">Test</a> Form - Relatives</h2>
+  
+  
+  <h2><a href="servlet?spec=test.index">Test</a> Form - Relatives</h2>
 
-		<!-- SQL:
+    <!-- SQL:
 SELECT name
 , family
 , gender
@@ -23,29 +23,29 @@ SELECT name
 , decease 
 FROM relatives 
 WHERE name = 'Teherba'
-				and family = 'Ritter'
-				and gender = '';
+        and family = 'Ritter'
+        and gender = '';
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
 </table>
 
-		<form method="post" action="servlet?spec=test/crud03"><input name="spec" type="hidden" value="test/crud03" />
+    <form method="post" action="servlet?spec=test/crud03"><input name="spec" type="hidden" value="test/crud03" />
 
-			<input name="view" type="hidden" value="del2"></input>
-			<input name="opcode" type="hidden" value="del"></input>
-			<input name="search_name" type="hidden" init="" value=""></input>
-			<input name="search_family" type="hidden" init="" value="Ritter"></input>
-			<input name="search_gender" type="hidden" init="M" value="M"></input>
-			<input name="name" type="hidden" init="" value="Teherba"></input>
-			<input name="family" type="hidden" init="" value="Ritter"></input>
-			<input name="gender" type="hidden" init="M" value="M"></input>
-			<input name="birth" type="hidden" init="" value=""></input>
-			<input name="place" type="hidden" init="" value=""></input>
-			<input name="decease" type="hidden" init="" value=""></input>
-			<input name="user" type="hidden" init="" value=""></input>
-			<input type="submit" value="Delete"></input> <a href="servlet?spec=test/crud03">Back</a> to the search form
-		</form>
-	
+      <input name="view" type="hidden" value="del2"></input>
+      <input name="opcode" type="hidden" value="del"></input>
+      <input name="search_name" type="hidden" init="" value=""></input>
+      <input name="search_family" type="hidden" init="" value="Ritter"></input>
+      <input name="search_gender" type="hidden" init="M" value="M"></input>
+      <input name="name" type="hidden" init="" value="Teherba"></input>
+      <input name="family" type="hidden" init="" value="Ritter"></input>
+      <input name="gender" type="hidden" init="M" value="M"></input>
+      <input name="birth" type="hidden" init="" value=""></input>
+      <input name="place" type="hidden" init="" value=""></input>
+      <input name="decease" type="hidden" init="" value=""></input>
+      <input name="user" type="hidden" init="" value=""></input>
+      <input type="submit" value="Delete"></input> <a href="servlet?spec=test/crud03">Back</a> to the search form
+    </form>
+  
 
 
 

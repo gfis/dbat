@@ -10,43 +10,43 @@
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
 </head><body>
 
-	
-	
-	<h2><a href="servlet?spec=test.index">Test</a> Form - Relatives</h2>
+  
+  
+  <h2><a href="servlet?spec=test.index">Test</a> Form - Relatives</h2>
 
-		<!-- SQL:
+    <!-- SQL:
 DELETE  
 FROM relatives 
 WHERE name = 'Teherba'
-				and family = 'Ritter'
-				and gender = 'M';
+        and family = 'Ritter'
+        and gender = 'M';
 :SQL -->
 
-		<h4>0 row(s) for key
-			 <em> Teherba</em>
-			 <em> Ritter</em>
-			 <em> M</em> deleted
-		</h4>
-	
+    <h4>0 row(s) for key
+       <em> Teherba</em>
+       <em> Ritter</em>
+       <em> M</em> deleted
+    </h4>
+  
 
 
-		<form method="post" action="servlet?spec=test/crud03"><input name="spec" type="hidden" value="test/crud03" />
+    <form method="post" action="servlet?spec=test/crud03"><input name="spec" type="hidden" value="test/crud03" />
 
-			<input name="view" type="hidden" value="sear"></input>
-			<table>
-			<tr><td valign="top" title="name">Name:</td>
-				<td><input name="search_name" size="40" init="" title="[\w\-%]*" onkeyup="this.form.name.className = (this.form.name.value.match('^[\\w\\-%]*$')) ? 'valid': 'invalid'" value=""></input> Letters and "-"
-				</td></tr>
-			<tr><td valign="top" title="family">Family:</td>
-				<td><select name="search_family" init="" size="3">
-				<option value="">(any)</option>
-				<option value="Ritter" selected="yes">Ritter Family</option>
-				<option value="Fischer">Fischer Family</option>
-				</select>
-				</td></tr>
-			<tr><td valign="top" title="gender">Gender:</td>
-				<td>
-				<!-- SQL:
+      <input name="view" type="hidden" value="sear"></input>
+      <table>
+      <tr><td valign="top" title="name">Name:</td>
+        <td><input name="search_name" size="40" init="" title="[\w\-%]*" onkeyup="this.form.name.className = (this.form.name.value.match('^[\\w\\-%]*$')) ? 'valid': 'invalid'" value=""></input> Letters and "-"
+        </td></tr>
+      <tr><td valign="top" title="family">Family:</td>
+        <td><select name="search_family" init="" size="3">
+        <option value="">(any)</option>
+        <option value="Ritter" selected="yes">Ritter Family</option>
+        <option value="Fischer">Fischer Family</option>
+        </select>
+        </td></tr>
+      <tr><td valign="top" title="gender">Gender:</td>
+        <td>
+        <!-- SQL:
 SELECT DISTINCT gender
 , case 
 						when gender = 'M' then 'male' 
@@ -55,46 +55,46 @@ FROM relatives
 ORDER BY 1;
 :SQL -->
 
-				<select name="search_gender" size="3">
+        <select name="search_gender" size="3">
 <option value="">(any)</option>
 <option value="F" selected="yes">female</option>
 <option value="M">male</option>
 </select>
 
-				
-				</td></tr>
-			</table>
-			<input name="birth" type="hidden" init="" value=""></input>
-			<input name="place" type="hidden" init="" value=""></input>
-			<input name="decease" type="hidden" init="" value=""></input>
-			<input name="user" type="hidden" init="" value=""></input>
-			<input type="submit" value="Search"></input>
-		</form><br />
-		<form method="post" action="servlet?spec=test/crud03"><input name="spec" type="hidden" value="test/crud03" />
+        
+        </td></tr>
+      </table>
+      <input name="birth" type="hidden" init="" value=""></input>
+      <input name="place" type="hidden" init="" value=""></input>
+      <input name="decease" type="hidden" init="" value=""></input>
+      <input name="user" type="hidden" init="" value=""></input>
+      <input type="submit" value="Search"></input>
+    </form><br />
+    <form method="post" action="servlet?spec=test/crud03"><input name="spec" type="hidden" value="test/crud03" />
 
-			<input name="view" type="hidden" value="ins"></input>
-			<input name="search_name" type="hidden" init="" value=""></input>
-			<input name="search_family" type="hidden" init="" value="Ritter"></input>
-			<input name="search_gender" type="hidden" init="M" value=""></input>
-			<input name="birth" type="hidden" init="" value=""></input>
-			<input name="place" type="hidden" init="" value=""></input>
-			<input name="decease" type="hidden" init="" value=""></input>
-			<input name="user" type="hidden" init="" value=""></input>
-			<input type="submit" value="New Relative"></input>
-		</form>
-		<!-- SQL:
+      <input name="view" type="hidden" value="ins"></input>
+      <input name="search_name" type="hidden" init="" value=""></input>
+      <input name="search_family" type="hidden" init="" value="Ritter"></input>
+      <input name="search_gender" type="hidden" init="M" value=""></input>
+      <input name="birth" type="hidden" init="" value=""></input>
+      <input name="place" type="hidden" init="" value=""></input>
+      <input name="decease" type="hidden" init="" value=""></input>
+      <input name="user" type="hidden" init="" value=""></input>
+      <input type="submit" value="New Relative"></input>
+    </form>
+    <!-- SQL:
 SELECT '' || '=' 
-				 || 'Ritter' || '=' 
-				 || '' || '=' 
-				 || name || '=' 
-				 || family || '=' 
-				 || gender || '=' || 'upd'
+         || 'Ritter' || '=' 
+         || '' || '=' 
+         || name || '=' 
+         || family || '=' 
+         || gender || '=' || 'upd'
 , '' || '=' 
-				 || 'Ritter' || '=' 
-				 || '' || '=' 
-				 || name || '=' 
-				 || family || '=' 
-				 || gender || '=' || 'del'
+         || 'Ritter' || '=' 
+         || '' || '=' 
+         || name || '=' 
+         || family || '=' 
+         || gender || '=' || 'del'
 , name
 , family
 , gender
@@ -103,8 +103,8 @@ SELECT '' || '='
 , decease 
 FROM relatives 
 WHERE name like '%'
-				and family like 'Ritter%'
-				and gender like '%' 
+        and family like 'Ritter%'
+        and gender like '%' 
 ORDER BY 1,2;
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
@@ -116,7 +116,7 @@ ORDER BY 1,2;
 <tr><td class="counter" colspan="8">4 Persons</td></tr>
 </table>
 
-	
+  
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/crud03.xml" type="text/plain">test/crud03</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;birth=&amp;decease=&amp;family=Ritter&amp;gender=M&amp;name=Teherba&amp;place=&amp;search_family=Ritter&amp;search_name=&amp;spec=test.crud03&amp;lang=en&amp;update_count=0&amp;code=F&amp;code=M&amp;display=female&amp;display=male&amp;search_gender=&amp;user=">Excel</a>,
