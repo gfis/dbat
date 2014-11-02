@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     dbat.2007.xsd - Schema for Dbat specifications
     @(#) $Id: dbat.2007.xsd 956 2012-06-05 09:07:53Z gfis $
+    2014-10-29: <col sql="..." /> removed
     2012-06-25: more restrictions
     2012-06-22: <trailer select="..." />
     2012-06-16: manner=
@@ -22,11 +23,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<xs:schema 
+<xs:schema
         targetNamespace="http://www.teherba.org/2007/dbat"
-        elementFormDefault="qualified" 
+        elementFormDefault="qualified"
         attributeFormDefault="unqualified"
-        xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns   ="http://www.teherba.org/2007/dbat"
         xmlns:ht="http://www.w3.org/1999/xhtml"
         >
@@ -42,7 +43,7 @@
                 <xs:element name="choose"   type="ChooseType"   />
                 <xs:element name="delete"   type="DeleteType"   />
                 <xs:element name="describe" type="DescribeType" />
-                <xs:element name="div"      type="DivType"      />
+                <xs:element name="div"      type="DivType"      /><!-- is ignored -->
                 <xs:element name="insert"   type="InsertType"   />
                 <xs:element name="parm"     type="ParmType"     />
                 <xs:element name="select"   type="SelectType"   />
@@ -111,7 +112,6 @@
         <xs:attribute name="name"   type="xs:NCName" />
         <xs:attribute name="pseudo" type="xs:string" />
         <xs:attribute name="remark" type="xs:string" />
-        <xs:attribute name="sql"    type="xs:string" /><!-- same as "expr" -->
         <xs:attribute name="style"  type="xs:string" />
         <xs:attribute name="type"   type="xs:string" />
         <xs:attribute name="width"  type="xs:string" />
@@ -160,7 +160,7 @@
         </xs:choice>
     </xs:complexType>
 
-    <xs:complexType name="DivType" mixed="true" >
+    <xs:complexType name="DivType" mixed="true" ><!-- div does not generate any output -->
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="choose"   type="ChooseType" />
             <xs:element name="listparm" type="ListParmType" />
