@@ -42,9 +42,8 @@
         xmlns     ="http://www.teherba.org/2007/dbat"
         xmlns:ht  ="http://www.w3.org/1999/xhtml"
         xmlns:date="http://exslt.org/dates-and-times"
-        xmlns:func="http://exslt.org/functions"
         xmlns:str ="http://exslt.org/strings"
-        extension-element-prefixes="func date str"
+        extension-element-prefixes="date str"
         >
 <!--==================================================
     Global variables and declarations
@@ -64,11 +63,11 @@
 
 <xsl:template match="catalog"/>
     <xsl:template match="field">
+<!--
     <xsl:variable name="shirtColor" select="@colorCode"/>
     <xsl:for-each select="$colorLookupDoc">
         <xsl:value-of select="key('colorNumKey',$shirtColor)"/>
     </xsl:for-each>
-<!--
     <xsl:text> </xsl:text><xsl:apply-templates/><xsl:text>
 </xsl:text>
 -->

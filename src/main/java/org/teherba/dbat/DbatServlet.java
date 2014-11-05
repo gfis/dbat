@@ -1,5 +1,6 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2014-11-05: transforms and processes dbiv specs also
  *  2012-07-01: subpackage view; ConsolePage
  *  2012-03-16: dsMap filled only here, DBCPoolingListener abandonned
  *  2012-02-11: all JSPs replaced by View*.java
@@ -9,7 +10,7 @@
  *  2011-07-21: spec file not found error message
  *  2011-05-09: Version 5 with Configuration, SpecificationHandler etc.
  *  2011-01-21: response.setContentType("application/xhtml+xml") instead of "text/html"
- *  2010-09-23: with map of DBCP DataSources 
+ *  2010-09-23: with map of DBCP DataSources
  *  2010-09-21: thread-safety, new TableFactory() in getResponse; error message from XML parser
  *  2010-07-24: mode 'xls'
  *  2010-05-27: finally dbat.terminate()
@@ -44,6 +45,10 @@ import  org.teherba.dbat.view.MessagePage;
 import  org.teherba.dbat.view.MetaInfPage;
 import  org.teherba.dbat.view.MorePage;
 import  org.teherba.dbat.view.ValidatePage;
+import  org.teherba.xtrans.BaseTransformer;
+import  org.teherba.xtrans.BasicFactory;
+import  org.teherba.xtrans.XMLTransformer;
+import  org.teherba.xtrans.XtransFactory;
 import  java.io.BufferedReader;
 import  java.io.Reader;
 import  java.io.File;
@@ -67,6 +72,8 @@ import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;
 import  javax.servlet.http.HttpSession;
 import  javax.sql.DataSource;
+import  javax.xml.transform.sax.SAXResult;
+import  javax.xml.transform.sax.TransformerHandler;
 import  org.apache.log4j.Logger;
 
 /** Database administration tool for JDBC compatible relational databases.
@@ -94,7 +101,7 @@ public class DbatServlet extends HttpServlet {
     private LinkedHashMap<String, DataSource> dsMap;
     /** Environment naming context obtained from <em>lookup("java:comp/env")</em> */
     private Context envContext;
- 
+
     /** Called by the servlet container to indicate to a servlet
      *  that the servlet is being placed into service.
      *  @throws ServletException
@@ -108,7 +115,7 @@ public class DbatServlet extends HttpServlet {
             dsMap = new LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/(4);
             String dsList = ((String) envContext.lookup("dataSources")).replaceAll("\\s+", "");
             log.info("DbatServlet: dsList=\"" + dsList + "\"");
-        
+
             String[] pairs = dsList.split("\\,");
             int ipair = 0;
             while (ipair < pairs.length) {
@@ -144,19 +151,19 @@ public class DbatServlet extends HttpServlet {
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
-        
+
         realPath = context.getInitParameter("specPath");
         if (realPath == null) {
             realPath = context.getRealPath("/").replaceAll("\\\\", "/");
             if (! realPath.endsWith("/")) {
                 realPath += "/"; // "/" before "spec" for WAS
             }
-            realPath += "spec/";  
+            realPath += "spec/";
         }
         if (! realPath.endsWith("/")) {
             realPath += "/";
         }
-        log.info("realPath=" + realPath);       
+        log.info("realPath=" + realPath);
 
         if (true) { // debugging
             Iterator<String> miter = dsMap.keySet().iterator();
@@ -169,8 +176,8 @@ public class DbatServlet extends HttpServlet {
                 } catch (Exception exc) {
                     log.error(exc.getMessage(), exc);
                 }
-            } // while miter 
-        } // debugging 
+            } // while miter
+        } // debugging
     } // init
 
     /** Processes an http GET request
@@ -224,7 +231,7 @@ public class DbatServlet extends HttpServlet {
         return result;
     } // getInputField
 
-    /** Sets the content-disposition with target filename and the content-type 
+    /** Sets the content-disposition with target filename and the content-type
      *  of the response depending on the output format (mode)
      *  @param response response of the Http request (headers are set therein)
      *  @param mode output format (default: set to "html" if it was not set)
@@ -238,7 +245,7 @@ public class DbatServlet extends HttpServlet {
             } else if (mode.startsWith("html")) {
                 targetFileName += ".html";
                 response.setContentType("text/html;charset=" + encoding);
-            } else if (mode.startsWith("tsv" ) 
+            } else if (mode.startsWith("tsv" )
                     || mode.startsWith("xls" )
                     ) {
                 targetFileName += (mode.startsWith("xls" ) ? ".xml" : ".csv");
@@ -246,7 +253,7 @@ public class DbatServlet extends HttpServlet {
             } else if (mode.startsWith("csv" )) {
                 targetFileName += ".txt";
                 response.setContentType("text/comma-separated-values;charset=" + encoding);
-            } else if (mode.startsWith("xml" ) 
+            } else if (mode.startsWith("xml" )
                     || mode.startsWith("spec")
                     || mode.startsWith("trans")
                     ) {
@@ -280,16 +287,21 @@ public class DbatServlet extends HttpServlet {
     public void generateResponse(HttpServletRequest request, HttpServletResponse response) throws IOException {
         TableFactory tableFactory = new TableFactory();
         Configuration config = new Configuration();
-        config.configure(config.WEB_CALL, dsMap); 
+        config.configure(config.WEB_CALL, dsMap);
         request.setCharacterEncoding("UTF-8");
-        String specName 			= getInputField(request, "spec"		, "index").replaceAll("\\.", "/"); 
+        boolean isDbiv = false; // whether the input file is a Dbiv specification
+        String specName             = getInputField(request, "spec"     , "index").replaceAll("\\.", "/");
                 // spec subdirectories may be separated by "/" or by "."
-        String connectionId 		= getInputField(request, "conn"     , "");
+        if (specName.endsWith("/iv")) {
+            isDbiv = true;
+            specName = specName.substring(0, specName.length() - 3) + ".iv"; // repair the ending
+        } // isDbiv
+        String connectionId         = getInputField(request, "conn"     , "");
         if (connectionId.length() > 0) {
             config.addProperties(connectionId + ".properties");
             config.setConnectionId(connectionId);
-        }                
-        
+        }
+
         String view = request.getParameter("view");
         // The empty view is the default, and the DBIV view are handled likewise
         if (view == null || view.length() == 0 || view.matches("del|del2|dat|ins|ins2|upd|upd2|sear")) {
@@ -306,18 +318,18 @@ public class DbatServlet extends HttpServlet {
                 int fetchLimit      = getInputField(request, "fetch"    , 0x7fffffff); // "unlimited"
                 // response.setContentType(config.getHtmlMimeType()); // default
                 setResponseHeaders(response, mode, specName, encoding);
-    
+
                 ReadableByteChannel channel = null;
                 String sourceFileName = realPath + specName + ".xml";
                 File specFile = new File(sourceFileName);
                 boolean found = specFile.exists();
                 if (! found) { // spec file not found
-                    session.setAttribute("lang", language); 
+                    session.setAttribute("lang", language);
                     session.setAttribute("parm", specName);
                     specFile = new File(realPath + specName + ".redir");
                     if (specFile.exists()) { // 304 - redirection found
                         channel = (new FileInputStream (specFile)).getChannel();
-                        BufferedReader charReader = new BufferedReader(Channels.newReader(channel, "UTF-8")); 
+                        BufferedReader charReader = new BufferedReader(Channels.newReader(channel, "UTF-8"));
                                 // assume all spec files in UTF-8 XML
                         String line = charReader.readLine();
                         charReader.close();
@@ -334,7 +346,7 @@ public class DbatServlet extends HttpServlet {
                                     waitTime        = parts[0];
                                     language        = "en";
                                     break;
-                                case 3: 
+                                case 3:
                                     waitTime        = parts[0];
                                     language        = parts[1];
                                     break;
@@ -354,18 +366,15 @@ public class DbatServlet extends HttpServlet {
                         session.setAttribute("messno", "404"); // spec not found
                     } // 404
                     (new MessagePage    ()).forward(request, response);
-                } // not found 
-    
-                if (found)  { 
-                    channel = (new FileInputStream (specFile)).getChannel();
-                    Reader charReader = new BufferedReader(Channels.newReader(channel, "UTF-8")); 
-                            // assume all spec files in UTF-8 XML
+                } // not found
+
+                if (found)  {
                     config.setFormatMode(mode);
                     config.setLanguage(language);
                     config.setFetchLimit(fetchLimit);
                     SpecificationHandler handler = new SpecificationHandler(config);
                     handler.setWriter(response.getWriter());
-                    handler.setEncoding(response.getCharacterEncoding()); 
+                    handler.setEncoding(response.getCharacterEncoding());
                     handler.setRequest(request);
                     uncheckedSetParameterMap(handler, request);
                     BaseTable tbSerializer = tableFactory.getTableSerializer(mode);
@@ -373,13 +382,31 @@ public class DbatServlet extends HttpServlet {
                     tbSerializer.setSeparator(separator);
                     handler.setSerializer(tbSerializer);
                     config.setTableSerializer(tbSerializer);
-                    handler.setSpecPaths(realPath, "spec/", specName);              
-                    (new Dbat()).parseXML(charReader, handler, tbSerializer);
+                    handler.setSpecPaths(realPath, "spec/", specName);
+
+                    if (! isDbiv) {
+                        channel = (new FileInputStream (specFile)).getChannel();
+                        Reader charReader = new BufferedReader(Channels.newReader(channel, "UTF-8"));
+                                // assume all spec files in UTF-8 XML
+                        (new Dbat()).parseXML(charReader, handler, tbSerializer);
+                    } else { // isDbiv
+                        XtransFactory xtransFactory = new BasicFactory(); // knows XML only
+                        BaseTransformer generator  = xtransFactory.getTransformer("xml");
+                        BaseTransformer serializer = handler;
+                        TransformerHandler styler = xtransFactory.getXSLHandler(realPath + "dbiv_spec.xsl");
+                        generator.setContentHandler(styler);
+                        generator.setProperty("http://xml.org/sax/properties/lexical-handler", styler);
+                        styler.setResult(new SAXResult(serializer));
+                        generator.openFile(0, realPath + specName + ".xml");
+                        generator.generate();
+                        generator.closeAll();
+                    } // isDbiv
+
                     if (! handler.isSuccessful()) {
                         if (view.matches("(del|ins|upd)2?")) {
                             view = view.substring(0, 3); // without "2" => back to the input form
                             session.setAttribute("view", view);
-                        } 
+                        }
                     } // ! successful
                 } // found
             } catch (Exception exc) {
@@ -387,7 +414,7 @@ public class DbatServlet extends HttpServlet {
             } finally {
             }
 
-		// View "con" collects the parameters from the SQL Console
+        // View "con" collects the parameters from the SQL Console
         } else if (view.equals("con")) {
             (new ConsolePage    ()).forward(request, response, tableFactory, dsMap);
         // View "con2" is for the result of the SQL console
@@ -409,12 +436,12 @@ public class DbatServlet extends HttpServlet {
                 BaseTable tbSerializer = tableFactory.getTableSerializer(mode);
                 tbSerializer.setMimeType(response.getContentType());
                 tbSerializer.setSeparator(separator);
-                tbSerializer.setTargetEncoding(encoding); 
+                tbSerializer.setTargetEncoding(encoding);
                 tbSerializer.setWriter(response.getWriter());
                 config.setFormatMode(mode);
                 config.setLanguage(language);
                 config.setFetchLimit(fetchLimit);
-                config.setTableSerializer(tbSerializer);   
+                config.setTableSerializer(tbSerializer);
                 if (connectionId    != null) {
                     config.addProperties(connectionId + ".properties");
                     config.setConnectionId(connectionId);
