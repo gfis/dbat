@@ -50,7 +50,7 @@ import  org.apache.log4j.Logger;
  *  @author Dr. Georg Fischer
  */
 public class Configuration implements Serializable {
-    public final static String CVSID = "@(#) $Id$"; // old 958
+    public final static String CVSID = "@(#) $Id$";
     /** log4j logger (category) */
     private Logger log;
 

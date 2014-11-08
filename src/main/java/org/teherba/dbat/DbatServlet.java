@@ -384,16 +384,16 @@ public class DbatServlet extends HttpServlet {
                     config.setTableSerializer(tbSerializer);
                     handler.setSpecPaths(realPath, "spec/", specName);
 
-                    if (! isDbiv) {
+                    if (! isDbiv) { // conventional Dbat XML syntax
                         channel = (new FileInputStream (specFile)).getChannel();
                         Reader charReader = new BufferedReader(Channels.newReader(channel, "UTF-8"));
                                 // assume all spec files in UTF-8 XML
                         (new Dbat()).parseXML(charReader, handler, tbSerializer);
-                    } else { // isDbiv
+                    } else { // Dbiv XML syntax for interactive views
                         XtransFactory xtransFactory = new BasicFactory(); // knows XML only
                         BaseTransformer generator  = xtransFactory.getTransformer("xml");
                         BaseTransformer serializer = handler;
-                        TransformerHandler styler = xtransFactory.getXSLHandler(realPath + "dbiv_spec.xsl");
+                        TransformerHandler styler = xtransFactory.getXSLHandler(realPath + "../xslt/dbiv_dbat.xsl");
                         generator.setContentHandler(styler);
                         generator.setProperty("http://xml.org/sax/properties/lexical-handler", styler);
                         styler.setResult(new SAXResult(serializer));
@@ -413,12 +413,12 @@ public class DbatServlet extends HttpServlet {
                 log.error(exc.getMessage(), exc);
             } finally {
             }
+            // if (view == null || view.length() == 0 || view.matches("del|del2|dat|ins|ins2|upd|upd2|sear"))
 
-        // View "con" collects the parameters from the SQL Console
-        } else if (view.equals("con")) {
+        } else if (view.equals("con")) { // View "con" collects the parameters from the SQL Console
             (new ConsolePage    ()).forward(request, response, tableFactory, dsMap);
-        // View "con2" is for the result of the SQL console
-        } else if (view.equals("con2")) {
+
+        } else if (view.equals("con2")) { // View "con2" is for the result of the SQL console
             try {
                 HttpSession session = request.getSession();
                 String waitTime = "3";
@@ -469,6 +469,7 @@ public class DbatServlet extends HttpServlet {
                 log.error(exc.getMessage(), exc);
             } finally {
             }
+            // view "con2"
 
         // now the views for the auxiliary pages
         } else if (view.equals("help")) {

@@ -300,7 +300,7 @@ HTTP spec=test/callx10 iname0=row2
 #-------------------
 # Tests for the proper output of dbiv_spec.xsl
 TEST XS1 generate an interactive form for native SQL with INT key
-XSLT etc/xslt/dbiv_spec.xsl web/spec/test/crud01.iv.xml
+XSLT etc/xslt/dbiv_dbat.xsl web/spec/test/crud01.iv.xml
 
 TEST XS2 generate an interactive form for a stored procedure
 XSLT etc/xslt/dbiv_spec.xsl web/spec/test/crud02.iv.xml
@@ -326,6 +326,13 @@ HTTP spec=test.ajax01 name=Ilse
 
 TEST AX2 get an Ajax request in JSON
 HTTP spec=test.ajax02 name=Ilse mode=json
+#-------------------
+# <parm format="..." />
+TEST F01 <parm format="..." />
+CALL Dbat -m html -f test/parmform.xml -p VALUE=Hier+ist+der+1.Wert -p value=Hier+ist+der+1.Wert
+
+TEST F02 <parm format="..." />
+HTTP spec=test.parmform&VALUE=Hier+ist+der+1.Wert&value=Hier+ist+der+1.Wert
 #-------------------
 # list box fields
 TEST L01 List Box and List Parameters - init values
@@ -415,12 +422,12 @@ TEST UR1 http schema
 CALL URIReader "http://localhost:8080/dbat/noversion.txt"
 
 # the following works with an Internet connection only
-TEST UR2 gopher schema
-CALL URIReader "gopher://gopher.rbfh.de/0/Fun/500miles.txt"
+# TEST UR2 gopher schema
+# CALL URIReader "gopher://gopher.rbfh.de/0/Fun/500miles.txt"
 
 # the following works with an Internet connection only
-TEST UR3 ftp schema
-CALL URIReader "ftp://ftp.gnu.org/README"
+# TEST UR3 ftp schema
+# CALL URIReader "ftp://ftp.gnu.org/README"
 
 TEST UR4 file schema
 CALL URIReader "file:///home/gfis/work/gits/dbat/web/noversion.txt"
@@ -506,6 +513,12 @@ CALL Dbat -m wiki  -f web/spec/test/selec02.xml
 
 TEST W14 select as CSV, separator=semicolon
 HTTP spec=test/includer&name=%r&mode=csv&sep=*
+
+TEST S17 test <read> element in <col>
+CALL Dbat -m html  -f web/spec/test/selec05.xml
+
+TEST W17 test <read> element in <col>
+HTTP spec=test/selec05
 #-------------------
 # describe table
 TEST D01 describe table
@@ -1035,6 +1048,43 @@ HTTP spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=
 
 TEST V16 Show dbiv in SQL UPDATE format
 HTTP spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=update
+#-------------------
+# repeat the V0* tests by directly calling *.iv.xml specifications
+TEST VI2 initial data for DBIV tests
+DATA -- fill table
+    DELETE FROM relatives;
+    INSERT INTO relatives VALUES('Martha'   , 'Fischer' , '1909-11-17', 'F' , 'Freiburg'        , 1999, {ts'2012-06-28 19:47:06'}, 'testuser');
+    INSERT INTO relatives VALUES('Johannes' , 'Fischer' , '1911-06-03', 'M' , 'Schramberg'      , 1992, {ts'2012-06-28 19:47:06'}, 'testuser');
+    INSERT INTO relatives VALUES('Eberhard' , 'Fischer' , '1912-11-17', 'M' , 'Groß-Gerau'      , 1945, {ts'2012-06-28 19:47:06'}, 'testuser');
+    INSERT INTO relatives VALUES('Fritz'    , 'Fischer' , '1907-08-08', 'M' , 'Waldshut'        , 1995, {ts'2012-06-28 19:47:06'}, 'testuser');
+    INSERT INTO relatives VALUES('Maria'    , 'Ritter'  , '1914-09-17', 'F' , 'Hermsdorf'       , 1999, {ts'2012-06-28 19:47:06'}, 'testuser');
+    INSERT INTO relatives VALUES('Ilse'     , 'Ritter'  , '1909-02-09', 'F' , 'Lübars'          , 1983, {ts'2012-06-28 19:47:06'}, 'testuser');
+    INSERT INTO relatives VALUES('Dorothea' , 'Fischer' , '1910-02-07', 'F' , 'Berlin'          , 1985, {ts'2012-06-28 19:47:06'}, 'testuser');
+    INSERT INTO relatives VALUES('Lucie'    , 'Ritter'  , '1887-07-09', 'F' , 'Lübars'          , 1984, {ts'2012-06-28 19:47:06'}, 'testuser');
+    COMMIT;
+    SELECT * FROM relatives;
+CALL Dbat -f $(DATA)
+
+TEST VI3 search for M
+HTTP spec=test.crud03.iv view=sear search_name=M family=Ritter birth= gender=M place= decease=
+
+TEST VI4 update place of Maria
+HTTP spec=test.crud03.iv search_value_1=M search_gender=' name=Maria family=Ritter view=upd
+
+TEST VI5 place updated
+HTTP spec=test.crud03.iv view=upd2 search_name= search_family=Ritter name=Maria family=Ritter birth=1914-09-17 gender=F place=Berlin-Hermsdorf decease=1999 changed=current_timestamp user=testuser
+
+TEST VI6 insert with data of Maria
+HTTP spec=test.crud03.iv view=ins search_name= family=Ritter birth=1914-09-17 gender=F place=Berlin-Hermsdorf decease=1999 changed=current_timestamp user=testuser
+
+TEST VI7 Teherba inserted
+HTTP spec=test.crud03.iv view=ins2 search_name= search_family=Ritter name=Teherba family=Ritter birth=1886-02-04 gender=F place=Oranienburg decease=1968 changed=current_timestamp user=testuser
+
+TEST VI8 delete Teherba
+HTTP spec=test.crud03.iv search_name= search_family=Ritter name=Teherba family=Ritter view=del
+
+TEST VI9 Teherba deleted
+HTTP spec=test.crud03.iv view=del2 search_name= search_family=Ritter name=Teherba family=Ritter birth= gender=M place= decease=
 #-------------------
 # static SQL
 TEST VA1 var element

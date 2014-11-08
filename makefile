@@ -2,6 +2,7 @@
 
 # Test Dbat functions with MySQL, and other utility targets
 # @(#) $Id$
+# 2014-11-08: target identify with etc/util/git_version.pl; no gopher
 # 2013-01-05: RegressionTester replaces all_tester.pl
 # 2012-06-27: all_tester.pl replaces batch_test.pl; etc/schema
 # 2012-01-20: parm_xref
@@ -14,7 +15,6 @@
 DBAW=java -cp dist/dbat.jar org.teherba.dbat.Dbat  -c worddb.properties  -e UTF-8
 DIFF=diff -y --suppress-common-lines --width=160
 DIFF=diff -w -rs -C0
-MAX=`unzip -p dist/dbat.war | ident | gawk -F ' ' '{ print $$3 }' | sort -rn | head -1 | tr -d " \r\n"`
 SRC=src/main/java/org/teherba/dbat
 TOMC=/var/lib/tomcat/webapps/dbat
 METHOD=post
@@ -27,9 +27,10 @@ TEST="*"
 all: regression
 #-------------------------------------------------------------------
 # Perform a regression test (a complete run > 200 testcases with TEST=% takes > 12 s)
+#	java -Djdk.net.registerGopherProtocol=true -cp dist/dbat.jar
 regression: regression_mysql
 regression_mysql:
-	java -Djdk.net.registerGopherProtocol=true -cp dist/dbat.jar \
+	java -cp dist/dbat.jar \
 			org.teherba.common.RegressionTester $(TESTDIR)/mysql.tests $(TEST) 2>&1 \
 	| tee regression_mysql.log.tmp
 	grep FAILED regression_mysql.log.tmp
@@ -58,14 +59,27 @@ javadoc:
 wikidoc:
 	cd target/docs ; wget -E -H -k -K -p -nd -nc http://localhost/wiki/index.php/Dbat	             || true
 	cd target/docs ; wget -E -H -k -K -p -nd -nc http://localhost/wiki/index.php/Dbat-Spezifikation  || true
+#---------------------------------------------------
+# insert the last git hash and the compilation date into Dbat's version string
 identify:
 	perl -i.bak etc/util/git_version.pl $(SRC)/Configuration.java
-	# ant dist
-#-----
-#	less $(SRC)/Configuration.java.bak
-id2:
-	echo $(MAX)
-	grep '$$Id' $(SRC)/Configuration.java
+	grep CVSID $(SRC)/Configuration.java | head -1 | sed -e 's/\s/\n/g' | tail -6 | head -5
+#---------------------------------------------------
+# test whether all defined tests in mysql.tests have *.prev.tst results and vice versa
+check_tests:
+	grep -E "^TEST" $(TESTDIR)/mysql.tests | cut -b 6-8 | sort | uniq -c > $(TESTDIR)/tests_formal.tmp
+	ls -1 $(TESTDIR)/*.prev.tst            | cut -b 6-8 | sort | uniq -c > $(TESTDIR)/tests_actual.tmp
+	diff -y --suppress-common-lines --width=32 $(TESTDIR)/tests_formal.tmp $(TESTDIR)/tests_actual.tmp
+#---------------------------------------------------
+# test whether the VI% (crud03.iv) test outputs are the same as the corresponding precompiled V0% (crud03) outputs
+same_ivs:
+	find test -name "VI*.this.tst" | cut -b 8 | sort \
+	| xargs -l -i{} make same_iv1 V0=V0{} VI=VI{}
+#	     -e 's/xmlns="http:\/\/www.teherba.org\/2011\/dbiv"//g'
+same_iv1:
+	sed  -e "s/\.iv//g" \
+	     $(TESTDIR)/$(VI).this.tst > x.tmp
+	diff -w test/$(V0).prev.tst x.tmp
 #---------------------------------------------------
 exit1:
 	java -jar dist/dbat.jar -c wi17 -n user_groups
@@ -180,30 +194,17 @@ crud05:
 	make dbiv_spec IV=test/crud05
 	sed -e "s/crud05/crud01/g" web/spec/test/crud05.xml > crud05.tmp
 	diff -C0 web/spec/test/crud01.xml crud05.tmp
+#-------------------------------------
+# precompile a single IV, e.g. with
+# make dbiv_dbat IV=test/crud03
 dbiv_dbat:
 	echo $(IV) | xargs -l -iqqq xsltproc --novalid \
 	--stringparam lang   en  \
 	--stringparam method $(METHOD) \
-	etc/xslt/dbiv_dbat.xsl web/spec/qqq.iv.xml >web/spec/$(IV).xml
+	web/xslt/dbiv_dbat.xsl web/spec/qqq.iv.xml >web/spec/$(IV).xml
 	sudo touch 								$(TOMC)/spec/$(IV).xml
 	sudo cp -v web/spec/$(IV).xml 			$(TOMC)/spec/$(IV).xml
 	sudo cp -v web/spec/test/stylesheet.css $(TOMC)/spec/test
-dbiv_spec:
-	echo $(IV) | xargs -l -iqqq xsltproc --novalid \
-	--stringparam lang   en  \
-	--stringparam method $(METHOD) \
-	etc/xslt/dbiv_spec.xsl web/spec/qqq.iv.xml >web/spec/$(IV).xml
-	sudo touch 								$(TOMC)/spec/$(IV).xml
-	sudo cp -v web/spec/$(IV).xml 			$(TOMC)/spec/$(IV).xml
-	sudo cp -v web/spec/test/stylesheet.css $(TOMC)/spec/test
-dbnv_spec:
-	echo $(IV) | xargs -l -iqqq xsltproc --novalid \
-	--stringparam lang   en  \
-	--stringparam alter  0  \
-	--stringparam method $(METHOD) \
-	etc/xslt/dbiv_spec.xsl web/spec/qqq.iv.xml >web/spec/$(IV)_nv.xml
-	sudo touch 								$(TOMC)/spec/$(IV)_nv.xml
-	sudo cp -v web/spec/$(IV)_nv.xml 		$(TOMC)/spec/$(IV)_nv.xml
 #--------------------------------------
 desp:
 	sudo cp -v web/spec/$(SPEC).xml			$(TOMC)/spec/$(SPEC).xml

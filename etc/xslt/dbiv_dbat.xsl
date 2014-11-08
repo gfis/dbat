@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Generates a Dbat specification for an interactive view (C/R/U/D) äöü
-    @(#) $Id: dbiv_spec.xsl 958 2012-06-06 06:02:39Z gfis $
+    @(#) $Id$
+    2014-11-08: exclude-result-prefixes="true"
     2014-03-05: do not update fields which are not editable
     2013-01-04: commenting of parameters
     2012-07-10: copy <where> condition with <parm>
@@ -44,6 +45,7 @@
         xmlns:date="http://exslt.org/dates-and-times"
         xmlns:str ="http://exslt.org/strings"
         extension-element-prefixes="date str"
+        exclude-result-prefixes="iv"
         >
 <!--==================================================
     Global variables and declarations
@@ -60,6 +62,39 @@
     <xsl:strip-space elements="*"/>
     <xsl:key name="fieldNameKey" match="iv:field" use="@name"/>
     <xsl:variable name="SP4" select='"    "' />
+
+	<!-- from http://stackoverflow.com/questions/7677072/how-do-i-do-a-strreplace-in-xslt-xpath-1-0 -->
+	<xsl:template name="replace"><!-- recursive -->
+		<xsl:param name="source" />
+		<xsl:param name="from" />
+		<xsl:param name="to" />
+		<xsl:choose>
+			<xsl:when test="contains($source, $from)">
+				<xsl:value-of select="substring-before($source,$from)" />
+				<xsl:value-of select="$to" />
+				<xsl:call-template name="replace">
+					<xsl:with-param name="source"  select="substring-after($source,$from)" />
+					<xsl:with-param name="from"    select="$from" />
+					<xsl:with-param name="to"      select="$to" />
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$source" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<!--
+		If you call it like this :
+
+		<xsl:variable name="replacedString">
+		<xsl:call-template name="replace">
+		  <xsl:with-param name="text" select="'This'" />
+		  <xsl:with-param name="replace" select="'This'" />
+		  <xsl:with-param name="by" select="'That'" />
+		</xsl:call-template>
+	-->
+
 
 <xsl:template match="catalog"/>
     <xsl:template match="field">
@@ -1380,7 +1415,8 @@
                                         <xsl:attribute name="onkeyup"       >
                                             <xsl:value-of select='concat("this.form.", $field/@name, ".className = ")' />
                                             <xsl:value-of select='concat("(this.form.", $field/@name, ".value.match(&apos;^")' />
-                                            <xsl:value-of select='concat($field/@valid , "$&apos;)) ")' />
+                                            <xsl:value-of select='str:replace($field/@valid, "\", "\\")' />
+                                            <xsl:value-of select='"$&apos;)) ' />
                                             <xsl:value-of select='concat("? &apos;valid&apos;", ": &apos;invalid&apos;")' />
                                         </xsl:attribute>
                                     </xsl:if>
@@ -1406,7 +1442,9 @@
                                         <xsl:attribute name="onkeyup"       >
                                             <xsl:value-of select='concat("this.form.", $field/@name, ".className = ")' />
                                             <xsl:value-of select='concat("(this.form.", $field/@name, ".value.match(&apos;^")'  />
-                                            <xsl:value-of select='concat($field/@valid , "$&apos;)) ")' />
+                                            <xsl:value-of select='concat(str:replace($field/@valid, "\", "\\") , "$&apos;)) ")' />
+                                            <xsl:value-of select='str:replace($field/@valid, "\", "\\")' />
+                                            <xsl:value-of select='"$&apos;)) ' />
                                             <xsl:value-of select='concat("? &apos;valid&apos;", ": &apos;invalid&apos;")' />
                                         </xsl:attribute>
                                     </xsl:if>
