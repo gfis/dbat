@@ -1,4 +1,4 @@
-Dbat V8.5be5 - DataBase Application Tool
+Dbat V9.456d/2014-11-08 - DataBase Application Tool
 usage:
   java -jar dbat.jar [-acdfghlnrstvx] (table | "sql" | file | - | parameter ...)
   java org.teherba.dbat.Dbat "SELECT entry, morph FROM words"

@@ -1,5 +1,6 @@
-/*  Selects the applicable transformer
+/*  Selects the applicable transformer, and creates transformation pipelines
     @(#) $Id$
+    2014-11-07: private TransformerHandlers -> public
     2010-12-07: -sqlpretty
     2010-07-28: config
     2010-06-14: -parse; -token
@@ -59,9 +60,8 @@ import  org.xml.sax.XMLReader;
 import  org.apache.log4j.Logger;
 
 /** Selects a specific transformer, and iterates over the descriptions
- *  of all transformers and their codes. The <em>main</em> method of this
- *  class generates package description files in all subdirectories
- *  for the javadoc API documentation.
+ *  of all transformers and their codes.
+ *  Furthermore, it can create a transformation pipeline.
  *  @author Dr. Georg Fischer
  */
 public class XtransFactory {
@@ -108,7 +108,6 @@ public class XtransFactory {
         Properties props = System.getProperties();
         props.put("javax.xml.transform.TransformerFactory"
             //  , "org.apache.xalan.xsltc.trax.TransformerFactoryImpl");
-            //  , "org.apache.xalan.xsltc.trax.SmartTransformerImpl");
                 , "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
         // System.setProperties(props);
         TransformerFactory tempFactory = TransformerFactory.newInstance();
@@ -140,8 +139,7 @@ public class XtransFactory {
     public TransformerHandler getFilterHandler(String format) throws Exception {
         TransformerHandler handler = null;
         try {
-            log.debug("filter-name=" + format);
-        //  handler = (new MultiFormatFactory()).getTransformer(format); // an XtransFactory instance always returns the same object
+            // log.debug("filter-name=" + format);
             handler = (new BasicFactory      ()).getTransformer(format); // an XtransFactory instance always returns the same object
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
@@ -162,7 +160,7 @@ public class XtransFactory {
         try {
             saxFactory.setAttribute("use-classpath", "true");
             String transletName = "org.teherba.xtrans.translets." + transletClassName;
-            log.debug("translet-name=" + transletName);
+            // log.debug("translet-name=" + transletName);
             saxFactory.setAttribute("translet-name", transletName);
             Templates translet = saxFactory.newTemplates(new StreamSource());
             handler = saxFactory.newTransformerHandler(translet);
@@ -294,17 +292,14 @@ public class XtransFactory {
             serializer = bases[1];
             generator.setContentHandler(serializer);
             generator.setLexicalHandler(serializer);
-            // SAXResult tempResult = new SAXResult(serializer.getContentHandler());
 
             // insert the stylesheet or filter transformation handler(s) into the double linked chain
             int nhand = ihand; // number of XSLT transformation handlers
             if (nhand > 0) {
-                // bases[0].setResult(new SAXResult(handlers[0]));
                 bases[0].setContentHandler(handlers[0]); // feed the generator's SAX events into the first handler
             //  bases[0].setLexicalHandler(handlers[0]); // feed the generator's SAX events into the first handler
                 bases[0].setProperty("http://xml.org/sax/properties/lexical-handler", handlers[0]);
                 handlers[nhand - 1].setResult(new SAXResult(bases[1])); // feed result of last handler into serializer
-            //  handlers[nhand - 1] = bases[1].getContentHandler(); // feed result of last handler into serializer
             }
             ihand = nhand - 1;
             while (ihand > 0) {

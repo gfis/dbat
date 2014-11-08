@@ -1,6 +1,7 @@
 /*  SOAP Service interface to Dbat
     @(#) $Id$
-	2010-09-23: terminate()
+    2014-11-08: remove Axis and all web service functionality
+    2010-09-23: terminate()
     2010-04-16: takes a commandline and calls Dbat 
     2007-04-17: constant (dummy) response
  
@@ -42,8 +43,8 @@ public class DbatService {
      */
     public DbatService()  {
         log = Logger.getLogger(DbatService.class.getName());
-	} // Constructor
-	
+    } // Constructor
+    
     /** Returns the results of an activation of {@link Dbat}
      *  to a SOAP client.
      *  @param commandLine line with options, parameters and/or an SQL instruction
@@ -53,12 +54,12 @@ public class DbatService {
         Dbat dbat = new Dbat();
         StringWriter writer = new StringWriter(32768);
         try {
-			dbat.initialize(Configuration.SOAP_CALL);
-        	dbat.processCommandLine(new PrintWriter(writer), commandLine); 
+            dbat.initialize(Configuration.SOAP_CALL);
+            dbat.processCommandLine(new PrintWriter(writer), commandLine); 
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         } finally {
-			dbat.terminate();
+            dbat.terminate();
         }
         return writer.toString();
     } // getResponse          

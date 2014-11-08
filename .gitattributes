@@ -1,8 +1,11 @@
-*.java	ident
-*.xml	ident
-*.xslt	ident
-*.tst	ident
-*.pl	ident
 makefile	ident
+*.css	ident
+*.java	ident
+*.js	ident
+*.pl	ident
 *.sql	ident
-
+*.tst	ident
+*.xml	ident
+*.xsd	ident
+*.xsl	ident
+*.xslt	ident

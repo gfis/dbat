@@ -17,6 +17,7 @@
 <!--
     ant-buildfile for commandline, web application and web service
     @(#) $Id$
+    2014-11-08: app.version=9
     2011-04-05: copy xtrans/XMLTransformer and associated classes
     2008-04-09: targets run.* renamed to test.*
     2007-02-16: use ant file build-import.xml
@@ -25,11 +26,11 @@
 
 <project name="dbat" default="dist" basedir=".">
     <property name="app.name"           value="dbat" />
-    <property name="app.version"        value="5.0" />
+    <property name="app.version"        value="9.0" />
     <property name="app.main-class"     value="org.teherba.dbat.Dbat" />
     <property name="test"               value="%" />
     <import file="build-import.xml" />
-    
+
     <target name="generate">
     <!--
         <copy todir="${src.home}/org/teherba/xtrans">
@@ -52,10 +53,10 @@
             </fileset>
         </copy>
     -->
-    </target>                                               
+    </target>
 
     <target name="not_yet_generate">
-    <!-- 
+    <!--
         generate content.xml and a fragment for web.xml from *.properties, as described in
         http://stackoverflow.com/questions/162079/how-to-merge-jsp-pre-compiled-web-xml-fragment-with-main-web-xml-using-ant
     -->
@@ -65,7 +66,7 @@
                 <filter token="JDBC_MAP" value=" --&gt; ${generated.web.xml.fragment} &lt;!-- " />
             </filterset>
         </copy>
-    </target>                                               
+    </target>
 
     <target name="regression" depends="regression_mysql" /><!-- run a regression test -->
     <target name="regression_mysql">
@@ -76,7 +77,7 @@
         </java>
     </target>
 
-    <target name="test" depends="deploy,test.command,test.servlet,test.service" />
+    <target name="test" depends="deploy,test.command,test.servlet" />
     <target name="test.command"><!-- run the program from the commandline -->
         <antcall target="run">
             <param name="class" value="org.teherba.dbat.Dbat" />
@@ -97,15 +98,6 @@
         <exec executable="lynx">
             <arg line="-dump http://localhost:8080/dbat/servlet?spec=spec1" />
         </exec>
-    </target>
-    <target name="test.service"><!-- call the webservice -->
-        <antcall target="run">
-            <param name="class" value="org.teherba.dbat.DbatClient"  />
-            <param name="args"  value="-c worddb.properties -20 words"/>
-        <!--
-            <param name="args"  value="-h"/>
-        -->
-        </antcall>
     </target>
 
 </project>

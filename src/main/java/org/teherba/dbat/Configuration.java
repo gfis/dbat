@@ -1,5 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$
+ *  2014-11-08: major version 9; update $\Id content with etc/util/git_version.pl
  *  2014-11-03: always respond with MIME type application/xhtml+xml
  *  2014-02-16: application/xhtml+xml if System.getProperty("os.name"       ).startsWith("Windows 8")
  *  2012-06-19: manner = JDBC or SQLJ; for DB2: TRANSACTION_READ_UNCOMMITTED
@@ -487,13 +488,17 @@ public class Configuration implements Serializable {
 
     /** Gets the program's version.
      *  The value returned is reasonable only if this source file was changed and SVN committed before the build!
-     *  @return a string of the form "Dbat Vm.n/date", where m is the major version, and n is the SVN revision number
+     *  @return a string of the form "Dbat Vm.hhhh/isodate",
+     *  where m is the major version,
+     *  and hhhh are the first 4 digits of the git hash number
      */
     public static String getVersionString() {
-        // public final static String CVSID = "@(#) $Id$"; // old 958
-        //                                     0    1    2                  3   4
+        // public final static String CVSID = "@(#) $Id$";
+        //                                     0    1    2                                                 3                                        4
         String[] vers = CVSID.split("\\s+");
-        return "Dbat V9." + vers[2].substring(0,4);
+        // V8         up to 2014-11-07
+        // V9.* starting at 2014-11-08
+        return "Dbat V9." + vers[3].substring(0,4) + "/" + vers[4];
     } // getVersionString
 
     /** whether to print header and trailer */

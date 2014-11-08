@@ -1,5 +1,6 @@
 /*  Selects the applicable transformer - only for XML
     @(#) $Id$
+    2014-11-08: cleanup
     2011-04-05, Georg Fischer: derived from XtransFactory
 */
 /*
@@ -24,25 +25,22 @@ import  org.teherba.xtrans.XMLTransformer;
 import  org.apache.log4j.Logger;
 
 /** Selects a specific transformer, and iterates over the descriptions
- *  of all transformers and their codes. The <em>main</em> method of this
- *  class generates package description files in all subdirectories
- *  for the javadoc API documentation.
+ *  of all transformers and their codes.
  *  @author Dr. Georg Fischer
  */
-public class BasicFactory extends XtransFactory{ 
+public class BasicFactory extends XtransFactory{
     public final static String CVSID = "@(#) $Id$";
 
     /** log4j logger (category) */
     private Logger log;
-    
+
     public BasicFactory() {
-        log = Logger.getLogger(BasicFactory.class.getName());
         allTransformers = new BaseTransformer[] { null // since this allows for "," on next source line
                 // the order here defines the order in documentation.jsp,
                 // should be: "... group by package order by package, name"
                 , new LevelFilter               ()
                 , new XMLTransformer            () // serializer for XML
-                }; 
+                };
     } // Constructor
 
 } // BasicFactory

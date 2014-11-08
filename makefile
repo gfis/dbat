@@ -59,13 +59,8 @@ wikidoc:
 	cd target/docs ; wget -E -H -k -K -p -nd -nc http://localhost/wiki/index.php/Dbat	             || true
 	cd target/docs ; wget -E -H -k -K -p -nd -nc http://localhost/wiki/index.php/Dbat-Spezifikation  || true
 identify:
-	sed -e "s/Configuration.java [0-9]* /Configuration.java $(MAX) /" \
-	    -e "s/$$\";.*/$$\"; \/\/ old $(MAX)/" \
-	   $(SRC)/Configuration.java > \
-	   $(SRC)/Configuration.java.bak
-	grep '$$Id' $(SRC)/Configuration.java.bak
-	mv $(SRC)/Configuration.java.bak \
-	   $(SRC)/Configuration.java
+	perl -i.bak etc/util/git_version.pl $(SRC)/Configuration.java
+	# ant dist
 #-----
 #	less $(SRC)/Configuration.java.bak
 id2:
