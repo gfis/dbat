@@ -1,5 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$
+ *  2014-11-03: always respond with MIME type application/xhtml+xml
  *  2014-02-16: application/xhtml+xml if System.getProperty("os.name"       ).startsWith("Windows 8")
  *  2012-06-19: manner = JDBC or SQLJ; for DB2: TRANSACTION_READ_UNCOMMITTED
  *  2012-06-12: Javadoc cleaned for github
@@ -315,7 +316,8 @@ public class Configuration implements Serializable {
 
     /** whether to write the value <em>null</em> in text formats: 0 = omit, 1 = write "null" */
     private int nullText;
-    /** Tells whether the value <em>null</em> should be written in text formats
+    /** Tells whether the value <em>null</em> should be written in text formats;
+     *  corresponds to property "null"
      *  @return 0 = omit, 1 = write "null"
      */
     public int getNullText() {
@@ -491,8 +493,7 @@ public class Configuration implements Serializable {
         // public final static String CVSID = "@(#) $Id$"; // old 958
         //                                     0    1    2                  3   4
         String[] vers = CVSID.split("\\s+");
-        // return "Dbat V7." + vers[3] + "/" + vers[4];
-        return "Dbat V8." + vers[2].substring(0,4);
+        return "Dbat V9." + vers[2].substring(0,4);
     } // getVersionString
 
     /** whether to print header and trailer */
@@ -561,10 +562,11 @@ public class Configuration implements Serializable {
     public void configure(int callType) {
         this.callType   = callType;
         con             = null;
-        htmlMimeType    =  System.getProperty("file.separator").startsWith("/")
-                        || System.getProperty("os.name"       ).startsWith("Windows 8")
-                        ? "application/xhtml+xml"   // for Unix, Firefox
-                        : "text/html";              // for Windows, InternetExplorer <= V6.x
+        // htmlMimeType    =  System.getProperty("file.separator").startsWith("/")
+        //                 || System.getProperty("os.name"       ).startsWith("Windows 8")
+        //                 ? "application/xhtml+xml"   // for Unix, Firefox
+        //                 : "text/html";              // for Windows, InternetExplorer <= V6.x
+        htmlMimeType    = "application/xhtml+xml"; // now works for IE also
         con             = null;
         dsMap           = null;
         setAutoCommit   (callType == WEB_CALL); // only Web queries are always autocommitted (for DB/2)
@@ -614,7 +616,7 @@ public class Configuration implements Serializable {
      *  <ul>
      *  <li>schema= the default DB schema</li>
      *  <li>maxcommit=250 number of rows after which a COMMIT statement is inserted by formats -sql/jdbc, -update</li>
-     *  <li>nulltext=1 whether the value <em>null</em> should be written by text formats</li>
+     *  <li>null=1(0) if the <em>null</em> value should be (not) written by text formats</li>
      *  <li>trimsides=2 how CHAR and VARCHAR values are trimmed: 0 = never, 1 = rtrim, 2 = trim on both sides</li>
      *  </ul>
      */
