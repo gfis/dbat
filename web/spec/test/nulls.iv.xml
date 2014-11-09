@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Interactive view definition for test form crud01.xml, with INT key
+    @(#) $Id$
+    2012-05-21: with help URLs on field names
+    2012-05-02, Dr. Georg Fischer
+-->
+<dbiv   xmlns   ="http://www.teherba.org/2011/dbiv"
+        xmlns:iv="http://www.teherba.org/2011/dbiv"
+        xmlns:db="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang    ="de" 
+        conn    ="cosm"
+        script  ="test/nulls"
+        >
+    <ht:h3><ht:a href="servlet?spec=test.index">Test</ht:a> 
+    </ht:h3>
+    <ht:p>
+        You may search for DB2SYS update / delete / insert their data.
+    </ht:p>
+    <view   name="COSMOL.DBATTEST" 
+            help="servlet?spec=test.iv_help&amp;NAME="
+            id  ="r"
+            >
+        <title></title>
+        <counter desc="DB2System,e" />
+        
+        <action name="ins" label="New DB2" remark="insert"     position="middle" link="test/nulls" />
+        <action name="upd" label="Upd."         remark="update"     position="result" link="test/nulls" />
+        <action name="del" label="Del."         remark="delete"     position="result" />
+        <action name="dat" label="Show"         remark="details"    position="result" />
+        
+        <field name="db2sys" label="DB2SYS" key="1" init="" type="char"  size="8"   valid=".*">
+            db2sys
+        </field>
+        <field name="weekday" label="Weekday" init="" type="char"  size="3"   valid=".*">
+            weekday
+        </field>
+        <where></where>
+        <order by="1" />
+    </view>
+</dbiv>

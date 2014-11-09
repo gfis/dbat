@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	Interactive view definition for test form crud01.xml, with INT key
+    Interactive view definition for test form crud05.xml
     @(#) $Id$
+    2014-11-09: with <db:comment>
     2012-07-10: copy <where> condition with <parm>
     2012-05-21: with help URLs on field names
     2012-05-02, Dr. Georg Fischer
@@ -21,10 +22,10 @@
         ins2 - SQL INSERT + search form
         upd  - update form
         upd2 - SQL UPDATE + search form
-    --><ht:h3><ht:a href="servlet?spec=test.index">Test</ht:a> Form - Relatives (with field references)
-	</ht:h3><ht:p>
-		You may search for relatives and update / delete / insert their data.
-	</ht:p>
+    --><db:comment lang="en">Maintain Relatives (with field references)</db:comment><ht:h3><ht:a href="servlet?spec=test.index">Test</ht:a> Form - Relatives (with field references)
+    </ht:h3><ht:p>
+        You may search for relatives and update / delete / insert their data.
+    </ht:p>
   
   <ht:h2/>
 <choose>
@@ -123,7 +124,7 @@
         <ht:td><parm name="gender"/>
         </ht:td></ht:tr>
       <ht:tr><ht:td colspan="2" id="or0" align="center" class="wht"><ht:a href="http://en.wiktionary.org/wiki/origin">Origin</ht:a> of the Person
-	    	</ht:td></ht:tr>
+            </ht:td></ht:tr>
       <ht:tr><ht:td valign="top" title="birth">Birthdate:</ht:td>
         <ht:td><parm name="birth"/>
         </ht:td></ht:tr>
@@ -170,7 +171,7 @@
         
         </ht:td></ht:tr>
       <ht:tr><ht:td colspan="2" id="or0" align="center" class="wht"><ht:a href="http://en.wiktionary.org/wiki/origin">Origin</ht:a> of the Person
-	    	</ht:td></ht:tr>
+            </ht:td></ht:tr>
       <ht:tr><ht:td valign="top" title="birth">Birthdate:</ht:td>
         <ht:td><ht:input name="birth" size="10" init="" title="\d{4}\-\d{2}\-\d{2}" onkeyup="this.form.birth.className = (this.form.birth.value.match('^\\d{4}\\-\\d{2}\\-\\d{2}$')) ? 'valid': 'invalid'"/> yyyy-mm-dd
         </ht:td></ht:tr>
@@ -249,7 +250,7 @@
         
         </ht:td></ht:tr>
       <ht:tr><ht:td colspan="2" id="or0" align="center" class="wht"><ht:a href="http://en.wiktionary.org/wiki/origin">Origin</ht:a> of the Person
-	    	</ht:td></ht:tr>
+            </ht:td></ht:tr>
       <ht:tr><ht:td valign="top" title="birth">Birthdate:</ht:td>
         <ht:td><ht:input name="birth" size="10" init="" title="\d{4}\-\d{2}\-\d{2}" onkeyup="this.form.birth.className = (this.form.birth.value.match('^\\d{4}\\-\\d{2}\\-\\d{2}$')) ? 'valid': 'invalid'"/> yyyy-mm-dd
         </ht:td></ht:tr>
@@ -379,12 +380,12 @@
   </when>
   <when name="view" match="(sear|)">
     <ht:h3>Statistics</ht:h3><db:select><db:col label="Count" align="right">count(*)</db:col>
-        <db:col label="Min. Birth" align="center">min(birth)		</db:col>
-        <db:col label="Max. Birth" align="center">max(birth)		</db:col>
-        <db:col label="Min. Decease" align="center">min(decease)	</db:col>
-        <db:col label="Max. Decease" align="center">max(decease)	</db:col>
+        <db:col label="Min. Birth" align="center">min(birth)      </db:col>
+        <db:col label="Max. Birth" align="center">max(birth)      </db:col>
+        <db:col label="Min. Decease" align="center">min(decease)    </db:col>
+        <db:col label="Max. Decease" align="center">max(decease)    </db:col>
         <db:from>relatives
-		</db:from>
+        </db:from>
         </db:select>
         
   </when>

@@ -1,3 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2008-02-11: Dr. Georg Fischer
+-->
+<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
+		xmlns:ht="http://www.w3.org/1999/xhtml"
+		encoding="UTF-8"
+		lang="en" 
+		javascript="javascript.js"
+		conn="worddb" 
+		title="selec05"
+		>
+	<!-- copy of selec02 -->
+	<comment lang="en">Select from test table - with &lt;read&gt; element</comment>
+	<comment lang="de">Abfrage der Test-Tabelle mit &lt;read&gt;-Element</comment>
+
+    <ht:h3>Select from test table <ht:em>c01</ht:em> - with &lt;read&gt; element</ht:h3>
+    <ht:form method="get">
+        <ht:input label="Name" name="name" maxsize="20" size="10" init="%" />
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+    
+    <select>
+        <col label="Year"  align="right" href="servlet?spec=test/selec01&amp;name*&amp;year*">
+		    <read>name || '*' || cast(year as char)</read>
+		</col>
+        <col label="Name"  wrap="javascript" sep=",">
+			'showImage' || ',' || imagefile || ',' || width
+		</col>
+        <col label="Name">
+			'&lt;img name' || '=' || 'width' || '=' || 'imagefile'
+		</col>
+
+        <col label="Year"  	link="spec1&amp;prefix=&amp;prefix2=" align="right">
+			concat(cast(year as char), concat('=e.', cast(year as char)))
+		</col>
+        <col label="Name"   href="servlet?spec=spec1&amp;prefix=&amp;prefix2=">
+			concat(name, concat('=f.', name))
+		</col>
+    <!--
+    -->
+        <col label="University" >univ</col>
+        <col label="Gender"    	>gender</col>
+        <col label="Birthdate" 	>birth</col>
+        <from>c01</from>
+        <where>name like '<parm name="name" />'
+        </where>
+        <counter desc="person,s"/>
+    </select>
+</dbat>
+
+<!--
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" [
@@ -10,10 +63,7 @@
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
 </head><body>
 
-    
-    <!--Select from test table - with <read> element-->
-    <!--Abfrage der Test-Tabelle mit <read>-Element-->
-
+		
     <h3>Select from test table <em>c01</em> - with <read> element</h3>
     <form method="get" action="servlet?spec=test/selec05"><input name="spec" type="hidden" value="test/selec05" />
 
@@ -21,18 +71,8 @@
         <input type="submit" value="Submit"></input>
     </form>
     
-    <!-- SQL:
-SELECT name || '*' || cast(year as char)
-, concat(cast(year as char), concat('=', name))
-, concat(cast(year as char), concat('=e.', cast(year as char)))
-, concat(name, concat('=f.', name))
-, univ
-, gender
-, birth 
-FROM c01 
-WHERE name like '%';
-:SQL -->
-<table id="tab1"><!-- table_not_specified -->
+ 
+<table id="tab1">
 <tr><th title="name || '*' || cast(year as char)">Year</th><th title="concat(cast(year as char), concat('=', name))">Name</th><th title="concat(cast(year as char), concat('=e.', cast(year as char)))">Year</th><th title="concat(name, concat('=f.', name))">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right"><a href="servlet?spec=test/selec01&amp;name=Martha&amp;year=1999">1999</a></td><td><a href="servlet?spec=test/selec01&amp;year=1999&amp;name=Martha">Martha</a></td><td align="right"><a href="servlet?spec=spec1&amp;prefix=1999&amp;prefix2=e.1999">e.1999</a></td><td><a href="servlet?spec=spec1&amp;prefix=Martha&amp;prefix2=f.Martha">f.Martha</a></td><td>Freiburg</td><td>&amp;</td><td>1909-11-17</td></tr>
 <tr><td align="right"><a href="servlet?spec=test/selec01&amp;name=Johannes&amp;year=1992">1992</a></td><td><a href="servlet?spec=test/selec01&amp;year=1992&amp;name=Johannes">Johannes</a></td><td align="right"><a href="servlet?spec=spec1&amp;prefix=1992&amp;prefix2=e.1992">e.1992</a></td><td><a href="servlet?spec=spec1&amp;prefix=Johannes&amp;prefix2=f.Johannes">f.Johannes</a></td><td>Schramberg</td><td>&lt;</td><td>1911-06-03</td></tr>
@@ -45,8 +85,11 @@ WHERE name like '%';
 <tr><td class="counter" colspan="7">8 persons</td></tr>
 </table>
 
-<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/selec05.xml" type="text/plain">test/selec05</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fselec05&amp;lang=en&amp;name=%25">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fselec05&amp;lang=en&amp;name=%25">more</a>
+<br />Output on 2014-11-06 14:57:43 by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/selec05.xml" type="text/plain">test/selec05</a>,
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.selec05&amp;lang=en&amp;name=%25">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.selec05&amp;lang=en&amp;name=%25">more</a>
 
 </body></html>
+
+-->
+

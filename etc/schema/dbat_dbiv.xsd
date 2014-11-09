@@ -2,6 +2,7 @@
 <!--
     dbat.2007.xsd - Schema for Dbat specifications
     @(#) $Id$
+    2014-11-09: unify dbat and dbiv schemas (German Reunion happened before 25 years)
     2014-11-07: <read> element, wrap= attribute in <col>
     2012-06-25: more restrictions
     2012-06-22: <trailer select="..." />
@@ -29,29 +30,30 @@
         attributeFormDefault="unqualified"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns   ="http://www.teherba.org/2007/dbat"
-        xmlns   ="http://www.teherba.org/2011/dbiv"
+        xmlns:db="http://www.teherba.org/2007/dbat"
+        xmlns:iv="http://www.teherba.org/2011/dbiv"
         xmlns:ht="http://www.w3.org/1999/xhtml"
         >
-   		<xs:element name="dbat"   type="DbatType" />
-   		<xs:element name="dbiv"   type="DbivType" />
+    <xs:import namespace="http://www.teherba.org/2011/dbiv" schemaLocation="dbiv.2011.xsd" />
+    <xs:element name="dbat"   type="db:DbatType" />
 <!--================================
-    root and comment header
+    dbat root and comment header
 -->
     <xs:complexType name="DbatType" mixed="true">
         <xs:sequence>
-            <xs:element name="comment" type="CommentType"  minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="comment" type="db:CommentType"  minOccurs="0" maxOccurs="unbounded"/>
             <xs:choice minOccurs="1" maxOccurs="unbounded">
-                <xs:element name="call"     type="CallType"     />
-                <xs:element name="choose"   type="ChooseType"   />
-                <xs:element name="delete"   type="DeleteType"   />
-                <xs:element name="describe" type="DescribeType" />
-                <xs:element name="div"      type="DivType"      />
-                <xs:element name="insert"   type="InsertType"   />
-                <xs:element name="parm"     type="ParmType"     />
-                <xs:element name="select"   type="SelectType"   />
-                <xs:element name="trailer"  type="TrailerType"  />
-                <xs:element name="update"   type="UpdateType"   />
-                <xs:element name="with"     type="WithType"     />
+                <xs:element name="call"     type="db:CallType"     />
+                <xs:element name="choose"   type="db:ChooseType"   />
+                <xs:element name="delete"   type="db:DeleteType"   />
+                <xs:element name="describe" type="db:DescribeType" />
+                <xs:element name="div"      type="db:DivType"      />
+                <xs:element name="insert"   type="db:InsertType"   />
+                <xs:element name="parm"     type="db:ParmType"     />
+                <xs:element name="select"   type="db:SelectType"   />
+                <xs:element name="trailer"  type="db:TrailerType"  />
+                <xs:element name="update"   type="db:UpdateType"   />
+                <xs:element name="with"     type="db:WithType"     />
                 <xs:any namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
             </xs:choice>
         </xs:sequence>
@@ -59,10 +61,10 @@
         <xs:attribute name="contenttype"    type="xs:string"    />
         <xs:attribute name="debug"          type="xs:string"    />
         <xs:attribute name="encoding"       type="xs:string"    />
-        <xs:attribute name="headers"        type="BoolType"     />
+        <xs:attribute name="headers"        type="db:BoolType"  />
         <xs:attribute name="javascript"     type="xs:string"    />
         <xs:attribute name="lang"           type="LangType"     />
-        <xs:attribute name="manner"         type="MannerType"   />
+        <xs:attribute name="manner"         type="db:MannerType"/>
         <xs:attribute name="mode"           type="xs:NCName"    />
         <xs:attribute name="nsp"            type="xs:string"    />
         <xs:attribute name="stylesheet"     type="xs:string"    />
@@ -77,24 +79,24 @@
         </xs:sequence>
         <xs:attribute name="lang" type="LangType" use="required" />
     </xs:complexType>
-<!--=================================
-    complex types for XML elements in alphabetical order
+<!--
+    complex types for dbat XML elements in alphabetical order
 -->
     <xs:complexType name="CallType" mixed="false">
         <xs:sequence minOccurs="1" maxOccurs="unbounded">
-            <xs:element name="col" type="ColType" />
+            <xs:element name="col" type="db:ColType" />
         </xs:sequence>
-        <xs:attribute name="headers"    type="BoolType"   />
+        <xs:attribute name="headers"    type="db:BoolType"   />
         <xs:attribute name="id"         type="xs:ID"    />
-        <xs:attribute name="into"       type="IntoParmType" />
+        <xs:attribute name="into"       type="db:IntoParmType" />
         <xs:attribute name="name"       type="xs:NCName" />
         <xs:attribute name="limit"      type="xs:string" />
     </xs:complexType>
 
     <xs:complexType name="ChooseType" mixed="true">
         <xs:sequence>
-            <xs:element name="when"         type="WhenType"         minOccurs="1" maxOccurs="unbounded" />
-            <xs:element name="otherwise"    type="OtherwiseType"    minOccurs="0" maxOccurs="1" />
+            <xs:element name="when"         type="db:WhenType"         minOccurs="1" maxOccurs="unbounded" />
+            <xs:element name="otherwise"    type="db:OtherwiseType"    minOccurs="0" maxOccurs="1" />
         </xs:sequence>
     </xs:complexType>
 
@@ -102,15 +104,15 @@
 
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:any namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
-            <xs:element name="choose"   type="ChooseType" />
-            <xs:element name="listparm" type="ListParmType" />
-            <xs:element name="parm"     type="ParmType" />
-            <xs:element name="read"     type="ReadType" />
-            <xs:element name="var"      type="VarType" />
+            <xs:element name="choose"   type="db:ChooseType" />
+            <xs:element name="listparm" type="db:ListParmType" />
+            <xs:element name="parm"     type="db:ParmType" />
+            <xs:element name="read"     type="db:ReadType" />
+            <xs:element name="var"      type="db:VarType" />
         </xs:choice>
 
-        <xs:attribute name="align"  type="AlignType" />
-        <xs:attribute name="dir"    type="DirType"   />
+        <xs:attribute name="align"  type="db:AlignType" />
+        <xs:attribute name="dir"    type="db:DirType"   />
         <xs:attribute name="href"   type="xs:string" />
         <xs:attribute name="key"    type="xs:unsignedShort" />
         <xs:attribute name="label"  type="xs:string" />
@@ -128,8 +130,8 @@
 
     <xs:complexType name="ColumnType" mixed="false" >
         <xs:choice minOccurs="1" maxOccurs="unbounded">
-        <xs:element name="align"    type="AlignType" />
-        <xs:element name="dir"      type="DirType"   />
+        <xs:element name="align"    type="db:AlignType" />
+        <xs:element name="dir"      type="db:DirType"   />
         <xs:element name="expr"     type="xs:string" /><!-- same as "sql" -->
         <xs:element name="href"     type="xs:string" />
         <xs:element name="key"      type="xs:unsignedShort" />
@@ -137,14 +139,14 @@
         <xs:element name="link"     type="xs:string" />
         <xs:element name="name"     type="xs:NCName" />
         <xs:element name="pseudo"   type="xs:string" />
-        <xs:element name="read"     type="ReadType"           />
+        <xs:element name="read"     type="db:ReadType"           />
         <xs:element name="remark"   type="xs:string" />
         <xs:element name="sep"      type="xs:string" />
         <xs:element name="sql"      type="xs:string" /><!-- same as "expr" -->
         <xs:element name="style"    type="xs:string" />
         <xs:element name="type"     type="xs:string" />
         <xs:element name="width"    type="xs:string" />
-        <xs:element name="wrap"     type="WrapType"  />
+        <xs:element name="wrap"     type="db:WrapType"  />
         </xs:choice>
     </xs:complexType>
 
@@ -157,47 +159,47 @@
 
     <xs:complexType name="DeleteType">
         <xs:sequence>
-            <xs:element name="from"     type="FromType"  minOccurs="1" maxOccurs="1" />
-            <xs:element name="where"    type="WhereType" minOccurs="0" maxOccurs="1" />
+            <xs:element name="from"     type="db:FromType"  minOccurs="1" maxOccurs="1" />
+            <xs:element name="where"    type="db:WhereType" minOccurs="0" maxOccurs="1" />
         </xs:sequence>
         <xs:attribute name="id"         type="xs:ID"    />
     </xs:complexType>
 
     <xs:complexType name="DescribeType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="choose"   type="ChooseType" />
-            <xs:element name="listparm" type="ListParmType" />
-            <xs:element name="parm"     type="ParmType" />
-            <xs:element name="var"      type="VarType" />
+            <xs:element name="choose"   type="db:ChooseType" />
+            <xs:element name="listparm" type="db:ListParmType" />
+            <xs:element name="parm"     type="db:ParmType" />
+            <xs:element name="var"      type="db:VarType" />
         </xs:choice>
     </xs:complexType>
 
     <xs:complexType name="DivType" mixed="true" >
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="choose"   type="ChooseType" />
-            <xs:element name="listparm" type="ListParmType" />
-            <xs:element name="parm"     type="ParmType" />
-            <xs:element name="var"      type="VarType" />
+            <xs:element name="choose"   type="db:ChooseType" />
+            <xs:element name="listparm" type="db:ListParmType" />
+            <xs:element name="parm"     type="db:ParmType" />
+            <xs:element name="var"      type="db:VarType" />
             <xs:any namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
         </xs:choice>
     </xs:complexType>
 
     <xs:complexType name="FromType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="choose"   type="ChooseType" />
-            <xs:element name="listparm" type="ListParmType" />
-            <xs:element name="parm"     type="ParmType" />
-            <xs:element name="var"      type="VarType" />
-            <xs:element name="where"    type="WhereType"    minOccurs="0" maxOccurs="1" />
+            <xs:element name="choose"   type="db:ChooseType" />
+            <xs:element name="listparm" type="db:ListParmType" />
+            <xs:element name="parm"     type="db:ParmType" />
+            <xs:element name="var"      type="db:VarType" />
+            <xs:element name="where"    type="db:WhereType"    minOccurs="0" maxOccurs="1" />
         </xs:choice>
     </xs:complexType>
 
     <xs:complexType name="GroupType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="choose"   type="ChooseType" />
-            <xs:element name="listparm" type="ListParmType" />
-            <xs:element name="parm"     type="ParmType" />
-            <xs:element name="var"      type="VarType" />
+            <xs:element name="choose"   type="db:ChooseType" />
+            <xs:element name="listparm" type="db:ListParmType" />
+            <xs:element name="parm"     type="db:ParmType" />
+            <xs:element name="var"      type="db:VarType" />
         </xs:choice>
         <xs:attribute name="by"    type="xs:string" />
     </xs:complexType>
@@ -207,14 +209,14 @@
             <xs:element name="into">
                 <xs:complexType mixed="true">
                     <xs:choice minOccurs="0" maxOccurs="unbounded">
-                        <xs:element name="choose"   type="ChooseType" />
-                        <xs:element name="listparm" type="ListParmType" />
-                        <xs:element name="parm"     type="ParmType" />
-                        <xs:element name="var"      type="VarType" />
+                        <xs:element name="choose"   type="db:ChooseType" />
+                        <xs:element name="listparm" type="db:ListParmType" />
+                        <xs:element name="parm"     type="db:ParmType" />
+                        <xs:element name="var"      type="db:VarType" />
                     </xs:choice>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="values"   type="ValuesType" />
+            <xs:element name="values"   type="db:ValuesType" />
         </xs:sequence>
         <xs:attribute name="id"         type="xs:ID"    />
     </xs:complexType>
@@ -233,49 +235,49 @@
 
     <xs:complexType name="OtherwiseType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="call"     type="CallType" />
-            <xs:element name="choose"   type="ChooseType" />
-            <xs:element name="col"      type="ColType" />
-            <xs:element name="column"   type="ColumnType" />
-            <xs:element name="delete"   type="DeleteType" />
-            <xs:element name="describe" type="DescribeType" />
-            <xs:element name="div"      type="DivType" />
-            <xs:element name="from"     type="FromType" />
-            <xs:element name="insert"   type="InsertType" />
-            <xs:element name="listparm" type="ListParmType" />
-            <xs:element name="order"    type="OrderType" />
-            <xs:element name="parm"     type="ParmType" />
-            <xs:element name="select"   type="SelectType" />
-            <xs:element name="update"   type="UpdateType" />
-            <xs:element name="with"     type="WithType" />
+            <xs:element name="call"     type="db:CallType" />
+            <xs:element name="choose"   type="db:ChooseType" />
+            <xs:element name="col"      type="db:ColType" />
+            <xs:element name="column"   type="db:ColumnType" />
+            <xs:element name="delete"   type="db:DeleteType" />
+            <xs:element name="describe" type="db:DescribeType" />
+            <xs:element name="div"      type="db:DivType" />
+            <xs:element name="from"     type="db:FromType" />
+            <xs:element name="insert"   type="db:InsertType" />
+            <xs:element name="listparm" type="db:ListParmType" />
+            <xs:element name="order"    type="db:OrderType" />
+            <xs:element name="parm"     type="db:ParmType" />
+            <xs:element name="select"   type="db:SelectType" />
+            <xs:element name="update"   type="db:UpdateType" />
+            <xs:element name="with"     type="db:WithType" />
             <xs:any namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
         </xs:choice>
     </xs:complexType>
 
     <xs:complexType name="OrderType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="choose"   type="ChooseType" />
-            <xs:element name="listparm" type="ListParmType" />
-            <xs:element name="parm"     type="ParmType" />
-            <xs:element name="var"      type="VarType" />
+            <xs:element name="choose"   type="db:ChooseType" />
+            <xs:element name="listparm" type="db:ListParmType" />
+            <xs:element name="parm"     type="db:ParmType" />
+            <xs:element name="var"      type="db:VarType" />
         </xs:choice>
         <xs:attribute name="by"         type="xs:string" />
     </xs:complexType>
 
     <xs:complexType name="ParameterizedText" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="choose"   type="ChooseType" />
-            <xs:element name="listparm" type="ListParmType" />
-            <xs:element name="parm"     type="ParmType" />
-            <xs:element name="var"      type="VarType" />
+            <xs:element name="choose"   type="db:ChooseType" />
+            <xs:element name="listparm" type="db:ListParmType" />
+            <xs:element name="parm"     type="db:ParmType" />
+            <xs:element name="var"      type="db:VarType" />
         </xs:choice>
     </xs:complexType>
 
     <xs:complexType name="ParmType">
         <xs:attribute name="name"       type="xs:NCName" use="required" />
-        <xs:attribute name="format"     type="FormatType" />
+        <xs:attribute name="format"     type="db:FormatType" />
         <xs:attribute name="init"       type="xs:string" />
-        <xs:attribute name="list"       type="ListType" />
+        <xs:attribute name="list"       type="db:ListType" />
         <xs:attribute name="ix"         type="xs:unsignedShort" />
 
     </xs:complexType>
@@ -283,29 +285,29 @@
     <xs:complexType name="ReadType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:any namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
-            <xs:element name="parm"     type="ParmType" />
+            <xs:element name="parm"     type="db:ParmType" />
         </xs:choice>
     </xs:complexType>
 
     <xs:complexType name="SelectType" mixed="true">
         <xs:sequence minOccurs="1" maxOccurs="1">
             <xs:choice minOccurs="1" maxOccurs="unbounded">
-                <xs:element name="col"      type="ColType"      />
-                <xs:element name="column"   type="ColumnType" />
-                <xs:element name="choose"   type="ChooseType" minOccurs="0" maxOccurs="1" />
+                <xs:element name="col"      type="db:ColType"      />
+                <xs:element name="column"   type="db:ColumnType" />
+                <xs:element name="choose"   type="db:ChooseType" minOccurs="0" maxOccurs="1" />
             </xs:choice>
-            <xs:element name="from"     type="FromType"     minOccurs="0" maxOccurs="1" />
-            <xs:element name="where"    type="WhereType"    minOccurs="0" maxOccurs="1" />
-            <xs:element name="group"    type="GroupType"    minOccurs="0" maxOccurs="1" />
-            <xs:element name="order"    type="OrderType"    minOccurs="0" maxOccurs="1" />
-            <xs:element name="counter"  type="CounterType"  minOccurs="0" maxOccurs="1" />
+            <xs:element name="from"     type="db:FromType"     minOccurs="0" maxOccurs="1" />
+            <xs:element name="where"    type="db:WhereType"    minOccurs="0" maxOccurs="1" />
+            <xs:element name="group"    type="db:GroupType"    minOccurs="0" maxOccurs="1" />
+            <xs:element name="order"    type="db:OrderType"    minOccurs="0" maxOccurs="1" />
+            <xs:element name="counter"  type="db:CounterType"  minOccurs="0" maxOccurs="1" />
         </xs:sequence>
         <xs:attribute name="aggregate"  type="xs:string"    />
-        <xs:attribute name="distinct"   type="BoolType"     />
+        <xs:attribute name="distinct"   type="db:BoolType"     />
         <xs:attribute name="group"      type="xs:string"    />
-        <xs:attribute name="headers"    type="BoolType"     />
+        <xs:attribute name="headers"    type="db:BoolType"     />
         <xs:attribute name="id"         type="xs:ID"        />
-        <xs:attribute name="into"       type="IntoParmType" />
+        <xs:attribute name="into"       type="db:IntoParmType" />
         <xs:attribute name="limit"      type="xs:string"    />
         <xs:attribute name="with"       type="xs:string"    />
     </xs:complexType>
@@ -316,15 +318,15 @@
 
     <xs:complexType name="UpdateType" mixed="true">
         <xs:sequence>
-            <xs:element name="col"      type="ColType"      minOccurs="1" maxOccurs="unbounded" />
-            <xs:element name="where"    type="WhereType" />
+            <xs:element name="col"      type="db:ColType"      minOccurs="1" maxOccurs="unbounded" />
+            <xs:element name="where"    type="db:WhereType" />
         </xs:sequence>
         <xs:attribute name="id"         type="xs:ID"    />
     </xs:complexType>
 
     <xs:complexType name="ValuesType">
         <xs:choice minOccurs="1" maxOccurs="unbounded">
-            <xs:element name="col"      type="ColType"  />
+            <xs:element name="col"      type="db:ColType"  />
         </xs:choice>
     </xs:complexType>
 
@@ -337,21 +339,21 @@
 
     <xs:complexType name="WhenType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="call"     type="CallType" />
-            <xs:element name="choose"   type="ChooseType" />
-            <xs:element name="col"      type="ColType" />
-            <xs:element name="column"   type="ColumnType" />
-            <xs:element name="delete"   type="DeleteType" />
-            <xs:element name="describe" type="DescribeType" />
-            <xs:element name="div"      type="DivType" />
-            <xs:element name="from"     type="FromType" />
-            <xs:element name="insert"   type="InsertType" />
-            <xs:element name="listparm" type="ListParmType" />
-            <xs:element name="order"    type="OrderType" />
-            <xs:element name="parm"     type="ParmType" />
-            <xs:element name="select"   type="SelectType" />
-            <xs:element name="update"   type="UpdateType" />
-            <xs:element name="with"     type="WithType" />
+            <xs:element name="call"     type="db:CallType" />
+            <xs:element name="choose"   type="db:ChooseType" />
+            <xs:element name="col"      type="db:ColType" />
+            <xs:element name="column"   type="db:ColumnType" />
+            <xs:element name="delete"   type="db:DeleteType" />
+            <xs:element name="describe" type="db:DescribeType" />
+            <xs:element name="div"      type="db:DivType" />
+            <xs:element name="from"     type="db:FromType" />
+            <xs:element name="insert"   type="db:InsertType" />
+            <xs:element name="listparm" type="db:ListParmType" />
+            <xs:element name="order"    type="db:OrderType" />
+            <xs:element name="parm"     type="db:ParmType" />
+            <xs:element name="select"   type="db:SelectType" />
+            <xs:element name="update"   type="db:UpdateType" />
+            <xs:element name="with"     type="db:WithType" />
             <xs:any namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
         </xs:choice>
         <xs:attribute name="name"       type="xs:NCName" use="required" />
@@ -360,23 +362,23 @@
 
     <xs:complexType name="WhereType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="choose"   type="ChooseType" />
-            <xs:element name="listparm" type="ListParmType" />
-            <xs:element name="parm"     type="ParmType" />
-            <xs:element name="var"      type="VarType" />
+            <xs:element name="choose"   type="db:ChooseType" />
+            <xs:element name="listparm" type="db:ListParmType" />
+            <xs:element name="parm"     type="db:ParmType" />
+            <xs:element name="var"      type="db:VarType" />
         </xs:choice>
     </xs:complexType>
 
     <xs:complexType name="WithType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="choose"   type="ChooseType" />
-            <xs:element name="listparm" type="ListParmType" />
-            <xs:element name="parm"     type="ParmType" />
-            <xs:element name="var"      type="VarType" />
+            <xs:element name="choose"   type="db:ChooseType" />
+            <xs:element name="listparm" type="db:ListParmType" />
+            <xs:element name="parm"     type="db:ParmType" />
+            <xs:element name="var"      type="db:VarType" />
         </xs:choice>
     </xs:complexType>
 
-<!-- ===================================
+<!--
     enumerations for attribute values
 -->
     <xs:simpleType name="AlignType">

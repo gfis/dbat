@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+    2014-11-07: <read> element and wrap= attribute in <col>
     2014-03-05: use (ordered) TreeSet for parameterMap, for better reproducibility of web tests
     2012-10-19: use Messages.getDefaultCounterDesc
     2012-09-17: if <dbat stylesheet="..."> attribute is present, it is taken as is
@@ -541,9 +542,21 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             result = values[ix];
         }
         if (true) {
-            if (name.matches("[A-Z0-9_]+")) { // special feature: if name is only uppercase letters, digits and underscore
-                result = result.toUpperCase(); // then upshift all input values
-            } // upperCase
+
+            String formatCode = attrs.getValue("format");
+            if (formatCode == null) {
+                if (name.matches("[A-Z0-9_]+")) { // special feature: if name is only uppercase letters, digits and underscore
+                    result = result.toUpperCase(); // then upshift all input values
+                } // upperCase
+            } else { // format= not present
+                if (false) {
+                } else if (formatCode.toLowerCase().equals("upper")) {
+                    result = result.toUpperCase(); // then upshift   all input values
+                } else if (formatCode.toLowerCase().equals("lower")) {
+                    result = result.toLowerCase(); // then downshift all input values
+                }
+                // format= was present
+            } // format=
 
             String listType = attrs.getValue("list");
             if (listType == null) {
@@ -765,6 +778,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         private static final String DIR_TAG     = "dir"     ;
         private static final String EXPR_TAG    = "expr"    ;
         private static final String HREF_TAG    = "href"    ;
+        private static final String JAVASCRIPT_TAG = "javascript"    ;
         private static final String KEY_TAG     = "key"     ;
         private static final String LABEL_TAG   = "label"   ;
         private static final String LINK_TAG    = "link"    ;
@@ -775,6 +789,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         private static final String STYLE_TAG   = "style"   ;
         private static final String TYPE_TAG    = "type"    ;
         private static final String WIDTH_TAG   = "width"   ;
+        private static final String WRAP_TAG    = "wrap"   ;
     /** whether inside a <column> element */
     private boolean inColumn;
 
@@ -812,6 +827,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     private static final String OTHERWISE_TAG = "otherwise";
     /** Parameter element tag (c.f. var), for unprepared statements, with quotes */
     private static final String PARM_TAG    = "parm"    ; // name=, ix=, init=
+     /** read element tag (in col element) */
+    private static final String READ_TAG    = "read"    ; //
     /** SELECT element tag */
     private static final String SELECT_TAG  = "select"  ; // db:select or ht:select
         // for Dbat: distinct=, limit=, name=, headers=, aggregate=, with=, group=, id=
@@ -986,7 +1003,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 if (debug >= 2) {
                     System.err.println("ignore <" + qName + "> [" + chooseTop + "] top=" + chooseStack[chooseTop]);
                 }
-            } else if (inColumn) { // align= dir= href= label= link= name= pseudo= remark= style= type=
+            } else if (inColumn) { // align= dir= href= label= link= name= pseudo= remark= style= type= wrap=
                 colBuffer.setLength(0); // start character assembly for all subordinate elements
 
             } else if (qName.equals(ROOT_TAG    )) {
@@ -1042,14 +1059,14 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     config.setConnectionId(connectionId);
                 } else {
                     obj             = parameterMap.get("conn");
-	                if (obj != null) {
-	                    connectionId = ((String[]) obj)[0]; // override it from the HttpRequest
-	                    config.addProperties(connectionId + ".properties");
-    	                config.setConnectionId(connectionId);
-	                    setParameter("conn", connectionId); // store it in links and subsequent requests
-	                } else { // &conn= not set in HttpRequest
-	                    config.setConnectionId(); // default: take first in list
-	                }
+                    if (obj != null) {
+                        connectionId = ((String[]) obj)[0]; // override it from the HttpRequest
+                        config.addProperties(connectionId + ".properties");
+                        config.setConnectionId(connectionId);
+                        setParameter("conn", connectionId); // store it in links and subsequent requests
+                    } else { // &conn= not set in HttpRequest
+                        config.setConnectionId(); // default: take first in list
+                    }
                 }
                 //--------
                 int lastSlashPos = specName.lastIndexOf("/");
@@ -1218,6 +1235,16 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     typeName = "varchar";
                 }
                 column.setWidth(attrs.getValue("width"));
+
+                String wrap = attrs.getValue("wrap");
+                if (wrap != null && wrap.length() > 0) {
+                    String sep = attrs.getValue("sep");
+                    if (sep != null && sep.length() > 0) {
+                    } else {
+                        sep = ","; // this is the default separator
+                    } // sep
+                    column.setWrap(wrap + ":" + sep);
+                } // wrap
 
                 if (false) {
                 } else if (parentStmt.equals(CALL_TAG  )) {
@@ -1410,6 +1437,9 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     colBuffer.append(params);
                 }
                 // PARM_TAG
+
+            } else if (qName.equals(READ_TAG    )) { // in <col>
+                // READ_TAG
 
             } else if (qName.equals(VAR_TAG     )) { // recommended, similiar to PARM_TAG, but for a prepared statement
                 String params = getParameterForSQL(attrs, "name");
@@ -1661,7 +1691,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 inColumn = false;
                 // /COLUMN_TAG
 
-            } else if (inColumn) { // align= dir= href= label= link= name= pseudo= remark= style= type=
+            } else if (inColumn) {
+                // align= dir= href= label= link= name= pseudo= remark= style= type= wrap=
                 if (false) {
                 } else if (qName.equals(ALIGN_TAG   )) {
                     column.setAlign     (colBuffer.toString().trim());
@@ -1689,6 +1720,9 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     column.setTypeName  (colBuffer.toString().trim().toLowerCase());
                 } else if (qName.equals(WIDTH_TAG   )) {
                     column.setWidth     (colBuffer.toString().trim());
+                } else if (qName.equals(WRAP_TAG    )) {
+                    column.setWrap(colBuffer.toString().trim());
+                    // ???
                 } // else ignore
                 colBuffer.setLength(0); // start character assembly for all subordinate elements
 
@@ -1860,6 +1894,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             // ignore </option>
 
             } else if (qName.equals(PARM_TAG    )) {
+            } else if (qName.equals(READ_TAG    )) { // in <col>
             } else if (qName.equals(VAR_TAG     )) {
 
             } else if (qName.equals(SELECT_TAG  )) {

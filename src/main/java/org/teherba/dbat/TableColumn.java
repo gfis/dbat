@@ -1,5 +1,6 @@
 /*  TableColumn - bean with properties of an abstract column
     @(#) $Id$
+    2014-11-06: additional property wrap
     2014-01-15: inactivate fragment logic
     2013-02-01: getHrefValue: move fragment to the end
     2012-05-08: {s|g}etDir(char) vs. {s|g}etDirection(String)
@@ -70,6 +71,7 @@ public class TableColumn implements Cloneable {
         align       = "";
         href        = null;
         index       = 0;
+        wrap  = null;
         key         = "";
         label       = "";
         link        = null;
@@ -134,6 +136,7 @@ public class TableColumn implements Cloneable {
         result.typeName     = this.typeName ;
         result.value        = this.value    ;
         result.width        = this.width    ;
+        result.wrap         = this.wrap     ;
         return result;
     } // clone
 
@@ -336,6 +339,21 @@ public class TableColumn implements Cloneable {
     public void setIndex(int index) {
         this.index = index;
     } // setIndex
+    //----------------
+    /** specification of a Javascript function call */
+    private String wrap;
+    /** Gets the Javascript function call
+     *  @return link with parameters
+     */
+    public String getWrap() {
+        return wrap;
+    } // getWrap
+    /** Sets the Javascript function call
+     *  @param wrap link with parameter
+     */
+    public void setWrap(String wrap) {
+        this.wrap = wrap.replaceAll("\\s",""); // whitespace in URL makes no sense
+    } // setWrap
     //----------------
     /** key for update/delete actions */
     private String key;

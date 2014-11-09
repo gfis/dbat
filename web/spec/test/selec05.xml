@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2008-02-11: Dr. Georg Fischer
+-->
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang="en" 
+        conn="worddb" 
+        title="selec05"
+        >
+    <!-- copy of selec02 -->
+    <comment lang="en">Select from test table - with &lt;read&gt; element</comment>
+    <comment lang="de">Abfrage der Test-Tabelle mit &lt;read&gt;-Element</comment>
+
+    <ht:h3>Select from test table <ht:em>c01</ht:em> - with &lt;read&gt; element</ht:h3>
+    <ht:form method="get">
+        <ht:input label="Name" name="name" maxsize="20" size="10" init="%" />
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+    
+    <select>
+        <col label="Year"  align="right" href="servlet?spec=test/selec01&amp;name*&amp;year*">
+            <read>name || '*' || cast(year as char)</read>
+        </col>
+        <col label="Name"   link="test/selec01&amp;year=&amp;name=">
+            concat(cast(year as char), concat('=', name))
+        </col>
+        <col label="Year"   link="spec1&amp;prefix=&amp;prefix2=" align="right">
+            concat(cast(year as char), concat('=e.', cast(year as char)))
+        </col>
+        <col label="Name"   href="servlet?spec=spec1&amp;prefix=&amp;prefix2=">
+            concat(name, concat('=f.', name))
+        </col>
+        <col label="University" >univ</col>
+        <col label="Gender"     >gender</col>
+        <col label="Birthdate"  >birth</col>
+        <from>c01</from>
+        <where>name like '<parm name="name" />'
+        </where>
+        <counter desc="person,s"/>
+    </select>
+</dbat>

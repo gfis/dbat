@@ -298,27 +298,27 @@ CALL Dbat -m sql -d x07
 TEST X10 call procedure x07 into parm
 HTTP spec=test/callx10 iname0=row2
 #-------------------
-# Tests for the proper output of dbiv_spec.xsl
+# Tests for the proper output of dbiv_dbat.xsl
 TEST XS1 generate an interactive form for native SQL with INT key
-XSLT etc/xslt/dbiv_dbat.xsl web/spec/test/crud01.iv.xml
+XSLT web/xslt/dbiv_dbat.xsl web/spec/test/crud01.iv.xml
 
 TEST XS2 generate an interactive form for a stored procedure
-XSLT etc/xslt/dbiv_spec.xsl web/spec/test/crud02.iv.xml
+XSLT web/xslt/dbiv_dbat.xsl web/spec/test/crud02.iv.xml
 
 TEST XS3 generate an interactive form for native SQL with CHAR keys
-XSLT etc/xslt/dbiv_spec.xsl web/spec/test/crud03.iv.xml
+XSLT web/xslt/dbiv_dbat.xsl web/spec/test/crud03.iv.xml
 
 TEST XS4 generate an interactive form with AJAX subquery
-XSLT etc/xslt/dbiv_spec.xsl web/spec/test/crud04.iv.xml
+XSLT web/xslt/dbiv_dbat.xsl web/spec/test/crud04.iv.xml
 
 TEST XS5 generate a non-altering search form
-XSLT --stringparam alter 0 etc/xslt/dbiv_spec.xsl web/spec/test/crud01.iv.xml
+XSLT --stringparam alter 0 web/xslt/dbiv_dbat.xsl web/spec/test/crud01.iv.xml
 
 TEST XS6 whereClause copied with parm
-XSLT etc/xslt/dbiv_spec.xsl web/spec/test/crud05.iv.xml
+XSLT web/xslt/dbiv_dbat.xsl web/spec/test/crud05.iv.xml
 
 TEST XS7 not all fields editable
-XSLT etc/xslt/dbiv_spec.xsl web/spec/test/crud06.iv.xml
+XSLT web/xslt/dbiv_dbat.xsl web/spec/test/crud06.iv.xml
 #-------------------
 # Ajax tests
 TEST AX1 get an insert form containing an Ajax request
@@ -329,7 +329,7 @@ HTTP spec=test.ajax02 name=Ilse mode=json
 #-------------------
 # <parm format="..." />
 TEST F01 <parm format="..." />
-CALL Dbat -m html -f test/parmform.xml -p VALUE=Hier+ist+der+1.Wert -p value=Hier+ist+der+1.Wert
+CALL Dbat -m html -f web/spec/test/parmform.xml -p VALUE=Hier+ist+der+1.Wert -p value=Hier+ist+der+1.Wert
 
 TEST F02 <parm format="..." />
 HTTP spec=test.parmform&VALUE=Hier+ist+der+1.Wert&value=Hier+ist+der+1.Wert

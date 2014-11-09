@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     dbiv.2011.xsd - Schema for Dbat Interactive Views
-    @(#) $Id: dbiv.2011.xsd 958 2012-06-06 06:02:39Z gfis $
+    @(#) $Id$
+    2014-11-09: iv prefix
     2012-06-25: more restrictions
     2012-06-22: <text label="..."> generates 2 columns
     2012-06-05: <catalog>, <action>, <field ref="...">
@@ -23,59 +24,60 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<xs:schema 
+<xs:schema
         targetNamespace="http://www.teherba.org/2011/dbiv"
-        elementFormDefault="qualified" 
+        elementFormDefault="qualified"
         attributeFormDefault="unqualified"
-        xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-        xmlns   ="http://www.teherba.org/2011/dbiv"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:iv="http://www.teherba.org/2011/dbiv"
         xmlns:db="http://www.teherba.org/2007/dbat"
         >
-    <xs:element name="dbiv"   type="DbivType" />
+    <xs:element name="dbiv"   type="iv:DbivType" />
 <!--================================
-    root
+    dbiv root
 -->
     <xs:complexType name="DbivType" mixed="false">
         <xs:choice minOccurs="1" maxOccurs="1">
             <xs:sequence>
                 <xs:choice minOccurs="0" maxOccurs="unbounded">
-                    <xs:any namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
-                    <xs:element name="parm"       type="ParmType" />
+                    <xs:any namespace="http://www.w3.org/1999/xhtml"      processContents="lax"/>
+                    <xs:any namespace="http://www.teherba.org/2007/dbat"  processContents="lax"/>
+                    <xs:element name="parm"     type="iv:ParmType" />
                 </xs:choice>
-                <xs:element name="view"           type="ViewType" />
+                <xs:element name="view"         type="iv:ViewType" />
                 <xs:choice minOccurs="0" maxOccurs="unbounded">
                     <xs:any namespace="http://www.w3.org/1999/xhtml"      processContents="lax"/>
                     <xs:any namespace="http://www.teherba.org/2007/dbat"  processContents="lax"/>
-                    <xs:element name="parm"       type="ParmType" />
+                    <xs:element name="parm"     type="iv:ParmType" />
                 </xs:choice>
             </xs:sequence>
             <xs:sequence>
-                <xs:element name="catalog"        type="CatalogType" />
+                <xs:element name="catalog"      type="iv:CatalogType" />
             </xs:sequence>
         </xs:choice>
         <xs:attribute name="conn"       type="xs:NCName" />
-        <xs:attribute name="lang"       type="LangType"  />
+        <xs:attribute name="lang"       type="iv:LangType"  />
         <xs:attribute name="encoding"   type="xs:string" />
         <xs:attribute name="script"     type="xs:string" />
     </xs:complexType>
-<!--=================================
-    complex types for XML elements in alphabetical order
+<!--
+    complex types for dbiv XML elements in alphabetical order
 -->
     <xs:complexType name="ActionType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:any namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
-            <xs:element name="parm"           type="ParmType" />
+            <xs:element name="parm"           type="iv:ParmType" />
         </xs:choice>
         <xs:attribute name="label"      type="xs:string" />
         <xs:attribute name="link"       type="xs:string" />
-        <xs:attribute name="name"       type="ActionNameType" use="required" />
+        <xs:attribute name="name"       type="iv:ActionNameType" use="required" />
         <xs:attribute name="remark"     type="xs:string" />
-        <xs:attribute name="position"   type="PositionType" />
+        <xs:attribute name="position"   type="iv:PositionType" />
     </xs:complexType>
 
     <xs:complexType name="CatalogType" mixed="false">
         <xs:choice minOccurs="1" maxOccurs="unbounded">
-            <xs:element name="field"      type="FieldType" />
+            <xs:element name="field"    type="iv:FieldType" />
         </xs:choice>
     </xs:complexType>
 
@@ -89,16 +91,16 @@
     <xs:complexType name="EnumType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:any namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
-            <xs:element name="parm"       type="ParmType" />
+            <xs:element name="parm"     type="iv:ParmType" />
         </xs:choice>
         <xs:attribute name="code"       type="xs:string" use="required" />
-        <xs:attribute name="lang"       type="LangType" />
+        <xs:attribute name="lang"       type="iv:LangType" />
         <xs:attribute name="display"    type="xs:string" />
     </xs:complexType>
 
     <xs:complexType name="EnumerationType">
         <xs:choice minOccurs="1" maxOccurs="unbounded">
-            <xs:element name="enum"     type="EnumType" />
+            <xs:element name="enum"     type="iv:EnumType" />
         </xs:choice>
         <xs:attribute name="height"     type="xs:unsignedShort" />
     </xs:complexType>
@@ -106,15 +108,15 @@
     <xs:complexType name="FieldType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:any namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
-            <xs:element name="parm"           type="ParmType"           />
-            <xs:element name="enumeration"    type="EnumerationType"    />
-            <xs:element name="listbox"        type="ListBoxType"        />
-            <xs:element name="read"           type="ReadType"           />
-            <xs:element name="search"         type="SearchType"         />
-            <xs:element name="subquery"       type="SubQueryType"       />
-            <xs:element name="write"          type="WriteType"          />
+            <xs:element name="parm"           type="iv:ParmType"           />
+            <xs:element name="enumeration"    type="iv:EnumerationType"    />
+            <xs:element name="listbox"        type="iv:ListBoxType"        />
+            <xs:element name="read"           type="iv:ReadType"           />
+            <xs:element name="search"         type="iv:SearchType"         />
+            <xs:element name="subquery"       type="iv:SubQueryType"       />
+            <xs:element name="write"          type="iv:WriteType"          />
         </xs:choice>
-        <xs:attribute name="align"      type="AlignType" />
+        <xs:attribute name="align"      type="iv:AlignType" />
         <xs:attribute name="href"       type="xs:string" />
         <xs:attribute name="id"         type="xs:ID"    /><!-- td=id0, td=id1, input=id2 -->
         <xs:attribute name="init"       type="xs:string" />
@@ -126,37 +128,37 @@
         <xs:attribute name="ref"        type="xs:NCName" />
         <xs:attribute name="remark"     type="xs:string" />
         <xs:attribute name="rows"       type="xs:unsignedShort" />
-        <xs:attribute name="show"       type="ShowType"  />
+        <xs:attribute name="show"       type="iv:ShowType"  />
         <xs:attribute name="size"       type="xs:unsignedShort" />
         <xs:attribute name="style"      type="xs:string" />
-        <xs:attribute name="type"       type="TypeType"  />
+        <xs:attribute name="type"       type="iv:TypeType"  />
         <xs:attribute name="valid"      type="xs:string" />
     </xs:complexType>
 
     <xs:complexType name="GroupType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="parm"     type="ParmType" />
+            <xs:element name="parm"     type="iv:ParmType" />
         </xs:choice>
         <xs:attribute name="by"         type="xs:string" />
     </xs:complexType>
 
     <xs:complexType name="ListBoxType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="select"   type="SelectType" />
+            <xs:element name="select"   type="iv:SelectType" />
         </xs:choice>
         <xs:attribute name="height"     type="xs:unsignedShort" />
     </xs:complexType>
 
     <xs:complexType name="OrderType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="parm"     type="ParmType"     />
+            <xs:element name="parm"     type="iv:ParmType"     />
         </xs:choice>
         <xs:attribute name="by"         type="xs:string" />
     </xs:complexType>
 
     <xs:complexType name="ParameterizedText" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="parm"     type="ParmType"     />
+            <xs:element name="parm"     type="iv:ParmType"     />
         </xs:choice>
     </xs:complexType>
 
@@ -169,13 +171,13 @@
     <xs:complexType name="ReadType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:any namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
-            <xs:element name="parm"     type="ParmType" />
+            <xs:element name="parm"     type="iv:ParmType" />
         </xs:choice>
     </xs:complexType>
 
     <xs:complexType name="SearchType" mixed="false">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="urlparm"  type="UrlParmType" />
+            <xs:element name="urlparm"  type="iv:UrlParmType" />
         </xs:choice>
         <xs:attribute name="href"       type="xs:string" />
         <xs:attribute name="label"      type="xs:string" />
@@ -187,12 +189,12 @@
             <xs:any namespace="http://www.teherba.org/2007/dbat" processContents="lax"/>
         </xs:choice>
         <xs:attribute name="into"       type="xs:string" />
-        <xs:attribute name="distinct"   type="BoolType" />
+        <xs:attribute name="distinct"   type="iv:BoolType" />
     </xs:complexType>
 
     <xs:complexType name="SubQueryType" mixed="false">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="urlparm"  type="UrlParmType" />
+            <xs:element name="urlparm"  type="iv:UrlParmType" />
         </xs:choice>
         <xs:attribute name="link"       type="xs:string" use="required" />
     </xs:complexType>
@@ -200,9 +202,9 @@
     <xs:complexType name="TextType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:any namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
-            <xs:element name="parm"     type="ParmType"  />
+            <xs:element name="parm"     type="iv:ParmType"  />
         </xs:choice>
-        <xs:attribute name="align"      type="AlignType" />
+        <xs:attribute name="align"      type="iv:AlignType" />
         <xs:attribute name="id"         type="xs:ID"     />
         <xs:attribute name="label"      type="xs:string" />
         <xs:attribute name="style"      type="xs:string" />
@@ -211,7 +213,7 @@
     <xs:complexType name="TitleType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:any namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
-            <xs:element name="parm"     type="ParmType" />
+            <xs:element name="parm"     type="iv:ParmType" />
         </xs:choice>
     </xs:complexType>
 
@@ -223,13 +225,13 @@
 
     <xs:complexType name="ViewType" mixed="true">
         <xs:choice minOccurs="1" maxOccurs="unbounded">
-            <xs:element name="title"    type="TitleType"    minOccurs="0" maxOccurs="1" />
-            <xs:element name="counter"  type="CounterType"  minOccurs="0" maxOccurs="1" />
-            <xs:element name="action"   type="ActionType"   minOccurs="0" maxOccurs="1" />
-            <xs:element name="field"    type="FieldType"    minOccurs="0" maxOccurs="1" />
-            <xs:element name="text"     type="TextType"     minOccurs="0" maxOccurs="1" />
-            <xs:element name="where"    type="WhereType"    minOccurs="0" maxOccurs="1" />
-            <xs:element name="order"    type="OrderType"    minOccurs="0" maxOccurs="1" />
+            <xs:element name="title"    type="iv:TitleType"    minOccurs="0" maxOccurs="1" />
+            <xs:element name="counter"  type="iv:CounterType"  minOccurs="0" maxOccurs="1" />
+            <xs:element name="action"   type="iv:ActionType"   minOccurs="0" maxOccurs="1" />
+            <xs:element name="field"    type="iv:FieldType"    minOccurs="0" maxOccurs="1" />
+            <xs:element name="text"     type="iv:TextType"     minOccurs="0" maxOccurs="1" />
+            <xs:element name="where"    type="iv:WhereType"    minOccurs="0" maxOccurs="1" />
+            <xs:element name="order"    type="iv:OrderType"    minOccurs="0" maxOccurs="1" />
         </xs:choice>
         <xs:attribute name="help"       type="xs:string" />
         <xs:attribute name="id"         type="xs:ID"     /><!-- the alias of the table/view in SQL SELECTs -->
@@ -239,18 +241,21 @@
 
     <xs:complexType name="WhereType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="parm"     type="ParmType" />
+            <xs:any namespace="http://www.w3.org/1999/xhtml"      processContents="lax"/>
+            <xs:any namespace="http://www.teherba.org/2007/dbat"  processContents="lax"/>
+            <xs:element name="parm"     type="iv:ParmType" />
         </xs:choice>
     </xs:complexType>
 
     <xs:complexType name="WriteType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:any namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
-            <xs:element name="parm"     type="ParmType" />
+            <xs:any namespace="http://www.w3.org/1999/xhtml"      processContents="lax"/>
+            <xs:any namespace="http://www.teherba.org/2007/dbat"  processContents="lax"/>
+            <xs:element name="parm"     type="iv:ParmType" />
         </xs:choice>
     </xs:complexType>
 
-<!-- ===================================
+<!--
     enumerations for attribute values
 -->
     <xs:simpleType name="ActionNameType">
@@ -261,7 +266,7 @@
             <xs:enumeration value="upd"     ></xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
-    
+
     <xs:simpleType name="AlignType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="left"    ></xs:enumeration>
