@@ -1,5 +1,6 @@
 /*  Reader for text file, returns a string without any whitespace
  *  @(#) $Id$
+ *  2014-11-10: SORT=; more Javadoc
  *  2014-03-30: diff -Z
  *  2014-02-16: encoding for all BufferedReaders
  *  2013-09-13: EXIT effective only if testNamePattern != "*"
@@ -52,8 +53,53 @@ import  org.apache.log4j.Logger;
  *  files (*.prev.tst) or generates new output files (*.this.tst) and compares them
  *  to the reference files. A typical activation is:
  *  <pre>
- *  java -cp dist/dbat.jar org.teherba.common.RegressionTester test/mysql.tests "*" 2>&1 | tee regression_mysql.log.tmp
+ *  java -cp dist/dbat.jar org.teherba.common.RegressionTester test/mysql.tests "*" 2>&1 | tee test/regression_mysql.log
  *  </pre>
+ *  In order to avoid differences which depend on the date/time, for example,
+ *  the program reads a file <em>regression.properties</em>
+ *  from the same directory as the test case file.
+ *  This properties file contains one or more pairs of lines
+ *  <pre>
+ *  Pattern to be replaced
+ *  Replacement Content
+ *  </pre>
+ *  For example (<em>dbat/test/replacement.properties</em>)
+<pre>
+ \d{4}\-\d{2}\-\d{2} \d{2}\:\d{2}\:\d{2}([.,0-9]*)?
+ yyyy-mm-dd hh:mm:ss
+ rows in \d+ ms
+ rows in ... ms
+Dbat V\d+\.\w+\/\d{4}\-\d{2}\-\d{2} \- DataBase Application Tool
+Dbat Vx.hhhh/yyyy-mm-dd - DataBase Application Tool
+</pre>
+ *  The test case file contains
+ *  <ul>
+ *  <li>comments starting with "#"</li>
+ *  <li>Macro definitions of the form <em>NAME=value</em></li>
+ *  <li>Commands of the form <em>NAME value1 value2 ...</em></li>
+ *  <li>empty lines, which are igenored</li>
+ *  </ul>
+ *  The commands and macro definitions are uppercase by convention.
+ *  The following macro definitions are recognized:
+ *  <table>
+ *  <tr><td>ARGS=   </td><td>commandline arguments which are appended to the CALL command</td></tr>
+ *  <tr><td>PACKAGE=</td><td>define the class name prefix for all following CALL commands (default: <em>org.teherba</em>) </td></tr>
+ *  <tr><td>SORT=   </td><td>define the sort command and its options (default: <em>sort</em></td></tr>
+ *  <tr><td>URL=    </td><td>define the URL prefix for all following HTTP commands (default: <em>http://localhost:8080/dbat/servlet</em>) </td></tr>
+ *  <tr><td>XSLT=   </td><td>define the XSLT processor command (default: <em>xsltproc</em>)</td></tr>
+ *  <tr><td>(other)=</td><td>user defined macro</td></tr>
+ *  </table>
+ *  The following commands are recognized:
+ *  <table>
+ *  <tr><td>CALL    </td><td>activate the main method in the specified Java class file</td></tr>
+ *  <tr><td>DATA    </td><td>starts "here is" content; lines for an auxiliary test file</td></tr>
+ *  <tr><td>ECHO    </td><td>output the rest of the line in the test logfile</td></tr>
+ *  <tr><td>EXIT    </td><td>immediately stop execution of test commands</td></tr>
+ *  <tr><td>HTTP    </td><td>get a Web page from an URL</td></tr>
+ *  <tr><td>SORT    </td><td>sort a file</td></tr>
+ *  <tr><td>TEST    </td><td>start of a test case with description</td></tr>
+ *  <tr><td>XSLT    </td><td>execute an XSLT stylesheet</td></tr>
+ *  </table>
  *  @author Dr. Georg Fischer
  */
 public class RegressionTester {
@@ -290,18 +336,21 @@ public class RegressionTester {
                         if (separ.startsWith("=")) { // macro definition
                             if (false) {
                             } else if (verb.equals("ARGS")) {
-                                argsPrefix = rest + (rest.length() == 0 ? "" : " ");
+                                argsPrefix  = rest + (rest.length() == 0 ? "" : " ");
                                 macros.put(verb, argsPrefix);
                             } else if (verb.equals("PACKAGE")) {
                                 classPrefix = rest + (rest.endsWith(".") ? "" : ".");
                                 macros.put(verb, classPrefix);
+                            } else if (verb.equals("SORT")) {
+                                sortPrefix  = rest + " ";
+                                macros.put(verb, sortPrefix);
                             } else if (verb.equals("URL")) {
                                 baseURL     = rest + (rest.endsWith("?") ? "" : "?");
                                 macros.put(verb, baseURL);
                             } else if (verb.equals("XSLT")) {
                                 xsltPrefix = rest + " ";
                                 macros.put(verb, xsltPrefix);
-                            } else {
+                            } else { // other, user defined macro
                                 macros.put(verb, rest);
                             }
                             // macro definition

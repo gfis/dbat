@@ -18,7 +18,7 @@ lang="de"
 -->
 <h3><a href="/index.html">Dbat</a>-Optionen auf der Kommandzeile</h3>
 <pre>
-Dbat V9.a1fa/2014-11-08 - DataBase Application Tool
+Dbat Vx.hhhh/yyyy-mm-dd - DataBase Application Tool
 Aufruf:
   java -jar dbat.jar [-acdfghlnrstvx] (table | "sql" | file | - | parameter ...)
   java org.teherba.dbat.Dbat "SELECT entry, morph FROM words"

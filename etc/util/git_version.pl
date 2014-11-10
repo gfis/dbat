@@ -2,6 +2,7 @@
 
 # Insert git's version hash into $Id keywords in a file (in place)
 # @(#) $Id$
+# 2014-11-10: insert a timestamp outside the $\Id keyword
 # 2014-11-08, Georg Fischer
 #
 # Usage:
@@ -50,9 +51,11 @@ use strict;
             my $line = $_;
             if ($line =~ m/\$\Id: [^\$]*\$/) {
                 if ($line =~ m/CVSID =/) {
-                    $line =~ s/\$\Id: [^\$]*\$/\$\Id: $inname $githash ${timestamp} $ENV{"USER"} \$/; # must shield $Id with \I
+                    $line =~ s{\$\Id: [^\$]*\$}
+                              {\$\Id: $inname $githash ${timestamp} $ENV{"USER"} \$}; # must shield $Id with \I
                 } else {
-                    $line =~ s/\$\Id: [^\$]*\$/\$\Id: $githash \$/; # must shield $Id with \I
+                    $line =~ s{\$\Id: [^\$]*\$.*}
+                              {\$\Id: $githash \$ $timestamp $ENV{"USER"}}; # must shield $Id with \I
                 } # not the CVSID
             } # with $\Id
             $buffer .= $line;

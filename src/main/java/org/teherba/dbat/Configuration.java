@@ -1,6 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
- *  @(#) $Id$
- *  2014-11-08: major version 9; update $\Id content with etc/util/git_version.pl
+ *  @(#) $Id$ 2014-11-10 15:57:50 gfis
+ *  2014-11-11: major version 9; update $\Id content with etc/util/git_version.pl
  *  2014-11-03: always respond with MIME type application/xhtml+xml
  *  2014-02-16: application/xhtml+xml if System.getProperty("os.name"       ).startsWith("Windows 8")
  *  2012-06-19: manner = JDBC or SQLJ; for DB2: TRANSACTION_READ_UNCOMMITTED

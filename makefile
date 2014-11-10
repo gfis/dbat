@@ -39,7 +39,7 @@ regression_mysql:
 # Recreate all testcases which failed (i.e. remove xxx.prev.tst)
 # Handle with care!
 # Failing testcases are turned into "passed" and are manifested by this target!
-recreate: recr1 regr2 
+recreate: recr1 regr2
 recr0:
 	grep -E '> FAILED' $(TESTDIR)/regression*.log | cut -f 3 -d ' ' | xargs -l -ißß echo rm -v test/ßß.prev.tst
 recr1:
@@ -64,7 +64,10 @@ wikidoc:
 # insert the last git hash and the compilation date into Dbat's version string
 identify:
 	perl -i.bak etc/util/git_version.pl $(SRC)/Configuration.java
-	grep CVSID $(SRC)/Configuration.java | head -1 | sed -e 's/\s/\n/g' | tail -6 | head -5
+	touch                               $(SRC)/Configuration.java
+	git add -v                          $(SRC)/Configuration.java
+	grep CVSID                          $(SRC)/Configuration.java \
+	| head -1 | sed -e 's/\s/\n/g' | tail -6 | head -5
 #---------------------------------------------------
 # test whether all defined tests in mysql.tests have *.prev.tst results and vice versa
 check_tests:
