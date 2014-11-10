@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+    2014-11-10: format="none"
     2014-11-07: <read> element and wrap= attribute in <col>
     2014-03-05: use (ordered) TreeSet for parameterMap, for better reproducibility of web tests
     2012-10-19: use Messages.getDefaultCounterDesc
@@ -554,6 +555,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     result = result.toUpperCase(); // then upshift   all input values
                 } else if (formatCode.toLowerCase().equals("lower")) {
                     result = result.toLowerCase(); // then downshift all input values
+                } else if (formatCode.toLowerCase().equals("none" )) {
+                    // value remains unchanged
                 }
                 // format= was present
             } // format=
@@ -583,6 +586,45 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         validateField(name, values, new AttributesImpl(attrs));
         return result;
     } // getParameterForSQL
+
+    /** Gets a space separated list of filenames with proper pathes and extensions
+     *  from a list of subdirectory-relative filenames
+     *  @param attributeValue of the attribute containing the file specifications
+     *  @param subDirectory application relative path to the specification XML, for example "spec/test"
+     *  @param extension file extension if it was omitted
+     *  @return space separated list of filenames with proper pathes and extensions
+     */
+    private String getFilesFromAttribute(String attributeValue, String subDirectory, String extension) {
+    	String result = null;
+        StringBuffer buffer = new StringBuffer(128);
+        if (attributeValue != null) { // attribute was set
+            String[] names = attributeValue.split("\\s");
+            int iname = 0;
+            while (iname < names.length) {
+                if (iname >= 1) {
+                    buffer.append(' '); // separator
+                }
+                if (! names[iname].startsWith("/")) {
+                	buffer.append(subDirectory);
+                }
+                buffer.append(names[iname]);
+                if (! names[iname].endsWith(extension)) {
+                    buffer.append('.');
+                    buffer.append(extension);
+                } // with extension
+                iname ++;
+            } // while inames
+            result = buffer.toString();
+        } else { // attribute was not set, assume defaults
+            if (false) {
+            } else if (extension.equals("css")) {
+            	result = subDirectory + "stylesheet.css";
+            } else if (extension.equals("js")) {
+            } else if (extension.equals("xsl")) {
+            }
+        } // not set
+        return result;
+    } // getFilesFromAttribute
 
     /** Handles a form field start tag: ht:INPUT_TAG, ht:SELECT_TAG, ht:TEXTAREA_TAG and our db:LISTBOX_TAG
      *  with the additional Dbat attributes "label=", "value=" and "init=".
@@ -1072,23 +1114,29 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 int lastSlashPos = specName.lastIndexOf("/");
                 String subDirectory = urlPath + (lastSlashPos < 0 ? "" : specName.substring(0, lastSlashPos + 1));
                 //--------
-                String javascript   = attrs.getValue("javascript");
+                String javascript   = getFilesFromAttribute(attrs.getValue("javascript"), subDirectory, "js" );
+            /*
                 if (javascript      != null) { // assume location         in current subdirectory of dbat/spec
                     javascript      = urlPath + javascript  + (javascript.endsWith(".js")  ? "" : ".js" );
                 } // javascript
+            */
                 //--------
-                String stylesheet   = attrs.getValue("stylesheet");
+                String stylesheet   = getFilesFromAttribute(attrs.getValue("stylesheet"), subDirectory, "css");
+            /*
                 if (stylesheet      != null) { // assume "stylesheet.css" in current subdirectory of dbat/spec
                     stylesheet      = // urlPath +
                             stylesheet  + (stylesheet.endsWith(".css") ? "" : ".css");
                 } else { // default: take the stylesheet from dbat/spec/subdirectory
                     stylesheet      = subDirectory + "stylesheet.css";
                 }
+            */
                 //--------
-                String xslt         = attrs.getValue("xslt");
+                String xslt         = getFilesFromAttribute(attrs.getValue("xslt")      , subDirectory, "xsl");
+            /*
                 if (xslt            != null) { // assume location         in current subdirectory of dbat/spec
                     xslt            = realPath + xslt       + (xslt      .endsWith(".xsl") ? "" : ".xsl");
                 } // xslt
+            */
                 //--------
                 String namespacePrefix  = attrs.getValue("nsp"); // empty or a short, lowercase prefix
                 tbSerializer.setParameterMap(parameterMap);

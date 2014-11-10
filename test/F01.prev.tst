@@ -10,19 +10,20 @@
 <link rel="stylesheet" type="text/css" href="./web/spec/test/stylesheet.css" />
 </head><body>
 
-	<!--Test of the format= attribute in &lt;parm&gt;-->
-	<!--Test des format-Attributs in in &lt;parm&gt;-->
+    <!--Test of the format="..." attribute in &lt;parm&gt;-->
+    <!--Test des format-Attributs in in &lt;parm&gt;-->
 
     <h3>Test of the format= attribute in &lt;parm&gt;</h3>
-	
-	&lt;parm name="VALUE" /&gt; HIER+IST+DER+1.WERT<br />
-	&lt;parm name="value" /&gt; Hier+ist+der+1.Wert<br />
-	&lt;parm name="value" format="lower" /&gt; hier+ist+der+1.wert<br />
-	&lt;parm name="value" format="upper" /&gt; HIER+IST+DER+1.WERT<br />
-	&lt;parm name="VALUE" format="lower" /&gt; hier+ist+der+1.wert<br />
-	&lt;parm name="VALUE" format="upper" /&gt; HIER+IST+DER+1.WERT<br />
+
+    &lt;parm name="VALUE" /&gt; THAT+IS+THE+1ST+VALUE<br />
+    &lt;parm name="value" /&gt; That+is+the+2nd+value<br />
+    &lt;parm name="value" format="lower" /&gt; that+is+the+2nd+value<br />
+    &lt;parm name="value" format="upper" /&gt; THAT+IS+THE+2ND+VALUE<br />
+    &lt;parm name="VALUE" format="lower" /&gt; that+is+the+1st+value<br />
+    &lt;parm name="VALUE" format="upper" /&gt; THAT+IS+THE+1ST+VALUE<br />
+    &lt;parm name="VALUE" format="none"  /&gt; That+is+the+1st+value<br />
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./web/spec/test/parmform.xml" type="text/plain">web/spec/test/parmform.xml</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;VALUE=Hier%2Bist%2Bder%2B1.Wert&amp;value=Hier%2Bist%2Bder%2B1.Wert&amp;lang=en">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;VALUE=Hier%2Bist%2Bder%2B1.Wert&amp;value=Hier%2Bist%2Bder%2B1.Wert&amp;lang=en">more</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;VALUE=That%2Bis%2Bthe%2B1st%2Bvalue&amp;value=That%2Bis%2Bthe%2B2nd%2Bvalue&amp;lang=en">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;VALUE=That%2Bis%2Bthe%2B1st%2Bvalue&amp;value=That%2Bis%2Bthe%2B2nd%2Bvalue&amp;lang=en">more</a>
 
 </body></html>

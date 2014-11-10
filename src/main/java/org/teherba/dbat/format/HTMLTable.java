@@ -76,16 +76,16 @@ public class HTMLTable extends XMLTable {
     private boolean isSortable;
     /** The natural language for messages and internationalized text portions */
     private String language;
-    
+
     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
      *  @param params array of 0 or more (name, value) string which specify features in the file header.
      *  @param parameterMap map of request parameters to values
      *  The following names are interpreted:
      *  <ul>
-     *  <li>contentType - MIME type for the document content</li>
+     *  <li>contenttype - MIME type for the document content</li>
      *  <li>encoding - encoding to be used for the output stream</li>
-     *  <li>javaScript - name of the file containing JavaScript functions</li>
-     *  <li>styleSheet - name of the CSS file</li>
+     *  <li>javascript - names of the files containing JavaScript functions (multiple, separated by whitespace)</li>
+     *  <li>stylesheet - names of the CSS files (multiple, separated by whitespace)</li>
      *  <li>encoding - encoding to be used for the output stream</li>
      *  <li>target - target of HTML base element, for example "_blank"</li>
      *  <li>title - title for the HTML head element, and the browser window</li>
@@ -109,9 +109,9 @@ public class HTMLTable extends XMLTable {
                 if (false) {
                 } else if (params[iparam].equals("contenttype"))    { contenttype   = params[iparam + 1];
                 } else if (params[iparam].equals("encoding"))       { encoding      = params[iparam + 1];
-                } else if (params[iparam].equals("javascript"))     { 
-                    javascript    = params[iparam + 1];
-                    isSortable = javascript.matches("(spec|\\.)/sort.*");
+                } else if (params[iparam].equals("javascript"))     {
+                    javascript = params[iparam + 1];
+                    isSortable = javascript.indexOf("sorttable") >= 0;
                 } else if (params[iparam].equals("lang"))           { language      = params[iparam + 1];
                 } else if (params[iparam].equals("stylesheet"))     { stylesheet    = params[iparam + 1];
                 } else if (params[iparam].equals("target"))         { target        = params[iparam + 1];
@@ -138,10 +138,22 @@ public class HTMLTable extends XMLTable {
             charWriter.println("<meta http-equiv=\"Content-Type\" content=\"" + contenttype + "\" />");
             charWriter.println("<meta name=\"robots\" content=\"noindex, nofollow\" />");
             charWriter.println("<title>" + title + "</title>");
-            charWriter.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + stylesheet + "\" />");
+            String[] stylesheets = stylesheet.split("\\s+");
+            if (stylesheet != null) { // always
+                int icss = 0;
+                while (icss < stylesheets.length) {
+                    charWriter.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + stylesheets[icss] + "\" />");
+                    icss ++;
+                } // while icss
+            } // stylesheet != null
             if (javascript != null) {
-                charWriter.println("<script src=\"" + javascript + "\" type=\"text/javascript\"></script>");
-            }
+                String[] javascripts = javascript.split("\\s+");
+                int ijs = 0;
+                while (ijs < javascripts.length) {
+                    charWriter.println("<script src=\"" + javascripts[ijs] + "\" type=\"text/javascript\"></script>");
+                    ijs ++;
+                } // while icss
+            } // javascript != null
             charWriter.println("</head><body>");
             if (target != null) {
                 charWriter.println("<base target=\"" + target + "\" />");
@@ -355,7 +367,7 @@ public class HTMLTable extends XMLTable {
      *  The strings obtained by this method can be aggregated
      *  (with some separator) in order to form the contents of an aggregated column.
      *  Pivot tables and aggregation store the result back into the cell's value.
-     *	Repeated calls of this method may not lengthen the resulting value.
+     *  Repeated calls of this method may not lengthen the resulting value.
      *  @param column attributes of this column, containing the value also
      *  @return string content of a cell
      */
@@ -377,7 +389,7 @@ public class HTMLTable extends XMLTable {
             if (value.matches("[\\w]+")) { // for compatibility: images for DBIV actions
                 srcAttr = "img/" + srcAttr + ".png";
             } else { // explicit, complete relative filename or URL
-                // done 
+                // done
             }
             result.append("<img src=\"");
             result.append(srcAttr);
@@ -391,63 +403,63 @@ public class HTMLTable extends XMLTable {
         }
         return result.toString();
     } // getFlatValue
-    
+
     /** Gets a string assignment suitable for the <em>style=</em> or <em>style=</em> attribute
      *  of an HTML element, or for Javascript.
      *  @param js whether to generate the assignment for Javascript
-     *  @param styleOrClass either a single word which becomes the className, 
+     *  @param styleOrClass either a single word which becomes the className,
      *  or a string containing a colon which becomes the CSS style definition(s)
      *  @return resulting attribute assignment as a string, for example
      *  <pre>
      *     class="red"
-     *     style="color:white;background-color:red;" 
+     *     style="color:white;background-color:red;"
      *
      *     ){className="red";}
-     *     .style){color="white";backgroundColor="red";} 
+     *     .style){color="white";backgroundColor="red";}
      *  </pre>
      */
     private String getStyleOrClass(boolean js, String styleOrClass) {
-    	StringBuffer result = new StringBuffer(64);
-    	int colonPos = styleOrClass.indexOf(':');
-    	if (js) {
-			if (colonPos < 0) { // class
-	   			result.append("){className=\"");
-    			result.append(styleOrClass);
-    			result.append("\";");
-			} else { // style(s)
-	   			result.append(".style){");
-				String[] pairs = styleOrClass.split("\\;");
-				int ipair = 0;
-				while (ipair < pairs.length) {
-					String style[] = pairs[ipair].split("\\:");
-					if (style.length == 2) {
-						int minusPos = style[0].indexOf("-");
-						if (minusPos >= 0 && minusPos < style[0].length() - 2) {
-							result.append(style[0].substring(0, minusPos));
-							result.append(style[0].substring(minusPos + 1, minusPos + 2).toUpperCase());
-							result.append(style[0].substring(minusPos + 2));
-						} else {
-							result.append(style[0]);
-						}
-						result.append("=\"");						
-						result.append(style[1]);
-						result.append("\";");						
-					} else {
-						// silently ignore pairs with no or more than 2 colons
-					}
-					ipair ++;
-				} // while isty
-			} // style(s)
-			result.append("}"); // for 'with' statement
-    		// Javascript
-    	} else { // normale style or class attribute
-   			result.append(colonPos < 0 ? " class" : " style");
-	    	result.append("=\"");
-    		result.append(styleOrClass);
-    		result.append("\"");
-    	} // normal
-    	return result.toString();
-	} // getStyleOrClass
+        StringBuffer result = new StringBuffer(64);
+        int colonPos = styleOrClass.indexOf(':');
+        if (js) {
+            if (colonPos < 0) { // class
+                result.append("){className=\"");
+                result.append(styleOrClass);
+                result.append("\";");
+            } else { // style(s)
+                result.append(".style){");
+                String[] pairs = styleOrClass.split("\\;");
+                int ipair = 0;
+                while (ipair < pairs.length) {
+                    String style[] = pairs[ipair].split("\\:");
+                    if (style.length == 2) {
+                        int minusPos = style[0].indexOf("-");
+                        if (minusPos >= 0 && minusPos < style[0].length() - 2) {
+                            result.append(style[0].substring(0, minusPos));
+                            result.append(style[0].substring(minusPos + 1, minusPos + 2).toUpperCase());
+                            result.append(style[0].substring(minusPos + 2));
+                        } else {
+                            result.append(style[0]);
+                        }
+                        result.append("=\"");
+                        result.append(style[1]);
+                        result.append("\";");
+                    } else {
+                        // silently ignore pairs with no or more than 2 colons
+                    }
+                    ipair ++;
+                } // while isty
+            } // style(s)
+            result.append("}"); // for 'with' statement
+            // Javascript
+        } else { // normale style or class attribute
+            result.append(colonPos < 0 ? " class" : " style");
+            result.append("=\"");
+            result.append(styleOrClass);
+            result.append("\"");
+        } // normal
+        return result.toString();
+    } // getStyleOrClass
 
     /** Name of class in stylesheet which causes visible   values in control change columns */
     private static final String VISIBLE   = "visible";

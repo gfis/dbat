@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
     @(#) $Id$
-    2014-11-10: sorttable.js one level higher
-    2012-05-15, Dr. Georg Fischer: copied from color05.xml
+    2014-11-10, Dr. Georg Fischer: copied from color07.xml
 -->
 <dbat   xmlns   ="http://www.teherba.org/2007/dbat"
         xmlns:ht="http://www.w3.org/1999/xhtml"
         encoding="UTF-8"
         lang="en"
         conn="worddb"
-        title="color07"
-        javascript="../sorttable.js"
+        title="multijs"
+        stylesheet="stylesheet.css ../stylesheet.css"
         >
-    <comment lang="en">Select from test table with "sorttable.js"</comment>
-    <comment lang="de">Abfrage der Test-Tabelle mit sortierbaren Spalten</comment>
+    <comment lang="en">Test with 2 StylesheetsStylesheets</comment>
+    <comment lang="de">Test mit 2 Stylesheets</comment>
 
-    <ht:h3><ht:a href="servlet?spec=test.index">Test</ht:a>: Select from table c01 - with "sorttable.js"</ht:h3>
+    <ht:h3>Select from test table c01 - with 2 Stylesheets</ht:h3>
     <ht:form method="get">
         <ht:input label="Name" name="name" maxsize="20" size="10" init="%" />% &#xa0; &#xa0;
         <ht:input type="submit" value="Submit" />

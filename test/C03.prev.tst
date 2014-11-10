@@ -10,8 +10,8 @@
 <link rel="stylesheet" type="text/css" href="./web/spec/test/stylesheet.css" />
 </head><body>
 
-	<!--Select from test table - with colors and linked values-->
-	<!--Abfrage der Test-Tabelle mit farbigem Hintergrund und Verweisen auf den Werten-->
+    <!--Select from test table - with colors and linked values-->
+    <!--Abfrage der Test-Tabelle mit farbigem Hintergrund und Verweisen auf den Werten-->
 
     <h3>Select from test table c01 - with colors and linked values</h3>
     <form method="get" action="servlet?spec=web/spec/test/color04.xml"><input name="spec" type="hidden" value="web/spec/test/color04.xml" />
@@ -19,7 +19,7 @@
         Name: <input name="name" maxsize="20" size="10" init="%r" value="%r"></input>
         <input type="submit" value="Submit"></input>
     </form>
-    
+
     <!-- SQL:
 SELECT case when year < 1980 then 'gry' else 'wht' end
 , concat(name, concat('=', cast(year as char)))

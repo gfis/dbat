@@ -569,20 +569,21 @@ public abstract class BaseTable {
      *-------------------------------------------------------*/
 
     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
-     *  @param params array of 0 or more (name, value) strings which specify features in the file header.
+     *  @param params array of 0 or more (name, value) string which specify features in the file header.
      *  @param parameterMap map of request parameters to values
-     *  A subset of the following names is interpreted by some formats:
+     *  The following names are interpreted:
      *  <ul>
-     *  <li>contentType - MIME type for the document content</li>
+     *  <li>contenttype - MIME type for the document content</li>
      *  <li>encoding - encoding to be used for the output stream</li>
-     *  <li>javaScript - name of the file containing JavaScript functions</li>
-     *  <li>styleSheet - name of the CSS file</li>
+     *  <li>javascript - names of the files containing JavaScript functions (multiple, separated by whitespace)</li>
+     *  <li>namespace="no" - whether not to output an <code>xmlns</code> attribute on the <code>&lt;dbat&gt;</code> root element</li>
+     *  <li>stylesheet - names of the CSS files (multiple, separated by whitespace)</li>
      *  <li>target - target of HTML base element, for example "_blank"</li>
      *  <li>title - title for the HTML head element, and the browser window</li>
+     *  <li>xslt="subdir.filename" - whether to perform XSLT</li>
      *  </ul>
-     *  @throws IOException for example if the stylesheet could not be compiled
      */
-    public void writeStart(String[] params,  HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) throws IOException {
+    public void writeStart(String[] params,  HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
         // log.warn("writeStart should not be called");
     } // writeStart
 

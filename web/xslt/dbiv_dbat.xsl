@@ -2,6 +2,7 @@
 <!--
     Generates a Dbat specification for an interactive view (C/R/U/D) äöü
     @(#) $Id$
+    2014-11-10: http_request.js one level higher
     2014-11-08: exclude-result-prefixes="true"
     2014-03-05: do not update fields which are not editable
     2013-01-04: commenting of parameters
@@ -106,7 +107,7 @@
             <xsl:attribute name="conn"      ><xsl:value-of select="@conn"       /></xsl:attribute>
             <xsl:attribute name="lang"      ><xsl:value-of select="@lang"       /></xsl:attribute>
             <xsl:if test="count(iv:view/iv:field/iv:subquery) != 0">
-            <xsl:attribute name="javascript"><xsl:value-of select='"http_request.js"' /></xsl:attribute>
+            <xsl:attribute name="javascript"><xsl:value-of select='"../http_request.js"' /></xsl:attribute>
             </xsl:if>
             <xsl:attribute name="title"     ><xsl:value-of select="translate(@script, '.', '/')" /></xsl:attribute>
             <xsl:value-of select='"&#10;&#32;&#x20;"' />

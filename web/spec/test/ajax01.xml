@@ -1,64 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     @(#) $Id$
+    2014-11-10: http_request.js one level higher
     2012-05-22, Dr. Georg Fischer
-	Asynchronous JavaScript and XML
+    Asynchronous JavaScript and XML
 -->
-<dbat 	xmlns   ="http://www.teherba.org/2007/dbat" 
-		xmlns:db="http://www.teherba.org/2007/dbat" 
-		xmlns:ht="http://www.w3.org/1999/xhtml" 
-		encoding="UTF-8" 
-		conn="worddb" 
-		lang="en"
-		javascript="http_request.js" 
-		title="ajax01"
-		>
-	<comment lang="en">First  Ajax Test</comment>
-	<comment lang="de">Erster Ajax-Test</comment>
-			
-	<ht:h2><ht:a href="servlet?spec=test.index">Test</ht:a> Form - Relatives (with AJAX)</ht:h2>
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:db="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        conn="worddb"
+        lang="en"
+        javascript="../http_request.js"
+        title="ajax01"
+        >
+    <comment lang="en">First  Ajax Test</comment>
+    <comment lang="de">Erster Ajax-Test</comment>
 
-	<ht:h4>Enter a new Person</ht:h4>
-	<ht:form name="form1" method="post">
-		<ht:input name="view" type="hidden" value="ins2"/>
-		<ht:input name="opcode" type="hidden" value="ins"/>
-		<ht:input name="search_crit_1" type="hidden" init=""/>
-		<ht:input name="search_crit_2" type="hidden" init=""/>
-		<ht:input name="search_crit_3" type="hidden" init=""/>
-		<ht:table>
-		<ht:tr><ht:td valign="top" title="name" id="a0">Name:</ht:td>
-		<ht:td id="a1"><ht:input id="a2" name="name" size="16" class="blu"
-				onblur="ajaxRequest(&apos;test.ajax02&amp;name=&apos; + this.form.name.value);" /> 
-				?</ht:td></ht:tr>
-				
-		<ht:tr><ht:td colspan="2" id="b0">the location goes here</ht:td></ht:tr>
-		
-		<ht:tr><ht:td valign="top" title="decease">Died:</ht:td>
-		<ht:td><ht:input name="decease" size="4" init="" title="\d{4}" 
-				onkeyup="this.form.decease.className = (this.form.decease.value.match('^\\d{4}$')) ? 'valid': 'invalid'"/> 
-				yyyy</ht:td></ht:tr>
-		
-		<ht:tr><ht:td valign="top" title="family">Family:</ht:td>
-		<ht:td><ht:select name="family" init="" height="2">
-			<ht:option value="Ritter">Ritter Family</ht:option>
-			<ht:option value="Fischer">Fischer Family</ht:option>
-			</ht:select></ht:td></ht:tr>
-		<ht:tr><ht:td valign="top" title="gender">Gender:</ht:td><ht:td>
-			<db:select distinct="yes" into="parm"><db:col name="code">gender</db:col><db:col name="display">case 
-					when gender = 'M' then 'male' 
-					else                   'female' end 
-				</db:col><db:from>relatives</db:from><db:order by="1"/></db:select>
-			<db:listbox height="2" name="gender" init="M" code="code" display="display"/>
-		</ht:td></ht:tr>
-		<ht:tr><ht:td valign="top" title="birth">Birthdate:</ht:td><ht:td>
-		<ht:input name="birth" size="10" init="" title="\d{4}\-\d{2}\-\d{2}" 
-			onkeyup="this.form.birth.className = (this.form.birth.value.match('^\\d{4}\\-\\d{2}\\-\\d{2}$')) ? 'valid': 'invalid'"/> yyyy-mm-dd</ht:td></ht:tr>
-		<ht:tr><ht:td valign="top" title="place">Place:</ht:td>
-		<ht:td><ht:textarea name="place" cols="20" rows="5" init="" title="\w[\w \.\-\(\)]*" 
-			onkeyup="this.form.place.className = (this.form.place.value.match('^\\w[\\w \\.\\-\\(\\)]*$')) ? 'valid': 'invalid'"/> Letters space . - ( )</ht:td></ht:tr>
-		<ht:tr><ht:td valign="top" title="changed">Changed:</ht:td><ht:td><parm name="changed"/></ht:td></ht:tr>
-		</ht:table>
-		<ht:input type="submit" value="Save" />
-		&amp;#xa0;&amp;#xa0;<ht:a href="servlet?spec=test/crud01">Back</ht:a> to the search form
-	</ht:form>
+    <ht:h2><ht:a href="servlet?spec=test.index">Test</ht:a> Form - Relatives (with AJAX)</ht:h2>
+
+    <ht:h4>Enter a new Person</ht:h4>
+    <ht:form name="form1" method="post">
+        <ht:input name="view" type="hidden" value="ins2"/>
+        <ht:input name="opcode" type="hidden" value="ins"/>
+        <ht:input name="search_crit_1" type="hidden" init=""/>
+        <ht:input name="search_crit_2" type="hidden" init=""/>
+        <ht:input name="search_crit_3" type="hidden" init=""/>
+        <ht:table>
+        <ht:tr><ht:td valign="top" title="name" id="a0">Name:</ht:td>
+        <ht:td id="a1"><ht:input id="a2" name="name" size="16" class="blu"
+                onblur="ajaxRequest(&apos;test.ajax02&amp;name=&apos; + this.form.name.value);" />
+                ?</ht:td></ht:tr>
+
+        <ht:tr><ht:td colspan="2" id="b0">the location goes here</ht:td></ht:tr>
+
+        <ht:tr><ht:td valign="top" title="decease">Died:</ht:td>
+        <ht:td><ht:input name="decease" size="4" init="" title="\d{4}"
+                onkeyup="this.form.decease.className = (this.form.decease.value.match('^\\d{4}$')) ? 'valid': 'invalid'"/>
+                yyyy</ht:td></ht:tr>
+
+        <ht:tr><ht:td valign="top" title="family">Family:</ht:td>
+        <ht:td><ht:select name="family" init="" height="2">
+            <ht:option value="Ritter">Ritter Family</ht:option>
+            <ht:option value="Fischer">Fischer Family</ht:option>
+            </ht:select></ht:td></ht:tr>
+        <ht:tr><ht:td valign="top" title="gender">Gender:</ht:td><ht:td>
+            <db:select distinct="yes" into="parm"><db:col name="code">gender</db:col><db:col name="display">case
+                    when gender = 'M' then 'male'
+                    else                   'female' end
+                </db:col><db:from>relatives</db:from><db:order by="1"/></db:select>
+            <db:listbox height="2" name="gender" init="M" code="code" display="display"/>
+        </ht:td></ht:tr>
+        <ht:tr><ht:td valign="top" title="birth">Birthdate:</ht:td><ht:td>
+        <ht:input name="birth" size="10" init="" title="\d{4}\-\d{2}\-\d{2}"
+            onkeyup="this.form.birth.className = (this.form.birth.value.match('^\\d{4}\\-\\d{2}\\-\\d{2}$')) ? 'valid': 'invalid'"/> yyyy-mm-dd</ht:td></ht:tr>
+        <ht:tr><ht:td valign="top" title="place">Place:</ht:td>
+        <ht:td><ht:textarea name="place" cols="20" rows="5" init="" title="\w[\w \.\-\(\)]*"
+            onkeyup="this.form.place.className = (this.form.place.value.match('^\\w[\\w \\.\\-\\(\\)]*$')) ? 'valid': 'invalid'"/> Letters space . - ( )</ht:td></ht:tr>
+        <ht:tr><ht:td valign="top" title="changed">Changed:</ht:td><ht:td><parm name="changed"/></ht:td></ht:tr>
+        </ht:table>
+        <ht:input type="submit" value="Save" />
+        &amp;#xa0;&amp;#xa0;<ht:a href="servlet?spec=test/crud01">Back</ht:a> to the search form
+    </ht:form>
 </dbat>

@@ -3,33 +3,33 @@
     @(#) $Id$
     2011-06-10: Dr. Georg Fischer
 -->
-<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
-		xmlns:ht="http://www.w3.org/1999/xhtml"
-		encoding="UTF-8"
-		lang="en" 
-		conn="worddb" 
-		title="color04"
-		>
-	<comment lang="en">Select from test table - with colors and linked values</comment>
-	<comment lang="de">Abfrage der Test-Tabelle mit farbigem Hintergrund und Verweisen auf den Werten</comment>
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang="en"
+        conn="worddb"
+        title="color04"
+        >
+    <comment lang="en">Select from test table - with colors and linked values</comment>
+    <comment lang="de">Abfrage der Test-Tabelle mit farbigem Hintergrund und Verweisen auf den Werten</comment>
 
     <ht:h3>Select from test table c01 - with colors and linked values</ht:h3>
     <ht:form method="get">
         <ht:input label="Name" name="name" maxsize="20" size="10" init="%r" />
         <ht:input type="submit" value="Submit" />
     </ht:form>
-    
+
     <select>
-    	<col pseudo="style">case when year &lt; 1980 then 'gry' else 'wht' end</col>
-        <col label="Year"  align="right" remark="Year of Decease" 
- 			   href="servlet?spec=test/selec01&amp;name=&amp;year=">concat(name, concat('=', cast(year as char)))</col>
-    	<col pseudo="style">case when name like '%r%' then 'blu' else 'wht' end</col>
+        <col pseudo="style">case when year &lt; 1980 then 'gry' else 'wht' end</col>
+        <col label="Year"  align="right" remark="Year of Decease"
+               href="servlet?spec=test/selec01&amp;name=&amp;year=">concat(name, concat('=', cast(year as char)))</col>
+        <col pseudo="style">case when name like '%r%' then 'blu' else 'wht' end</col>
         <col label="Name"  remark="Family Name"
-        	link="test/selec01&amp;year=&amp;name=">concat(cast(year as char), concat('=', name))</col>
-    	<col pseudo="style">case when univ like 'L%' then 'red' else 'lye' end</col>
+            link="test/selec01&amp;year=&amp;name=">concat(cast(year as char), concat('=', name))</col>
+        <col pseudo="style">case when univ like 'L%' then 'red' else 'lye' end</col>
         <col label="University" >univ</col>
-        <col label="Gender"    	>gender</col>
-        <col label="Birthdate" 	>birth</col>
+        <col label="Gender"     >gender</col>
+        <col label="Birthdate"  >birth</col>
         <from>c01</from>
         <counter desc="person,s"/>
     </select>

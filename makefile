@@ -2,6 +2,7 @@
 
 # Test Dbat functions with MySQL, and other utility targets
 # @(#) $Id$
+# 2014-11-10: regression*.log now in test/; validation and dbiv processing
 # 2014-11-08: target identify with etc/util/git_version.pl; no gopher
 # 2013-01-05: RegressionTester replaces all_tester.pl
 # 2012-06-27: all_tester.pl replaces batch_test.pl; etc/schema
@@ -22,27 +23,27 @@ TAB=relatives
 TESTDIR=test
 # the following can be overriden outside for single or subset tests,
 # for example make regression TEST=U%
-TEST="*"
+TEST="%"
 
 all: regression
 #-------------------------------------------------------------------
-# Perform a regression test (a complete run > 200 testcases with TEST=% takes > 12 s)
+# Perform a regression test (a complete run > 250 testcases with TEST=% takes > 17 s)
 #	java -Djdk.net.registerGopherProtocol=true -cp dist/dbat.jar
 regression: regression_mysql
 regression_mysql:
 	java -cp dist/dbat.jar \
 			org.teherba.common.RegressionTester $(TESTDIR)/mysql.tests $(TEST) 2>&1 \
-	| tee regression_mysql.log.tmp
-	grep FAILED regression_mysql.log.tmp
+	| tee $(TESTDIR)/regression_mysql.log
+	grep FAILED $(TESTDIR)/regression_mysql.log
 #
 # Recreate all testcases which failed (i.e. remove xxx.prev.tst)
 # Handle with care!
 # Failing testcases are turned into "passed" and are manifested by this target!
-recreate: recr1 regr2 regression
+recreate: recr1 regr2 
 recr0:
-	grep -E '> FAILED' regression*.log.tmp | cut -f 3 -d ' ' | xargs -l -ißß echo rm -v test/ßß.prev.tst
+	grep -E '> FAILED' $(TESTDIR)/regression*.log | cut -f 3 -d ' ' | xargs -l -ißß echo rm -v test/ßß.prev.tst
 recr1:
-	grep -E '> FAILED' regression*.log.tmp | cut -f 3 -d ' ' | xargs -l -ißß rm -v test/ßß.prev.tst
+	grep -E '> FAILED' $(TESTDIR)/regression*.log | cut -f 3 -d ' ' | xargs -l -ißß rm -v test/ßß.prev.tst
 regr2:
 	make regression TEST=$(TEST) > x.tmp
 #--------------------------------------

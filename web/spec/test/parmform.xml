@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
     @(#) $Id$
+    2014-11-10: format="none"
     2014-11-06, Dr. Georg Fischer im Kurs
 -->
-<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
-		xmlns:ht="http://www.w3.org/1999/xhtml"
-		encoding="UTF-8"
-		lang="en" 
-		conn="worddb" 
-		title="parmform"
-		>
-	<comment lang="en">Test of the format= attribute in &amp;lt;parm&amp;gt;</comment>
-	<comment lang="de">Test des format-Attributs in in &amp;lt;parm&amp;gt;</comment>
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang="en"
+        conn="worddb"
+        title="parmform"
+        >
+    <comment lang="en">Test of the format="..." attribute in &amp;lt;parm&amp;gt;</comment>
+    <comment lang="de">Test des format-Attributs in in &amp;lt;parm&amp;gt;</comment>
 
     <ht:h3>Test of the format= attribute in &amp;lt;parm&amp;gt;</ht:h3>
-	
-	&amp;lt;parm name="VALUE" /&amp;gt; <parm name="VALUE" /><ht:br />
-	&amp;lt;parm name="value" /&amp;gt; <parm name="value" /><ht:br />
-	&amp;lt;parm name="value" format="lower" /&amp;gt; <parm name="value" format="lower"/><ht:br />
-	&amp;lt;parm name="value" format="upper" /&amp;gt; <parm name="value" format="upper"/><ht:br />
-	&amp;lt;parm name="VALUE" format="lower" /&amp;gt; <parm name="VALUE" format="lower"/><ht:br />
-	&amp;lt;parm name="VALUE" format="upper" /&amp;gt; <parm name="VALUE" format="upper"/><ht:br />
+
+    &amp;lt;parm name="VALUE" /&amp;gt; <parm name="VALUE" /><ht:br />
+    &amp;lt;parm name="value" /&amp;gt; <parm name="value" /><ht:br />
+    &amp;lt;parm name="value" format="lower" /&amp;gt; <parm name="value" format="lower"/><ht:br />
+    &amp;lt;parm name="value" format="upper" /&amp;gt; <parm name="value" format="upper"/><ht:br />
+    &amp;lt;parm name="VALUE" format="lower" /&amp;gt; <parm name="VALUE" format="lower"/><ht:br />
+    &amp;lt;parm name="VALUE" format="upper" /&amp;gt; <parm name="VALUE" format="upper"/><ht:br />
+    &amp;lt;parm name="VALUE" format="none"  /&amp;gt; <parm name="VALUE" format="none"/><ht:br />
 </dbat>

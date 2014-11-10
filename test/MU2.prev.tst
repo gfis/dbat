@@ -6,16 +6,16 @@
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
-<title>color07</title>
+<title>multijs</title>
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
-<script src="spec/test/../sorttable.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="spec/test/../stylesheet.css" />
 </head><body>
 
-    <!--Select from test table with "sorttable.js"-->
-    <!--Abfrage der Test-Tabelle mit sortierbaren Spalten-->
+    <!--Test with 2 StylesheetsStylesheets-->
+    <!--Test mit 2 Stylesheets-->
 
-    <h3><a href="servlet?spec=test.index">Test</a>: Select from table c01 - with "sorttable.js"</h3>
-    <form method="get" action="servlet?spec=test/color07"><input name="spec" type="hidden" value="test/color07" />
+    <h3>Select from test table c01 - with 2 Stylesheets</h3>
+    <form method="get" action="servlet?spec=test/multicss"><input name="spec" type="hidden" value="test/multicss" />
 
         Name: <input name="name" maxsize="20" size="10" init="%" value="%"></input>%    
         <input type="submit" value="Submit"></input>
@@ -31,10 +31,8 @@ SELECT year
 FROM c01 
 WHERE name like '%%';
 :SQL -->
-<table id="tab1" class="sortable"><!-- table_not_specified -->
-<thead>
-<tr><th title="Click =&gt; Sort">Year</th><th title="Click =&gt; Sort">Name</th><th title="Click =&gt; Sort">University</th><th title="Click =&gt; Sort">Gender</th><th title="Click =&gt; Sort">Birthdate</th></tr>
-</thead>
+<table id="tab1"><!-- table_not_specified -->
+<tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1999</td><td>Martha</td><td>Freiburg</td><td>&amp;</td><td>1909-11-17</td>
 <script type="text/javascript">with(document.getElementById("tab1").rows[1]){className="red";}</script></tr>
 <tr><td align="right">1992</td><td>Johannes</td><td>Schramberg</td><td>&lt;</td><td>1911-06-03</td>
@@ -51,13 +49,11 @@ WHERE name like '%%';
 <script type="text/javascript">with(document.getElementById("tab1").rows[7]){className="blu";}</script></tr>
 <tr><td align="right">1984</td><td>Lucie</td><td>Lübars</td><td>'</td><td>1887-07-09</td>
 <script type="text/javascript">with(document.getElementById("tab1").rows[8]){className="blu";}</script></tr>
-<tfoot>
 <tr><td class="counter" colspan="6">8 Persons</td></tr>
-</tfoot>
 </table>
 
-<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/color07.xml" type="text/plain">test/color07</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;lang=en&amp;spec=test%2Fcolor07&amp;name=%25">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;lang=en&amp;spec=test%2Fcolor07&amp;name=%25">more</a>
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/multicss.xml" type="text/plain">test/multicss</a>,
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fmulticss&amp;lang=en&amp;name=%25">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fmulticss&amp;lang=en&amp;name=%25">more</a>
 
 </body></html>

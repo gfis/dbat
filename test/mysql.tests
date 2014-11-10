@@ -329,10 +329,10 @@ HTTP spec=test.ajax02 name=Ilse mode=json
 #-------------------
 # <parm format="..." />
 TEST F01 <parm format="..." />
-CALL Dbat -m html -f web/spec/test/parmform.xml -p VALUE=Hier+ist+der+1.Wert -p value=Hier+ist+der+1.Wert
+CALL Dbat -m html -f web/spec/test/parmform.xml -p VALUE=That+is+the+1st+value -p value=That+is+the+2nd+value
 
 TEST F02 <parm format="..." />
-HTTP spec=test.parmform&VALUE=Hier+ist+der+1.Wert&value=Hier+ist+der+1.Wert
+HTTP spec=test.parmform&VALUE=That+is+the+1st+value&value=That+is+the+2nd+value
 #-------------------
 # list box fields
 TEST L01 List Box and List Parameters - init values
@@ -350,6 +350,13 @@ HTTP spec=test/textarea wordlist=phi+omikron WORDLIST=kappa+lambda
 
 TEST LT3 Textarea - preset parameters
 HTTP spec=test/textarea wordlist=phi+omikron WORDLIST=kappa+lambda
+#-------------------
+# multiple javascripts and stylesheets
+TEST MU1 multiple Javascripts
+HTTP spec=test/multijs
+
+TEST MU2 multiple Stylesheets
+HTTP spec=test/multicss
 #-------------------
 # error handling tests
 TEST Y01 error message: spec file not found

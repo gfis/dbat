@@ -8,19 +8,19 @@
 <meta name="robots" content="noindex, nofollow" />
 <title>color07</title>
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
-<script src="spec/sorttable.js" type="text/javascript"></script>
+<script src="spec/test/../sorttable.js" type="text/javascript"></script>
 </head><body>
 
-	<!--Select from test table with sorttable.js-->
-	<!--Abfrage der Test-Tabelle mit sortierbaren Spalten-->
+    <!--Select from test table with "sorttable.js"-->
+    <!--Abfrage der Test-Tabelle mit sortierbaren Spalten-->
 
-    <h3>Select from test table c01 - with sorttable</h3>
+    <h3><a href="servlet?spec=test.index">Test</a>: Select from table c01 - with "sorttable.js"</h3>
     <form method="get" action="servlet?spec=test/color07"><input name="spec" type="hidden" value="test/color07" />
 
         Name: <input name="name" maxsize="20" size="10" init="%" value="%"></input>%    
         <input type="submit" value="Submit"></input>
     </form>
-    
+
     <!-- SQL:
 SELECT year
 , name

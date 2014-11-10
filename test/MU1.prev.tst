@@ -6,16 +6,17 @@
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
-<title>color07</title>
+<title>multijs</title>
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
-<script src="spec/test/../sorttable.js" type="text/javascript"></script>
+<script src="spec/test/sorttable.js" type="text/javascript"></script>
+<script src="spec/test/http_request.js" type="text/javascript"></script>
 </head><body>
 
-    <!--Select from test table with "sorttable.js"-->
-    <!--Abfrage der Test-Tabelle mit sortierbaren Spalten-->
+    <!--Test with 2 Javascripts-->
+    <!--Test mit 2 Javascripts-->
 
-    <h3><a href="servlet?spec=test.index">Test</a>: Select from table c01 - with "sorttable.js"</h3>
-    <form method="get" action="servlet?spec=test/color07"><input name="spec" type="hidden" value="test/color07" />
+    <h3>Select from test table c01 - with 2 Javascripts</h3>
+    <form method="get" action="servlet?spec=test/multijs"><input name="spec" type="hidden" value="test/multijs" />
 
         Name: <input name="name" maxsize="20" size="10" init="%" value="%"></input>%    
         <input type="submit" value="Submit"></input>
@@ -56,8 +57,8 @@ WHERE name like '%%';
 </tfoot>
 </table>
 
-<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/color07.xml" type="text/plain">test/color07</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;lang=en&amp;spec=test%2Fcolor07&amp;name=%25">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;lang=en&amp;spec=test%2Fcolor07&amp;name=%25">more</a>
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/multijs.xml" type="text/plain">test/multijs</a>,
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fmultijs&amp;lang=en&amp;name=%25">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fmultijs&amp;lang=en&amp;name=%25">more</a>
 
 </body></html>

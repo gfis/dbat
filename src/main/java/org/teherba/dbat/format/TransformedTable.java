@@ -80,19 +80,22 @@ public class TransformedTable extends BaseTable {
         setOutputFormat("trans");
     } // Constructor
 
+    /*-------------------------------------------------------
+     *  Specific methods for SAX-like table generation events
+     *-------------------------------------------------------*/
+
     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
-     *  @param params array of 0 or more (name, value) strings which specify features,
-     *  from the attributes of the <code>&lt;dbat&gt;</code> root element.
-     *  @param parameterMap map of request parameters (from the HTML <code>&lt;form&gt;</code> or the URL) to values
+     *  @param params array of 0 or more (name, value) string which specify features in the file header.
+     *  @param parameterMap map of request parameters to values
      *  The following names are interpreted:
      *  <ul>
-     *  <li>encoding="UTF-8" - encoding to be used for the output stream</li>
-     *  <li>namespace="no" - whether not to output an <code>xmlns</code> attribute on the <code>&lt;dbat&gt;</code> root element</li>
+     *  <li>encoding - encoding to be used for the output stream</li>
+     *  <li>target - target of HTML base element, for example "_blank"</li>
+     *  <li>title - title for the HTML head element, and the browser window</li>
      *  <li>xslt="subdir.filename" - whether to perform XSLT</li>
      *  </ul>
-     *  @throws IOException for example if the stylesheet could not be compiled
      */
-    public void writeStart(String[] params,  HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) throws IOException {
+    public void writeStart(String[] params,  HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
         boolean success     = true; // assume successful creation of the pipeline
         String encoding     = getTargetEncoding();
         String namespace    = null;
@@ -154,7 +157,6 @@ public class TransformedTable extends BaseTable {
             xmlDeclared = true;
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
-            throw new IOException(exc.getMessage());
         }
     } // writeStart
 
