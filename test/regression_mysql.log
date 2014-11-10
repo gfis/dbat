@@ -1,4 +1,4 @@
-ECHO 2014-11-10 16:00:36
+ECHO 2014-11-10 19:14:50
 Test A01 parameterized link with defaults
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m html -f web/spec/test/parmlink.xml
 ========> passed A01 parameterized link with defaults
@@ -223,8 +223,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.selec01"
 ========> passed Y05 spec file with dot
 Test Y06 XML syntax error, CLI
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m html  -f web/spec/test/badxml.xml 2> nul
-2014-11-10 16:00:41,140 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
- 2014-11-10 16:00:41,146 6    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+2014-11-10 19:14:58,087 1    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
+ 2014-11-10 19:14:58,093 7    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
  org.xml.sax.SAXParseException; lineNumber: 29; columnNumber: 10; The content of elements must consist of well-formed character data or markup.
 	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1239)
 	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:649)
@@ -239,7 +239,7 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -
 	at java.lang.reflect.Method.invoke(Method.java:606)
 	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:438)
 	at org.teherba.common.RegressionTester.main(RegressionTester.java:551)
-2014-11-10 16:00:41,148 8    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+2014-11-10 19:14:58,096 10   [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
  org.xml.sax.SAXParseException; lineNumber: 29; columnNumber: 10; The content of elements must consist of well-formed character data or markup.
 	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1239)
 	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:649)
@@ -806,4 +806,4 @@ http "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ========> passed VA3 echo with var elements
    0 tests recreated,
    0 tests FAILED,
- 258 tests passed in 15620 ms
+ 258 tests passed in 15492 ms

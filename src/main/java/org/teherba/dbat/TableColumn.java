@@ -74,10 +74,10 @@ public class TableColumn implements Cloneable {
         wrap  = null;
         key         = "";
         label       = "";
-        link        = null;
         name        = "";
         pseudo      = "";
         remark      = "";
+        wrap        = null;
     */
         autoIncrement = -1; // unknown
         dataType    = NO_TYPE;
@@ -127,7 +127,6 @@ public class TableColumn implements Cloneable {
         result.index        = this.index    ;
         result.key          = this.key      ;
         result.label        = this.label    ;
-        result.link         = this.link     ;
         result.name         = this.name     ;
         result.nullable     = this.nullable ;
         result.pseudo       = this.pseudo   ;
@@ -340,21 +339,6 @@ public class TableColumn implements Cloneable {
         this.index = index;
     } // setIndex
     //----------------
-    /** specification of a Javascript function call */
-    private String wrap;
-    /** Gets the Javascript function call
-     *  @return link with parameters
-     */
-    public String getWrap() {
-        return wrap;
-    } // getWrap
-    /** Sets the Javascript function call
-     *  @param wrap link with parameter
-     */
-    public void setWrap(String wrap) {
-        this.wrap = wrap.replaceAll("\\s",""); // whitespace in URL makes no sense
-    } // setWrap
-    //----------------
     /** key for update/delete actions */
     private String key;
     /** Gets the key
@@ -384,21 +368,6 @@ public class TableColumn implements Cloneable {
     public void setLabel(String label) {
         this.label = label;
     } // setLabel
-    //----------------
-    /** HTML link to another specification */
-    private String link;
-    /** Gets the HTML link to another specification
-     *  @return link with parameter name
-     */
-    public String getLink() {
-        return link;
-    } // getLink
-    /** Sets the HTML link to another specification
-     *  @param link link with parameter name for current column
-     */
-    public void setLink(String link) {
-        this.link = link.replaceAll("\\s",""); // whitespace in URL makes no sense
-    } // setLink
     //----------------
     /** name of the column */
     private String name;
@@ -534,6 +503,21 @@ public class TableColumn implements Cloneable {
             }
         }
     } // setWidth
+    //----------------
+    /** specification of a Javascript function call */
+    private String wrap;
+    /** Gets the Javascript function call
+     *  @return link with parameters
+     */
+    public String getWrap() {
+        return wrap;
+    } // getWrap
+    /** Sets the Javascript function call
+     *  @param wrap link with parameter
+     */
+    public void setWrap(String wrap) {
+        this.wrap = wrap.replaceAll("\\s",""); // whitespace in URL makes no sense
+    } // setWrap
     //===============================================
     /** Fills missing properties of a column from the
      *  database metadata in the result set.

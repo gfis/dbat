@@ -85,6 +85,9 @@ same_iv1:
 	     $(TESTDIR)/$(VI).this.tst > x.tmp
 	diff -w test/$(V0).prev.tst x.tmp
 #---------------------------------------------------
+jfind:
+	find src -iname "*.java" | xargs -l grep -iH $(JF)
+#---------------------------------------------------
 exit1:
 	java -jar dist/dbat.jar -c wi17 -n user_groups
 	echo this shall not be executed

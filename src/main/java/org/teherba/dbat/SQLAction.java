@@ -1212,18 +1212,14 @@ public class SQLAction implements Serializable {
     public void separateURLfromValue(TableColumn column, String values) {
         String displayValue = null;
         String href = column.getHref();
-        String link = column.getLink();
-        if (link == null && href == null) {// plain value, we are done with it
+        String link = null;
+        if (href == null) {// plain value, we are done with it
             column.setHrefValue (null);
             displayValue = values;
             // done with it
         } else { // split URL and value
             StringBuffer urlBuffer = new StringBuffer(128);
-            if (link != null) {
-                urlBuffer.append("servlet?spec=");
-            } else {
-                link = href; // cannot be null
-            }
+            link = href; // cannot be null
             if (debug >= 2) System.err.println("link=\"" + link + "\", values=\"" + values + "\"");
             int lampos1 = link.indexOf('&'); // leading ampersand introduces first parameter
             if (lampos1 < 0) { // no parameters

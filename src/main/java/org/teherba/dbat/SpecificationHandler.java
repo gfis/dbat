@@ -797,6 +797,9 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     /** Parameter values of an HTML listbox (&lt;select&gt;) element */
     private String[] listBoxParams;
 
+	/** prefix for <em>&lt;col link="..."&gt;</em> attribute values */
+	private static final String SERVLET_SPEC = "servlet?spec=";
+
     /** Root element tag */
     public  static final String ROOT_TAG    = "dbat"    ; // target= title= lang=en conn=dbat headers=true encoding=UTF-8
                                                           // javascript=http_request.js
@@ -1259,7 +1262,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 }
                 String link = attrs.getValue("link");
                 if (link != null && link.length() > 0) {
-                    column.setLink(link);
+                    column.setHref(SERVLET_SPEC + link);
                 }
                 String pseudo = attrs.getValue("pseudo");
                 if (pseudo != null && pseudo.length() > 0) {
@@ -1755,7 +1758,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 } else if (qName.equals(LABEL_TAG   )) {
                     column.setLabel     (colBuffer.toString().trim());
                 } else if (qName.equals(LINK_TAG    )) {
-                    column.setLink      (colBuffer.toString().trim());
+                    column.setHref      (SERVLET_SPEC + colBuffer.toString().trim());
                 } else if (qName.equals(NAME_TAG    )) {
                     column.setName      (colBuffer.toString().trim());
                 } else if (qName.equals(PSEUDO_TAG  )) {
