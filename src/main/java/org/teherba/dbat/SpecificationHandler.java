@@ -1270,12 +1270,11 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 String wrap = attrs.getValue("wrap");
                 if (wrap != null && wrap.length() > 0) {
                     String sep = attrs.getValue("sep");
-                    if (sep != null && sep.length() > 0) {
-                    } else {
+                    if (sep == null || sep.length() == 0) {
                         sep = ","; // this is the default separator
                     } // sep
                     column.setWrap(wrap + ":" + sep);
-                } // wrap
+                }
 
                 if (false) {
                 } else if (parentStmt.equals(CALL_TAG  )) {

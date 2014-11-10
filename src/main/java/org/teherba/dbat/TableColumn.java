@@ -35,6 +35,7 @@ package org.teherba.dbat;
 import  java.net.URLEncoder;
 import  java.sql.ResultSet;
 import  java.sql.Types;
+import  java.util.regex.Pattern;
 import  org.apache.log4j.Logger;
 
 /** Bean with properties of an column of an abstract (internal) table definition
@@ -626,36 +627,67 @@ public class TableColumn implements Cloneable {
     public void separateWrappedValue(String values, String targetEncoding, int escapingRule, int nullText) {
         String displayValue = null;
         String href = this.getHref();
-        String link = null;
-        if (href == null) {// plain value, we are done with it
-            this.setWrappedValue (null);
-            displayValue = values;
-            // done with it
-        } else { // split URL and value
-            StringBuffer urlBuffer = new StringBuffer(128);
-            link = href; // cannot be null
-            if (debug >= 2) System.err.println("link=\"" + link + "\", values=\"" + values + "\"");
-            int lampos1 = link.indexOf('&'); // leading ampersand introduces first parameter
+        String wrap = this.getWrap();
+        String typeName = this.getTypeName();
+        if (false) {
+
+        } else if (wrap != null) { // e.g. wrap="javascript:," values="a,b,c" for comma separator
+            if (false) {
+            } else if (wrap.startsWith("javascript:")) {
+                String separator = wrap.substring(wrap.indexOf(':') + 1);
+                String[] parts = values.split(Pattern.quote(separator));
+                int ipart = 0;
+                StringBuffer buffer = new StringBuffer(128);
+                buffer.append(parts[ipart ++]); // function name
+                while (ipart < parts.length) {
+                    if (ipart <= 1) {
+                        buffer.append('(');
+                    } else {
+                        buffer.append(',');
+                    }
+	                if (false) {
+	                } else if (typeName.startsWith("INT") || typeName.startsWith("DEC")) { // numerical - without quotes
+	                    buffer.append(parts[ipart]);
+	                } else { // with quotes
+	                	buffer.append('"');
+	                    buffer.append(parts[ipart]);
+	                	buffer.append('"');
+	                }
+                    ipart ++;
+                } // while ipart
+                buffer.append(");");
+                this.setWrappedValue(buffer.toString());
+                displayValue = "";
+            } else { // unknown wrap - ignore
+                this.setWrappedValue(null);
+                displayValue = values;
+            }
+            // wrap != null
+
+        } else if (href != null) { // for compatibility: split value and merge it with URL
+            String oldURL = href; // cannot be null
+            StringBuffer newURL = new StringBuffer(128);
+            int lampos1 = oldURL.indexOf('&'); // leading ampersand introduces first parameter
             if (lampos1 < 0) { // no parameters
-                urlBuffer.append(link); // copy whole link to URL, remove whitespace
+                newURL.append(oldURL); // copy whole oldURL to URL, remove whitespace
                 displayValue = values;
             } else { // lampos1 >= 0: with parameters
                 // keep the last partial value as displayValue, and move any additional parameters into the URL
                 int vstart = 0;
-                urlBuffer.append(link.substring(0, lampos1)); // copy initial "specname" or "servlet?spec=specname"
-                while (lampos1 < link.length()) { // process all parameters: "&name=val" (ignored),  or "&name[sep]", "&name="
-                    int lampos2 = link.indexOf('&', lampos1 + 1); // is there any second ampersand
+                newURL.append(oldURL.substring(0, lampos1)); // copy initial "specname" or "servlet?spec=specname"
+                while (lampos1 < oldURL.length()) { // process all parameters: "&name=val" (ignored),  or "&name[sep]", "&name="
+                    int lampos2 = oldURL.indexOf('&', lampos1 + 1); // is there any second ampersand
                     if (lampos2 < 0) {
-                        lampos2 = link.length(); // behind entire string
+                        lampos2 = oldURL.length(); // behind entire string
                     }
-                    String parm = link.substring(lampos1 + 1, lampos2);
+                    String parm = oldURL.substring(lampos1 + 1, lampos2);
                     int eqpos = parm.indexOf('=');
                     int plast = parm.length() - 1;
                     if (plast <= 0) { // single '&' - ignore
                     } else if (eqpos >= 0 && eqpos < plast) {
                         // foreign "&name=value" pair - copy it unchanged
-                        urlBuffer.append('&');
-                        urlBuffer.append(parm);
+                        newURL.append('&');
+                        newURL.append(parm);
                     } else {
                         while (plast >= 0 && ! Character.isLetterOrDigit(parm.charAt(plast))) {
                             // backspace over non-word characters
@@ -685,15 +717,15 @@ public class TableColumn implements Cloneable {
                                         .trim()
                                         ;
                                 vstart = vsepos + sep.length();
-                                urlBuffer.append('&');
-                                urlBuffer.append(parmName);
-                                urlBuffer.append('=');
+                                newURL.append('&');
+                                newURL.append(parmName);
+                                newURL.append('=');
                                 try {
-                                    urlBuffer.append(URLEncoder.encode(displayValue, targetEncoding)
+                                    newURL.append(URLEncoder.encode(displayValue, targetEncoding)
                                             .replaceAll("%C2%", "%") // this is a crude patch for Unicode problems
                                             );
                                 } catch (Exception exc) {
-                                    urlBuffer.append(displayValue); // accept a bad URL
+                                    newURL.append(displayValue); // accept a bad URL
                                 }
                             } else { // values == null
                                 displayValue = null;
@@ -701,12 +733,16 @@ public class TableColumn implements Cloneable {
                         } // last >= 0
                     } // not foreign
                     lampos1 = lampos2;
-                    lampos2 = link.indexOf('&', lampos1 + 1);
+                    lampos2 = oldURL.indexOf('&', lampos1 + 1);
                 } // while lampos1
             } // with parameters
-            this.setWrappedValue (urlBuffer.toString());
-            if (debug >= 2) System.err.println("urlBuffer=\"" + urlBuffer.toString() + "\", displayValue=\"" + displayValue + "\"");
-        } // link != null
+            this.setWrappedValue(newURL.toString());
+            if (debug >= 2) System.err.println("newURL=\"" + newURL.toString() + "\", displayValue=\"" + displayValue + "\"");
+            // href != null
+        } else  {// plain value, we are done with it
+            this.setWrappedValue(null);
+            displayValue = values;
+        }   // done with it
 
         if (displayValue != null) {
             switch (escapingRule) {

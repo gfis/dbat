@@ -90,6 +90,19 @@ CALL Dbat -f $(DATA)
 
 TEST B09 select from CLOB
 CALL Dbat "select * from b04"
+
+TEST B10 create table with image filenames
+DATA DROP TABLE if exists im1;
+  CREATE TABLE            im1
+  ( imagefile VARCHAR(128) not null   COMMENT 'image filename with path'
+  , imagename VARCHAR(32)  not null   COMMENT 'name without path'
+  , bytesize  INT                     COMMENT 'size of the file in bytes'
+  ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
+  COMMIT;
+CALL Dbat -f $(DATA)
+
+TEST B11 populate table with raw image data
+CALL Dbat -m csv -r im1 web/img/flowers/flowers.dir
 #-------------------
 TEST C01 create table
 DATA drop table if exists c01 ;
@@ -333,6 +346,10 @@ CALL Dbat -m html -f web/spec/test/parmform.xml -p VALUE=That+is+the+1st+value -
 
 TEST F02 <parm format="..." />
 HTTP spec=test.parmform&VALUE=That+is+the+1st+value&value=That+is+the+2nd+value
+#-------------------
+# Javascript and Images
+TEST IM1 show 6 flowers
+HTTP spec=test.image01
 #-------------------
 # list box fields
 TEST L01 List Box and List Parameters - init values

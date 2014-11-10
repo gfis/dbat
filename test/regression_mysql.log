@@ -1,4 +1,4 @@
-ECHO 2014-11-10 20:10:06
+ECHO 2014-11-10 22:28:08
 Test A01 parameterized link with defaults
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m html -f web/spec/test/parmlink.xml
 ========> passed A01 parameterized link with defaults
@@ -35,6 +35,12 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -
 Test B09 select from CLOB
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 "select * from b04"
 ========> passed B09 select from CLOB
+Test B10 create table with image filenames
+java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -f test/B10.data.tmp
+========> passed B10 create table with image filenames
+Test B11 populate table with raw image data
+java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m csv -r im1 web/img/flowers/flowers.dir
+========> passed B11 populate table with raw image data
 Test C01 create table
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -f test/C01.data.tmp
 ========> passed C01 create table
@@ -185,6 +191,9 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -
 Test F02 <parm format="..." />
 http "http://localhost:8080/dbat/servlet?spec=test.parmform&VALUE=That is the 1st value&value=That is the 2nd value"
 ========> passed F02 <parm format="..." />
+Test IM1 show 6 flowers
+http "http://localhost:8080/dbat/servlet?spec=test.image01"
+========> passed IM1 show 6 flowers
 Test L01 List Box and List Parameters - init values
 http "http://localhost:8080/dbat/servlet?spec=test/listbox"
 ========> passed L01 List Box and List Parameters - init values
@@ -223,8 +232,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.selec01"
 ========> passed Y05 spec file with dot
 Test Y06 XML syntax error, CLI
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m html  -f web/spec/test/badxml.xml 2> nul
-2014-11-10 20:10:10,777 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
- 2014-11-10 20:10:10,783 6    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+2014-11-10 22:28:12,719 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
+ 2014-11-10 22:28:12,725 6    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
  org.xml.sax.SAXParseException; lineNumber: 29; columnNumber: 10; The content of elements must consist of well-formed character data or markup.
 	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1239)
 	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:649)
@@ -239,7 +248,7 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -
 	at java.lang.reflect.Method.invoke(Method.java:606)
 	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:438)
 	at org.teherba.common.RegressionTester.main(RegressionTester.java:551)
-2014-11-10 20:10:10,785 8    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+2014-11-10 22:28:12,727 8    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
  org.xml.sax.SAXParseException; lineNumber: 29; columnNumber: 10; The content of elements must consist of well-formed character data or markup.
 	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1239)
 	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:649)
@@ -806,4 +815,4 @@ http "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ========> passed VA3 echo with var elements
    0 tests recreated,
    0 tests FAILED,
- 258 tests passed in 11623 ms
+ 261 tests passed in 11245 ms

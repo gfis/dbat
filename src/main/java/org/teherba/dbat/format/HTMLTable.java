@@ -374,34 +374,41 @@ public class HTMLTable extends XMLTable {
      */
     public String getFlatValue(TableColumn column) {
         StringBuffer result = new StringBuffer(128);
-        String value     = column.getValue();
+        String value        = column.getValue();
         String wrappedValue = column.getWrappedValue();
         // System.err.println("value=\"" + value + "\", wrappedValue=\"" + wrappedValue + "\"");
-        if (wrappedValue != null) {
-            result.append("<a href=\"");
-            result.append(wrappedValue.replaceAll("&", "&amp;"));
-            result.append("\">");
-        }
-        String pseudo = column.getPseudo();
-        if (pseudo == null) { // this is a real cell, attach any accumulated strings from previous pseudo columns
-            result.append(value);
-        } else if (pseudo.equals("image")) { // special handling for pseudo="image"
-            String srcAttr = value;
-            if (value.matches("[\\w]+")) { // for compatibility: images for DBIV actions
-                srcAttr = "img/" + srcAttr + ".png";
-            } else { // explicit, complete relative filename or URL
-                // done
+        if (false) {
+        } else if (column.getWrap() != null) {
+            result.append("<script type=\"text/javascript\">");
+            result.append(wrappedValue);
+            result.append("</script>");
+        } else {
+            if (wrappedValue != null) {
+                result.append("<a href=\"");
+                result.append(wrappedValue.replaceAll("&", "&amp;"));
+                result.append("\">");
             }
-            result.append("<img src=\"");
-            result.append(srcAttr);
-            result.append("\" />");
-        } else { // other pseudo attribute
-            result.append(value); // because getFlatValue is called once more with this
-        }
-        if (wrappedValue != null) {
-            result.append("</a>");
-            column.setWrappedValue(null);
-        }
+            String pseudo = column.getPseudo();
+            if (pseudo == null) { // this is a real cell, attach any accumulated strings from previous pseudo columns
+                result.append(value);
+            } else if (pseudo.equals("image")) { // special handling for pseudo="image"
+                String srcAttr = value;
+                if (value.matches("[\\w]+")) { // for compatibility: images for DBIV actions
+                    srcAttr = "img/" + srcAttr + ".png";
+                } else { // explicit, complete relative filename or URL
+                    // done
+                }
+                result.append("<img src=\"");
+                result.append(srcAttr);
+                result.append("\" />");
+            } else { // other pseudo attribute
+                result.append(value); // because getFlatValue is called once more with this
+            }
+            if (wrappedValue != null) {
+                result.append("</a>");
+                column.setWrappedValue(null);
+            }
+        } // href
         return result.toString();
     } // getFlatValue
 
