@@ -1,8 +1,9 @@
 /*  TableColumn - bean with properties of an abstract column
     @(#) $Id$
+    2014-11-10: s|getHrefValue -> s|getWrappedValue; SQLAction.separateURLfromValue now is this.separatedWrapperAndValue
     2014-11-06: additional property wrap
     2014-01-15: inactivate fragment logic
-    2013-02-01: getHrefValue: move fragment to the end
+    2013-02-01: getWrappedValue: move fragment to the end
     2012-05-08: {s|g}etDir(char) vs. {s|g}etDirection(String)
     2012-01-16: setDir, setWidth(String)
     2012-01-10: whitespace in URL makes no sense
@@ -31,6 +32,7 @@
  * limitations under the License.
  */
 package org.teherba.dbat;
+import  java.net.URLEncoder;
 import  java.sql.ResultSet;
 import  java.sql.Types;
 import  org.apache.log4j.Logger;
@@ -85,7 +87,7 @@ public class TableColumn implements Cloneable {
         defaultValue= null; // no default value
         setDir('o'); // assume "out" parameter
         expr        = "";
-        hrefValue   = null;
+        wrappedValue   = null;
         nullable    = true;
         style       = "";
         typeName    = "";
@@ -123,7 +125,7 @@ public class TableColumn implements Cloneable {
         result.dir          = this.dir;
         result.expr         = this.expr     ;
         result.href         = this.href      ;
-        result.hrefValue    = this.hrefValue;
+        result.wrappedValue    = this.wrappedValue;
         result.index        = this.index    ;
         result.key          = this.key      ;
         result.label        = this.label    ;
@@ -294,35 +296,35 @@ public class TableColumn implements Cloneable {
     } // setHref
     //----------------
     /** the value of an HTML link to another servlet, with filled parameters */
-    private String hrefValue;
+    private String wrappedValue;
     /** Gets the value of the HTML link to another servlet, with filled parameters
      *  @return link with parameters
      */
-    public String getHrefValue() {
-      return this.hrefValue;
-    } // getHrefValue
+    public String getWrappedValue() {
+      return this.wrappedValue;
+    } // getWrappedValue
     /** Sets the value of the HTML link to another servlet, with filled parameters
-     *  @param hrefValue URL with filled parameters for the current column
+     *  @param wrappedValue URL with filled parameters for the current column
      */
-    public void setHrefValue(String hrefValue) {
-        String result = hrefValue;
-        if (hrefValue != null) {
-            int fragPos = hrefValue.indexOf("%23"); // '#'
+    public void setWrappedValue(String wrappedValue) {
+        String result = wrappedValue;
+        if (wrappedValue != null) {
+            int fragPos = wrappedValue.indexOf("%23"); // '#'
             if (fragPos < 0) {
-                fragPos = hrefValue.indexOf('#');
+                fragPos = wrappedValue.indexOf('#');
             }
             if (fragPos >= 0) { // with fragment
-                System.err.println("fragmented: " + hrefValue);
-                int ampPos = hrefValue.indexOf('&', fragPos);
+                System.err.println("fragmented: " + wrappedValue);
+                int ampPos = wrappedValue.indexOf('&', fragPos);
                 if (false && ampPos >= 0) { // there are parameters behind '#': move fragment to the end
-                    result = hrefValue.substring(0, fragPos)
-                           + hrefValue.substring(ampPos)
-                           + hrefValue.substring(fragPos, ampPos).replaceAll("%23", "#");
+                    result = wrappedValue.substring(0, fragPos)
+                           + wrappedValue.substring(ampPos)
+                           + wrappedValue.substring(fragPos, ampPos).replaceAll("%23", "#");
                 } // move fragment
             } // with '#'
         } // != null
-        this.hrefValue = result;
-    } // setHrefValue
+        this.wrappedValue = result;
+    } // setWrappedValue
     //----------------
     /** index in an output (HTML) table: 0, 1, 2 */
     private int index;
@@ -594,6 +596,174 @@ public class TableColumn implements Cloneable {
             Logger.getLogger(TableColumn.class.getName()).error(exc.getMessage(), exc);
         }
     } // completeColumn
+
+    /** Takes a {@link TableColumn}'s attributes and an SQL SELECT column value which may be a
+     *  concatenated list of parameters, and stores into the {@link TableColumn}:
+     *  <ol>
+     *  <li>an URL with the parameters derived from the SELECT value,</li>
+     *  <li>the last partial value to be shown in the (HTML) cell.</li>
+     *  </ol>
+     *  @param values content of the data cell (from SQL SELECT), maybe a concatenation
+     *  of parameters separated by some separator character.
+     *  @param targetEncoding encoding to be used for output
+     *  @param escapingRule from {@link org.teherba.dbat.format.BaseTable},
+     *  how character entities should be handled
+     *  @param nullText from {@link Configuration], how null values should be output
+     *
+     *  A (relative) link to another specification with parameter(s) must be specified as
+     *  <pre>
+     *      spec=basename&amp;name1[sep1&name2[sep2[&name3...]]]
+     *  </pre>
+     *  If there is more than one parameter, non-word separator strings <em>sepi</em> must be noted
+     *  between the parameter names. A trailing "=" is ignored for compatibility reasons.
+     *  The <em>values</em> string is split with the aid of the separator string(s)
+     *  specified in the <em>link</em> string.
+     *
+     *  Only the last value is put into the output cell (if the column has no "pseudo" attribute),
+     *  and any additional values before are inserted into the URL parameter list only.
+     *  As a special case, the value <em>null</em> is passed through.
+     */
+    public void separateWrappedValue(String values, String targetEncoding, int escapingRule, int nullText) {
+        String displayValue = null;
+        String href = this.getHref();
+        String link = null;
+        if (href == null) {// plain value, we are done with it
+            this.setWrappedValue (null);
+            displayValue = values;
+            // done with it
+        } else { // split URL and value
+            StringBuffer urlBuffer = new StringBuffer(128);
+            link = href; // cannot be null
+            if (debug >= 2) System.err.println("link=\"" + link + "\", values=\"" + values + "\"");
+            int lampos1 = link.indexOf('&'); // leading ampersand introduces first parameter
+            if (lampos1 < 0) { // no parameters
+                urlBuffer.append(link); // copy whole link to URL, remove whitespace
+                displayValue = values;
+            } else { // lampos1 >= 0: with parameters
+                // keep the last partial value as displayValue, and move any additional parameters into the URL
+                int vstart = 0;
+                urlBuffer.append(link.substring(0, lampos1)); // copy initial "specname" or "servlet?spec=specname"
+                while (lampos1 < link.length()) { // process all parameters: "&name=val" (ignored),  or "&name[sep]", "&name="
+                    int lampos2 = link.indexOf('&', lampos1 + 1); // is there any second ampersand
+                    if (lampos2 < 0) {
+                        lampos2 = link.length(); // behind entire string
+                    }
+                    String parm = link.substring(lampos1 + 1, lampos2);
+                    int eqpos = parm.indexOf('=');
+                    int plast = parm.length() - 1;
+                    if (plast <= 0) { // single '&' - ignore
+                    } else if (eqpos >= 0 && eqpos < plast) {
+                        // foreign "&name=value" pair - copy it unchanged
+                        urlBuffer.append('&');
+                        urlBuffer.append(parm);
+                    } else {
+                        while (plast >= 0 && ! Character.isLetterOrDigit(parm.charAt(plast))) {
+                            // backspace over non-word characters
+                            plast --;
+                        } // while backspacing over separator
+                        if (plast < 0) {
+                        /* silently ignore this:
+                            IllegalArgumentException exc =
+                                    new IllegalArgumentException("empty parameter name at " + (lampos1 + 1));
+                            log.error(exc.getMessage(), exc);
+                        */
+                            plast = parm.length();
+                        } else { // plast >= 0 points to last character in name
+                            String parmName = parm.substring(0, plast + 1);
+                            String sep      = parm.substring(   plast + 1);
+                            if (sep.length() == 0) {
+                                sep = "=";
+                            }
+                            // now extract the corresponding portion from 'values'
+                            if (values != null) {
+                                int vsepos = values.indexOf(sep, vstart);
+                                if (vsepos < 0) { // sep not found
+                                    vsepos = values.length(); // ignore that problem, eat the rest of the string
+                                    sep = ""; // because of " + sep.length()" below
+                                }
+                                displayValue = values.substring(vstart, vsepos)
+                                        .trim()
+                                        ;
+                                vstart = vsepos + sep.length();
+                                urlBuffer.append('&');
+                                urlBuffer.append(parmName);
+                                urlBuffer.append('=');
+                                try {
+                                    urlBuffer.append(URLEncoder.encode(displayValue, targetEncoding)
+                                            .replaceAll("%C2%", "%") // this is a crude patch for Unicode problems
+                                            );
+                                } catch (Exception exc) {
+                                    urlBuffer.append(displayValue); // accept a bad URL
+                                }
+                            } else { // values == null
+                                displayValue = null;
+                            }
+                        } // last >= 0
+                    } // not foreign
+                    lampos1 = lampos2;
+                    lampos2 = link.indexOf('&', lampos1 + 1);
+                } // while lampos1
+            } // with parameters
+            this.setWrappedValue (urlBuffer.toString());
+            if (debug >= 2) System.err.println("urlBuffer=\"" + urlBuffer.toString() + "\", displayValue=\"" + displayValue + "\"");
+        } // link != null
+
+        if (displayValue != null) {
+            switch (escapingRule) {
+                case 0: // no escaping
+                    break;
+                default:
+                case 1:
+                    displayValue = displayValue
+                            .replaceAll("&", "&amp;")
+                            .replaceAll(">", "&gt;")
+                            .replaceAll("<", "&lt;")
+                            .replaceAll("&amp;amp", "&amp;")
+                            ;
+                    break;
+                case 2:
+                    displayValue = displayValue
+                            .replaceAll("\'", "&apos;")
+                            .replaceAll("&amp;amp", "&amp;")
+                            ;
+                    break;
+                case 3:
+                    displayValue = displayValue
+                            .replaceAll("&", "&amp;")
+                            .replaceAll(">", "&gt;")
+                            .replaceAll("<", "&lt;")
+                            .replaceAll("\'", "&apos;")
+                            .replaceAll("&amp;amp", "&amp;")
+                            ;
+                    break;
+                case 4:
+                    if (this.getExpr().indexOf('<') < 0) { // then like 1
+                    displayValue = displayValue
+                            .replaceAll("&", "&amp;")
+                            .replaceAll(">", "&gt;")
+                            .replaceAll("<", "&lt;")
+                            .replaceAll("&amp;amp", "&amp;")
+                            ;
+                    }
+                    break;
+            } // switch escapingRule
+            // displayValue != null
+        } else { // displayValue == null
+            switch (nullText) {
+                case 0:
+                    displayValue = "";
+                    break;
+                case 1:
+                    displayValue = "null";
+                    break;
+                default: // -1 = do nothing
+                    break;
+            } // switch nullText
+        } // displayValue == null
+        this.setValue(displayValue);
+
+        if (debug >= 2) System.err.println("separateURLfromValue, wrappedValue=\"" + this.getWrappedValue() + "\", value=\"" + this.getValue() + "\"");
+    } // separateWrappedValue
 
     /** Gets a textual representation of the column attributes
      */

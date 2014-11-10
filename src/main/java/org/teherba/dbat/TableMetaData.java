@@ -35,11 +35,11 @@ import  org.apache.log4j.Logger;
 
 /** Bean for an array list of {@link TableColumn}s
  *  which is used to map database (SQL) columns to presentation (HTML, XML) table columns.
- *  The position of the column in the table's rows is not neccessarily the same as 
- *  the position in the corresponding SQL result set, nor is it the same as the 
+ *  The position of the column in the table's rows is not neccessarily the same as
+ *  the position in the corresponding SQL result set, nor is it the same as the
  *  column position in the resulting HTML table, because of:
  *  <ul>
- *  <li>pseudo columns used to set a style on the next HTML table 
+ *  <li>pseudo columns used to set a style on the next HTML table
  *  =&gt; SQL result set has more columns than HTML</li>
  *  <li>pseudo columns used to display a (delete, update) HTML button
  *  =&gt; SQL result set has less columns than HTML</li>
@@ -50,20 +50,20 @@ import  org.apache.log4j.Logger;
  *  There are methods for
  *  <ul>
  *  <li>handling the aggregation (concatenation) of the values in a specified column</li>
- *  <li>determination of a group change for a set of columns, and subsequent output of a header row</li> 
+ *  <li>determination of a group change for a set of columns, and subsequent output of a header row</li>
  *  </ul>
  *  @author Dr. Georg Fischer
  */
-public class TableMetaData { 
+public class TableMetaData {
     public final static String CVSID = "@(#) $Id$";
     /** Debugging switch */
     private int debug = 0;
-    
+
     /** log4j logger (category), inherited by all subclasses */
     protected Logger log;
-    
+
     /** Indicates the type of a control change */
-    private static enum Change 
+    private static enum Change
             { NONE      // no control change
             , HEADING   // control change which causes a new heading
             , MINOR     // control change which causes no new heading, but still collapses the column values
@@ -78,7 +78,7 @@ public class TableMetaData {
     private static final String PIVOT    = "pivot";
     /** into="param" Attribute which indicates parameter filling */
     private static final String PARAM    = "param";
-               
+
     /** Base array for columns' properties (of type {@link TableColumn}) */
     public ArrayList/*<1.5*/<TableColumn>/*1.5>*/ columnList;
     /** Array for column values of previous row, for group (control change) and aggregate features */
@@ -91,9 +91,9 @@ public class TableMetaData {
     //======================================
     // Bean properties, getters and setters
     //======================================
-    
+
     /** Index of a column which should be aggregated */
-    private int aggregateIndex; 
+    private int aggregateIndex;
     /** Values of {@link #aggregateIndex}:
      *  <ul>
      *  <li>&gt;= 0 : index of the aggregate column, no non-aggregate column change</li>
@@ -104,7 +104,7 @@ public class TableMetaData {
      *  <li>-5 : do not display any row, but append the values in the parameter map</li>
      *  </ul>
      */
-    public  static final int AGGR_CHANGED  = -1; 
+    public  static final int AGGR_CHANGED  = -1;
     public  static final int AGGR_EMPTY    = -2;
     public  static final int AGGR_NOT_SET  = -3;
     public  static final int AGGR_VERTICAL = -4;
@@ -114,7 +114,7 @@ public class TableMetaData {
         return aggregateIndex;
     } // getAggregateIndex
     /** Sets the index of a column which should be aggregated
-     *  @param aggregateIndex index >= 0 
+     *  @param aggregateIndex index >= 0
      *  or special negative values as described for {@link #getAggregateIndex}
      */
     public void setAggregateIndex(int aggregateIndex) {
@@ -157,7 +157,7 @@ public class TableMetaData {
         return aggregationSeparator.equals(PIVOT);
     } // isPivot
 
-    /** Sets the name of a column which should be aggregated, 
+    /** Sets the name of a column which should be aggregated,
      *  and a string (maybe empty) which separates the aggregated column values.
      *  @param aggregateName name of a columns which should be aggregated, or null if none is to be set
      *  @param aggregationSeparator string which separates the aggregated column values (default " "), or "pivot"
@@ -168,20 +168,20 @@ public class TableMetaData {
         // aggregateIndex = AGGR_NOT_SET; // assume name not found, feature not set
         if (aggregateName != null) { // feature is set
             int icol = 0;
-            while (aggregateIndex < 0 && icol < columnList.size()) { 
+            while (aggregateIndex < 0 && icol < columnList.size()) {
                 TableColumn column = columnList.get(icol);
                 String name   = column.getName ();
                 String label  = column.getLabel();
                 String pseudo = column.getPseudo();
                 if  (pseudo == null
                     &&  (  (name  != null && name .equals(aggregateName))
-                        || (label != null && label.equals(aggregateName))   
-                        ) 
+                        || (label != null && label.equals(aggregateName))
+                        )
                     ) {
                     aggregateIndex = icol;
-                } 
+                }
                 if (debug >= 1) {
-                    System.err.println("setAggregateColumn: " + columnList.get(icol).getName() 
+                    System.err.println("setAggregateColumn: " + columnList.get(icol).getName()
                             + " ? " + aggregateName + " => " + aggregateIndex);
                 }
                 icol ++;
@@ -190,7 +190,7 @@ public class TableMetaData {
         return aggregateIndex;
     } // setAggregateColumn
 
-    /** Sets the name of a column which should be aggregated, 
+    /** Sets the name of a column which should be aggregated,
      *  and a string (maybe empty) which separates the aggregated column values.
      *  Convenience method without parameters (were previously set).
      *  @return index of the aggregate column (0 based)
@@ -198,10 +198,10 @@ public class TableMetaData {
     public int setAggregateColumn() {
         return setAggregateColumn(this.aggregationName, this.aggregationSeparator);
     } // setAggregateColumn
-    
+
     /** descriptive text for count of rows: [0] is singular, [1] is plural (also for 0 rows)*/
-    private String  counterDesc[]; // always 3 elements: 0 = singular, 1 = plural, 0 = zero rows 
-    
+    private String  counterDesc[]; // always 3 elements: 0 = singular, 1 = plural, 0 = zero rows
+
     /** Gets the descriptive text for the row counter.
      *  @param rowCount number of rows retrieved by the SELECT statement
      *  @return a word in the proper numerus
@@ -221,18 +221,18 @@ public class TableMetaData {
         } // switch rowCount
         return counterDesc[ix];
     } // getCounterDesc
-    
+
     /** Sets the descriptive text for the row counter, a noun in singular or plural
      *  @param partList text to be shown for 0, 1 or more rows,
      *  empty string for default ("rows"),
      *  null if no counter should be shown under the table.
-     *  The parameter consists of up to 3 word particles, where 
+     *  The parameter consists of up to 3 word particles, where
      *  <ul>
      *  <li>the 1st is a noun (in singular form) which is used for a result of 1 row,</li>
      *  <li>the optional 2nd particle is used for more than 1 row in the result set,
      *  or for zero rows if there is no 3rd word; the particĺe is appended to the first
      *  noun if its length is less than that of the noun,</li>
-     *  <li>the optional 3rd word is used for a result of 0 rows, or - if the word is empty - 
+     *  <li>the optional 3rd word is used for a result of 0 rows, or - if the word is empty -
      *  the counter is suppressed.</li>
      *  </ul>
      */
@@ -246,7 +246,7 @@ public class TableMetaData {
             } else { // "row,s," or "Zeile,n," or "Mann,Männer"
                 int cpos2 = partList.indexOf(',', cpos + 1); // position of 2nd comma
                 if (cpos2 < 0) { // only 1 comma
-                    counterDesc = new String[] 
+                    counterDesc = new String[]
                             { partList.substring(0, cpos)
                             , partList.substring(cpos + 1)
                             , null
@@ -256,7 +256,7 @@ public class TableMetaData {
                     }
                     counterDesc[2] = "0 " + counterDesc[1]; // "0 Männer"
                 } else { // there is a 2nd comma
-                    counterDesc = new String[] 
+                    counterDesc = new String[]
                             { partList.substring(0, cpos)
                             , partList.substring(cpos + 1, cpos2)
                             , cpos2 < partList.length() - 1 ? partList.substring(cpos2 + 1) : null
@@ -271,14 +271,14 @@ public class TableMetaData {
 
     /** Comma separated list (without spaces!) of column names which participate in control change determination */
     private String groupColumns;
-    /** Gets the column names which determine a control change and the 
+    /** Gets the column names which determine a control change and the
      *  corresponding output of a heading line with column labels
      *  @return comma separated list of column names, or null if none was set
      */
     public String getGroupColumns() {
         return groupColumns;
     } // getGroupColumns
-    /** Sets the column names which determine a control change and the 
+    /** Sets the column names which determine a control change and the
      *  corresponding output of a heading line with column labels
      *  @param groupColumns comma separated list of column names, or null if none is to be set
      */
@@ -325,7 +325,7 @@ public class TableMetaData {
     private String tableName;
 
     /** Gets the schema (user) of the underlying table
-     *  @return schema 
+     *  @return schema
      */
     public String getSchema() {
         return schema;
@@ -347,7 +347,7 @@ public class TableMetaData {
             } else {
                 if (defaultSchema != null && defaultSchema.length() > 0) {
                     schema = defaultSchema;
-                } 
+                }
             }
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
@@ -368,7 +368,7 @@ public class TableMetaData {
         return tableName;
     } // getTableName
 
-    /** Sets the table's name, with optional schema/user. 
+    /** Sets the table's name, with optional schema/user.
      *  If the schema is not specificied, it is taken from
      *  the default in the configuration.
      *  @param tableName name with optional qualifier
@@ -379,19 +379,19 @@ public class TableMetaData {
 
     /** whether to print header and trailer */
     private boolean withHeaders;
-    /** Tells whether to output table header rows 
+    /** Tells whether to output table header rows
      *  @return false if no table header rows should be written (default: true)
      */
     public boolean isWithHeaders() {
         return withHeaders;
     } // isWithHeaders
-    /** Defines whether to output table header rows 
+    /** Defines whether to output table header rows
      *  @param withHeaders false if no table header rows should be written  (default: true)
      */
     public void setWithHeaders(boolean withHeaders) {
         this.withHeaders = withHeaders;
     } // setWithHeaders
-    
+
     //=============================
     // Constructors
     //=============================
@@ -416,8 +416,8 @@ public class TableMetaData {
         oldValueList            = null; // only needed for group and aggregate features
     } // no-args Constructor
 
-    /** Constructor from configuration. Some of their properties 
-     *  are taken as defaults, but can be overwritten for this table serialization. 
+    /** Constructor from configuration. Some of their properties
+     *  are taken as defaults, but can be overwritten for this table serialization.
      *  @param config overall configuration of a session
      */
     public TableMetaData(Configuration config) {
@@ -428,8 +428,8 @@ public class TableMetaData {
     //==========================
     // Meta data completion
     //==========================
-     
-    /** Fill all column descriptions from database metadata 
+
+    /** Fill all column descriptions from database metadata
      *  @param dbMetaData metadata for the database connection
      *  @param schema schema if the table's name contained one
      *  @param tableBaseName fully qualified (with schema/user) name of the table
@@ -471,7 +471,7 @@ public class TableMetaData {
         lastColumnCount = columnList.size();
         return columnList.size();
     } // getColumnCount
-    
+
     /** Sets the number of created column descriptions: 1, 2, ...
      *  @param rsSize new size of {@link #columnList};
      *  the new size must be smaller than the current size of {@link #columnList}.
@@ -483,20 +483,20 @@ public class TableMetaData {
             lastColumnCount = ncol;
         } // while shrinking
     } // setColumnCount
-    
+
     /** Number of columns which were serialized in the last call of {@link #writePreviousRow} */
     private int lastColumnCount;
-    /** Gets the number of columns which were serialized in the last call of {@link #writePreviousRow} 
+    /** Gets the number of columns which were serialized in the last call of {@link #writePreviousRow}
      *  @return number of columns including pivot columns
      */
     public int getLastColumnCount() {
         return lastColumnCount;
     } // getColumnCount
-    
+
     //========================
     // modification methods
     //========================
-    
+
     /** Adds a new column description with the index only.
      *  @param index sequential number of the column: 0, 1, 2
      *  @return the new element just created
@@ -506,7 +506,7 @@ public class TableMetaData {
         columnList.add(column);
         return column;
     } // addColumn(index)
-    
+
     /** Adds a column description.
      *  @param column existing column description
      *  @return the same column
@@ -515,7 +515,7 @@ public class TableMetaData {
         columnList.add(column);
         return column;
     } // add(column)
-    
+
     /** Adds a new column description with a name and a value.
      *  @param name name of the column
      *  @param value value of the column
@@ -528,7 +528,7 @@ public class TableMetaData {
         columnList.add(column);
         return column;
     } // addColumn(name, value)
-    
+
     /** Gets an element of the column array list
      *  @param index index of the desired column: 0,1,...
      *  @return a {@link TableColumn}
@@ -536,7 +536,7 @@ public class TableMetaData {
     public TableColumn getColumn(int index) {
         return columnList.get(index);
     } // getColumn
-    
+
     /** Gets the fill state of column attributes:
      *  <ul>
      *  <li>0 = empty</li>
@@ -548,7 +548,7 @@ public class TableMetaData {
     public int getFillState() {
         return this.fillState;
     } // getFillState
-    
+
     /** Sets the fill state of column attributes:
      *  <ul>
      *  <li>0 = empty</li>
@@ -560,7 +560,7 @@ public class TableMetaData {
     public void setFillState(int fillState) {
         this.fillState = fillState;
     } // setFillState
-    
+
     /** Inserts the missing attributes from the result set's metadata
      *  into the list of all columns.
      *  @param stResults some result set (from a SELECT) for the applicable table;
@@ -570,7 +570,7 @@ public class TableMetaData {
         try {
             ResultSetMetaData rsMetaData = stResults.getMetaData();
             int rsCount = rsMetaData.getColumnCount();
-            int 
+            int
             icol = columnList.size();
             while (icol < rsCount) { // append enough new elements
                 columnList.add(new TableColumn(icol)); // index is always set
@@ -588,7 +588,7 @@ public class TableMetaData {
                         } // no identfier
                         column.setName(name);
                     } // name not set
-                    String stLabel = rsMetaData.getColumnLabel(icol + 1).replaceAll("\\s+", " "); 
+                    String stLabel = rsMetaData.getColumnLabel(icol + 1).replaceAll("\\s+", " ");
                         // CASE WHEN statements had multiple lines (bad for Excel column header)
                 /*
                     if (label.startsWith(tableName + ".")) {
@@ -618,7 +618,7 @@ public class TableMetaData {
             log.error(exc.getMessage(), exc);
         }
     } // putAttributes(stResults)
-    
+
     /** Fill all column descriptions from a comma separated list of integer field widths.
      *  Expand the column list as neccessary.
      *  @param widthList comma separated list of integers
@@ -641,11 +641,11 @@ public class TableMetaData {
             icol ++;
         } // while icol
     } // fillColumnWidths
-    
+
     //===============================================
     // Grouping, Aggregation and Pivot tables
     //===============================================
-     
+
     /** Initializes the {@link #oldValueList}.
      */
     private void initOldValues() {
@@ -658,7 +658,7 @@ public class TableMetaData {
             } // while icol
         } // not filled so far
     } // initOldValues
-    //-----------------------------------    
+    //-----------------------------------
     /** Copies the properties of all columns to the {@link #oldValueList}.
      *  @param tbSerializer the desired output formatter
      */
@@ -674,14 +674,13 @@ public class TableMetaData {
                 } // while icol
                 TableColumn column = columnList.get(icol);
                 column.setValue(tbSerializer.getFlatValue(column));
-                // column.setHrefValue(null);
                 oldValueList.set(icol, column.clone());
                 icol ++;
             } // while copying
         } // only if feature is active
     } // rememberRow(1)
-    //-----------------------------------    
-    /** Aggregates the specified column by appending the 
+    //-----------------------------------
+    /** Aggregates the specified column by appending the
      *  aggregation separator and the current column to the aggregation column's previous value.
      *  The caller must ensure that the feature is set (aggregateIndex >= 0).
      *  @param tbSerializer the desired output formatter
@@ -696,9 +695,8 @@ public class TableMetaData {
                 + this.aggregationSeparator
                 + tbSerializer.getFlatValue(column)
                 );
-        // column.setHrefValue(null);
     } // aggregateColumn(1)
-    //-----------------------------------    
+    //-----------------------------------
     /** Appends another pivot table column, with the label from the {@link #aggregateIndex} column,
      *  and the value (and all other attributes) from the next column.
      *  The caller must ensure that the feature is set (aggregateIndex >= 0).
@@ -707,21 +705,20 @@ public class TableMetaData {
     public void addPivotColumn(BaseTable tbSerializer) {
         TableColumn column = columnList.get(aggregateIndex + 1).clone();
         column.setLabel(tbSerializer.getFlatValue(column));
-        // column.setHrefValue(null);
         columnList.add(column);
     } // addPivotColumn
-    //-----------------------------------    
+    //-----------------------------------
     /** Determines whether there is a change in a certain column.
      *  @param index index of the column to be investigated, 0 based.
      *  The method must be called only if oldValueList != null
-     *  @return true if the old string value of column[colNo] differs 
+     *  @return true if the old string value of column[colNo] differs
      *  from the current value, false otherwise
      */
     private boolean hasColumnChange(int index) {
         boolean result = false; // assume there is no group change
         String oldValue = oldValueList.get(index).getValue();
-        String newValue = columnList  .get(index).getValue();  
-        // System.err.println(oldValue + " <> " + newValue); 
+        String newValue = columnList  .get(index).getValue();
+        // System.err.println(oldValue + " <> " + newValue);
         if (oldValue != null) {
             if (newValue != null) {
                 result = ! oldValue.equals(newValue);
@@ -735,7 +732,7 @@ public class TableMetaData {
     } // hasColumnChange
 
     /** Determines whether there is a change in any of the group column values
-     *  @return whether there is a group control change between the old and the current column list 
+     *  @return whether there is a group control change between the old and the current column list
      *  Internally, the following decisions are made:
      *  <ul>
      *  <li>{@link TableMetaData.Change#HEADING} or</li>
@@ -758,7 +755,7 @@ public class TableMetaData {
                     String label  = column.getLabel();
                     String pseudo = column.getPseudo();
                 //  || --> improve performance
-                    if (pseudo == null 
+                    if (pseudo == null
                             &&  (   (name  != null && groupColumns.indexOf("," + name   + ",") >= 0)
                                 ||  (label != null && groupColumns.indexOf("," + label  + ",") >= 0)
                                 )
@@ -769,13 +766,13 @@ public class TableMetaData {
                                 result = Change.HEADING;
                             } else if (result == Change.NONE) {
                                 result = Change.MINOR;
-                            }       
+                            }
                             if (result != Change.NONE) { // all following control change columns are visible again
                                 if (style != null && style.endsWith(INVISIBLE)) {
                                     column.setStyle(VISIBLE);
                                 }
                             }
-                        } // there was a control change                     
+                        } // there was a control change
                         ihead ++;
                     } // name or label participates
                     icol ++;
@@ -786,12 +783,12 @@ public class TableMetaData {
     } // hasGroupChange
 
     /** Determines whether there is a change in any of the non-aggregate column values
-     *  @return 
+     *  @return
      *  <ul>
      *  <li>-1 if any of the old non-aggregate column values differs from the current value,</li>
      *  <li>-2 if the oldValueList was not yet filled,</li>
      *  <li>-3 if the aggreate feature is not set,</li>
-     *  <li>the index of the aggregate or pivot column 
+     *  <li>the index of the aggregate or pivot column
      *    if all old non-aggregate values are the same as the current values
      *  </li>
      *  </ul>
@@ -805,7 +802,7 @@ public class TableMetaData {
             } else { // was already filled
                 int icol = 0;
                 while (result >= 0 && icol < columnList.size()) {
-                    if (isPivot() ? icol < aggregateIndex : icol != aggregateIndex) { 
+                    if (isPivot() ? icol < aggregateIndex : icol != aggregateIndex) {
                         if (hasColumnChange(icol)) {
                             result = AGGR_CHANGED;
                         }
@@ -820,8 +817,8 @@ public class TableMetaData {
     /** Writes the previous row in the specified output format.
      *  @param tbSerializer one of HTMLTable, SQLTable, XMLTable etc.
      *  @param withHeaders whether a header line should be printed before the row
-     *  @param rowCount number of rows already printed so far, -1 and 0 =&gt; first 
-     *  @param columnCount regular length of a row from the SQL result set 
+     *  @param rowCount number of rows already printed so far, -1 and 0 =&gt; first
+     *  @param columnCount regular length of a row from the SQL result set
      */
     public void writePreviousRow(BaseTable tbSerializer, boolean withHeaders, int rowCount, int columnCount) {
         if (isPivot()) { // cut out the 2 original columns for pivot row data
@@ -831,7 +828,7 @@ public class TableMetaData {
         lastColumnCount = oldValueList.size();
         if (withHeaders && rowCount <= 0) {
             tbSerializer.writeGenericRow(BaseTable.RowType.HEADER, this, this.oldValueList);
-        } 
+        }
         if (! isPivot() || rowCount > 0) {
             tbSerializer.writeGenericRow(BaseTable.RowType.DATA  , this, this.oldValueList);
             tbSerializer.writeGenericRow(BaseTable.RowType.DATA2 , this, this.oldValueList);

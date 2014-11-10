@@ -595,7 +595,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
      *  @return space separated list of filenames with proper pathes and extensions
      */
     private String getFilesFromAttribute(String attributeValue, String subDirectory, String extension) {
-    	String result = null;
+        String result = null;
         StringBuffer buffer = new StringBuffer(128);
         if (attributeValue != null) { // attribute was set
             String[] names = attributeValue.split("\\s");
@@ -605,7 +605,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     buffer.append(' '); // separator
                 }
                 if (! names[iname].startsWith("/")) {
-                	buffer.append(subDirectory);
+                    buffer.append(subDirectory);
                 }
                 buffer.append(names[iname]);
                 if (! names[iname].endsWith(extension)) {
@@ -618,7 +618,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         } else { // attribute was not set, assume defaults
             if (false) {
             } else if (extension.equals("css")) {
-            	result = subDirectory + "stylesheet.css";
+                result = subDirectory + "stylesheet.css";
             } else if (extension.equals("js")) {
             } else if (extension.equals("xsl")) {
             }
@@ -797,8 +797,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     /** Parameter values of an HTML listbox (&lt;select&gt;) element */
     private String[] listBoxParams;
 
-	/** prefix for <em>&lt;col link="..."&gt;</em> attribute values */
-	private static final String SERVLET_SPEC = "servlet?spec=";
+    /** prefix for <em>&lt;col link="..."&gt;</em> attribute values */
+    private static final String SERVLET_SPEC = "servlet?spec=";
 
     /** Root element tag */
     public  static final String ROOT_TAG    = "dbat"    ; // target= title= lang=en conn=dbat headers=true encoding=UTF-8
@@ -1118,28 +1118,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 String subDirectory = urlPath + (lastSlashPos < 0 ? "" : specName.substring(0, lastSlashPos + 1));
                 //--------
                 String javascript   = getFilesFromAttribute(attrs.getValue("javascript"), subDirectory, "js" );
-            /*
-                if (javascript      != null) { // assume location         in current subdirectory of dbat/spec
-                    javascript      = urlPath + javascript  + (javascript.endsWith(".js")  ? "" : ".js" );
-                } // javascript
-            */
-                //--------
                 String stylesheet   = getFilesFromAttribute(attrs.getValue("stylesheet"), subDirectory, "css");
-            /*
-                if (stylesheet      != null) { // assume "stylesheet.css" in current subdirectory of dbat/spec
-                    stylesheet      = // urlPath +
-                            stylesheet  + (stylesheet.endsWith(".css") ? "" : ".css");
-                } else { // default: take the stylesheet from dbat/spec/subdirectory
-                    stylesheet      = subDirectory + "stylesheet.css";
-                }
-            */
-                //--------
                 String xslt         = getFilesFromAttribute(attrs.getValue("xslt")      , subDirectory, "xsl");
-            /*
-                if (xslt            != null) { // assume location         in current subdirectory of dbat/spec
-                    xslt            = realPath + xslt       + (xslt      .endsWith(".xsl") ? "" : ".xsl");
-                } // xslt
-            */
                 //--------
                 String namespacePrefix  = attrs.getValue("nsp"); // empty or a short, lowercase prefix
                 tbSerializer.setParameterMap(parameterMap);
@@ -1787,7 +1767,10 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 
             } else if (qName.equals(A_TAG       ) && uri.equals(config.DBAT_URI)) {
                 if (tbSerializer instanceof HTMLTable) { // for HTML - outside of SQL statements only ???
-                    (new SQLAction()).separateURLfromValue(tbSerializer.getSingleCell(), colBuffer.toString().trim());
+                    tbSerializer.getSingleCell().separateWrappedValue(colBuffer.toString().trim()
+                            , tbSerializer.getTargetEncoding()
+                            , tbSerializer.getEscapingRule()
+                            , config.getNullText());
                     colBuffer.setLength(0);
                     tbSerializer.writeSingleCell();
                     currentNameSpace = config.HTML_URI;

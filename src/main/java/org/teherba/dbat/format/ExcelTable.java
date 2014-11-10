@@ -1,5 +1,6 @@
 /*  Generator for an Excel 2003 XML table
     @(#) $Id$
+    2014-11-10: s|getHrefValue -> s|getWrappedValue
     2011-08-24: writeGenericRow
     2011-01-21: sheet names Select1, Select2 ...; translate to &apos; in character strings
     2010-07-24: copied from XMLTable
@@ -225,9 +226,9 @@ public class ExcelTable extends BaseTable {
                         }
                     } else { // pseudo == null
                         result.append("<Cell");
-                        if (column.getHrefValue() != null) {
+                        if (column.getWrappedValue() != null) {
                             result.append(" ss:HRef=\"");
-                            result.append(column.getHrefValue());
+                            result.append(column.getWrappedValue());
                             result.append("\"");
                         }
                         result.append("><Data ss:Type=\"");

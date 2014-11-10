@@ -1,5 +1,6 @@
 /*  Generator for a MediaWiki table
     @(#) $Id$
+    2014-11-10: s|getHrefValue -> s|getWrappedValue
     2014-03-04: ignore pseudo columns
     2012-06-25: writeTrailer removed
     2011-08-24: writeGenericRow
@@ -252,17 +253,17 @@ public class WikiTable extends BaseTable {
     public String getFlatValue(TableColumn column) {
         StringBuffer result = new StringBuffer(128);
         String value     = column.getValue();
-        String hrefValue = column.getHrefValue();
-        if (hrefValue != null) {
+        String wrappedValue = column.getWrappedValue();
+        if (wrappedValue != null) {
             result.append("[");
-            result.append(! hrefValue.matches("\\w+\\:.*") ? protocolContext : "");
-            result.append(hrefValue.replaceAll("&", "&amp;"));
+            result.append(! wrappedValue.matches("\\w+\\:.*") ? protocolContext : "");
+            result.append(wrappedValue.replaceAll("&", "&amp;"));
             result.append(" ");
         }
         result.append(value);
-        if (hrefValue != null) {
+        if (wrappedValue != null) {
             result.append("]");
-            column.setHrefValue(null);
+            column.setWrappedValue(null);
         }
         return result.toString();
     } // getFlatValue

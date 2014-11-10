@@ -1,5 +1,6 @@
 /*  Generator for an XML table which is transformed by an XSLT stylesheet
     @(#) $Id$
+    2014-11-10: s|getHrefValue -> s|getWrappedValue
     2014-03-04: ignore pseudo columns
     2011-09-11: working with generator.fireEndDocument() after long trials
     2011-08-24: writeGenericRow
@@ -389,14 +390,14 @@ public class TransformedTable extends BaseTable {
                         if (value == null) {
                             value = "null";
                         }
-                        String hrefValue = column.getHrefValue();
-                        if (hrefValue != null) {
-                            generator.fireStartElement("a", generator.toAttribute("href", hrefValue
+                        String wrappedValue = column.getWrappedValue();
+                        if (wrappedValue != null) {
+                            generator.fireStartElement("a", generator.toAttribute("href", wrappedValue
                                     // .replaceAll("&", "&amp;")
                                     ));
                         }
                         generator.fireCharacters(value);
-                        if (hrefValue != null) {
+                        if (wrappedValue != null) {
                             generator.fireEndElement("a");
                         }
                         generator.fireEndElement("td");

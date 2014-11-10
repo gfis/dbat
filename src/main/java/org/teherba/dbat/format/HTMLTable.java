@@ -1,5 +1,6 @@
 /*  Generator for an HTML table
     @(#) $Id$
+    2014-11-10: s|getHrefValue -> s|getWrappedValue
     2012-12-10: sortable again and counter 0, language dependant
     2012-11-29: sorttable.js
     2012-05-15: pseudo column with style behind all real columns => Javascript sets style on row
@@ -374,11 +375,11 @@ public class HTMLTable extends XMLTable {
     public String getFlatValue(TableColumn column) {
         StringBuffer result = new StringBuffer(128);
         String value     = column.getValue();
-        String hrefValue = column.getHrefValue();
-        // System.err.println("value=\"" + value + "\", hrefValue=\"" + hrefValue + "\"");
-        if (hrefValue != null) {
+        String wrappedValue = column.getWrappedValue();
+        // System.err.println("value=\"" + value + "\", wrappedValue=\"" + wrappedValue + "\"");
+        if (wrappedValue != null) {
             result.append("<a href=\"");
-            result.append(hrefValue.replaceAll("&", "&amp;"));
+            result.append(wrappedValue.replaceAll("&", "&amp;"));
             result.append("\">");
         }
         String pseudo = column.getPseudo();
@@ -397,9 +398,9 @@ public class HTMLTable extends XMLTable {
         } else { // other pseudo attribute
             result.append(value); // because getFlatValue is called once more with this
         }
-        if (hrefValue != null) {
+        if (wrappedValue != null) {
             result.append("</a>");
-            column.setHrefValue(null);
+            column.setWrappedValue(null);
         }
         return result.toString();
     } // getFlatValue

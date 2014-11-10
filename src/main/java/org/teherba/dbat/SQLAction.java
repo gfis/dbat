@@ -1,5 +1,6 @@
 /*  SQLAction.java - Properties and methods specific for one elementary sequence of SQL instructions
     @(#) $Id$
+    2014-11-10: separateURLFromValue moved to TableColumn.separateWrapperAndValue
     2014-03-10: insertFromURI, no Date/Time/Timestamp escape sequences
     2012-11-27: COMMIT if max_commit % 250 = 0
     2012-06-27: without references to com.ibm.db2.jcc.*; printSQLError commented out
@@ -50,7 +51,6 @@ import  java.io.Reader;
 import  java.io.StringWriter;
 import  java.io.Writer;
 import  java.math.BigDecimal;
-import  java.net.URLEncoder;
 import  java.sql.Blob;
 import  java.sql.CallableStatement;
 import  java.sql.Clob;
@@ -1106,7 +1106,7 @@ public class SQLAction implements Serializable {
                             value = cstmt.getString(parameterIndex);
                         }
                     } // out
-                    separateURLfromValue(column, value);
+                    column.separateWrappedValue(value, targetEncoding, escapingRule, nullText);
                 } // while counting parameters
 
                 int aggregateChange = tbMetaData.getAggregateChange();
@@ -1184,168 +1184,6 @@ public class SQLAction implements Serializable {
         } // catch
         return result;
     } // callStoredProcedure
-
-    /** Takes a column's attributes and an SQL SELECT column value which may be a
-     *  concatenated list of parameters,
-     *  and stores into the column
-     *  <ol>
-     *  <li>an URL with the parameters derived from the SELECT value,</li>
-     *  <li>the last partial value to be shown in the (HTML) cell.</li>
-     *  </ol>
-     *  @param column attributes of this column
-     *  @param values content of the data cell (from SQL SELECT), maybe a concatenation
-     *  of parameters separated by some separator character.
-     *
-     *  A (relative) link to another specification with parameter(s) must be specified as
-     *  <pre>
-     *      spec=basename&amp;name1[sep1&name2[sep2[&name3...]]]
-     *  </pre>
-     *  If there is more than one parameter, non-word separator strings <em>sepi</em> must be noted
-     *  between the parameter names. A trailing "=" is ignored for compatibility reasons.
-     *  The <em>values</em> string is split with the aid of the separator string(s)
-     *  specified in the <em>link</em> string.
-     *
-     *  Only the last value is put into the output cell (if the column has no "pseudo" attribute),
-     *  and any additional values before are inserted into the URL parameter list only.
-     *  As a special case, the value <em>null</em> is passed through.
-     */
-    public void separateURLfromValue(TableColumn column, String values) {
-        String displayValue = null;
-        String href = column.getHref();
-        String link = null;
-        if (href == null) {// plain value, we are done with it
-            column.setHrefValue (null);
-            displayValue = values;
-            // done with it
-        } else { // split URL and value
-            StringBuffer urlBuffer = new StringBuffer(128);
-            link = href; // cannot be null
-            if (debug >= 2) System.err.println("link=\"" + link + "\", values=\"" + values + "\"");
-            int lampos1 = link.indexOf('&'); // leading ampersand introduces first parameter
-            if (lampos1 < 0) { // no parameters
-                urlBuffer.append(link); // copy whole link to URL, remove whitespace
-                displayValue = values;
-            } else { // lampos1 >= 0: with parameters
-                // keep the last partial value as displayValue, and move any additional parameters into the URL
-                int vstart = 0;
-                urlBuffer.append(link.substring(0, lampos1)); // copy initial "specname" or "servlet?spec=specname"
-                while (lampos1 < link.length()) { // process all parameters: "&name=val" (ignored),  or "&name[sep]", "&name="
-                    int lampos2 = link.indexOf('&', lampos1 + 1); // is there any second ampersand
-                    if (lampos2 < 0) {
-                        lampos2 = link.length(); // behind entire string
-                    }
-                    String parm = link.substring(lampos1 + 1, lampos2);
-                    int eqpos = parm.indexOf('=');
-                    int plast = parm.length() - 1;
-                    if (plast <= 0) { // single '&' - ignore
-                    } else if (eqpos >= 0 && eqpos < plast) {
-                        // foreign "&name=value" pair - copy it unchanged
-                        urlBuffer.append('&');
-                        urlBuffer.append(parm);
-                    } else {
-                        while (plast >= 0 && ! Character.isLetterOrDigit(parm.charAt(plast))) {
-                            // backspace over non-word characters
-                            plast --;
-                        } // while backspacing over separator
-                        if (plast < 0) {
-                            IllegalArgumentException exc =
-                                    new IllegalArgumentException("empty parameter name at " + (lampos1 + 1));
-                            log.error(exc.getMessage(), exc);
-                            plast = parm.length();
-                        } else { // plast >= 0 points to last character in name
-                            String parmName = parm.substring(0, plast + 1);
-                            String sep      = parm.substring(   plast + 1);
-                            if (sep.length() == 0) {
-                                sep = "=";
-                            }
-                            // now extract the corresponding portion from 'values'
-                            if (values != null) {
-                                int vsepos = values.indexOf(sep, vstart);
-                                if (vsepos < 0) { // sep not found
-                                    vsepos = values.length(); // ignore that problem, eat the rest of the string
-                                    sep = ""; // because of " + sep.length()" below
-                                }
-                                displayValue = values.substring(vstart, vsepos)
-                                        .trim()
-                                        ;
-                                vstart = vsepos + sep.length();
-                                urlBuffer.append('&');
-                                urlBuffer.append(parmName);
-                                urlBuffer.append('=');
-                                try {
-                                    urlBuffer.append(URLEncoder.encode(displayValue, targetEncoding)
-                                            .replaceAll("%C2%", "%") // this is a crude patch for Unicode problems
-                                            );
-                                } catch (Exception exc) {
-                                    urlBuffer.append(displayValue); // accept a bad URL
-                                }
-                            } else { // values == null
-                                displayValue = null;
-                            }
-                        } // last >= 0
-                    } // not foreign
-                    lampos1 = lampos2;
-                    lampos2 = link.indexOf('&', lampos1 + 1);
-                } // while lampos1
-            } // with parameters
-            column.setHrefValue (urlBuffer.toString());
-            if (debug >= 2) System.err.println("urlBuffer=\"" + urlBuffer.toString() + "\", displayValue=\"" + displayValue + "\"");
-        } // link != null
-        if (displayValue != null) {
-            switch (escapingRule) {
-                case 0: // no escaping
-                    break;
-                default:
-                case 1:
-                    displayValue = displayValue
-                            .replaceAll("&", "&amp;")
-                            .replaceAll(">", "&gt;")
-                            .replaceAll("<", "&lt;")
-                            .replaceAll("&amp;amp", "&amp;")
-                            ;
-                    break;
-                case 2:
-                    displayValue = displayValue
-                            .replaceAll("\'", "&apos;")
-                            .replaceAll("&amp;amp", "&amp;")
-                            ;
-                    break;
-                case 3:
-                    displayValue = displayValue
-                            .replaceAll("&", "&amp;")
-                            .replaceAll(">", "&gt;")
-                            .replaceAll("<", "&lt;")
-                            .replaceAll("\'", "&apos;")
-                            .replaceAll("&amp;amp", "&amp;")
-                            ;
-                    break;
-                case 4:
-                    if (column.getExpr().indexOf('<') < 0) { // then like 1
-                    displayValue = displayValue
-                            .replaceAll("&", "&amp;")
-                            .replaceAll(">", "&gt;")
-                            .replaceAll("<", "&lt;")
-                            .replaceAll("&amp;amp", "&amp;")
-                            ;
-                    }
-                    break;
-            } // switch escapingRule
-            // displayValue != null
-        } else { // displayValue == null
-            switch (nullText) {
-                case 0:
-                    displayValue = "";
-                    break;
-                case 1:
-                    displayValue = "null";
-                    break;
-                default: // -1 = do nothing
-                    break;
-            } // switch nullText
-        } // displayValue == null
-        column.setValue(displayValue);
-        if (debug >= 2) System.err.println("separateURLfromValue, hrefValue=\"" + column.getHrefValue() + "\", value=\"" + column.getValue() + "\"");
-    } // separateURLfromValue
 
     /** Sets the string value of one column from a query result set,
      *  together with the href value if the column has a href or link attribute.
@@ -1425,8 +1263,7 @@ public class SQLAction implements Serializable {
             printSQLError(exc);
             setCommitted(true); // avoid a final COMMIT
         }
-        separateURLfromValue(column, value);
-        if (debug >= 2) System.err.println("setColumnResult, hrefValue=\"" + column.getHrefValue() + "\", value=\"" + column.getValue() + "\"");
+        column.separateWrappedValue(value, targetEncoding, escapingRule, nullText);
     } // setColumnResult
 
     /** Serializes the results of a previously executed SELECT statement
