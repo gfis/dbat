@@ -2,7 +2,8 @@
 <!--
     ant-buildfile for commandline, web application and web service
     @(#) $Id$
-    2014-11-08: cleanup; remove Axis / all web service functionality, and JSPs
+    2014-11-11: tomcat.base|home moved to build.xml; no catalina-task
+    2014-11-08: cleanup; remove Axis / atll web service functionality, and JSPs
     2012-06-25: .ear contains .war and META-INF only
     2012-03-08: with .ear and WEB-INF/application.xml; copy JSPs, but do not compile them
     2012-01-28: addWebXmlMappings="true" includes generated_web.xml in web.xml; don't copy JSPs to target
@@ -39,20 +40,19 @@
 -->
 
 <project name="unused">
-<!-- needs these 3 properties from the importing ant build.xml file:
+<!-- needs these 5 properties from the importing ant build.xml file:
     <property name="ant.project.name"   value="dbat"/>
     <property name="app.version"        value="1.4"/>
     <property name="app.main-class"     value="org.teherba.dbat.Dbat"/>
+    <property name="tomcat.base"        value="/var/lib/tomcat" />
+    <property name="tomcat.home"        value="/usr/share/tomcat" />
 -->
     <property name="app.path"           value="." />
     <property name="build.home"         value="${basedir}/target" />
     <property name="build.classes"      value="${build.home}/WEB-INF/classes"/>
     <property name="build.api"          value="${build.home}/api" />
     <property name="dist.home"          value="${basedir}/dist" />
-    <property name="tomcat.base"        value="/var/lib/tomcat" />
-    <property name="tomcat.home"        value="/usr/share/tomcat" />
     <property name="tomcat.port"        value="8080" />
-    <property name="catalina.lib"       value="${tomcat.base}/shared/lib" />
     <property name="etc.home"           value="${basedir}/etc" />
     <property name="lib.home"           value="${basedir}/lib" />
     <property name="src.home"           value="${basedir}/src/main/java" />
@@ -63,9 +63,7 @@
     <property name="test.home"          value="${basedir}/test" />
     <property name="javac.debug"        value="on" />
     <property name="javac.debuglevel"   value="lines,vars,source" />
-    <property name="jdk.version"        value="1.5" />
-
-    <import file="${tomcat.home}/bin/catalina-tasks.xml"/>
+    <property name="jdk.version"        value="1.6" />
 
     <path id="compile.classpath">
         <fileset dir="${dist.home}">

@@ -2,6 +2,7 @@
 <!--
     dbat.2007.xsd - Schema for Dbat specifications
     @(#) $Id$
+    2014-11-11: WrapType "verbatim"
     2014-11-09: unify dbat and dbiv schemas (German Reunion happened before 25 years)
     2014-11-07: <read> element, wrap= attribute in <col>
     2012-06-25: more restrictions
@@ -448,10 +449,8 @@
 
     <xs:simpleType name="WrapType">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="image"     ></xs:enumeration>
             <xs:enumeration value="javascript"></xs:enumeration>
-            <xs:enumeration value="php"       ></xs:enumeration>
-            <xs:enumeration value="url"       ></xs:enumeration>
+            <xs:enumeration value="verbatim"  ></xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
 

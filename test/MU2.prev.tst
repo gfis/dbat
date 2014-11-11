@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="spec/test/../stylesheet.css" />
 </head><body>
 
-    <!--Test with 2 StylesheetsStylesheets-->
+    <!--Test with 2 Stylesheets-->
     <!--Test mit 2 Stylesheets-->
 
     <h3>Select from test table c01 - with 2 Stylesheets</h3>

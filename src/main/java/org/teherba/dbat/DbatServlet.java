@@ -1,5 +1,6 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2014-11-11: handler.setResponse
  *  2014-11-05: transforms and processes dbiv specs also
  *  2012-07-01: subpackage view; ConsolePage
  *  2012-03-16: dsMap filled only here, DBCPoolingListener abandonned
@@ -373,9 +374,10 @@ public class DbatServlet extends HttpServlet {
                     config.setLanguage(language);
                     config.setFetchLimit(fetchLimit);
                     SpecificationHandler handler = new SpecificationHandler(config);
-                    handler.setWriter(response.getWriter());
+                    handler.setWriter  (response.getWriter());
                     handler.setEncoding(response.getCharacterEncoding());
-                    handler.setRequest(request);
+                    handler.setRequest (request );
+                    handler.setResponse(response);
                     uncheckedSetParameterMap(handler, request);
                     BaseTable tbSerializer = tableFactory.getTableSerializer(mode);
                     tbSerializer.setMimeType(response.getContentType());

@@ -1,5 +1,6 @@
 /*  TableColumn - bean with properties of an abstract column
     @(#) $Id$
+    2014-11-11: wrap="verbatim"
     2014-11-10: s|getHrefValue -> s|getWrappedValue; SQLAction.separateURLfromValue now is this.separatedWrapperAndValue
     2014-11-06: additional property wrap
     2014-01-15: inactivate fragment logic
@@ -74,7 +75,6 @@ public class TableColumn implements Cloneable {
         align       = "";
         href        = null;
         index       = 0;
-        wrap  = null;
         key         = "";
         label       = "";
         name        = "";
@@ -88,7 +88,7 @@ public class TableColumn implements Cloneable {
         defaultValue= null; // no default value
         setDir('o'); // assume "out" parameter
         expr        = "";
-        wrappedValue   = null;
+        wrappedValue  = null;
         nullable    = true;
         style       = "";
         typeName    = "";
@@ -645,19 +645,23 @@ public class TableColumn implements Cloneable {
                     } else {
                         buffer.append(',');
                     }
-	                if (false) {
-	                } else if (typeName.startsWith("INT") || typeName.startsWith("DEC")) { // numerical - without quotes
-	                    buffer.append(parts[ipart]);
-	                } else { // with quotes
-	                	buffer.append('"');
-	                    buffer.append(parts[ipart]);
-	                	buffer.append('"');
-	                }
+                    if (false) {
+                    } else if (typeName.startsWith("INT") || typeName.startsWith("DEC")) { // numerical - without quotes
+                        buffer.append(parts[ipart]);
+                    } else { // with quotes
+                        buffer.append('"');
+                        buffer.append(parts[ipart]);
+                        buffer.append('"');
+                    }
                     ipart ++;
                 } // while ipart
                 buffer.append(");");
                 this.setWrappedValue(buffer.toString());
                 displayValue = "";
+            } else if (wrap.startsWith("verbatim:")) {
+                escapingRule = 0;
+                this.setWrappedValue(null);
+                displayValue = values;
             } else { // unknown wrap - ignore
                 this.setWrappedValue(null);
                 displayValue = values;
@@ -798,7 +802,7 @@ public class TableColumn implements Cloneable {
         } // displayValue == null
         this.setValue(displayValue);
 
-        if (debug >= 2) System.err.println("separateURLfromValue, wrappedValue=\"" + this.getWrappedValue() + "\", value=\"" + this.getValue() + "\"");
+        if (debug >= 2) System.err.println("separateWrappedValue, wrappedValue=\"" + this.getWrappedValue() + "\", value=\"" + this.getValue() + "\"");
     } // separateWrappedValue
 
     /** Gets a textual representation of the column attributes

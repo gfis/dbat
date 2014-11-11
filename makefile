@@ -198,7 +198,7 @@ dbiv_dbat:
 #--------------------------------------
 desp:
 	sudo cp -v web/spec/$(SPEC).xml			$(TOMC)/spec/$(SPEC).xml
-	sudo cp -v web/spec/http_request.js 	$(TOMC)/spec
+	# sudo cp -v web/spec/http_request.js 	$(TOMC)/spec
 #--------------------------------------
 spr:
 	make dbiv_sproc IV=test/crud02

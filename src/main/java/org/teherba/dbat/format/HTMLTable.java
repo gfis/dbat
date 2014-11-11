@@ -375,13 +375,19 @@ public class HTMLTable extends XMLTable {
     public String getFlatValue(TableColumn column) {
         StringBuffer result = new StringBuffer(128);
         String value        = column.getValue();
+        String wrap         = column.getWrap();
         String wrappedValue = column.getWrappedValue();
         // System.err.println("value=\"" + value + "\", wrappedValue=\"" + wrappedValue + "\"");
         if (false) {
-        } else if (column.getWrap() != null) {
-            result.append("<script type=\"text/javascript\">");
-            result.append(wrappedValue);
-            result.append("</script>");
+        } else if (wrap != null) {
+            if (false) {
+            } else if (wrap.startsWith("javascript:")) {
+                result.append("<script type=\"text/javascript\">");
+                result.append(wrappedValue);
+                result.append("</script>");
+            } else if (wrap.startsWith("verbatim:")) {
+                result.append(value); // without entity replacement
+            }
         } else {
             if (wrappedValue != null) {
                 result.append("<a href=\"");

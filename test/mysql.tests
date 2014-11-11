@@ -97,12 +97,16 @@ DATA DROP TABLE if exists im1;
   ( imagefile VARCHAR(128) not null   COMMENT 'image filename with path'
   , imagename VARCHAR(32)  not null   COMMENT 'name without path'
   , bytesize  INT                     COMMENT 'size of the file in bytes'
+  , description VARCHAR(1024)         COMMENT 'text with embedded HTML'
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
   COMMIT;
 CALL Dbat -f $(DATA)
 
 TEST B11 populate table with raw image data
 CALL Dbat -m csv -r im1 web/img/flowers/flowers.dir
+
+TEST B12 show iamge table values
+CALL Dbat -m csv -s "\t" -1024 im1
 #-------------------
 TEST C01 create table
 DATA drop table if exists c01 ;

@@ -264,12 +264,6 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
      */
     public void setResponse(HttpServletResponse response) {
         this.response = response;
-        try {
-            charWriter = response.getWriter();
-            tbSerializer.setWriter(charWriter);
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-        }
     } // setResponse
 
     /** Real (filesytem) path to the specification directory, for example "/.../tomcat/webapps/dbat/spec/" */
@@ -773,6 +767,31 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         tbSerializer.writeMarkup(errorAsterisk); // is empty if field value did validate
     } // endFormField
 
+    /** Gets the response headers for debugging purposes.
+     *  @return a string of lines each containing one header name/values pair
+     */
+    private String getResponseHeaders() {
+        StringBuffer result = new StringBuffer(512);
+    /*  will only work in Tomcat 7.0+ with Servlet API 3.0+
+        ArrayList<String> headerNames = response.getHeaderNames();
+        Iterator<String> hiter = headerNames.iterator();
+        while (hiter.hasNext()) {
+            String name = hiter.next();
+            result.append(name);
+            result.append(":");
+            ArrayList<String> headerValues = response.getHeaders(name);
+            Iterator<String> viter = headerValues.iterator();
+            while (viter.hasNext()) {
+                String value = viter.next();
+                result.append(" ");
+                result.append(value);
+            } // while values
+            result.append("\n");
+        } // while name
+    */
+        return result.toString();
+    } // getResponseHeaders
+
     //===========================
     // SAX handler for XML input
     //===========================
@@ -819,23 +838,24 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     private static final String COL_TAG     = "col"     ; // align= dir= href= key= label= link= name= pseudo= remark= style= type= width=
     /** Column element tag without attributes */
     private static final String COLUMN_TAG  = "column"  ;
-        private static final String ALIGN_TAG   = "align"   ;
-        private static final String DIR_TAG     = "dir"     ;
-        private static final String EXPR_TAG    = "expr"    ;
-        private static final String HREF_TAG    = "href"    ;
-        private static final String JAVASCRIPT_TAG = "javascript"    ;
-        private static final String KEY_TAG     = "key"     ;
-        private static final String LABEL_TAG   = "label"   ;
-        private static final String LINK_TAG    = "link"    ;
-        private static final String NAME_TAG    = "name"    ;
-        private static final String PSEUDO_TAG  = "pseudo"  ;
-        private static final String REMARK_TAG  = "remark"  ;
-        private static final String SQL_TAG     = "sql"     ;
-        private static final String STYLE_TAG   = "style"   ;
-        private static final String TYPE_TAG    = "type"    ;
-        private static final String WIDTH_TAG   = "width"   ;
-        private static final String WRAP_TAG    = "wrap"   ;
-    /** whether inside a <column> element */
+    /* now the subelements of <column> which correspond to attribute names of <col> */
+        private static final String ALIGN_TAG       = "align"       ;
+        private static final String DIR_TAG         = "dir"         ;
+        private static final String EXPR_TAG        = "expr"        ;
+        private static final String HREF_TAG        = "href"        ;
+        private static final String JAVASCRIPT_TAG  = "javascript"  ;
+        private static final String KEY_TAG         = "key"         ;
+        private static final String LABEL_TAG       = "label"       ;
+        private static final String LINK_TAG        = "link"        ;
+        private static final String NAME_TAG        = "name"        ;
+        private static final String PSEUDO_TAG      = "pseudo"      ;
+        private static final String REMARK_TAG      = "remark"      ;
+        private static final String SQL_TAG         = "sql"         ;
+        private static final String STYLE_TAG       = "style"       ;
+        private static final String TYPE_TAG        = "type"        ;
+        private static final String WIDTH_TAG       = "width"       ;
+        private static final String WRAP_TAG        = "wrap"        ;
+    /** whether we are currently inside a <column> element */
     private boolean inColumn;
 
     /** element tag for comment */
@@ -1000,9 +1020,6 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             /*..................................................
                 first the start tags for conditional compilation
             */
-            if (debug >= 2) {
-                System.err.println("before <" + qName + "> [" + chooseTop + "] top=" + chooseStack[chooseTop]);
-            }
             if (false) {
             } else if (qName.equals(CHOOSE_TAG  )) { // pop unconditionally
                 chooseTop ++;
@@ -1023,13 +1040,10 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                         } // default initial value
                         if (Messages.validateFormField(config.getLanguage(), new AttributesImpl(), value, testPattern) == 0) { // successful match
                             chooseStack[chooseTop] |= CHOOSE_THIS;
-                            // successful match
-                    //  } else {
-                    //      chooseStack[chooseTop] &= (0xfff ^ CHOOSE_THIS);
-                        }
+                        } // successful match
                         // else is already 0 or -1
                     } // valid name
-                }
+                } // GEN is active
                 // <when>
             } else if (qName.equals(OTHERWISE_TAG)) {
                 if ((chooseStack[chooseTop] & (CHOOSE_GEN | CHOOSE_SOME)) == CHOOSE_GEN) { // GEN is set, and SOME is unset
@@ -1037,22 +1051,27 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 } // ! chooseBranch
                 // <otherwise>
             }
-            if (debug >= 2) {
-                System.err.println("after  <" + qName + "> [" + chooseTop + "] top=" + chooseStack[chooseTop]);
-            }
 
             /*..................................................
                 now the remaining start tags
             */
-            if ((chooseStack[chooseTop] & CHOOSE_THIS) == zeroAndNotEcho) { // ignore all normal start tags
-                if (debug >= 2) {
-                    System.err.println("ignore <" + qName + "> [" + chooseTop + "] top=" + chooseStack[chooseTop]);
-                }
+            if ((chooseStack[chooseTop] & CHOOSE_THIS) == zeroAndNotEcho) {
+                // ignore all normal start tags
             } else if (inColumn) { // align= dir= href= label= link= name= pseudo= remark= style= type= wrap=
                 colBuffer.setLength(0); // start character assembly for all subordinate elements
 
             } else if (qName.equals(ROOT_TAG    )) {
                 trailerSelect       = TRAILER_ALL; // assume that there will be no <trailer /> element
+                //--------
+                String debugAttr    = attrs.getValue("debug");
+                debug = 0;
+                try {
+                    if (debugAttr       != null) {
+                        debug = Integer.parseInt(debugAttr);
+                    }
+                } catch (Exception exc) {
+                    // ignore
+                }
                 //--------
                 String encAttr      = attrs.getValue("encoding");
                 if (encAttr         != null) {
@@ -1139,6 +1158,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                             , parameterMap
                             );
                 if (debug >= 1) {
+                    tbSerializer.writeComment(getResponseHeaders());
                     tbSerializer.writeComment("SpecificationHandler.parameterMap: " + dumpMap(parameterMap));
                 }
                 // ROOT_TAG
@@ -1650,9 +1670,6 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             /*..................................................
                 first the end tags for conditional compilation
             */
-            if (debug >= 2) {
-                System.err.println("before </" + qName + "> [" + chooseTop + "] top=" + chooseStack[chooseTop]);
-            }
             if (false) {
             } else if (qName.equals(CHOOSE_TAG  )) {
                 chooseTop --; // pop unconditionally
@@ -1663,9 +1680,6 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     // remember that there was at least 1 "true" <when> branch, which will skip the <otherwise> branch
                     chooseStack[chooseTop] |= CHOOSE_SOME;
                 }
-                if (debug >= 1) {
-                    System.err.println("compiled SQL: " + sqlBuffer.toString());
-                }
                 chooseStack[chooseTop] &= (0xff ^ CHOOSE_THIS); // reset <when>
                 // </when>
 
@@ -1673,17 +1687,11 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 // ignore, </choose> will follow
                 // </otherwise>
             }
-            if (debug >= 2) {
-                System.err.println("after  </" + qName + "> [" + chooseTop + "] top=" + chooseStack[chooseTop]);
-            }
-
             /*..................................................
                 now the remaining end tags
             */
-            if ((chooseStack[chooseTop] & CHOOSE_THIS) == zeroAndNotEcho) { // ignore all normal end tags
-                if (debug >= 2) {
-                    System.err.println("ignore </" + qName + "> [" + chooseTop + "] top=" + chooseStack[chooseTop]);
-                }
+            if ((chooseStack[chooseTop] & CHOOSE_THIS) == zeroAndNotEcho) {
+                // ignore all normal end tags
             } else if (qName.equals(COLUMN_TAG     )) {
                 if (false) {
                 } else if (parentStmt.equals(INSERT_TAG)) {
@@ -1945,9 +1953,6 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                         sqlBuffer.append("\n) probe where 1 = 0 ");
                     } // probing
                     if (isSuccessful()) {
-                        if (debug >= 1) {
-                            System.err.println("compiled SQL: " + sqlBuffer.toString());
-                        }
                         sqlAction.execSQLStatement(tbMetaData, sqlBuffer.toString(), variables, parameterMap);
                     }
                     terminateAction();
@@ -2034,10 +2039,6 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         try { // if there is any exception, further SAX event processing will be disabled
             if ((chooseStack[chooseTop] & CHOOSE_THIS) == zeroAndNotEcho) {
                 // ignore all normal characters
-                if (debug >= 2) {
-                    System.err.println("ignore chars " + new String(ch, start, length)
-                            + "> [" + chooseTop + "] top=" + chooseStack[chooseTop]);
-                }
             } else if (currentNameSpace.equals(config.HTML_URI)) { // print HTML text unchanged
                 tbSerializer.writeMarkup(new String(ch, start, length));
             } else { // works for our <a> also

@@ -1,6 +1,6 @@
 /*  SQLAction.java - Properties and methods specific for one elementary sequence of SQL instructions
     @(#) $Id$
-    2014-11-10: separateURLFromValue moved to TableColumn.separateWrapperAndValue
+    2014-11-10: separateURLFromValue moved to TableColumn.separateWrappedValue
     2014-03-10: insertFromURI, no Date/Time/Timestamp escape sequences
     2012-11-27: COMMIT if max_commit % 250 = 0
     2012-06-27: without references to com.ibm.db2.jcc.*; printSQLError commented out

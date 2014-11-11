@@ -11,7 +11,7 @@
         title="multijs"
         stylesheet="stylesheet.css ../stylesheet.css"
         >
-    <comment lang="en">Test with 2 StylesheetsStylesheets</comment>
+    <comment lang="en">Test with 2 Stylesheets</comment>
     <comment lang="de">Test mit 2 Stylesheets</comment>
 
     <ht:h3>Select from test table c01 - with 2 Stylesheets</ht:h3>
