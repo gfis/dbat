@@ -1,4 +1,4 @@
-ECHO 2014-11-11 21:23:30
+ECHO 2014-11-16 18:34:38
 Test A01 parameterized link with defaults
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m html -f web/spec/test/parmlink.xml
 ========> passed A01 parameterized link with defaults
@@ -162,25 +162,25 @@ Test X10 call procedure x07 into parm
 http "http://localhost:8080/dbat/servlet?spec=test/callx10&iname0=row2"
 ========> passed X10 call procedure x07 into parm
 Test XS1 generate an interactive form for native SQL with INT key
-xsltproc web/xslt/dbiv_dbat.xsl web/spec/test/crud01.iv.xml
+xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud01.iv.xml
 ========> passed XS1 generate an interactive form for native SQL with INT key
 Test XS2 generate an interactive form for a stored procedure
-xsltproc web/xslt/dbiv_dbat.xsl web/spec/test/crud02.iv.xml
+xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud02.iv.xml
 ========> passed XS2 generate an interactive form for a stored procedure
 Test XS3 generate an interactive form for native SQL with CHAR keys
-xsltproc web/xslt/dbiv_dbat.xsl web/spec/test/crud03.iv.xml
+xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud03.iv.xml
 ========> passed XS3 generate an interactive form for native SQL with CHAR keys
 Test XS4 generate an interactive form with AJAX subquery
-xsltproc web/xslt/dbiv_dbat.xsl web/spec/test/crud04.iv.xml
+xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud04.iv.xml
 ========> passed XS4 generate an interactive form with AJAX subquery
 Test XS5 generate a non-altering search form
-xsltproc --stringparam alter 0 web/xslt/dbiv_dbat.xsl web/spec/test/crud01.iv.xml
+xsltproc  --stringparam alter 0 web/xslt/dbiv_dbat.xsl web/spec/test/crud01.iv.xml
 ========> passed XS5 generate a non-altering search form
 Test XS6 whereClause copied with parm
-xsltproc web/xslt/dbiv_dbat.xsl web/spec/test/crud05.iv.xml
+xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud05.iv.xml
 ========> passed XS6 whereClause copied with parm
 Test XS7 not all fields editable
-xsltproc web/xslt/dbiv_dbat.xsl web/spec/test/crud06.iv.xml
+xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud06.iv.xml
 ========> passed XS7 not all fields editable
 Test AX1 get an insert form containing an Ajax request
 http "http://localhost:8080/dbat/servlet?spec=test.ajax01&name=Ilse"
@@ -197,6 +197,9 @@ http "http://localhost:8080/dbat/servlet?spec=test.parmform&VALUE=That is the 1s
 Test IM1 show 6 flowers
 http "http://localhost:8080/dbat/servlet?spec=test.image01"
 ========> passed IM1 show 6 flowers
+Test IM2 page break after each image
+http "http://localhost:8080/dbat/servlet?spec=test.image02"
+========> passed IM2 page break after each image
 Test L01 List Box and List Parameters - init values
 http "http://localhost:8080/dbat/servlet?spec=test/listbox"
 ========> passed L01 List Box and List Parameters - init values
@@ -235,8 +238,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.selec01"
 ========> passed Y05 spec file with dot
 Test Y06 XML syntax error, CLI
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m html  -f web/spec/test/badxml.xml 2> nul
-2014-11-11 21:23:34,034 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
- 2014-11-11 21:23:34,041 7    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+2014-11-16 18:34:42,766 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
+ 2014-11-16 18:34:42,772 6    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
  org.xml.sax.SAXParseException; lineNumber: 29; columnNumber: 10; The content of elements must consist of well-formed character data or markup.
 	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1239)
 	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:649)
@@ -249,9 +252,9 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -
 	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 	at java.lang.reflect.Method.invoke(Method.java:606)
-	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:438)
-	at org.teherba.common.RegressionTester.main(RegressionTester.java:551)
-2014-11-11 21:23:34,042 8    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
+	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:473)
+	at org.teherba.common.RegressionTester.main(RegressionTester.java:561)
+2014-11-16 18:34:42,773 7    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
  org.xml.sax.SAXParseException; lineNumber: 29; columnNumber: 10; The content of elements must consist of well-formed character data or markup.
 	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1239)
 	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:649)
@@ -264,8 +267,8 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -
 	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 	at java.lang.reflect.Method.invoke(Method.java:606)
-	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:438)
-	at org.teherba.common.RegressionTester.main(RegressionTester.java:551)
+	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:473)
+	at org.teherba.common.RegressionTester.main(RegressionTester.java:561)
 ========> passed Y06 XML syntax error, CLI
 Test Y07 XML syntax error, web
 http "http://localhost:8080/dbat/servlet?spec=test.badxml"
@@ -789,24 +792,45 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -
 Test VI3 search for M
 http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&view=sear&search_name=M&family=Ritter&birth=&gender=M&place=&decease="
 ========> passed VI3 search for M
+Test VI3D precompiled = direct dbiv?
+diff -Z  test/V03.prev.tst test/VI3.this.tst
+========> passed VI3D precompiled = direct dbiv?
 Test VI4 update place of Maria
 http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&search_value_1=M&search_gender='&name=Maria&family=Ritter&view=upd"
 ========> passed VI4 update place of Maria
+Test VI4D precompiled = direct dbiv?
+diff -Z  test/V04.prev.tst test/VI4.this.tst
+========> passed VI4D precompiled = direct dbiv?
 Test VI5 place updated
 http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&view=upd2&search_name=&search_family=Ritter&name=Maria&family=Ritter&birth=1914-09-17&gender=F&place=Berlin-Hermsdorf&decease=1999&changed=current_timestamp&user=testuser"
 ========> passed VI5 place updated
+Test VI5D precompiled = direct dbiv?
+diff -Z  test/V05.prev.tst test/VI5.this.tst
+========> passed VI5D precompiled = direct dbiv?
 Test VI6 insert with data of Maria
 http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&view=ins&search_name=&family=Ritter&birth=1914-09-17&gender=F&place=Berlin-Hermsdorf&decease=1999&changed=current_timestamp&user=testuser"
 ========> passed VI6 insert with data of Maria
+Test VI6D precompiled = direct dbiv?
+diff -Z  test/V06.prev.tst test/VI6.this.tst
+========> passed VI6D precompiled = direct dbiv?
 Test VI7 Teherba inserted
 http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&view=ins2&search_name=&search_family=Ritter&name=Teherba&family=Ritter&birth=1886-02-04&gender=F&place=Oranienburg&decease=1968&changed=current_timestamp&user=testuser"
 ========> passed VI7 Teherba inserted
+Test VI7D precompiled = direct dbiv?
+diff -Z  test/V07.prev.tst test/VI7.this.tst
+========> passed VI7D precompiled = direct dbiv?
 Test VI8 delete Teherba
 http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&search_name=&search_family=Ritter&name=Teherba&family=Ritter&view=del"
 ========> passed VI8 delete Teherba
+Test VI8D precompiled = direct dbiv?
+diff -Z  test/V08.prev.tst test/VI8.this.tst
+========> passed VI8D precompiled = direct dbiv?
 Test VI9 Teherba deleted
 http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&view=del2&search_name=&search_family=Ritter&name=Teherba&family=Ritter&birth=&gender=M&place=&decease="
 ========> passed VI9 Teherba deleted
+Test VI9D precompiled = direct dbiv?
+diff -Z  test/V09.prev.tst test/VI9.this.tst
+========> passed VI9D precompiled = direct dbiv?
 Test VA1 var element
 http "http://localhost:8080/dbat/servlet?spec=test.var01&name=%"
 ========> passed VA1 var element
@@ -818,4 +842,4 @@ http "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ========> passed VA3 echo with var elements
    0 tests recreated,
    0 tests FAILED,
- 262 tests passed in 11924 ms
+ 270 tests passed in 11515 ms

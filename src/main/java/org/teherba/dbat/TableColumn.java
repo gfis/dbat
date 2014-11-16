@@ -609,7 +609,7 @@ public class TableColumn implements Cloneable {
      *  @param targetEncoding encoding to be used for output
      *  @param escapingRule from {@link org.teherba.dbat.format.BaseTable},
      *  how character entities should be handled
-     *  @param nullText from {@link Configuration], how null values should be output
+     *  @param nullText from {@link Configuration}, how null values should be output
      *
      *  A (relative) link to another specification with parameter(s) must be specified as
      *  <pre>

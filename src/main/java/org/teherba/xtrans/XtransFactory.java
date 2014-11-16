@@ -313,7 +313,7 @@ public class XtransFactory {
     } // createPipeLine
 
     /** Gets the generator for further configuration,
-     *  for example in {@link XtransServlet} for the redirection of the input reader to an uploaded file
+     *  for example in XtransServlet for the redirection of the input reader to an uploaded file
      *  @return producer of XML
      */
     public BaseTransformer getGenerator() {
@@ -321,7 +321,7 @@ public class XtransFactory {
     } // getGenerator
 
     /** Gets the serializer for further configuration,
-     *  for example in {@link XtransServlet} for the redirection of the output reader to the servlet's response
+     *  for example in XtransServlet for the redirection of the output reader to the servlet's response
      *  @return consumer of XML
      */
     public BaseTransformer getSerializer() {

@@ -1,6 +1,7 @@
 /*  PrintStream which replaces some patterns (ISO timestamps) by constant strings for RegressionTester
  *  @(#) $Id$
- *  2013-01-06: hashmap for replacement patterns
+ *  2014-11-16: pattern for milliseconds
+ *  2013-01-06: HashMap for replacement patterns
  *  2013-01-05: redefine write methods
  *  2012-11-09, Georg Fischer: "Wende" in Germany 23 years ago
  */
@@ -44,16 +45,16 @@ public class TimestampFilterStream extends PrintStream {
     private String encoding;
     /** replacement patterns and their substitutions in consecutive elements */
     private String[] replacements = null;
-    
+
     /** Constructor with output file
      *  @param fileName name of the file to be written
      *  @param enc character set name
      */
-    public TimestampFilterStream(String fileName, String enc) 
+    public TimestampFilterStream(String fileName, String enc)
             throws FileNotFoundException,
             UnsupportedEncodingException {
-        this(fileName, enc, new String[] 
-                { " \\d{4}\\-\\d{2}\\-\\d{2} \\d{2}\\:\\d{2}\\:\\d{2}([.,0-9]*)?"
+        this(fileName, enc, new String[]
+                { " \\d{4}\\-\\d{2}\\-\\d{2} \\d{2}\\:\\d{2}\\:\\d{2}[\\.0-9]*"
                 , " yyyy-mm-dd hh:mm:ss"
                 , " rows in \\d+ ms"
                 , " rows in ... ms"
@@ -64,9 +65,9 @@ public class TimestampFilterStream extends PrintStream {
     /** Constructor with file and replacements
      *  @param fileName name of the file to be written
      *  @param enc character set name
-     *  @param replacements replacement patterns and their substitutions in consecutive elements 
+     *  @param replacements replacement patterns and their substitutions in consecutive elements
      */
-    public TimestampFilterStream(String fileName, String enc, String[] replacements) 
+    public TimestampFilterStream(String fileName, String enc, String[] replacements)
             throws FileNotFoundException,
             UnsupportedEncodingException {
         super(fileName, enc);
@@ -88,7 +89,7 @@ public class TimestampFilterStream extends PrintStream {
         } // while irepl
         return result;
     } // replacePatterns
-    
+
     /** Flushes the stream
      */
     public void flush() {
@@ -122,11 +123,11 @@ public class TimestampFilterStream extends PrintStream {
         } catch (Exception exc) {
         }
     } // write(byte[])
-    
-    /** Writes <em>len</em> bytes from the specified byte array to this file output stream, 
+
+    /** Writes <em>len</em> bytes from the specified byte array to this file output stream,
      *  starting at offset <em>off</em>.
      *  @param b byte array containing the bytes to be written to the stream.
-     *  @param off offset (0 based) of first byte to be written 
+     *  @param off offset (0 based) of first byte to be written
      *  @param len number of bytes to be written
      */
     public void write(byte[] b, int off, int len) {
@@ -143,7 +144,7 @@ public class TimestampFilterStream extends PrintStream {
         } catch (Exception exc) {
         }
     } // write(byte[],int,int)
-    
+
     /** Writes b.length bytes from the specified byte array to this file output stream.
     */
     public void write(int b) {
@@ -153,5 +154,5 @@ public class TimestampFilterStream extends PrintStream {
         } catch (Exception exc) {
         }
     } // write(byte)
-    
+
 } // TimestampFilterStream

@@ -354,6 +354,9 @@ HTTP spec=test.parmform&VALUE=That+is+the+1st+value&value=That+is+the+2nd+value
 # Javascript and Images
 TEST IM1 show 6 flowers
 HTTP spec=test.image01
+
+TEST IM2 page break after each image
+HTTP spec=test.image02
 #-------------------
 # list box fields
 TEST L01 List Box and List Parameters - init values
@@ -1095,24 +1098,38 @@ CALL Dbat -f $(DATA)
 
 TEST VI3 search for M
 HTTP spec=test.crud03.iv view=sear search_name=M family=Ritter birth= gender=M place= decease=
+TEST VI3D precompiled = direct dbiv?
+DIFF test/V03.prev.tst test/VI3.this.tst
 
 TEST VI4 update place of Maria
 HTTP spec=test.crud03.iv search_value_1=M search_gender=' name=Maria family=Ritter view=upd
+TEST VI4D precompiled = direct dbiv?
+DIFF test/V04.prev.tst test/VI4.this.tst
 
 TEST VI5 place updated
 HTTP spec=test.crud03.iv view=upd2 search_name= search_family=Ritter name=Maria family=Ritter birth=1914-09-17 gender=F place=Berlin-Hermsdorf decease=1999 changed=current_timestamp user=testuser
+TEST VI5D precompiled = direct dbiv?
+DIFF test/V05.prev.tst test/VI5.this.tst
 
 TEST VI6 insert with data of Maria
 HTTP spec=test.crud03.iv view=ins search_name= family=Ritter birth=1914-09-17 gender=F place=Berlin-Hermsdorf decease=1999 changed=current_timestamp user=testuser
+TEST VI6D precompiled = direct dbiv?
+DIFF test/V06.prev.tst test/VI6.this.tst
 
 TEST VI7 Teherba inserted
 HTTP spec=test.crud03.iv view=ins2 search_name= search_family=Ritter name=Teherba family=Ritter birth=1886-02-04 gender=F place=Oranienburg decease=1968 changed=current_timestamp user=testuser
+TEST VI7D precompiled = direct dbiv?
+DIFF test/V07.prev.tst test/VI7.this.tst
 
 TEST VI8 delete Teherba
 HTTP spec=test.crud03.iv search_name= search_family=Ritter name=Teherba family=Ritter view=del
+TEST VI8D precompiled = direct dbiv?
+DIFF test/V08.prev.tst test/VI8.this.tst
 
 TEST VI9 Teherba deleted
 HTTP spec=test.crud03.iv view=del2 search_name= search_family=Ritter name=Teherba family=Ritter birth= gender=M place= decease=
+TEST VI9D precompiled = direct dbiv?
+DIFF test/V09.prev.tst test/VI9.this.tst
 #-------------------
 # static SQL
 TEST VA1 var element
