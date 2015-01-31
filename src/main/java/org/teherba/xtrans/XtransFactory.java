@@ -86,7 +86,7 @@ public class XtransFactory {
     protected BaseTransformer[] allTransformers;
 
     /** No-args Constructor. Used for generation and serialization.
-     *  Constructs all known transformers. Their constructors should
+     *  Constructs all enabled transformers. Their constructors should
      *  not contain any heavy-weight initialization code, since they are
      *  all instantiated here, even if only two of them are really used.
      */
@@ -100,6 +100,22 @@ public class XtransFactory {
                 };
         realPath = "";
     } // Constructor
+
+    /** Array of transformers for different formats */
+    private ArrayList<BaseTransformer> transformers;
+
+    /** Attempts to instantiate the transformer for some format
+     *  @param transformerName name of the class for the transformer,
+     *  without the domain name
+     */
+    private void addTransformer(String transformerName) {
+        try {
+            BaseTransformer transformer = (BaseTransformer) Class.forName("org.teherba.xtrans." + transformerName).newInstance();
+            transformers.add(transformer);
+        } catch (Exception exc) {
+        	// ignore any error silently - this format will not be known
+        }
+    } // addTransformer
 
     /** Gets a SAX transformer factory
      *  @return properly configured SAXTransformerFactory

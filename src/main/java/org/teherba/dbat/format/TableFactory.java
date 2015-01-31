@@ -2,7 +2,7 @@
     @(#) $Id$
     2013-01-18: dynamic, with Class.forName
     2012-06-16: GenerateSQLJ
-    2012-05-22: JSONTable for Ajax 
+    2012-05-22: JSONTable for Ajax
     2011-09-10: TableGenerator, -m gen
     2011-07-27: WikiTable, -m wiki
     2011-07-15: TayloredTable, -m taylor
@@ -10,7 +10,7 @@
     2011-04-08: TransformedTable
     2010-07-24: ExcelTable, -m xls
     2010-06-16: EchoSQL, -m echo
-    2010-02-26: default HTML; getTableSerializer in favour of getTableWriter 
+    2010-02-26: default HTML; getTableSerializer in favour of getTableWriter
     2010-02-23: DefaultSpecTable, -m spec
     2008-02-07: Sassnitz, Dorothea * 98 Jahre
     2007-01-12: copied from XtransFactory
@@ -42,28 +42,31 @@ import  org.apache.log4j.Logger;
  *  of all table formats and their codes.
  *  @author Dr. Georg Fischer
  */
-public class TableFactory { 
+public class TableFactory {
     public final static String CVSID = "@(#) $Id$";
 
     /** log4j logger (category) */
     private Logger log;
-    
+
     /** Set of Tables for different file formats */
     private BaseTable[] allTables;
-    
+
     /** Array of serializers for different output formats */
     private ArrayList<BaseTable> serializers;
 
     /** Attempts to instantiate the serializer for some output format
      *  @param serializerName name of the class for the serializer
      */
-    private void addSerializer(String serializerName) {
+    private boolean addSerializer(String serializerName) {
+        boolean result = true; // assume that class is found
         try {
             BaseTable serializer = (BaseTable) Class.forName("org.teherba.dbat.format." + serializerName).newInstance();
             serializers.add(serializer);
         } catch (Exception exc) {
-        	// ignore any error silently - this output format will not be known
+            // ignore any error almost silently - this output format will not be known
+            result = false;
         }
+        return result;
     } // addSerializer
 
     /** No-args Constructor
@@ -74,23 +77,23 @@ public class TableFactory {
             serializers = new ArrayList<BaseTable>(32);
             addSerializer("HTMLTable"         );
             addSerializer("ExcelTable"        );
-            addSerializer("XMLTable"          ); 
-            addSerializer("FixedWidthTable"   ); 
-            addSerializer("SeparatedTable"    ); 
-            addSerializer("SQLTable"          ); 
-            addSerializer("SQLUpdateTable"    ); 
-            addSerializer("JDBCTable"         ); 
-            addSerializer("JSONTable"         ); 
-            addSerializer("DefaultSpecTable"  ); 
-            addSerializer("TayloredTable"     ); 
-            addSerializer("TransformedTable"  ); 
+            addSerializer("XMLTable"          );
+            addSerializer("FixedWidthTable"   );
+            addSerializer("SeparatedTable"    );
+            addSerializer("SQLTable"          );
+            addSerializer("SQLUpdateTable"    );
+            addSerializer("JDBCTable"         );
+            addSerializer("JSONTable"         );
+            addSerializer("DefaultSpecTable"  );
+            addSerializer("TayloredTable"     );
+            addSerializer("TransformedTable"  );
             addSerializer("TableGenerator"    );
             addSerializer("WikiTable"         );
             addSerializer("EchoSQL"           );
             addSerializer("GenerateSQLJ"      );
             addSerializer("ProbeSQL"          );
         } catch (Exception exc) {
-        	log.error(exc.getMessage(), exc);
+            log.error(exc.getMessage(), exc);
         }
     } // Constructor(0)
 
@@ -100,24 +103,24 @@ public class TableFactory {
     public Iterator /*<1.5*/<BaseTable>/*1.5>*/ getIterator() {
         return serializers.iterator();
     } // getIterator
-    
+
     /** Gets the number of available Tables (for example for HTML listboxes)
      *  @return number of formats which can be spelled
      */
     public int getCount() {
         return serializers.size(); // omit element [0] (= null)
     } // getCount
-    
-    /** Determines whether the format code denotes this 
+
+    /** Determines whether the format code denotes this
      *  Table class.
      *  @param baseTable the table formatter to be tested
      *  @param format code for the desired format
      */
     public boolean isApplicable(BaseTable baseTable, String format) {
         boolean result = false;
-        StringTokenizer tokenizer = new StringTokenizer(baseTable.getFormatCodes(), ",");              
+        StringTokenizer tokenizer = new StringTokenizer(baseTable.getFormatCodes(), ",");
         while (! result && tokenizer.hasMoreTokens()) { // try all tokens
-            if (format.equals(tokenizer.nextToken())) { 
+            if (format.equals(tokenizer.nextToken())) {
                 result = true;
             }
         } // while all tokens
@@ -126,7 +129,7 @@ public class TableFactory {
 
     /** Gets the applicable table serializer for a specified format code.
      *  @param format abbreviation for the format: xml, html, sql, jdbc, tsv, fix
-     *  @return the table writer for that format, or <em>null</em> if the 
+     *  @return the table writer for that format, or <em>null</em> if the
      *  format was not found
      */
     public BaseTable getTableSerializer(String format) {
@@ -137,7 +140,7 @@ public class TableFactory {
         while (notFound && siter.hasNext()) {
             BaseTable serializer = siter.next();
             if (isApplicable(serializer, format)) { // found
-				result = serializer;
+                result = serializer;
                 notFound = false;
             } // if found
         } //  while not found
@@ -145,7 +148,7 @@ public class TableFactory {
             log.error("unknown format " + format);
             result = new HTMLTable();
             format = "html";
-        } 
+        }
         result.setOutputFormat(format);
         return result;
     } // getTableSerializer
@@ -160,7 +163,7 @@ public class TableFactory {
             language = "en";
         }
         StringBuffer result = new StringBuffer(256);
-        final String SPACES = "                "; // 16 x ' '     
+        final String SPACES = "                "; // 16 x ' '
         Iterator <BaseTable> titer = getIterator();
         while (titer.hasNext()) {
             BaseTable tableFormat = (BaseTable) titer.next();
