@@ -1,4 +1,4 @@
-ECHO 2014-11-16 18:34:38
+ECHO 2015-02-02 19:08:10
 Test A01 parameterized link with defaults
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m html -f web/spec/test/parmlink.xml
 ========> passed A01 parameterized link with defaults
@@ -49,16 +49,40 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -
 ========> passed C01 create table
 Test H01 help messages
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -h
-========> passed H01 help messages
+*** "test\\H01.prev.tst"	2015-02-01 22:43:51.754923500 +0100
+--- "test\\H01.this.tst"	2015-02-02 19:08:12.827284300 +0100
+***************
+*** 30 ****
+--- 31 ----
++   sun.jdbc.odbc.JdbcOdbcDriver V2.1
+========> FAILED H01 help messages
 Test H02 help messages - 0 arguments
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 
-========> passed H02 help messages - 0 arguments
+*** "test\\H02.prev.tst"	2015-02-01 22:43:51.757920400 +0100
+--- "test\\H02.this.tst"	2015-02-02 19:08:12.942357700 +0100
+***************
+*** 30 ****
+--- 31 ----
++   sun.jdbc.odbc.JdbcOdbcDriver V2.1
+========> FAILED H02 help messages - 0 arguments
 Test H03 web help page en
 http "http://localhost:8080/dbat/servlet?view=help&lang=en"
-========> passed H03 web help page en
+*** "test\\H03.prev.tst"	2015-02-01 22:43:51.761926000 +0100
+--- "test\\H03.this.tst"	2015-02-02 19:08:13.030415700 +0100
+***************
+*** 50 ****
+--- 51 ----
++   sun.jdbc.odbc.JdbcOdbcDriver V2.1
+========> FAILED H03 web help page en
 Test H04 web help page de
 http "http://localhost:8080/dbat/servlet?view=help&lang=de"
-========> passed H04 web help page de
+*** "test\\H04.prev.tst"	2015-02-01 22:43:51.764930200 +0100
+--- "test\\H04.this.tst"	2015-02-02 19:08:13.117473900 +0100
+***************
+*** 49 ****
+--- 50 ----
++   sun.jdbc.odbc.JdbcOdbcDriver V2.1
+========> FAILED H04 web help page de
 Test MR1 more web page en
 http "http://localhost:8080/dbat/servlet?view=more&spec=test.index&lang=en"
 ========> passed MR1 more web page en
@@ -73,7 +97,17 @@ http "http://localhost:8080/dbat/servlet?spec=test/includer"
 ========> passed I02 include with system entities
 Test I03 check for ANSI concatenation with '||'
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 "SELECT name || ' ' || univ FROM c01 order by 1"
-========> passed I03 check for ANSI concatenation with '||'
+*** "test\\I03.prev.tst"	2015-02-01 22:43:51.791946800 +0100
+--- "test\\I03.this.tst"	2015-02-02 19:08:13.619811100 +0100
+***************
+*** 8 ****
+- Maria Hermsdorf
+--- 7 ----
+***************
+*** 9 ****
+--- 9 ----
++ Maria Hermsdorf
+========> FAILED I03 check for ANSI concatenation with '||'
 Test CI1 connection id worddb in request
 http "http://localhost:8080/dbat/servlet?spec=test/minusconn&tabname=c01&conn=worddb"
 ========> passed CI1 connection id worddb in request
@@ -118,7 +152,20 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -
 ========> passed DE7 decimal table as json
 Test DE8 decimal table as fix
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m fix    -200 de1
-========> passed DE8 decimal table as fix
+*** "test\\DE8.prev.tst"	2015-02-01 22:43:51.647847800 +0100
+--- "test\\DE8.this.tst"	2015-02-02 19:08:14.830609600 +0100
+***************
+*** 1,4 ****
+! row1            123456780123456789 123456.345          2011-08-0123:13:002011-08-01 23:13:00
+! row2            194706290530000000 194706.290          1981-08-0911:30:001981-08-09 11:30:00
+! row3            123456780123456789 123456.345          2011-08-0123:13:002011-08-01 23:13:00
+! row4            194706290530000000 194706.290          1981-08-0911:30:001981-08-09 11:30:00
+--- 1,4 ----
+! row1            123456780123456789 123456.345          2011-08-0123:13:00  yyyy-mm-dd hh:mm:ss
+! row2            194706290530000000 194706.290          1981-08-0911:30:00  yyyy-mm-dd hh:mm:ss
+! row3            123456780123456789 123456.345          2011-08-0123:13:00  yyyy-mm-dd hh:mm:ss
+! row4            194706290530000000 194706.290          1981-08-0911:30:00  yyyy-mm-dd hh:mm:ss
+========> FAILED DE8 decimal table as fix
 Test DF1 raw input of decimal and date/time formats
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m csv -s ";" -r de1 test/DF1.data.tmp
 ========> passed DF1 raw input of decimal and date/time formats
@@ -163,25 +210,109 @@ http "http://localhost:8080/dbat/servlet?spec=test/callx10&iname0=row2"
 ========> passed X10 call procedure x07 into parm
 Test XS1 generate an interactive form for native SQL with INT key
 xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud01.iv.xml
-========> passed XS1 generate an interactive form for native SQL with INT key
+*** "test\\XS1.prev.tst"	2015-02-01 22:43:52.694541600 +0100
+--- "test\\XS1.this.tst"	2015-02-02 19:08:16.242546700 +0100
+***************
+*** 4 ****
+!     @(#) $Id: c7d02bf804d59b4cfe7e8fd4dfd0cb1d30b011a2 $
+--- 4 ----
+!     @(#) $Id: 556d3382995fb0d6ccafa97a1b5a9dd3596a7834 $
+***************
+*** 9 ****
+!   @(#) $Id: c7d02bf804d59b4cfe7e8fd4dfd0cb1d30b011a2 $
+--- 9 ----
+!   @(#) $Id$
+========> FAILED XS1 generate an interactive form for native SQL with INT key
 Test XS2 generate an interactive form for a stored procedure
 xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud02.iv.xml
-========> passed XS2 generate an interactive form for a stored procedure
+*** "test\\XS2.prev.tst"	2015-02-01 22:43:52.703551800 +0100
+--- "test\\XS2.this.tst"	2015-02-02 19:08:16.404654700 +0100
+***************
+*** 4 ****
+!     @(#) $Id: 866b21dfc680a3cad5e3a3c1742d3a1bae609890 $
+--- 4 ----
+!     @(#) $Id: 2567ea9134cb6daf9d8ca65b8b0529f722694c27 $
+***************
+*** 8 ****
+!   @(#) $Id: 866b21dfc680a3cad5e3a3c1742d3a1bae609890 $
+--- 8 ----
+!   @(#) $Id$
+========> FAILED XS2 generate an interactive form for a stored procedure
 Test XS3 generate an interactive form for native SQL with CHAR keys
 xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud03.iv.xml
-========> passed XS3 generate an interactive form for native SQL with CHAR keys
+*** "test\\XS3.prev.tst"	2015-02-01 22:43:52.710556900 +0100
+--- "test\\XS3.this.tst"	2015-02-02 19:08:16.568763600 +0100
+***************
+*** 4 ****
+!     @(#) $Id: 277f78180df51f0ac80d5682d29fa0bfcdf570ea $
+--- 4 ----
+!     @(#) $Id: dca2f33f005f6f1304f66d91c56aea7c83b0afab $
+***************
+*** 9 ****
+!   @(#) $Id: 277f78180df51f0ac80d5682d29fa0bfcdf570ea $
+--- 9 ----
+!   @(#) $Id$
+========> FAILED XS3 generate an interactive form for native SQL with CHAR keys
 Test XS4 generate an interactive form with AJAX subquery
 xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud04.iv.xml
-========> passed XS4 generate an interactive form with AJAX subquery
+*** "test\\XS4.prev.tst"	2015-02-01 22:43:52.719561600 +0100
+--- "test\\XS4.this.tst"	2015-02-02 19:08:16.738876100 +0100
+***************
+*** 4 ****
+!     @(#) $Id: f360fc196e3b9f031b3e3fa9827d5d4c935fad69 $
+--- 4 ----
+!     @(#) $Id: 6be155596a038531702545edae4d3f0a33be534c $
+***************
+*** 10 ****
+!   @(#) $Id: f360fc196e3b9f031b3e3fa9827d5d4c935fad69 $
+--- 10 ----
+!   @(#) $Id$
+========> FAILED XS4 generate an interactive form with AJAX subquery
 Test XS5 generate a non-altering search form
 xsltproc  --stringparam alter 0 web/xslt/dbiv_dbat.xsl web/spec/test/crud01.iv.xml
-========> passed XS5 generate a non-altering search form
+*** "test\\XS5.prev.tst"	2015-02-01 22:43:52.725566400 +0100
+--- "test\\XS5.this.tst"	2015-02-02 19:08:16.879970100 +0100
+***************
+*** 4 ****
+!     @(#) $Id: 00f4522a80a5e54e1c64b9830c06451a2ac56fe8 $
+--- 4 ----
+!     @(#) $Id: 556d3382995fb0d6ccafa97a1b5a9dd3596a7834 $
+***************
+*** 9 ****
+!   @(#) $Id: 00f4522a80a5e54e1c64b9830c06451a2ac56fe8 $
+--- 9 ----
+!   @(#) $Id$
+========> FAILED XS5 generate a non-altering search form
 Test XS6 whereClause copied with parm
 xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud05.iv.xml
-========> passed XS6 whereClause copied with parm
+*** "test\\XS6.prev.tst"	2015-02-01 22:43:52.733572600 +0100
+--- "test\\XS6.this.tst"	2015-02-02 19:08:17.037079100 +0100
+***************
+*** 4 ****
+!     @(#) $Id: c92d9865f8a105a7556c920b62a57330ff57fb92 $
+--- 4 ----
+!     @(#) $Id: 3850be615d6186cbd53cf767f97dff9638f82d46 $
+***************
+*** 11 ****
+!   @(#) $Id: c92d9865f8a105a7556c920b62a57330ff57fb92 $
+--- 11 ----
+!   @(#) $Id$
+========> FAILED XS6 whereClause copied with parm
 Test XS7 not all fields editable
 xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud06.iv.xml
-========> passed XS7 not all fields editable
+*** "test\\XS7.prev.tst"	2015-02-01 22:43:52.762592300 +0100
+--- "test\\XS7.this.tst"	2015-02-02 19:08:17.223197500 +0100
+***************
+*** 4 ****
+!     @(#) $Id: bbda343ec296b7acfe072217b66833f156952e48 $
+--- 4 ----
+!     @(#) $Id: f5210e5c7831932b0ef500c6e391bc44b3919d99 $
+***************
+*** 8 ****
+!   @(#) $Id: bbda343ec296b7acfe072217b66833f156952e48 $
+--- 8 ----
+!   @(#) $Id$
+========> FAILED XS7 not all fields editable
 Test AX1 get an insert form containing an Ajax request
 http "http://localhost:8080/dbat/servlet?spec=test.ajax01&name=Ilse"
 ========> passed AX1 get an insert form containing an Ajax request
@@ -199,7 +330,81 @@ http "http://localhost:8080/dbat/servlet?spec=test.image01"
 ========> passed IM1 show 6 flowers
 Test IM2 page break after each image
 http "http://localhost:8080/dbat/servlet?spec=test.image02"
-========> passed IM2 page break after each image
+*** "test\\IM2.prev.tst"	2015-02-01 22:43:51.814963400 +0100
+--- "test\\IM2.this.tst"	2015-02-02 19:08:17.648484900 +0100
+***************
+*** 2,4 ****
+! <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+! "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" [
+! ]>
+--- 2,4 ----
+! 
+! <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+!     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+***************
+*** 9,62 ****
+! <title>image01</title>
+! <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
+! <script src="spec/test/../javascript.js" type="text/javascript"></script>
+! </head><body>
+! <!--  -->
+! <!-- SpecificationHandler.parameterMap: spec->test.image02
+! lang->en
+!  -->
+! 
+!     
+!     <!--Select from a Table with Pagebreaks-->
+!     <!--Abfrage einer Tabelle mit Seitenwechseln-->
+! 
+!     <h3><a href="servlet?spec=test.index">Test</a>: Select from table with pagebreaks</h3>
+!     <!-- SpecificationHandler.SELECT, aggregateIndex=-3 -->
+! <!-- SQL:
+! SELECT 'showImage,' || imagefile || ',100'
+! , imagename
+! , bytesize
+! , description
+! , 'pagebreak' 
+! FROM im1 
+! ORDER BY 1;
+! :SQL -->
+! <table id="tab1"><!-- table_not_specified -->
+! <tr><th title="'showImage,' || imagefile || ',100'">Image</th><th title="imagename">Name</th><th title="bytesize">Size</th><th title="description">Verbatim Description</th></tr>
+! <tr><td><script type="text/javascript">showImage("img/flowers/120px-Flower_in_Georgia.jpg","100");</script></td><td>120px-Flower_in_Georgia</td><td align="right">4964</td><td><span class="F">blue</span> flower</td>
+! <script type="text/javascript">with(document.getElementById("tab1").rows[1]){className="pagebreak";}</script></tr>
+! <tr><td><script type="text/javascript">showImage("img/flowers/120px-Georgian_Snow_Rose.jpg","100");</script></td><td>120px-Georgian_Snow_Rose</td><td align="right">5006</td><td>Snow Rose</td>
+! <script type="text/javascript">with(document.getElementById("tab1").rows[2]){className="pagebreak";}</script></tr>
+! <tr><td><script type="text/javascript">showImage("img/flowers/120px-Orange_flower_of_Georgia.jpg","100");</script></td><td>120px-Orange_flower_of_Georgia</td><td align="right">3101</td><td><span class="B">orange</span> flower</td>
+! <script type="text/javascript">with(document.getElementById("tab1").rows[3]){className="pagebreak";}</script></tr>
+! <tr><td><script type="text/javascript">showImage("img/flowers/120px-Tusheti_Flower.jpg","100");</script></td><td>120px-Tusheti_Flower</td><td align="right">3714</td><td>violet&#xa0;flower (hard space entity)</td>
+! <script type="text/javascript">with(document.getElementById("tab1").rows[4]){className="pagebreak";}</script></tr>
+! <tr><td><script type="text/javascript">showImage("img/flowers/120px-Xtidaylily-0575.jpg","100");</script></td><td>120px-Xtidaylily-0575</td><td align="right">8446</td><td><strong>purple<br />flower</strong></td>
+! <script type="text/javascript">with(document.getElementById("tab1").rows[5]){className="pagebreak";}</script></tr>
+! <tr><td><script type="text/javascript">showImage("img/flowers/90px-Flower_in_Georgia.jpg","100");</script></td><td>90px-Flower_in_Georgia</td><td align="right">5426</td><td><em>rose<br />flower</em></td>
+! <script type="text/javascript">with(document.getElementById("tab1").rows[6]){className="pagebreak";}</script></tr>
+! <tr><td class="counter" colspan="5">6 Flowers</td></tr>
+! </table>
+! 
+!     <p>
+!         The images were copied from
+!         <a href="https://commons.wikimedia.org/wiki/Category:Flowers_of_Georgia" target="_new">
+!         Category:Flowers_of_Georgia in commons.wikimedia.org
+!         </a>.
+!         <br />They are licensed there unter a "Attribution - Share alike"
+!         <a href="https://creativecommons.org/licenses/by-sa/2.0/deed.en" target="_new">Creative Commons</a> License.
+!     </p>
+! 
+! <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/image02.xml" type="text/plain">test/image02</a>,
+! <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.image02&amp;lang=en">Excel</a>,
+! <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.image02&amp;lang=en">more</a>
+! 
+--- 9,14 ----
+! <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+! <title>Message 404</title>
+! </head>
+! <body>
+! <!--lang=en, messno=404, text=A specification file <em>test/image02</em> was not found.<br />Please check the <a href="/dbat">Dbat</a> home page., parm=test/image02, par2=, par3=-->
+! <h3>404: A specification file <em>test/image02</em> was not found.<br />Please check the <a href="/dbat">Dbat</a> home page.</h3>
+========> FAILED IM2 page break after each image
 Test L01 List Box and List Parameters - init values
 http "http://localhost:8080/dbat/servlet?spec=test/listbox"
 ========> passed L01 List Box and List Parameters - init values
@@ -238,41 +443,55 @@ http "http://localhost:8080/dbat/servlet?spec=test.selec01"
 ========> passed Y05 spec file with dot
 Test Y06 XML syntax error, CLI
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m html  -f web/spec/test/badxml.xml 2> nul
-2014-11-16 18:34:42,766 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: The content of elements must consist of well-formed character data or markup.
- 2014-11-16 18:34:42,772 6    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
- org.xml.sax.SAXParseException; lineNumber: 29; columnNumber: 10; The content of elements must consist of well-formed character data or markup.
-	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1239)
-	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:649)
-	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl.parse(SAXParserImpl.java:333)
+2015-02-02 19:08:18,416 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
+ 2015-02-02 19:08:18,430 14   [main] ERROR org.teherba.dbat.Dbat  - Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
+ org.xml.sax.SAXParseException; lineNumber: 29; columnNumber: 10; Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
+	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(Unknown Source)
+	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(Unknown Source)
+	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl.parse(Unknown Source)
 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:231)
 	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:274)
 	at org.teherba.dbat.Dbat.process(Dbat.java:644)
 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:734)
 	at org.teherba.dbat.Dbat.main(Dbat.java:764)
 	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:606)
-	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:473)
-	at org.teherba.common.RegressionTester.main(RegressionTester.java:561)
-2014-11-16 18:34:42,773 7    [main] ERROR org.teherba.dbat.Dbat  - The content of elements must consist of well-formed character data or markup.
- org.xml.sax.SAXParseException; lineNumber: 29; columnNumber: 10; The content of elements must consist of well-formed character data or markup.
-	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1239)
-	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:649)
-	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl.parse(SAXParserImpl.java:333)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:474)
+	at org.teherba.common.RegressionTester.main(RegressionTester.java:562)
+2015-02-02 19:08:18,431 15   [main] ERROR org.teherba.dbat.Dbat  - Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
+ org.xml.sax.SAXParseException; lineNumber: 29; columnNumber: 10; Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
+	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(Unknown Source)
+	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(Unknown Source)
+	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl.parse(Unknown Source)
 	at org.teherba.dbat.Dbat.parseXML(Dbat.java:231)
 	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:274)
 	at org.teherba.dbat.Dbat.process(Dbat.java:644)
 	at org.teherba.dbat.Dbat.processArguments(Dbat.java:734)
 	at org.teherba.dbat.Dbat.main(Dbat.java:764)
 	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:606)
-	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:473)
-	at org.teherba.common.RegressionTester.main(RegressionTester.java:561)
-========> passed Y06 XML syntax error, CLI
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:474)
+	at org.teherba.common.RegressionTester.main(RegressionTester.java:562)
+*** "test\\Y06.prev.tst"	2015-02-01 22:43:52.790610500 +0100
+--- "test\\Y06.this.tst"	2015-02-02 19:08:18.465022100 +0100
+***************
+*** 23 ****
+!     <h3 class="error">XML SAX parsing error: The content of elements must consist of well-formed character data or markup. in Dbat specification, line 29, column 10, cause: null</h3></body></html>
+--- 23 ----
+!     <h3 class="error">XML SAX parsing error: Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen. in Dbat specification, line 29, column 10, cause: null</h3></body></html>
+========> FAILED Y06 XML syntax error, CLI
 Test Y07 XML syntax error, web
 http "http://localhost:8080/dbat/servlet?spec=test.badxml"
-========> passed Y07 XML syntax error, web
+*** "test\\Y07.prev.tst"	2015-02-01 22:43:52.796614000 +0100
+--- "test\\Y07.this.tst"	2015-02-02 19:08:18.537070800 +0100
+***************
+*** 23 ****
+!     <h3 class="error">XML SAX parsing error: The content of elements must consist of well-formed character data or markup. in Dbat specification, line 29, column 10, cause: null</h3></body></html>
+--- 23 ----
+!     <h3 class="error">XML SAX parsing error: Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen. in Dbat specification, line 29, column 10, cause: null</h3></body></html>
+========> FAILED Y07 XML syntax error, web
 Test Y08 redirected spec file, wait time 0 s
 http "http://localhost:8080/dbat/servlet?spec=test.redir0"
 ========> passed Y08 redirected spec file, wait time 0 s
@@ -311,10 +530,264 @@ java -cp dist/dbat.jar org.teherba.common.URIReader "http://localhost:8080/dbat/
 ========> passed UR1 http schema
 Test UR4 file schema
 java -cp dist/dbat.jar org.teherba.common.URIReader "file:///home/gfis/work/gits/dbat/web/noversion.txt"
-========> passed UR4 file schema
+2015-02-02 19:08:19,174 758  [main] ERROR org.teherba.common.URIReader  - \home\gfis\work\gits\dbat\web\noversion.txt (Das System kann den angegebenen Pfad nicht finden)
+ java.io.FileNotFoundException: \home\gfis\work\gits\dbat\web\noversion.txt (Das System kann den angegebenen Pfad nicht finden)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at sun.net.www.protocol.file.FileURLConnection.connect(Unknown Source)
+	at sun.net.www.protocol.file.FileURLConnection.getInputStream(Unknown Source)
+	at java.net.URL.openStream(Unknown Source)
+	at org.teherba.common.URIReader.<init>(URIReader.java:190)
+	at org.teherba.common.URIReader.<init>(URIReader.java:149)
+	at org.teherba.common.URIReader.main(URIReader.java:501)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:474)
+	at org.teherba.common.RegressionTester.main(RegressionTester.java:562)
+*** "test\\UR4.prev.tst"	2015-02-01 22:43:52.261254900 +0100
+--- "test\\UR4.this.tst"	2015-02-02 19:08:19.172492500 +0100
+***************
+*** 1,3 ****
+- noversion.txt: Test file for URIReader tests
+- This file contains no SVN Id keyword for better comparision.
+- 2011-07-27, Dr. Georg Fischer. Do not change this date.
+--- 0 ----
+========> FAILED UR4 file schema
 Test UR5 jar-file schema
 java -cp dist/dbat.jar org.teherba.common.URIReader "jar:file:///home/gfis/work/gits/dbat/dist/dbat.jar!/META-INF/LICENSE"
-========> passed UR5 jar-file schema
+2015-02-02 19:08:19,215 799  [main] ERROR org.teherba.common.URIReader  - \home\gfis\work\gits\dbat\dist\dbat.jar (Das System kann den angegebenen Pfad nicht finden)
+ java.io.FileNotFoundException: \home\gfis\work\gits\dbat\dist\dbat.jar (Das System kann den angegebenen Pfad nicht finden)
+	at java.util.zip.ZipFile.open(Native Method)
+	at java.util.zip.ZipFile.<init>(Unknown Source)
+	at java.util.zip.ZipFile.<init>(Unknown Source)
+	at java.util.jar.JarFile.<init>(Unknown Source)
+	at java.util.jar.JarFile.<init>(Unknown Source)
+	at sun.net.www.protocol.jar.URLJarFile.<init>(Unknown Source)
+	at sun.net.www.protocol.jar.URLJarFile.getJarFile(Unknown Source)
+	at sun.net.www.protocol.jar.JarFileFactory.get(Unknown Source)
+	at sun.net.www.protocol.jar.JarURLConnection.connect(Unknown Source)
+	at sun.net.www.protocol.jar.JarURLConnection.getInputStream(Unknown Source)
+	at java.net.URL.openStream(Unknown Source)
+	at org.teherba.common.URIReader.<init>(URIReader.java:190)
+	at org.teherba.common.URIReader.<init>(URIReader.java:149)
+	at org.teherba.common.URIReader.main(URIReader.java:501)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:474)
+	at org.teherba.common.RegressionTester.main(RegressionTester.java:562)
+*** "test\\UR5.prev.tst"	2015-02-01 22:43:52.269263600 +0100
+--- "test\\UR5.this.tst"	2015-02-02 19:08:19.214519900 +0100
+***************
+*** 1,202 ****
+- 
+-                                  Apache License
+-                            Version 2.0, January 2004
+-                         http://www.apache.org/licenses/
+- 
+-    TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+- 
+-    1. Definitions.
+- 
+-       "License" shall mean the terms and conditions for use, reproduction,
+-       and distribution as defined by Sections 1 through 9 of this document.
+- 
+-       "Licensor" shall mean the copyright owner or entity authorized by
+-       the copyright owner that is granting the License.
+- 
+-       "Legal Entity" shall mean the union of the acting entity and all
+-       other entities that control, are controlled by, or are under common
+-       control with that entity. For the purposes of this definition,
+-       "control" means (i) the power, direct or indirect, to cause the
+-       direction or management of such entity, whether by contract or
+-       otherwise, or (ii) ownership of fifty percent (50%) or more of the
+-       outstanding shares, or (iii) beneficial ownership of such entity.
+- 
+-       "You" (or "Your") shall mean an individual or Legal Entity
+-       exercising permissions granted by this License.
+- 
+-       "Source" form shall mean the preferred form for making modifications,
+-       including but not limited to software source code, documentation
+-       source, and configuration files.
+- 
+-       "Object" form shall mean any form resulting from mechanical
+-       transformation or translation of a Source form, including but
+-       not limited to compiled object code, generated documentation,
+-       and conversions to other media types.
+- 
+-       "Work" shall mean the work of authorship, whether in Source or
+-       Object form, made available under the License, as indicated by a
+-       copyright notice that is included in or attached to the work
+-       (an example is provided in the Appendix below).
+- 
+-       "Derivative Works" shall mean any work, whether in Source or Object
+-       form, that is based on (or derived from) the Work and for which the
+-       editorial revisions, annotations, elaborations, or other modifications
+-       represent, as a whole, an original work of authorship. For the purposes
+-       of this License, Derivative Works shall not include works that remain
+-       separable from, or merely link (or bind by name) to the interfaces of,
+-       the Work and Derivative Works thereof.
+- 
+-       "Contribution" shall mean any work of authorship, including
+-       the original version of the Work and any modifications or additions
+-       to that Work or Derivative Works thereof, that is intentionally
+-       submitted to Licensor for inclusion in the Work by the copyright owner
+-       or by an individual or Legal Entity authorized to submit on behalf of
+-       the copyright owner. For the purposes of this definition, "submitted"
+-       means any form of electronic, verbal, or written communication sent
+-       to the Licensor or its representatives, including but not limited to
+-       communication on electronic mailing lists, source code control systems,
+-       and issue tracking systems that are managed by, or on behalf of, the
+-       Licensor for the purpose of discussing and improving the Work, but
+-       excluding communication that is conspicuously marked or otherwise
+-       designated in writing by the copyright owner as "Not a Contribution."
+- 
+-       "Contributor" shall mean Licensor and any individual or Legal Entity
+-       on behalf of whom a Contribution has been received by Licensor and
+-       subsequently incorporated within the Work.
+- 
+-    2. Grant of Copyright License. Subject to the terms and conditions of
+-       this License, each Contributor hereby grants to You a perpetual,
+-       worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+-       copyright license to reproduce, prepare Derivative Works of,
+-       publicly display, publicly perform, sublicense, and distribute the
+-       Work and such Derivative Works in Source or Object form.
+- 
+-    3. Grant of Patent License. Subject to the terms and conditions of
+-       this License, each Contributor hereby grants to You a perpetual,
+-       worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+-       (except as stated in this section) patent license to make, have made,
+-       use, offer to sell, sell, import, and otherwise transfer the Work,
+-       where such license applies only to those patent claims licensable
+-       by such Contributor that are necessarily infringed by their
+-       Contribution(s) alone or by combination of their Contribution(s)
+-       with the Work to which such Contribution(s) was submitted. If You
+-       institute patent litigation against any entity (including a
+-       cross-claim or counterclaim in a lawsuit) alleging that the Work
+-       or a Contribution incorporated within the Work constitutes direct
+-       or contributory patent infringement, then any patent licenses
+-       granted to You under this License for that Work shall terminate
+-       as of the date such litigation is filed.
+- 
+-    4. Redistribution. You may reproduce and distribute copies of the
+-       Work or Derivative Works thereof in any medium, with or without
+-       modifications, and in Source or Object form, provided that You
+-       meet the following conditions:
+- 
+-       (a) You must give any other recipients of the Work or
+-           Derivative Works a copy of this License; and
+- 
+-       (b) You must cause any modified files to carry prominent notices
+-           stating that You changed the files; and
+- 
+-       (c) You must retain, in the Source form of any Derivative Works
+-           that You distribute, all copyright, patent, trademark, and
+-           attribution notices from the Source form of the Work,
+-           excluding those notices that do not pertain to any part of
+-           the Derivative Works; and
+- 
+-       (d) If the Work includes a "NOTICE" text file as part of its
+-           distribution, then any Derivative Works that You distribute must
+-           include a readable copy of the attribution notices contained
+-           within such NOTICE file, excluding those notices that do not
+-           pertain to any part of the Derivative Works, in at least one
+-           of the following places: within a NOTICE text file distributed
+-           as part of the Derivative Works; within the Source form or
+-           documentation, if provided along with the Derivative Works; or,
+-           within a display generated by the Derivative Works, if and
+-           wherever such third-party notices normally appear. The contents
+-           of the NOTICE file are for informational purposes only and
+-           do not modify the License. You may add Your own attribution
+-           notices within Derivative Works that You distribute, alongside
+-           or as an addendum to the NOTICE text from the Work, provided
+-           that such additional attribution notices cannot be construed
+-           as modifying the License.
+- 
+-       You may add Your own copyright statement to Your modifications and
+-       may provide additional or different license terms and conditions
+-       for use, reproduction, or distribution of Your modifications, or
+-       for any such Derivative Works as a whole, provided Your use,
+-       reproduction, and distribution of the Work otherwise complies with
+-       the conditions stated in this License.
+- 
+-    5. Submission of Contributions. Unless You explicitly state otherwise,
+-       any Contribution intentionally submitted for inclusion in the Work
+-       by You to the Licensor shall be under the terms and conditions of
+-       this License, without any additional terms or conditions.
+-       Notwithstanding the above, nothing herein shall supersede or modify
+-       the terms of any separate license agreement you may have executed
+-       with Licensor regarding such Contributions.
+- 
+-    6. Trademarks. This License does not grant permission to use the trade
+-       names, trademarks, service marks, or product names of the Licensor,
+-       except as required for reasonable and customary use in describing the
+-       origin of the Work and reproducing the content of the NOTICE file.
+- 
+-    7. Disclaimer of Warranty. Unless required by applicable law or
+-       agreed to in writing, Licensor provides the Work (and each
+-       Contributor provides its Contributions) on an "AS IS" BASIS,
+-       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+-       implied, including, without limitation, any warranties or conditions
+-       of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+-       PARTICULAR PURPOSE. You are solely responsible for determining the
+-       appropriateness of using or redistributing the Work and assume any
+-       risks associated with Your exercise of permissions under this License.
+- 
+-    8. Limitation of Liability. In no event and under no legal theory,
+-       whether in tort (including negligence), contract, or otherwise,
+-       unless required by applicable law (such as deliberate and grossly
+-       negligent acts) or agreed to in writing, shall any Contributor be
+-       liable to You for damages, including any direct, indirect, special,
+-       incidental, or consequential damages of any character arising as a
+-       result of this License or out of the use or inability to use the
+-       Work (including but not limited to damages for loss of goodwill,
+-       work stoppage, computer failure or malfunction, or any and all
+-       other commercial damages or losses), even if such Contributor
+-       has been advised of the possibility of such damages.
+- 
+-    9. Accepting Warranty or Additional Liability. While redistributing
+-       the Work or Derivative Works thereof, You may choose to offer,
+-       and charge a fee for, acceptance of support, warranty, indemnity,
+-       or other liability obligations and/or rights consistent with this
+-       License. However, in accepting such obligations, You may act only
+-       on Your own behalf and on Your sole responsibility, not on behalf
+-       of any other Contributor, and only if You agree to indemnify,
+-       defend, and hold each Contributor harmless for any liability
+-       incurred by, or claims asserted against, such Contributor by reason
+-       of your accepting any such warranty or additional liability.
+- 
+-    END OF TERMS AND CONDITIONS
+- 
+-    APPENDIX: How to apply the Apache License to your work.
+- 
+-       To apply the Apache License to your work, attach the following
+-       boilerplate notice, with the fields enclosed by brackets "[]"
+-       replaced with your own identifying information. (Don't include
+-       the brackets!)  The text should be enclosed in the appropriate
+-       comment syntax for the file format. We also recommend that a
+-       file or class name and description of purpose be included on the
+-       same "printed page" as the copyright notice for easier
+-       identification within third-party archives.
+- 
+-    Copyright 1999-2005 The Apache Software Foundation
+- 
+-    Licensed under the Apache License, Version 2.0 (the "License");
+-    you may not use this file except in compliance with the License.
+-    You may obtain a copy of the License at
+- 
+-        http://www.apache.org/licenses/LICENSE-2.0
+- 
+-    Unless required by applicable law or agreed to in writing, software
+-    distributed under the License is distributed on an "AS IS" BASIS,
+-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-    See the License for the specific language governing permissions and
+-    limitations under the License.
+--- 0 ----
+========> FAILED UR5 jar-file schema
 Test UR6 relative file
 java -cp dist/dbat.jar org.teherba.common.URIReader "web/noversion.txt"
 ========> passed UR6 relative file
@@ -331,7 +804,7 @@ Test TL3 file tayloring - head only
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m taylor -s "[" -u test/TL3.data.tmp "select * from c01"
 ========> passed TL3 file tayloring - head only
 Test TL4 file tayloring - with data: URI template
-java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m taylor -s "√ü" -u "data:%09%c3%9fname%09in+%c3%9funiv+%c3%9fyear%0a" "select name, univ, year from c01"
+java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m taylor -s "ﬂ" -u "data:%09%c3%9fname%09in+%c3%9funiv+%c3%9fyear%0a" "select name, univ, year from c01"
 ========> passed TL4 file tayloring - with data: URI template
 Test W01 select
 http "http://localhost:8080/dbat/servlet?spec=test/selec01"
@@ -410,7 +883,14 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -
 ========> passed D09 describe table in JDBC
 Test D10 output default specification
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m spec -d c01
-========> passed D10 output default specification
+*** "test\\D10.prev.tst"	2015-02-01 22:43:51.562791300 +0100
+--- "test\\D10.this.tst"	2015-02-02 19:08:21.897304700 +0100
+***************
+*** 7 ****
+! 	@(#) $Id: 1db076685dc04ad739332398d4979f43c156fe65 $
+--- 7 ----
+! 	@(#) $Id: 29fbe88209488f5934673085e42e8131cc020acd $
+========> FAILED D10 output default specification
 Test D12 web describe with specification
 http "http://localhost:8080/dbat/servlet?spec=describe"
 ========> passed D12 web describe with specification
@@ -752,40 +1232,312 @@ http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_value_1=M&searc
 ========> passed V04 update place of Maria
 Test V05 place updated
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&view=upd2&search_name=&search_family=Ritter&name=Maria&family=Ritter&birth=1914-09-17&gender=F&place=Berlin-Hermsdorf&decease=1999&changed=current_timestamp&user=testuser"
-========> passed V05 place updated
+*** "test\\V05.prev.tst"	2015-02-01 22:43:52.305283700 +0100
+--- "test\\V05.this.tst"	2015-02-02 19:08:33.028691500 +0100
+***************
+*** 113 ****
+--- 114 ----
++ <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
+***************
+*** 116 ****
+- <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
+--- 116 ----
+========> FAILED V05 place updated
 Test V06 insert with data of Maria
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&view=ins&search_name=&family=Ritter&birth=1914-09-17&gender=F&place=Berlin-Hermsdorf&decease=1999&changed=current_timestamp&user=testuser"
 ========> passed V06 insert with data of Maria
 Test V07 Teherba inserted
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&view=ins2&search_name=&search_family=Ritter&name=Teherba&family=Ritter&birth=1886-02-04&gender=F&place=Oranienburg&decease=1968&changed=current_timestamp&user=testuser"
-========> passed V07 Teherba inserted
+*** "test\\V07.prev.tst"	2015-02-01 22:43:52.318296600 +0100
+--- "test\\V07.this.tst"	2015-02-02 19:08:33.167779900 +0100
+***************
+*** 108 ****
+--- 109 ----
++ <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
+***************
+*** 111 ****
+- <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
+--- 111 ----
+========> FAILED V07 Teherba inserted
 Test V08 delete Teherba
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_name=&search_family=Ritter&name=Teherba&family=Ritter&view=del"
 ========> passed V08 delete Teherba
 Test V09 Teherba deleted
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&view=del2&search_name=&search_family=Ritter&name=Teherba&family=Ritter&birth=&gender=M&place=&decease="
-========> passed V09 Teherba deleted
+*** "test\\V09.prev.tst"	2015-02-01 22:43:52.331305600 +0100
+--- "test\\V09.this.tst"	2015-02-02 19:08:33.325889200 +0100
+***************
+*** 111 ****
+--- 112 ----
++ <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
+***************
+*** 114 ****
+- <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
+--- 114 ----
+========> FAILED V09 Teherba deleted
 Test V10 Show dbiv in wiki format
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=xml"
-========> passed V10 Show dbiv in wiki format
+*** "test\\V10.prev.tst"	2015-02-01 22:43:52.337309200 +0100
+--- "test\\V10.this.tst"	2015-02-02 19:08:33.407939800 +0100
+***************
+*** 46 ****
+! <tr><td>upd</td><td>del</td><td>Dorothea</td><td>Fischer</td><td>F</td><td>1910-02-07</td><td>Berlin</td><td>1985</td></tr>
+--- 46,47 ----
+! <tr><td>upd</td><td>del</td><td>Martha</td><td>Fischer</td><td>F</td><td>1909-11-17</td><td>Freiburg</td><td>1999</td></tr>
+! <tr><td>upd</td><td>del</td><td>Johannes</td><td>Fischer</td><td>M</td><td>1911-06-03</td><td>Schramberg</td><td>1992</td></tr>
+***************
+*** 48 ****
+--- 50 ----
++ <tr><td>upd</td><td>del</td><td>Maria</td><td>Ritter</td><td>F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td>1999</td></tr>
+***************
+*** 50 ****
+! <tr><td>upd</td><td>del</td><td>Johannes</td><td>Fischer</td><td>M</td><td>1911-06-03</td><td>Schramberg</td><td>1992</td></tr>
+--- 52 ----
+! <tr><td>upd</td><td>del</td><td>Dorothea</td><td>Fischer</td><td>F</td><td>1910-02-07</td><td>Berlin</td><td>1985</td></tr>
+***************
+*** 52,53 ****
+- <tr><td>upd</td><td>del</td><td>Maria</td><td>Ritter</td><td>F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td>1999</td></tr>
+- <tr><td>upd</td><td>del</td><td>Martha</td><td>Fischer</td><td>F</td><td>1909-11-17</td><td>Freiburg</td><td>1999</td></tr>
+--- 53 ----
+========> FAILED V10 Show dbiv in wiki format
 Test V11 Show dbiv in Excel format
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=xls"
-========> passed V11 Show dbiv in Excel format
+*** "test\\V11.prev.tst"	2015-02-01 22:43:52.343308900 +0100
+--- "test\\V11.this.tst"	2015-02-02 19:08:33.511007700 +0100
+***************
+*** 51 ****
+! <Row><Cell><Data ss:Type="String">Dorothea</Data></Cell>
+--- 51 ----
+! <Row><Cell><Data ss:Type="String">Martha</Data></Cell>
+***************
+*** 54,56 ****
+! <Cell><Data ss:Type="DateTime">1910-02-07</Data></Cell>
+! <Cell><Data ss:Type="String">Berlin</Data></Cell>
+! <Cell><Data ss:Type="String">1985</Data></Cell>
+--- 54,63 ----
+! <Cell><Data ss:Type="DateTime">1909-11-17</Data></Cell>
+! <Cell><Data ss:Type="String">Freiburg</Data></Cell>
+! <Cell><Data ss:Type="String">1999</Data></Cell>
+! </Row>
+! <Row><Cell><Data ss:Type="String">Johannes</Data></Cell>
+! <Cell><Data ss:Type="String">Fischer</Data></Cell>
+! <Cell><Data ss:Type="String">M</Data></Cell>
+! <Cell><Data ss:Type="DateTime">1911-06-03</Data></Cell>
+! <Cell><Data ss:Type="String">Schramberg</Data></Cell>
+! <Cell><Data ss:Type="String">1992</Data></Cell>
+***************
+*** 71 ****
+--- 79,85 ----
++ <Row><Cell><Data ss:Type="String">Maria</Data></Cell>
++ <Cell><Data ss:Type="String">Ritter</Data></Cell>
++ <Cell><Data ss:Type="String">F</Data></Cell>
++ <Cell><Data ss:Type="DateTime">1914-09-17</Data></Cell>
++ <Cell><Data ss:Type="String">Berlin-Hermsdorf</Data></Cell>
++ <Cell><Data ss:Type="String">1999</Data></Cell>
++ </Row>
+***************
+*** 79 ****
+! <Row><Cell><Data ss:Type="String">Johannes</Data></Cell>
+--- 93 ----
+! <Row><Cell><Data ss:Type="String">Dorothea</Data></Cell>
+***************
+*** 81,84 ****
+! <Cell><Data ss:Type="String">M</Data></Cell>
+! <Cell><Data ss:Type="DateTime">1911-06-03</Data></Cell>
+! <Cell><Data ss:Type="String">Schramberg</Data></Cell>
+! <Cell><Data ss:Type="String">1992</Data></Cell>
+--- 95,98 ----
+! <Cell><Data ss:Type="String">F</Data></Cell>
+! <Cell><Data ss:Type="DateTime">1910-02-07</Data></Cell>
+! <Cell><Data ss:Type="String">Berlin</Data></Cell>
+! <Cell><Data ss:Type="String">1985</Data></Cell>
+***************
+*** 93,106 ****
+- <Row><Cell><Data ss:Type="String">Maria</Data></Cell>
+- <Cell><Data ss:Type="String">Ritter</Data></Cell>
+- <Cell><Data ss:Type="String">F</Data></Cell>
+- <Cell><Data ss:Type="DateTime">1914-09-17</Data></Cell>
+- <Cell><Data ss:Type="String">Berlin-Hermsdorf</Data></Cell>
+- <Cell><Data ss:Type="String">1999</Data></Cell>
+- </Row>
+- <Row><Cell><Data ss:Type="String">Martha</Data></Cell>
+- <Cell><Data ss:Type="String">Fischer</Data></Cell>
+- <Cell><Data ss:Type="String">F</Data></Cell>
+- <Cell><Data ss:Type="DateTime">1909-11-17</Data></Cell>
+- <Cell><Data ss:Type="String">Freiburg</Data></Cell>
+- <Cell><Data ss:Type="String">1999</Data></Cell>
+- </Row>
+--- 106 ----
+========> FAILED V11 Show dbiv in Excel format
 Test V12 Show dbiv in fixed format
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=fix"
-========> passed V12 Show dbiv in fixed format
+*** "test\\V12.prev.tst"	2015-02-01 22:43:52.348312200 +0100
+--- "test\\V12.this.tst"	2015-02-02 19:08:33.600066400 +0100
+***************
+*** 1 ****
+! Dorothea                                Fischer                                 F1910-02-07Berlin                                         1985
+--- 1,2 ----
+! Martha                                  Fischer                                 F1909-11-17Freiburg                                       1999
+! Johannes                                Fischer                                 M1911-06-03Schramberg                                     1992
+***************
+*** 3 ****
+--- 5 ----
++ Maria                                   Ritter                                  F1914-09-17Berlin-Hermsdorf                               1999
+***************
+*** 5 ****
+! Johannes                                Fischer                                 M1911-06-03Schramberg                                     1992
+--- 7 ----
+! Dorothea                                Fischer                                 F1910-02-07Berlin                                         1985
+***************
+*** 7,8 ****
+- Maria                                   Ritter                                  F1914-09-17Berlin-Hermsdorf                               1999
+- Martha                                  Fischer                                 F1909-11-17Freiburg                                       1999
+--- 8 ----
+========> FAILED V12 Show dbiv in fixed format
 Test V13 Show dbiv in separated format
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=csv"
-========> passed V13 Show dbiv in separated format
+*** "test\\V13.prev.tst"	2015-02-01 22:43:52.354317500 +0100
+--- "test\\V13.this.tst"	2015-02-02 19:08:33.674116400 +0100
+***************
+*** 2 ****
+! Dorothea;Fischer;F;1910-02-07;Berlin;1985
+--- 2,3 ----
+! Martha;Fischer;F;1909-11-17;Freiburg;1999
+! Johannes;Fischer;M;1911-06-03;Schramberg;1992
+***************
+*** 4 ****
+--- 6 ----
++ Maria;Ritter;F;1914-09-17;Berlin-Hermsdorf;1999
+***************
+*** 6 ****
+! Johannes;Fischer;M;1911-06-03;Schramberg;1992
+--- 8 ----
+! Dorothea;Fischer;F;1910-02-07;Berlin;1985
+***************
+*** 8,9 ****
+- Maria;Ritter;F;1914-09-17;Berlin-Hermsdorf;1999
+- Martha;Fischer;F;1909-11-17;Freiburg;1999
+--- 9 ----
+========> FAILED V13 Show dbiv in separated format
 Test V14 Show dbiv in JSON format
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=json"
-========> passed V14 Show dbiv in JSON format
+*** "test\\V14.prev.tst"	2015-02-01 22:43:52.360325300 +0100
+--- "test\\V14.this.tst"	2015-02-02 19:08:33.751171800 +0100
+***************
+*** 6 ****
+!     [ ["Dorothea","Fischer","F","1910-02-07","Berlin",1985]
+--- 6,7 ----
+!     [ ["Martha","Fischer","F","1909-11-17","Freiburg",1999]
+!     , ["Johannes","Fischer","M","1911-06-03","Schramberg",1992]
+***************
+*** 8 ****
+--- 10 ----
++     , ["Maria","Ritter","F","1914-09-17","Berlin-Hermsdorf",1999]
+***************
+*** 10 ****
+!     , ["Johannes","Fischer","M","1911-06-03","Schramberg",1992]
+--- 12 ----
+!     , ["Dorothea","Fischer","F","1910-02-07","Berlin",1985]
+***************
+*** 12,13 ****
+-     , ["Maria","Ritter","F","1914-09-17","Berlin-Hermsdorf",1999]
+-     , ["Martha","Fischer","F","1909-11-17","Freiburg",1999]
+--- 13 ----
+========> FAILED V14 Show dbiv in JSON format
 Test V15 Show dbiv in SQL INSERT format
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=sql"
-========> passed V15 Show dbiv in SQL INSERT format
+*** "test\\V15.prev.tst"	2015-02-01 22:43:52.366324200 +0100
+--- "test\\V15.this.tst"	2015-02-02 19:08:33.859238900 +0100
+***************
+*** 4 ****
+! VALUES ('Dorothea','Fischer','F','1910-02-07','Berlin',1985);
+--- 4 ----
+! VALUES ('Martha','Fischer','F','1909-11-17','Freiburg',1999);
+***************
+*** 7 ****
+! VALUES ('Eberhard','Fischer','M','1912-11-17','Gro?-Gerau',1945);
+--- 7 ----
+! VALUES ('Johannes','Fischer','M','1911-06-03','Schramberg',1992);
+***************
+*** 10 ****
+! VALUES ('Fritz','Fischer','M','1907-08-08','Waldshut',1995);
+--- 10 ----
+! VALUES ('Eberhard','Fischer','M','1912-11-17','Gro?-Gerau',1945);
+***************
+*** 13 ****
+! VALUES ('Ilse','Ritter','F','1909-02-09','L?bars',1983);
+--- 13 ----
+! VALUES ('Fritz','Fischer','M','1907-08-08','Waldshut',1995);
+***************
+*** 16 ****
+! VALUES ('Johannes','Fischer','M','1911-06-03','Schramberg',1992);
+--- 16 ----
+! VALUES ('Maria','Ritter','F','1914-09-17','Berlin-Hermsdorf',1999);
+***************
+*** 19 ****
+! VALUES ('Lucie','Ritter','F','1887-07-09','L?bars',1984);
+--- 19 ----
+! VALUES ('Ilse','Ritter','F','1909-02-09','L?bars',1983);
+***************
+*** 22 ****
+! VALUES ('Maria','Ritter','F','1914-09-17','Berlin-Hermsdorf',1999);
+--- 22 ----
+! VALUES ('Dorothea','Fischer','F','1910-02-07','Berlin',1985);
+***************
+*** 25 ****
+! VALUES ('Martha','Fischer','F','1909-11-17','Freiburg',1999);
+--- 25 ----
+! VALUES ('Lucie','Ritter','F','1887-07-09','L?bars',1984);
+========> FAILED V15 Show dbiv in SQL INSERT format
 Test V16 Show dbiv in SQL UPDATE format
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=update"
-========> passed V16 Show dbiv in SQL UPDATE format
+*** "test\\V16.prev.tst"	2015-02-01 22:43:52.372328200 +0100
+--- "test\\V16.this.tst"	2015-02-02 19:08:34.013341100 +0100
+***************
+*** 2,5 ****
+! UPDATE table_not_specified SET name='Dorothea',family='Fischer',gender=
+! 'F',birth='1910-02-07',place='Berlin',decease=1985
+! WHERE name='Dorothea' AND family='Fischer' AND gender='F' AND birth=
+! '1910-02-07' AND place='Berlin' AND decease=1985;
+--- 2,9 ----
+! UPDATE table_not_specified SET name='Martha',family='Fischer',gender=
+! 'F',birth='1909-11-17',place='Freiburg',decease=1999
+! WHERE name='Martha' AND family='Fischer' AND gender='F' AND birth=
+! '1909-11-17' AND place='Freiburg' AND decease=1999;
+! UPDATE table_not_specified SET name='Johannes',family='Fischer',gender=
+! 'M',birth='1911-06-03',place='Schramberg',decease=1992
+! WHERE name='Johannes' AND family='Fischer' AND gender='M' AND birth=
+! '1911-06-03' AND place='Schramberg' AND decease=1992;
+***************
+*** 13 ****
+--- 18,21 ----
++ UPDATE table_not_specified SET name='Maria',family='Ritter',gender='F',
++ birth='1914-09-17',place='Berlin-Hermsdorf',decease=1999
++ WHERE name='Maria' AND family='Ritter' AND gender='F' AND birth=
++ '1914-09-17' AND place='Berlin-Hermsdorf' AND decease=1999;
+***************
+*** 18,21 ****
+! UPDATE table_not_specified SET name='Johannes',family='Fischer',gender=
+! 'M',birth='1911-06-03',place='Schramberg',decease=1992
+! WHERE name='Johannes' AND family='Fischer' AND gender='M' AND birth=
+! '1911-06-03' AND place='Schramberg' AND decease=1992;
+--- 26,29 ----
+! UPDATE table_not_specified SET name='Dorothea',family='Fischer',gender=
+! 'F',birth='1910-02-07',place='Berlin',decease=1985
+! WHERE name='Dorothea' AND family='Fischer' AND gender='F' AND birth=
+! '1910-02-07' AND place='Berlin' AND decease=1985;
+***************
+*** 26,33 ****
+- UPDATE table_not_specified SET name='Maria',family='Ritter',gender='F',
+- birth='1914-09-17',place='Berlin-Hermsdorf',decease=1999
+- WHERE name='Maria' AND family='Ritter' AND gender='F' AND birth=
+- '1914-09-17' AND place='Berlin-Hermsdorf' AND decease=1999;
+- UPDATE table_not_specified SET name='Martha',family='Fischer',gender=
+- 'F',birth='1909-11-17',place='Freiburg',decease=1999
+- WHERE name='Martha' AND family='Fischer' AND gender='F' AND birth=
+- '1909-11-17' AND place='Freiburg' AND decease=1999;
+--- 33 ----
+========> FAILED V16 Show dbiv in SQL UPDATE format
 Test VI2 initial data for DBIV tests
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -f test/VI2.data.tmp
 ========> passed VI2 initial data for DBIV tests
@@ -803,10 +1555,29 @@ diff -Z  test/V04.prev.tst test/VI4.this.tst
 ========> passed VI4D precompiled = direct dbiv?
 Test VI5 place updated
 http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&view=upd2&search_name=&search_family=Ritter&name=Maria&family=Ritter&birth=1914-09-17&gender=F&place=Berlin-Hermsdorf&decease=1999&changed=current_timestamp&user=testuser"
-========> passed VI5 place updated
+*** "test\\VI5.prev.tst"	2015-02-01 22:43:52.418363400 +0100
+--- "test\\VI5.this.tst"	2015-02-02 19:08:36.861235500 +0100
+***************
+*** 113 ****
+--- 114 ----
++ <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
+***************
+*** 116 ****
+- <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
+--- 116 ----
+========> FAILED VI5 place updated
 Test VI5D precompiled = direct dbiv?
 diff -Z  test/V05.prev.tst test/VI5.this.tst
-========> passed VI5D precompiled = direct dbiv?
+*** "test\\VI5D.prev.tst"	2015-02-01 22:43:52.421360700 +0100
+--- "test\\VI5D.this.tst"	2015-02-02 19:08:36.963299400 +0100
+***************
+*** 12 ****
+--- 13,16 ----
++ 113a114
++ > <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
++ 116d116
++ < <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
+========> FAILED VI5D precompiled = direct dbiv?
 Test VI6 insert with data of Maria
 http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&view=ins&search_name=&family=Ritter&birth=1914-09-17&gender=F&place=Berlin-Hermsdorf&decease=1999&changed=current_timestamp&user=testuser"
 ========> passed VI6 insert with data of Maria
@@ -815,10 +1586,29 @@ diff -Z  test/V06.prev.tst test/VI6.this.tst
 ========> passed VI6D precompiled = direct dbiv?
 Test VI7 Teherba inserted
 http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&view=ins2&search_name=&search_family=Ritter&name=Teherba&family=Ritter&birth=1886-02-04&gender=F&place=Oranienburg&decease=1968&changed=current_timestamp&user=testuser"
-========> passed VI7 Teherba inserted
+*** "test\\VI7.prev.tst"	2015-02-01 22:43:52.438372000 +0100
+--- "test\\VI7.this.tst"	2015-02-02 19:08:38.088046300 +0100
+***************
+*** 108 ****
+--- 109 ----
++ <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
+***************
+*** 111 ****
+- <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
+--- 111 ----
+========> FAILED VI7 Teherba inserted
 Test VI7D precompiled = direct dbiv?
 diff -Z  test/V07.prev.tst test/VI7.this.tst
-========> passed VI7D precompiled = direct dbiv?
+*** "test\\VI7D.prev.tst"	2015-02-01 22:43:52.445376600 +0100
+--- "test\\VI7D.this.tst"	2015-02-02 19:08:38.172105900 +0100
+***************
+*** 12 ****
+--- 13,16 ----
++ 108a109
++ > <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
++ 111d111
++ < <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
+========> FAILED VI7D precompiled = direct dbiv?
 Test VI8 delete Teherba
 http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&search_name=&search_family=Ritter&name=Teherba&family=Ritter&view=del"
 ========> passed VI8 delete Teherba
@@ -827,10 +1617,29 @@ diff -Z  test/V08.prev.tst test/VI8.this.tst
 ========> passed VI8D precompiled = direct dbiv?
 Test VI9 Teherba deleted
 http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&view=del2&search_name=&search_family=Ritter&name=Teherba&family=Ritter&birth=&gender=M&place=&decease="
-========> passed VI9 Teherba deleted
+*** "test\\VI9.prev.tst"	2015-02-01 22:43:52.485407500 +0100
+--- "test\\VI9.this.tst"	2015-02-02 19:08:39.273832800 +0100
+***************
+*** 111 ****
+--- 112 ----
++ <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
+***************
+*** 114 ****
+- <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
+--- 114 ----
+========> FAILED VI9 Teherba deleted
 Test VI9D precompiled = direct dbiv?
 diff -Z  test/V09.prev.tst test/VI9.this.tst
-========> passed VI9D precompiled = direct dbiv?
+*** "test\\VI9D.prev.tst"	2015-02-01 22:43:52.493411500 +0100
+--- "test\\VI9D.this.tst"	2015-02-02 19:08:39.360895300 +0100
+***************
+*** 12 ****
+--- 13,16 ----
++ 111a112
++ > <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
++ 114d114
++ < <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=Ritter&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Berlin-Hermsdorf</td><td align="right">1999</td></tr>
+========> FAILED VI9D precompiled = direct dbiv?
 Test VA1 var element
 http "http://localhost:8080/dbat/servlet?spec=test.var01&name=%"
 ========> passed VA1 var element
@@ -841,5 +1650,5 @@ Test VA3 echo with var elements
 http "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ========> passed VA3 echo with var elements
    0 tests recreated,
-   0 tests FAILED,
- 270 tests passed in 11515 ms
+  35 tests FAILED,
+ 235 tests passed in 29275 ms

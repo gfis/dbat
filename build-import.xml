@@ -2,6 +2,7 @@
 <!--
     ant-buildfile for commandline, web application and web service
     @(#) $Id$
+    2015-02-02: copy to webapps replaced by copy to *.wr and rename to *.war
     2014-11-11: tomcat.base|home moved to build.xml; no catalina-task
     2014-11-08: cleanup; remove Axis / atll web service functionality, and JSPs
     2012-06-25: .ear contains .war and META-INF only
@@ -255,12 +256,16 @@
     <!-- Tomcat -->
     <target name="deploy.webapps" depends="dist">
         <touch file="${dist.home}/${ant.project.name}.war" />
+        <copy file="${dist.home}/${ant.project.name}.war"          tofile="${tomcat.base}/webapps/${ant.project.name}.wr"  />
+        <move file="${tomcat.base}/webapps/${ant.project.name}.wr" tofile="${tomcat.base}/webapps/${ant.project.name}.war" />
+    <!--
         <copy todir="${tomcat.base}/webapps">
             <fileset dir="${dist.home}">
                 <exclude name="*.jar"/>
                 <include name="*.war"/>
             </fileset>
         </copy>
+    -->
     </target>
 
     <target name="deploy.ear" >

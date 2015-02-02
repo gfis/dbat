@@ -45,6 +45,7 @@ package org.teherba.xtrans;
 import  org.teherba.xtrans.BaseTransformer;
 import  org.teherba.xtrans.XMLTransformer;
 import  java.io.IOException; // thrown in createPipeline
+import  java.util.ArrayList;
 import  java.util.Arrays; // asList
 import  java.util.Iterator;
 import  java.util.Properties;

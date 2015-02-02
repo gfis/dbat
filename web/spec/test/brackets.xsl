@@ -1,7 +1,7 @@
 <?xml version="1.0"  encoding="UTF-8"?>
 <!--
 	enclose all elements in <b>...</b>
-	@(#) $Id: brackets.xsl 889 2012-02-17 18:48:22Z gfis $
+	@(#) $Id$
     2012-02-16, Dr. Georg Fischer: copied from identity.xsl, for test of &mode="trans"
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">

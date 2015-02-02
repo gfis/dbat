@@ -1,5 +1,5 @@
 /*	Activation of a Dbat specification with an Ajax request
- *	@(#) $Id: http_request.js 949 2012-05-30 17:34:26Z gfis $
+ *	@(#) $Id$
  *	2012-05-21, Georg Fischer: reformatted.
  *	The code was adapted from an online example file for the book
  *	"Ajax Hacks" by Bruce Perry. Copyright 2006 O'Reilly Media, Inc., 0-596-10169-4.
