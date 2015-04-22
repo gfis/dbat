@@ -1,4 +1,4 @@
-ECHO 2015-02-02 19:08:10
+ECHO 2015-03-26 18:38:58
 Test A01 parameterized link with defaults
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m html -f web/spec/test/parmlink.xml
 ========> passed A01 parameterized link with defaults
@@ -49,8 +49,8 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -
 ========> passed C01 create table
 Test H01 help messages
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -h
-*** "test\\H01.prev.tst"	2015-02-01 22:43:51.754923500 +0100
---- "test\\H01.this.tst"	2015-02-02 19:08:12.827284300 +0100
+*** test/H01.prev.tst	2015-02-01 22:43:51.754923500 +0100
+--- test/H01.this.tst	2015-03-26 18:39:01.960388000 +0100
 ***************
 *** 30 ****
 --- 31 ----
@@ -58,8 +58,8 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -
 ========> FAILED H01 help messages
 Test H02 help messages - 0 arguments
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 
-*** "test\\H02.prev.tst"	2015-02-01 22:43:51.757920400 +0100
---- "test\\H02.this.tst"	2015-02-02 19:08:12.942357700 +0100
+*** test/H02.prev.tst	2015-02-01 22:43:51.757920400 +0100
+--- test/H02.this.tst	2015-03-26 18:39:02.116645000 +0100
 ***************
 *** 30 ****
 --- 31 ----
@@ -67,8 +67,8 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8
 ========> FAILED H02 help messages - 0 arguments
 Test H03 web help page en
 http "http://localhost:8080/dbat/servlet?view=help&lang=en"
-*** "test\\H03.prev.tst"	2015-02-01 22:43:51.761926000 +0100
---- "test\\H03.this.tst"	2015-02-02 19:08:13.030415700 +0100
+*** test/H03.prev.tst	2015-02-01 22:43:51.761926000 +0100
+--- test/H03.this.tst	2015-03-26 18:39:02.241655200 +0100
 ***************
 *** 50 ****
 --- 51 ----
@@ -76,8 +76,8 @@ http "http://localhost:8080/dbat/servlet?view=help&lang=en"
 ========> FAILED H03 web help page en
 Test H04 web help page de
 http "http://localhost:8080/dbat/servlet?view=help&lang=de"
-*** "test\\H04.prev.tst"	2015-02-01 22:43:51.764930200 +0100
---- "test\\H04.this.tst"	2015-02-02 19:08:13.117473900 +0100
+*** test/H04.prev.tst	2015-02-01 22:43:51.764930200 +0100
+--- test/H04.this.tst	2015-03-26 18:39:02.366674400 +0100
 ***************
 *** 49 ****
 --- 50 ----
@@ -97,8 +97,8 @@ http "http://localhost:8080/dbat/servlet?spec=test/includer"
 ========> passed I02 include with system entities
 Test I03 check for ANSI concatenation with '||'
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 "SELECT name || ' ' || univ FROM c01 order by 1"
-*** "test\\I03.prev.tst"	2015-02-01 22:43:51.791946800 +0100
---- "test\\I03.this.tst"	2015-02-02 19:08:13.619811100 +0100
+*** test/I03.prev.tst	2015-02-01 22:43:51.791946800 +0100
+--- test/I03.this.tst	2015-03-26 18:39:03.022942700 +0100
 ***************
 *** 8 ****
 - Maria Hermsdorf
@@ -152,8 +152,8 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -
 ========> passed DE7 decimal table as json
 Test DE8 decimal table as fix
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m fix    -200 de1
-*** "test\\DE8.prev.tst"	2015-02-01 22:43:51.647847800 +0100
---- "test\\DE8.this.tst"	2015-02-02 19:08:14.830609600 +0100
+*** test/DE8.prev.tst	2015-02-01 22:43:51.647847800 +0100
+--- test/DE8.this.tst	2015-03-26 18:39:04.694896600 +0100
 ***************
 *** 1,4 ****
 ! row1            123456780123456789 123456.345          2011-08-0123:13:002011-08-01 23:13:00
@@ -210,8 +210,8 @@ http "http://localhost:8080/dbat/servlet?spec=test/callx10&iname0=row2"
 ========> passed X10 call procedure x07 into parm
 Test XS1 generate an interactive form for native SQL with INT key
 xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud01.iv.xml
-*** "test\\XS1.prev.tst"	2015-02-01 22:43:52.694541600 +0100
---- "test\\XS1.this.tst"	2015-02-02 19:08:16.242546700 +0100
+*** test/XS1.prev.tst	2015-02-01 22:43:52.694541600 +0100
+--- test/XS1.this.tst	2015-03-26 18:39:06.960629200 +0100
 ***************
 *** 4 ****
 !     @(#) $Id: c7d02bf804d59b4cfe7e8fd4dfd0cb1d30b011a2 $
@@ -225,8 +225,8 @@ xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud01.iv.xml
 ========> FAILED XS1 generate an interactive form for native SQL with INT key
 Test XS2 generate an interactive form for a stored procedure
 xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud02.iv.xml
-*** "test\\XS2.prev.tst"	2015-02-01 22:43:52.703551800 +0100
---- "test\\XS2.this.tst"	2015-02-02 19:08:16.404654700 +0100
+*** test/XS2.prev.tst	2015-02-01 22:43:52.703551800 +0100
+--- test/XS2.this.tst	2015-03-26 18:39:07.179389500 +0100
 ***************
 *** 4 ****
 !     @(#) $Id: 866b21dfc680a3cad5e3a3c1742d3a1bae609890 $
@@ -240,8 +240,8 @@ xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud02.iv.xml
 ========> FAILED XS2 generate an interactive form for a stored procedure
 Test XS3 generate an interactive form for native SQL with CHAR keys
 xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud03.iv.xml
-*** "test\\XS3.prev.tst"	2015-02-01 22:43:52.710556900 +0100
---- "test\\XS3.this.tst"	2015-02-02 19:08:16.568763600 +0100
+*** test/XS3.prev.tst	2015-02-01 22:43:52.710556900 +0100
+--- test/XS3.this.tst	2015-03-26 18:39:07.413771000 +0100
 ***************
 *** 4 ****
 !     @(#) $Id: 277f78180df51f0ac80d5682d29fa0bfcdf570ea $
@@ -255,8 +255,8 @@ xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud03.iv.xml
 ========> FAILED XS3 generate an interactive form for native SQL with CHAR keys
 Test XS4 generate an interactive form with AJAX subquery
 xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud04.iv.xml
-*** "test\\XS4.prev.tst"	2015-02-01 22:43:52.719561600 +0100
---- "test\\XS4.this.tst"	2015-02-02 19:08:16.738876100 +0100
+*** test/XS4.prev.tst	2015-02-01 22:43:52.719561600 +0100
+--- test/XS4.this.tst	2015-03-26 18:39:07.648157500 +0100
 ***************
 *** 4 ****
 !     @(#) $Id: f360fc196e3b9f031b3e3fa9827d5d4c935fad69 $
@@ -270,8 +270,8 @@ xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud04.iv.xml
 ========> FAILED XS4 generate an interactive form with AJAX subquery
 Test XS5 generate a non-altering search form
 xsltproc  --stringparam alter 0 web/xslt/dbiv_dbat.xsl web/spec/test/crud01.iv.xml
-*** "test\\XS5.prev.tst"	2015-02-01 22:43:52.725566400 +0100
---- "test\\XS5.this.tst"	2015-02-02 19:08:16.879970100 +0100
+*** test/XS5.prev.tst	2015-02-01 22:43:52.725566400 +0100
+--- test/XS5.this.tst	2015-03-26 18:39:07.866917900 +0100
 ***************
 *** 4 ****
 !     @(#) $Id: 00f4522a80a5e54e1c64b9830c06451a2ac56fe8 $
@@ -285,8 +285,8 @@ xsltproc  --stringparam alter 0 web/xslt/dbiv_dbat.xsl web/spec/test/crud01.iv.x
 ========> FAILED XS5 generate a non-altering search form
 Test XS6 whereClause copied with parm
 xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud05.iv.xml
-*** "test\\XS6.prev.tst"	2015-02-01 22:43:52.733572600 +0100
---- "test\\XS6.this.tst"	2015-02-02 19:08:17.037079100 +0100
+*** test/XS6.prev.tst	2015-02-01 22:43:52.733572600 +0100
+--- test/XS6.this.tst	2015-03-26 18:39:08.148186800 +0100
 ***************
 *** 4 ****
 !     @(#) $Id: c92d9865f8a105a7556c920b62a57330ff57fb92 $
@@ -300,8 +300,8 @@ xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud05.iv.xml
 ========> FAILED XS6 whereClause copied with parm
 Test XS7 not all fields editable
 xsltproc  web/xslt/dbiv_dbat.xsl web/spec/test/crud06.iv.xml
-*** "test\\XS7.prev.tst"	2015-02-01 22:43:52.762592300 +0100
---- "test\\XS7.this.tst"	2015-02-02 19:08:17.223197500 +0100
+*** test/XS7.prev.tst	2015-02-01 22:43:52.762592300 +0100
+--- test/XS7.this.tst	2015-03-26 18:39:08.366945500 +0100
 ***************
 *** 4 ****
 !     @(#) $Id: bbda343ec296b7acfe072217b66833f156952e48 $
@@ -330,8 +330,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.image01"
 ========> passed IM1 show 6 flowers
 Test IM2 page break after each image
 http "http://localhost:8080/dbat/servlet?spec=test.image02"
-*** "test\\IM2.prev.tst"	2015-02-01 22:43:51.814963400 +0100
---- "test\\IM2.this.tst"	2015-02-02 19:08:17.648484900 +0100
+*** test/IM2.prev.tst	2015-02-01 22:43:51.814963400 +0100
+--- test/IM2.this.tst	2015-03-26 18:39:09.023223600 +0100
 ***************
 *** 2,4 ****
 ! <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -443,8 +443,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.selec01"
 ========> passed Y05 spec file with dot
 Test Y06 XML syntax error, CLI
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m html  -f web/spec/test/badxml.xml 2> nul
-2015-02-02 19:08:18,416 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
- 2015-02-02 19:08:18,430 14   [main] ERROR org.teherba.dbat.Dbat  - Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
+2015-03-26 18:39:10,413 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
+ 2015-03-26 18:39:10,429 16   [main] ERROR org.teherba.dbat.Dbat  - Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
  org.xml.sax.SAXParseException; lineNumber: 29; columnNumber: 10; Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
 	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(Unknown Source)
 	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(Unknown Source)
@@ -457,9 +457,9 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -
 	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
 	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:474)
-	at org.teherba.common.RegressionTester.main(RegressionTester.java:562)
-2015-02-02 19:08:18,431 15   [main] ERROR org.teherba.dbat.Dbat  - Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
+	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:479)
+	at org.teherba.common.RegressionTester.main(RegressionTester.java:567)
+2015-03-26 18:39:10,429 16   [main] ERROR org.teherba.dbat.Dbat  - Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
  org.xml.sax.SAXParseException; lineNumber: 29; columnNumber: 10; Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
 	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(Unknown Source)
 	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(Unknown Source)
@@ -472,10 +472,10 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -
 	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
 	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:474)
-	at org.teherba.common.RegressionTester.main(RegressionTester.java:562)
-*** "test\\Y06.prev.tst"	2015-02-01 22:43:52.790610500 +0100
---- "test\\Y06.this.tst"	2015-02-02 19:08:18.465022100 +0100
+	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:479)
+	at org.teherba.common.RegressionTester.main(RegressionTester.java:567)
+*** test/Y06.prev.tst	2015-02-01 22:43:52.790610500 +0100
+--- test/Y06.this.tst	2015-03-26 18:39:10.476417600 +0100
 ***************
 *** 23 ****
 !     <h3 class="error">XML SAX parsing error: The content of elements must consist of well-formed character data or markup. in Dbat specification, line 29, column 10, cause: null</h3></body></html>
@@ -484,8 +484,8 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -
 ========> FAILED Y06 XML syntax error, CLI
 Test Y07 XML syntax error, web
 http "http://localhost:8080/dbat/servlet?spec=test.badxml"
-*** "test\\Y07.prev.tst"	2015-02-01 22:43:52.796614000 +0100
---- "test\\Y07.this.tst"	2015-02-02 19:08:18.537070800 +0100
+*** test/Y07.prev.tst	2015-02-01 22:43:52.796614000 +0100
+--- test/Y07.this.tst	2015-03-26 18:39:10.679576600 +0100
 ***************
 *** 23 ****
 !     <h3 class="error">XML SAX parsing error: The content of elements must consist of well-formed character data or markup. in Dbat specification, line 29, column 10, cause: null</h3></body></html>
@@ -530,7 +530,7 @@ java -cp dist/dbat.jar org.teherba.common.URIReader "http://localhost:8080/dbat/
 ========> passed UR1 http schema
 Test UR4 file schema
 java -cp dist/dbat.jar org.teherba.common.URIReader "file:///home/gfis/work/gits/dbat/web/noversion.txt"
-2015-02-02 19:08:19,174 758  [main] ERROR org.teherba.common.URIReader  - \home\gfis\work\gits\dbat\web\noversion.txt (Das System kann den angegebenen Pfad nicht finden)
+2015-03-26 18:39:11,632 1219 [main] ERROR org.teherba.common.URIReader  - \home\gfis\work\gits\dbat\web\noversion.txt (Das System kann den angegebenen Pfad nicht finden)
  java.io.FileNotFoundException: \home\gfis\work\gits\dbat\web\noversion.txt (Das System kann den angegebenen Pfad nicht finden)
 	at java.io.FileInputStream.open(Native Method)
 	at java.io.FileInputStream.<init>(Unknown Source)
@@ -545,10 +545,10 @@ java -cp dist/dbat.jar org.teherba.common.URIReader "file:///home/gfis/work/gits
 	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
 	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:474)
-	at org.teherba.common.RegressionTester.main(RegressionTester.java:562)
-*** "test\\UR4.prev.tst"	2015-02-01 22:43:52.261254900 +0100
---- "test\\UR4.this.tst"	2015-02-02 19:08:19.172492500 +0100
+	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:479)
+	at org.teherba.common.RegressionTester.main(RegressionTester.java:567)
+*** test/UR4.prev.tst	2015-02-01 22:43:52.261254900 +0100
+--- test/UR4.this.tst	2015-03-26 18:39:11.632722100 +0100
 ***************
 *** 1,3 ****
 - noversion.txt: Test file for URIReader tests
@@ -558,7 +558,7 @@ java -cp dist/dbat.jar org.teherba.common.URIReader "file:///home/gfis/work/gits
 ========> FAILED UR4 file schema
 Test UR5 jar-file schema
 java -cp dist/dbat.jar org.teherba.common.URIReader "jar:file:///home/gfis/work/gits/dbat/dist/dbat.jar!/META-INF/LICENSE"
-2015-02-02 19:08:19,215 799  [main] ERROR org.teherba.common.URIReader  - \home\gfis\work\gits\dbat\dist\dbat.jar (Das System kann den angegebenen Pfad nicht finden)
+2015-03-26 18:39:11,726 1313 [main] ERROR org.teherba.common.URIReader  - \home\gfis\work\gits\dbat\dist\dbat.jar (Das System kann den angegebenen Pfad nicht finden)
  java.io.FileNotFoundException: \home\gfis\work\gits\dbat\dist\dbat.jar (Das System kann den angegebenen Pfad nicht finden)
 	at java.util.zip.ZipFile.open(Native Method)
 	at java.util.zip.ZipFile.<init>(Unknown Source)
@@ -578,10 +578,10 @@ java -cp dist/dbat.jar org.teherba.common.URIReader "jar:file:///home/gfis/work/
 	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
 	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:474)
-	at org.teherba.common.RegressionTester.main(RegressionTester.java:562)
-*** "test\\UR5.prev.tst"	2015-02-01 22:43:52.269263600 +0100
---- "test\\UR5.this.tst"	2015-02-02 19:08:19.214519900 +0100
+	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:479)
+	at org.teherba.common.RegressionTester.main(RegressionTester.java:567)
+*** test/UR5.prev.tst	2015-02-01 22:43:52.269263600 +0100
+--- test/UR5.this.tst	2015-03-26 18:39:11.726476900 +0100
 ***************
 *** 1,202 ****
 - 
@@ -883,8 +883,8 @@ java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -
 ========> passed D09 describe table in JDBC
 Test D10 output default specification
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m spec -d c01
-*** "test\\D10.prev.tst"	2015-02-01 22:43:51.562791300 +0100
---- "test\\D10.this.tst"	2015-02-02 19:08:21.897304700 +0100
+*** test/D10.prev.tst	2015-02-01 22:43:51.562791300 +0100
+--- test/D10.this.tst	2015-03-26 18:39:15.770466400 +0100
 ***************
 *** 7 ****
 ! 	@(#) $Id: 1db076685dc04ad739332398d4979f43c156fe65 $
@@ -1232,8 +1232,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_value_1=M&searc
 ========> passed V04 update place of Maria
 Test V05 place updated
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&view=upd2&search_name=&search_family=Ritter&name=Maria&family=Ritter&birth=1914-09-17&gender=F&place=Berlin-Hermsdorf&decease=1999&changed=current_timestamp&user=testuser"
-*** "test\\V05.prev.tst"	2015-02-01 22:43:52.305283700 +0100
---- "test\\V05.this.tst"	2015-02-02 19:08:33.028691500 +0100
+*** test/V05.prev.tst	2015-02-01 22:43:52.305283700 +0100
+--- test/V05.this.tst	2015-03-26 18:39:30.519759200 +0100
 ***************
 *** 113 ****
 --- 114 ----
@@ -1248,8 +1248,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.crud03&view=ins&search_name=&
 ========> passed V06 insert with data of Maria
 Test V07 Teherba inserted
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&view=ins2&search_name=&search_family=Ritter&name=Teherba&family=Ritter&birth=1886-02-04&gender=F&place=Oranienburg&decease=1968&changed=current_timestamp&user=testuser"
-*** "test\\V07.prev.tst"	2015-02-01 22:43:52.318296600 +0100
---- "test\\V07.this.tst"	2015-02-02 19:08:33.167779900 +0100
+*** test/V07.prev.tst	2015-02-01 22:43:52.318296600 +0100
+--- test/V07.this.tst	2015-03-26 18:39:30.754148700 +0100
 ***************
 *** 108 ****
 --- 109 ----
@@ -1264,8 +1264,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_name=&search_fa
 ========> passed V08 delete Teherba
 Test V09 Teherba deleted
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&view=del2&search_name=&search_family=Ritter&name=Teherba&family=Ritter&birth=&gender=M&place=&decease="
-*** "test\\V09.prev.tst"	2015-02-01 22:43:52.331305600 +0100
---- "test\\V09.this.tst"	2015-02-02 19:08:33.325889200 +0100
+*** test/V09.prev.tst	2015-02-01 22:43:52.331305600 +0100
+--- test/V09.this.tst	2015-03-26 18:39:31.004156300 +0100
 ***************
 *** 111 ****
 --- 112 ----
@@ -1277,8 +1277,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.crud03&view=del2&search_name=
 ========> FAILED V09 Teherba deleted
 Test V10 Show dbiv in wiki format
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=xml"
-*** "test\\V10.prev.tst"	2015-02-01 22:43:52.337309200 +0100
---- "test\\V10.this.tst"	2015-02-02 19:08:33.407939800 +0100
+*** test/V10.prev.tst	2015-02-01 22:43:52.337309200 +0100
+--- test/V10.this.tst	2015-03-26 18:39:31.129162700 +0100
 ***************
 *** 46 ****
 ! <tr><td>upd</td><td>del</td><td>Dorothea</td><td>Fischer</td><td>F</td><td>1910-02-07</td><td>Berlin</td><td>1985</td></tr>
@@ -1302,8 +1302,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&
 ========> FAILED V10 Show dbiv in wiki format
 Test V11 Show dbiv in Excel format
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=xls"
-*** "test\\V11.prev.tst"	2015-02-01 22:43:52.343308900 +0100
---- "test\\V11.this.tst"	2015-02-02 19:08:33.511007700 +0100
+*** test/V11.prev.tst	2015-02-01 22:43:52.343308900 +0100
+--- test/V11.this.tst	2015-03-26 18:39:31.301065900 +0100
 ***************
 *** 51 ****
 ! <Row><Cell><Data ss:Type="String">Dorothea</Data></Cell>
@@ -1371,8 +1371,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&
 ========> FAILED V11 Show dbiv in Excel format
 Test V12 Show dbiv in fixed format
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=fix"
-*** "test\\V12.prev.tst"	2015-02-01 22:43:52.348312200 +0100
---- "test\\V12.this.tst"	2015-02-02 19:08:33.600066400 +0100
+*** test/V12.prev.tst	2015-02-01 22:43:52.348312200 +0100
+--- test/V12.this.tst	2015-03-26 18:39:31.488556400 +0100
 ***************
 *** 1 ****
 ! Dorothea                                Fischer                                 F1910-02-07Berlin                                         1985
@@ -1396,8 +1396,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&
 ========> FAILED V12 Show dbiv in fixed format
 Test V13 Show dbiv in separated format
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=csv"
-*** "test\\V13.prev.tst"	2015-02-01 22:43:52.354317500 +0100
---- "test\\V13.this.tst"	2015-02-02 19:08:33.674116400 +0100
+*** test/V13.prev.tst	2015-02-01 22:43:52.354317500 +0100
+--- test/V13.this.tst	2015-03-26 18:39:31.722941700 +0100
 ***************
 *** 2 ****
 ! Dorothea;Fischer;F;1910-02-07;Berlin;1985
@@ -1421,8 +1421,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&
 ========> FAILED V13 Show dbiv in separated format
 Test V14 Show dbiv in JSON format
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=json"
-*** "test\\V14.prev.tst"	2015-02-01 22:43:52.360325300 +0100
---- "test\\V14.this.tst"	2015-02-02 19:08:33.751171800 +0100
+*** test/V14.prev.tst	2015-02-01 22:43:52.360325300 +0100
+--- test/V14.this.tst	2015-03-26 18:39:31.941703400 +0100
 ***************
 *** 6 ****
 !     [ ["Dorothea","Fischer","F","1910-02-07","Berlin",1985]
@@ -1446,8 +1446,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&
 ========> FAILED V14 Show dbiv in JSON format
 Test V15 Show dbiv in SQL INSERT format
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=sql"
-*** "test\\V15.prev.tst"	2015-02-01 22:43:52.366324200 +0100
---- "test\\V15.this.tst"	2015-02-02 19:08:33.859238900 +0100
+*** test/V15.prev.tst	2015-02-01 22:43:52.366324200 +0100
+--- test/V15.this.tst	2015-03-26 18:39:32.051080600 +0100
 ***************
 *** 4 ****
 ! VALUES ('Dorothea','Fischer','F','1910-02-07','Berlin',1985);
@@ -1491,8 +1491,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&
 ========> FAILED V15 Show dbiv in SQL INSERT format
 Test V16 Show dbiv in SQL UPDATE format
 http "http://localhost:8080/dbat/servlet?spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=update"
-*** "test\\V16.prev.tst"	2015-02-01 22:43:52.372328200 +0100
---- "test\\V16.this.tst"	2015-02-02 19:08:34.013341100 +0100
+*** test/V16.prev.tst	2015-02-01 22:43:52.372328200 +0100
+--- test/V16.this.tst	2015-03-26 18:39:32.191718200 +0100
 ***************
 *** 2,5 ****
 ! UPDATE table_not_specified SET name='Dorothea',family='Fischer',gender=
@@ -1555,8 +1555,8 @@ diff -Z  test/V04.prev.tst test/VI4.this.tst
 ========> passed VI4D precompiled = direct dbiv?
 Test VI5 place updated
 http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&view=upd2&search_name=&search_family=Ritter&name=Maria&family=Ritter&birth=1914-09-17&gender=F&place=Berlin-Hermsdorf&decease=1999&changed=current_timestamp&user=testuser"
-*** "test\\VI5.prev.tst"	2015-02-01 22:43:52.418363400 +0100
---- "test\\VI5.this.tst"	2015-02-02 19:08:36.861235500 +0100
+*** test/VI5.prev.tst	2015-02-01 22:43:52.418363400 +0100
+--- test/VI5.this.tst	2015-03-26 18:39:35.426243800 +0100
 ***************
 *** 113 ****
 --- 114 ----
@@ -1568,8 +1568,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&view=upd2&search_na
 ========> FAILED VI5 place updated
 Test VI5D precompiled = direct dbiv?
 diff -Z  test/V05.prev.tst test/VI5.this.tst
-*** "test\\VI5D.prev.tst"	2015-02-01 22:43:52.421360700 +0100
---- "test\\VI5D.this.tst"	2015-02-02 19:08:36.963299400 +0100
+*** test/VI5D.prev.tst	2015-02-01 22:43:52.421360700 +0100
+--- test/VI5D.this.tst	2015-03-26 18:39:35.551251000 +0100
 ***************
 *** 12 ****
 --- 13,16 ----
@@ -1586,8 +1586,8 @@ diff -Z  test/V06.prev.tst test/VI6.this.tst
 ========> passed VI6D precompiled = direct dbiv?
 Test VI7 Teherba inserted
 http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&view=ins2&search_name=&search_family=Ritter&name=Teherba&family=Ritter&birth=1886-02-04&gender=F&place=Oranienburg&decease=1968&changed=current_timestamp&user=testuser"
-*** "test\\VI7.prev.tst"	2015-02-01 22:43:52.438372000 +0100
---- "test\\VI7.this.tst"	2015-02-02 19:08:38.088046300 +0100
+*** test/VI7.prev.tst	2015-02-01 22:43:52.438372000 +0100
+--- test/VI7.this.tst	2015-03-26 18:39:36.895063500 +0100
 ***************
 *** 108 ****
 --- 109 ----
@@ -1599,8 +1599,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&view=ins2&search_na
 ========> FAILED VI7 Teherba inserted
 Test VI7D precompiled = direct dbiv?
 diff -Z  test/V07.prev.tst test/VI7.this.tst
-*** "test\\VI7D.prev.tst"	2015-02-01 22:43:52.445376600 +0100
---- "test\\VI7D.this.tst"	2015-02-02 19:08:38.172105900 +0100
+*** test/VI7D.prev.tst	2015-02-01 22:43:52.445376600 +0100
+--- test/VI7D.this.tst	2015-03-26 18:39:37.020080100 +0100
 ***************
 *** 12 ****
 --- 13,16 ----
@@ -1617,8 +1617,8 @@ diff -Z  test/V08.prev.tst test/VI8.this.tst
 ========> passed VI8D precompiled = direct dbiv?
 Test VI9 Teherba deleted
 http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&view=del2&search_name=&search_family=Ritter&name=Teherba&family=Ritter&birth=&gender=M&place=&decease="
-*** "test\\VI9.prev.tst"	2015-02-01 22:43:52.485407500 +0100
---- "test\\VI9.this.tst"	2015-02-02 19:08:39.273832800 +0100
+*** test/VI9.prev.tst	2015-02-01 22:43:52.485407500 +0100
+--- test/VI9.this.tst	2015-03-26 18:39:38.160746400 +0100
 ***************
 *** 111 ****
 --- 112 ----
@@ -1630,8 +1630,8 @@ http "http://localhost:8080/dbat/servlet?spec=test.crud03.iv&view=del2&search_na
 ========> FAILED VI9 Teherba deleted
 Test VI9D precompiled = direct dbiv?
 diff -Z  test/V09.prev.tst test/VI9.this.tst
-*** "test\\VI9D.prev.tst"	2015-02-01 22:43:52.493411500 +0100
---- "test\\VI9D.this.tst"	2015-02-02 19:08:39.360895300 +0100
+*** test/VI9D.prev.tst	2015-02-01 22:43:52.493411500 +0100
+--- test/VI9D.this.tst	2015-03-26 18:39:38.270136900 +0100
 ***************
 *** 12 ****
 --- 13,16 ----
@@ -1651,4 +1651,4 @@ http "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ========> passed VA3 echo with var elements
    0 tests recreated,
   35 tests FAILED,
- 235 tests passed in 29275 ms
+ 235 tests passed in 39592 ms

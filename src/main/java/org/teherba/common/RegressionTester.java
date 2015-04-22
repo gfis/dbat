@@ -1,5 +1,6 @@
 /*  Reader for text file, returns a string without any whitespace
  *  @(#) $Id$
+ *  2015-03-26: cat after cp (if *.prev.tst did not exist)
  *  2014-11-10: SORT=; more Javadoc
  *  2014-03-30: diff -Z
  *  2014-02-16: encoding for all BufferedReaders
@@ -121,7 +122,7 @@ public class RegressionTester {
     /** System-specific line separator (CR, LF for Unix or CR/LF for Windows)*/
     private static final String nl      = System.getProperty("line.separator");
     /** System-specific file separator ("/" for Unix, "\" for Windows */
-    private static final String slash   = System.getProperty("file.separator");
+    private static final String slash   = "/"; // System.getProperty("file.separator");
 
     /** No-args Constructor
      */
@@ -226,12 +227,10 @@ public class RegressionTester {
             realStdOut.println(logText);
             Process process = runtime.exec(cmd);
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), logEncoding));
-            int iline = 0;
             String line = null;
             while ((line = reader.readLine()) != null) {
                 thisStream.println(line);
-                iline ++;
-            } // while iline
+            } // while readLine
             reader.close();
         } catch (Exception exc) {
             try {
@@ -407,13 +406,12 @@ public class RegressionTester {
                                         cmd = diffPrefix + " -C0 " + prevName + " " + thisName; // -Z = ignore line ends
                                             // context diffs may be used only here, but not in our DIFF command
                                         process = runtime.exec(cmd);
-                                        // System.out.println(cmd);
                                         reader = new BufferedReader(new InputStreamReader(process.getInputStream(), logEncoding));
                                         int iline = 0;
                                         while ((line = reader.readLine()) != null) {
                                             System.out.println(line);
                                             iline ++;
-                                        } // while iline
+                                        } // while readLine
                                         reader.close();
                                         passed = iline == 0;
                                         if (passed) {
@@ -426,6 +424,13 @@ public class RegressionTester {
                                         cmd = "cp "         + thisName + " " + prevName;
                                         process = runtime.exec(cmd);
                                         System.out.println(cmd);
+                                        cmd = "cat "         + thisName;
+                                        process = runtime.exec(cmd);
+                                        reader = new BufferedReader(new InputStreamReader(process.getInputStream(), logEncoding));
+                                        while ((line = reader.readLine()) != null) {
+                                            System.out.println(line);
+                                        } // while readLine
+                                        reader.close();
                                         recreatedCount ++;
                                         realStdOut.println("========> recreated  "                          + testName + " " + testDesc);
                                     } // copy

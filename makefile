@@ -2,6 +2,7 @@
 
 # Test Dbat functions with MySQL, and other utility targets
 # @(#) $Id$
+# 2015-04-07: parameter LANG=en for spec_index and dbiv
 # 2014-11-10: regression*.log now in test/; validation and dbiv processing
 # 2014-11-08: target identify with etc/util/git_version.pl; no gopher
 # 2013-01-05: RegressionTester replaces all_tester.pl
@@ -19,6 +20,7 @@ DIFF=diff -w -rs -C0
 SRC=src/main/java/org/teherba/dbat
 TOMC=/var/lib/tomcat/webapps/dbat
 METHOD=post
+LANG=en
 TAB=relatives
 TESTDIR=test
 # the following can be overriden outside for single or subset tests,
@@ -135,7 +137,7 @@ spec_gen:
 	| grep -vE "incl" \
 	| xargs -l -iqqq xsltproc --novalid \
 	--stringparam filename qqq \
-	--stringparam lang en etc/xslt/gen_spec_index.xsl web/spec/qqq \
+	--stringparam lang $(LANG) etc/xslt/gen_spec_index.xsl web/spec/qqq \
 							>> etc/sql/spec_index_insert.sql
 	echo '--'				>> etc/sql/spec_index_insert.sql
 	echo 'commit;'			>> etc/sql/spec_index_insert.sql
@@ -189,7 +191,7 @@ crud05:
 # make dbiv_dbat IV=test/crud03
 dbiv_dbat:
 	echo $(IV) | xargs -l -iqqq xsltproc --novalid \
-	--stringparam lang   en  \
+	--stringparam lang   $(LANG)  \
 	--stringparam method $(METHOD) \
 	web/xslt/dbiv_dbat.xsl web/spec/qqq.iv.xml >web/spec/$(IV).xml
 	sudo touch 								$(TOMC)/spec/$(IV).xml
@@ -211,7 +213,7 @@ iv1:
 	$(DBAW) -m xml -nsp db -d $(TAB) | tee x.tmp
 iv2:
 	xsltproc --novalid \
-	--stringparam lang en  \
+	--stringparam lang $(LANG)  \
 	--stringparam conn worddb \
 	etc/xslt/dbat_dbiv.xsl x.tmp
 #--------------------------------------

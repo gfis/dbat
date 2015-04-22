@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Generate an INSERT statement for the descriptive table spec_index
-    @(#) $Id: gen_spec_index.xsl 923 2012-04-20 16:09:02Z gfis $
+    @(#) $Id$
     2012-04-13: COMMIT behind every INSERT
     2011-03-17: normalize-space
     2011-02-10: Dr. Georg Fischer
