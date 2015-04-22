@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dbat encoding="UTF-8"
+        conn="worddb"
+        lang="en"
+        xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        title="highlight"
+        >
+<!--
+    @(#) $Id$
+    2015-04-22, Dr. Georg Fischer: copied from spec/test/index.xml
+            remark="REPLACE(comment...)"
+-->
+    <comment lang="de">Liste der Spezifikationen mit Hervorhebung eines Schlagworts
+    </comment>
+    <comment lang="en">List of Specifications with Highlighting of a Keyword
+    </comment>
+
+    <ht:h2><ht:a href="index.html">Dbat</ht:a> - Test Specifications</ht:h2>
+    <ht:form method="get">
+        <ht:input label="Keyword" name="keyword" maxsize="72" size="72" init="color" /> &#xa0;
+        <ht:input type="submit" value="Search" />
+    </ht:form>
+
+    <select group="subdir">
+        <col name="subdir" label="Area" style="visible">subdir</col>
+        <col label="Script" href="servlet?&amp;spec=">subdir ||  '.' || name</col>
+        <col label="Description"
+            >
+            REPLACE(UPPER(comment),UPPER('<parm name="keyword" />'), '<ht:span style="background: lightsalmon;">' || UPPER('<parm name="keyword" />') || '</ht:span>')
+        </col>
+        <col label="Parameters with defaults">params</col>
+        <from>spec_index
+        </from>
+        <where>subdir = 'test'
+            AND lang = 'en'
+            AND UPPER(comment) LIKE UPPER('%<parm name="keyword" />%')
+        </where>
+        <order by="1,2" />
+        <counter desc="Script,s" />
+    </select>
+</dbat>

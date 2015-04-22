@@ -1,5 +1,5 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
- *  @(#) $Id$ 2015-02-02 17:26:30 
+ *  @(#) $Id$ 2015-04-22 12:07:45 gfis
  *  2014-11-11: major version 9; update $\Id content with etc/util/git_version.pl
  *  2014-11-03: always respond with MIME type application/xhtml+xml
  *  2014-02-16: application/xhtml+xml if System.getProperty("os.name"       ).startsWith("Windows 8")
@@ -487,7 +487,8 @@ public class Configuration implements Serializable {
     } // getVerbose
 
     /** Gets the program's version.
-     *  The value returned is reasonable only if this source file was changed and SVN committed before the build!
+     *  The value returned is reasonable only if this source file was changed and git committed before the build!
+     *  Target <em>identify</em> in <em>dbat/makefile</em> should be run before!
      *  @return a string of the form "Dbat Vm.hhhh/isodate",
      *  where m is the major version,
      *  and hhhh are the first 4 digits of the git hash number
@@ -498,7 +499,13 @@ public class Configuration implements Serializable {
         String[] vers = CVSID.split("\\s+");
         // V8         up to 2014-11-07
         // V9.* starting at 2014-11-08
-        return "Dbat V9." + vers[3].substring(0,4) + "/" + vers[4];
+        String result = "Dbat V9.";
+        if (vers.length >= 5) { // CVS, SVN Id: HTMLTable.java 946 2012-05-29 15:53:06Z gfis
+            result += (vers[3] + "    ").substring(0,4).trim() + "/" + vers[4];
+        } else { // unmodified git Id c.f. above
+            result += (vers[2] + "    ").substring(0,4).trim();
+        }
+        return result;
     } // getVersionString
 
     /** whether to print header and trailer */

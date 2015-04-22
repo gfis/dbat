@@ -1,5 +1,6 @@
 /*  Generator for an HTML table
     @(#) $Id$
+    2015-04-22: repair title="..." attribute for SQL REPLACE with embedded HTML (highlighting)
     2014-11-10: s|getHrefValue -> s|getWrappedValue
     2012-12-10: sortable again and counter 0, language dependant
     2012-11-29: sorttable.js
@@ -519,17 +520,20 @@ public class HTMLTable extends XMLTable {
                         if (false) {
                         } else if (isSortable) {
                             result.append(" title=\"");
-                            result.append(Messages.getSortTitle(language));
+                            result.append(Messages.getSortTitle(language)); // "Click => Sort"
                             result.append("\"");
                         } else if (remark != null && remark.length() > 0) {
                             result.append(" title=\"");
-                            result.append(remark);
+                            result.append(remark); // should not contain quotes and apostrophes
                             result.append("\"");
                         } else {
                             String expr = column.getExpr();
                             if (expr != null && expr.length() > 0) {
                                 result.append(" title=\"");
-                                result.append(expr);
+                                result.append(expr
+                                        .replaceAll("\"", "&quot;")
+                                //      .replaceAll("\'", "&apos;")
+                                        );
                                 result.append("\"");
                             }
                         }

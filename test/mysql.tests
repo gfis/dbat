@@ -2,6 +2,7 @@
 
 # Collection of Testcases for Dbat with MySQL driver
 # @(#) $Id: all.tca 955 2012-06-05 07:22:59Z gfis $
+# 2014-04-22: + TI1,2
 # 2014-03-10: + DF1-3
 # 2014-03-05: + XS7, +V1*
 # 2013-02-01: web/spec/test/fragment01.xml
@@ -732,6 +733,12 @@ HTTP spec=test/color08
 
 TEST C09 web with class/style colors on columns and rows
 HTTP spec=test/color09
+
+TEST TI1 HTML title attribute - CLI
+CALL Dbat -m html -f web/spec/test/highlight.xml
+
+TEST TI2 HTML title attribute - web
+HTTP spec=test/highlight
 #-------------------
 # Fragment test
 TEST FR1 fragment at the end of the URL
