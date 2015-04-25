@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2014-11-11, Georg Fischer: with pagebreaks
+-->
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang="en"
+        javascript="../javascript.js"
+        conn="worddb"
+        title="image01"
+        debug="2"
+        >
+    <!-- copy of selec02 -->
+    <comment lang="en">Select from a Table with Pagebreaks</comment>
+    <comment lang="de">Abfrage einer Tabelle mit Seitenwechseln</comment>
+
+    <ht:h3><ht:a href="servlet?spec=test.index">Test</ht:a>: Select from table with pagebreaks</ht:h3>
+    <select>
+        <col label="Image"  wrap="javascript" sep=",">
+            'showImage,' || imagefile || ',100'
+        </col>
+    <!--
+    -->
+        <col label="Name"                >imagename</col>
+        <col label="Size"  align="right" >bytesize</col>
+        <col label="Verbatim Description" wrap="verbatim" >description</col>
+        <col pseudo="style">'pagebreak'</col>
+        <from>im1</from>
+        <order by="1" />
+        <counter desc="Flower,s"/>
+    </select>
+    <ht:p>
+        The images were copied from
+        <ht:a href="https://commons.wikimedia.org/wiki/Category:Flowers_of_Georgia" target="_new">
+        Category:Flowers_of_Georgia in commons.wikimedia.org
+        </ht:a>.
+        <ht:br />They are licensed there unter a "Attribution - Share alike"
+        <ht:a href="https://creativecommons.org/licenses/by-sa/2.0/deed.en" target="_new" >Creative Commons</ht:a> License.
+    </ht:p>
+
+</dbat>
