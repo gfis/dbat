@@ -1,8 +1,8 @@
-#Sat, 16 Apr 2016 22:42:02 +0200
+#Sat, 16 Apr 2016 23:44:34 +0200
 
 build.name=dbat
-build.number=751
-build.date=2016-04-16 22.42.02
+build.number=754
+build.date=2016-04-16 23.44.34
 build.jdk=for JDK 1.6
 
-build.git=$Id$
+build.git=$Id\: a5d022bf5972923d0a2dfe36b41644ba462b6eff $

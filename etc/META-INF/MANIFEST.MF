@@ -7,8 +7,8 @@ Main-Class: org.teherba.dbat.Dbat
 Name: dbat
 Specification-Title: dbat
 Specification-Version: 10 for JDK 1.6
-Specification-Vendor: Dr. Georg Fischer
+Specification-Vendor: $Id$
 Implementation-Title: dbat
-Implementation-Version: dbat 751 2016-04-16 22.42.02
-Implementation-Vendor: $Id$
+Implementation-Version: dbat 754 2016-04-16 23.44.34
+Implementation-Vendor: Dr. GEorg Fischer, Kenzingen
 
