@@ -161,7 +161,7 @@ TEST I02 include with system entities
 HTTP spec=test/includer
 
 TEST I03 check for ANSI concatenation with '||'
-CALL Dbat "SELECT name || ' ' || univ FROM c01 order by 1"
+CALL Dbat "SELECT name || ' ' || univ FROM c01 order by name"
 #-------------------
 # Connection Id from HTTP request
 TEST CI1 connection id worddb in request
@@ -462,10 +462,12 @@ CALL URIReader "http://localhost:8080/dbat/noversion.txt"
 # CALL URIReader "ftp://ftp.gnu.org/README"
 
 TEST UR4 file schema
-CALL URIReader "file:///home/gfis/work/gits/dbat/web/noversion.txt"
+CALL URIReader "file://$(PWD)/web/noversion.txt"
+# CALL URIReader "file:///c:\\users\gfis\work\gits\dbat/web/noversion.txt"
 
 TEST UR5 jar-file schema
-CALL URIReader "jar:file:///home/gfis/work/gits/dbat/dist/dbat.jar!/META-INF/LICENSE"
+CALL URIReader "jar:file://$(PWD)/dist/dbat.jar!/META-INF/LICENSE"
+# CALL URIReader "jar:file:///c:\\users\gfis\work\gits\dbat\dist\dbat.jar!/META-INF/LICENSE"
 
 TEST UR6 relative file
 CALL URIReader "web/noversion.txt"
@@ -735,10 +737,10 @@ TEST C09 web with class/style colors on columns and rows
 HTTP spec=test/color09
 
 TEST TI1 HTML title attribute - CLI
-CALL Dbat -m html -f web/spec/test/highlight.xml
+CALL Dbat -m html -f web/spec/test/highlight.xml -p keyword=ajax
 
 TEST TI2 HTML title attribute - web
-HTTP spec=test/highlight
+HTTP spec=test/highlight&keyword=ajax
 #-------------------
 # Fragment test
 TEST FR1 fragment at the end of the URL

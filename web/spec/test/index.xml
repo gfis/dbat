@@ -8,6 +8,7 @@
         >
 <!--
     @(#) $Id$
+    2016-02-09: order by subdir, name
     2012-02-10: in English
     2011-07-29, Dr. Georg Fischer: copied from spec/index.xml
 -->    
@@ -25,9 +26,8 @@
         <from>spec_index
         </from>
         <where>subdir = 'test'
-            and lang = 'en'
         </where>
-        <order by="1,2" />
+        <order by="subdir,name" />
         <counter desc="Script,s" />
     </select>
 </dbat>

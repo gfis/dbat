@@ -2,7 +2,7 @@
 <!--
     Transforms a record structure definition into a Java class
     with field definitions, setters, getters, XML parser and serializer methods
-    @(#) $Id: genRecord.xsl 9 2008-09-05 05:21:15Z gfis $
+    @(#) $Id$
     2008-06-21: with <choice>, UTF-8 äöüÄÖÜß
     2007-11-11: protected properties instead of private ones
     2007-08-29: major revision, renamed from 'genBean.xsl', Bean repaired at various places

@@ -157,9 +157,9 @@
       <ht:tr><ht:td valign="top" title="gender">Gender:</ht:td>
         <ht:td>
         <db:select distinct="yes" into="parm">
-          <db:col name="code">gender</db:col><db:col name="display">case 
-                        when gender = 'M' then 'male' 
-                        else                   'female' end 
+          <db:col name="code">gender</db:col><db:col name="display">case
+                        when gender = 'M' then 'male'
+                        else                   'female' end
                     </db:col><db:from>relatives</db:from><db:order by="1"/>
         </db:select>
         <db:listbox height="2" name="gender" init="M" code="code" display="display"/>
@@ -237,9 +237,9 @@
       <ht:tr><ht:td valign="top" title="gender">Gender:</ht:td>
         <ht:td>
         <db:select distinct="yes" into="parm">
-          <db:col name="code">gender</db:col><db:col name="display">case 
-                        when gender = 'M' then 'male' 
-                        else                   'female' end 
+          <db:col name="code">gender</db:col><db:col name="display">case
+                        when gender = 'M' then 'male'
+                        else                   'female' end
                     </db:col><db:from>relatives</db:from><db:order by="1"/>
         </db:select>
         <db:listbox height="2" name="gender" init="M" code="code" display="display"/>

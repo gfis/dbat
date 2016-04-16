@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Generates a Dbiv interactive view from Dbat's XML description of a view/table
-    @(#) $Id: dbat_dbiv.xsl 935 2012-05-14 17:51:59Z gfis $
+    @(#) $Id$
     2012-05-09, Dr. Georg Fischer: copied from dbiv_spec.xsl
 -->
 <!--

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Extract all href= and link= attributes, and the name of <parm> and input elements
-    @(#) $Id: gen_parm_xref.xsl 864 2012-01-23 19:31:18Z gfis $
+    @(#) $Id$
     2012-07-09: <var />
     2012-01-18: Dr. Georg Fischer: copied from gen_spec_index.xsl
 -->

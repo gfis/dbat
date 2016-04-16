@@ -2,6 +2,7 @@
 <!--
 	Interactive view definition for test form crud03.xml
     @(#) $Id$
+    2016-04-16: order by ordinal is deprecated
     2012-03-15: type="action" fields
     2012-02-27, Dr. Georg Fischer
 -->
@@ -144,7 +145,7 @@
           <db:col name="code">gender</db:col><db:col name="display">case 
 						when gender = 'M' then 'male' 
 						else                   'female' end 
-					</db:col><db:from>relatives</db:from><db:order by="1"/>
+					</db:col><db:from>relatives</db:from><db:order by="gender"/>
         </db:select>
         <db:listbox height="2" name="gender" init="M" code="code" display="display"/>
         
@@ -266,7 +267,7 @@
           <db:col name="code">gender</db:col><db:col name="display">case 
 						when gender = 'M' then 'male' 
 						else                   'female' end 
-					</db:col><db:from>relatives</db:from><db:order by="1"/>
+					</db:col><db:from>relatives</db:from><db:order by="gender"/>
         </db:select>
         <db:listbox height="2" name="search_gender" init="" empty="(any)" code="code" display="display"/>
         
@@ -327,7 +328,7 @@
         and family like '<parm name="search_family"/>%'
         and gender like '<parm name="search_gender"/>%'
       </where>
-      <order by="1,2"/>
+      <order by="name,family"/>
       <counter desc="Person,s"/>
     </select>
   </when>

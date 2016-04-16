@@ -1,7 +1,7 @@
 <?xml version="1.0"  encoding="UTF-8"?>
 <!--
 	XML richtig einruecken
-	@(#) $Id: identity.xsl 856 2012-01-11 07:06:18Z gfis $
+	@(#) $Id$
     2006-10-24, Dr. Georg Fischer:  aus XML Hacks # 38
     
     Aufruf: xalan -i 4 -o outputfile inputfile pretty.xsl

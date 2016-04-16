@@ -1,5 +1,7 @@
 /*  Reader for text file, returns a string without any whitespace
  *  @(#) $Id$
+ *  2016-04-16: macro PWD = System.getProperty("user.dir")
+ *  2015-09-08: continue lines with "\\" at the end
  *  2015-03-26: cat after cp (if *.prev.tst did not exist)
  *  2014-11-10: SORT=; more Javadoc
  *  2014-03-30: diff -Z
@@ -130,6 +132,11 @@ public class RegressionTester {
         log = Logger.getLogger(RegressionTester.class.getName());
         timestamp = (new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss")).format(new java.util.Date());
         macros = new HashMap<String, String>(16);
+        String pwd = System.getProperty("user.dir");
+        if (pwd.substring(1, 3).equals(":\\")) { // Windows
+            pwd = "/" + pwd;
+        }
+        macros.put("PWD", pwd);
     } // no-args Constructor
 
     //************************
@@ -252,38 +259,38 @@ public class RegressionTester {
      *  test case name pattern (with Linux or SQL wildcard characters)
      */
     public void runTests(String[] args) {
-        long startMillis = System.currentTimeMillis();
-        String directory = ".";
-        String fileName = "-";
-        boolean skipping = false; // whether to skip test cases because their names do not match 'testNamePattern'
-        String tcaEncoding = "UTF-8"; // encoding for the test case input file and the generated data files
-        String testName = "UNDEF"; // name of the current test case
-        String testDesc = "UNDEF test case"; // comment for the test case
-        String testLine = null; // current line from test case file
+        long startMillis        = System.currentTimeMillis();
+        String directory         = ".";
+        String fileName         = "-";
+        boolean skipping        = false; // whether to skip test cases because their names do not match 'testNamePattern'
+        String tcaEncoding      = "UTF-8"; // encoding for the test case input file and the generated data files
+        String testName         = "UNDEF"; // name of the current test case
+        String testDesc         = "UNDEF test case"; // comment for the test case
+        String testLine         = null; // current line from test case file
         StringBuffer dataBuffer = new StringBuffer(1024); // for DATA assembly
-        String thisName = null; // filename for this test's results
-        String prevName = null; // filename for previous test's results
-        String dataName = "XXX.data." + DATA_EXTENSION; // DATA file name for current test case
-        File  thisFile = null;
-        File  prevFile = null;
-        String ext = ".tst"; // extension for result files
-        Process process = null;
-        Class<?> targetClass = null; // for reflective method invocation
-        Method mainMethod  = null;
-        String classPrefix = "org.teherba."; // default for PACKAGE macro
-        String argsPrefix  = ""; // default for ARGS macro
-        String diffPrefix  = "diff -Z "; // -Z = ignore line ends
-        String baseURL     = "http://localhost:8080/dbat/servlet"; // default for URL macro
-        String sortPrefix  = "sort ";
-        String xsltPrefix  = "xsltproc ";
-        String cmd         = null; // system command to be executed
-        BufferedReader reader = null; // reader for stdout from 'cmd'
-        String line        = null; // a line read from some Reader
-        int    passedCount = 0; // number of tests which were run successfully
-        int    failedCount = 0; // number of tests which showed a 'diff'erence
-        int    recreatedCount = 0; // number of tests for which there was no previous result file
-        String logText = null; // for test files and STDOUT
-        String[] replacements = null; /* replacement patterns and their substitutions in consecutive elements */
+        String thisName         = null; // filename for this test's results
+        String prevName         = null; // filename for previous test's results
+        String dataName         = "XXX.data." + DATA_EXTENSION; // DATA file name for current test case
+        File  thisFile          = null;
+        File  prevFile          = null;
+        String ext              = ".tst"; // extension for result files
+        Process process         = null;
+        Class<?> targetClass    = null; // for reflective method invocation
+        Method mainMethod       = null;
+        String classPrefix      = "org.teherba."; // default for PACKAGE macro
+        String argsPrefix       = ""; // default for ARGS macro
+        String diffPrefix       = "diff -Z "; // -Z = ignore line ends
+        String baseURL          = "http://localhost:8080/dbat/servlet"; // default for URL macro
+        String sortPrefix       = "sort ";
+        String xsltPrefix       = "xsltproc ";
+        String cmd              = null; // system command to be executed
+        BufferedReader reader   = null; // reader for stdout from 'cmd'
+        String line             = null; // a line read from some Reader
+        int    passedCount      = 0; // number of tests which were run successfully
+        int    failedCount      = 0; // number of tests which showed a 'diff'erence
+        int    recreatedCount   = 0; // number of tests for which there was no previous result file
+        String logText          = null; // for test files and STDOUT
+        String[] replacements   = null; /* replacement patterns and their substitutions in consecutive elements */
 
         int iarg = 0;
         if (args.length > iarg) {
@@ -339,6 +346,21 @@ public class RegressionTester {
                     testLine = "TEST END";
                     busy = false;
                 }
+                if (testLine.trim().endsWith("\\")) { 
+                    // followed by continuation line(s) - read and append them to testLine
+                    testLine = testLine.replaceAll("\\\\\\s*\\Z", " ").trim(); // a single space
+                    String testLine2 = null;
+                    boolean continued = true;
+                    while (continued && (testLine2 = tcaReader.readLine()) != null) { // read and process lines
+                        if (testLine2.trim().endsWith("\\")) { // followed by continuation line(s) 
+                            testLine2 = testLine2.replaceAll("\\\\\\s*\\Z", " ") ; // a single space
+                        } else {
+                            continued = false;
+                        }
+                        testLine += " " + testLine2.trim();
+                    } // while testLine2
+                } // followed by continuatin lines
+                
                 if (false) {
                 } else if (testLine.matches("\\s*#.*") || testLine.matches("\\s*")) { // comment line or empty line
                     // ignore
@@ -534,6 +556,8 @@ public class RegressionTester {
                     }
                 } // verb starting in column 1
             } // while ! eof
+            
+            // Print trailer
             realStdOut.printf("%4d tests recreated," , recreatedCount);
             realStdOut.println();
             realStdOut.printf("%4d tests FAILED,"    , failedCount);
@@ -542,6 +566,7 @@ public class RegressionTester {
             realStdOut.print(" in " + (System.currentTimeMillis() - startMillis) + " ms");
             realStdOut.println();
             tcaReader.close();
+            // restore output streams
             System.setOut(realStdOut);
             System.setErr(realStdErr);
         } catch (Exception exc) {

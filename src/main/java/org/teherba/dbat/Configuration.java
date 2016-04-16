@@ -1,5 +1,5 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
- *  @(#) $Id$ 2015-04-22 12:07:45 gfis
+ *  @(#) $Id$ 2015-04-23 22:09:23 
  *  2014-11-11: major version 9; update $\Id content with etc/util/git_version.pl
  *  2014-11-03: always respond with MIME type application/xhtml+xml
  *  2014-02-16: application/xhtml+xml if System.getProperty("os.name"       ).startsWith("Windows 8")

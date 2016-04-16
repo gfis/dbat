@@ -1660,7 +1660,7 @@ public class SQLAction implements Serializable {
         int icol = 0;
         String rawTable = tbMetaData.getTableName();
         char formatCode = config.getFormatMode().charAt(0); // default: 't'sv resp. whitespace separated
-        String line; // a line read from STDIN
+        String line = ""; // a line read from STDIN
         PreparedStatement insertStmt = null;
         try {
             Connection con = config.getConnection();
@@ -1811,6 +1811,7 @@ public class SQLAction implements Serializable {
             this.execCommitStatement();
             insertStmt.close();
         } catch (Exception exc) {
+        	System.err.println("** offending line: " + line);
             log.error(exc.getMessage(), exc);
             this.setCommitted(true); // avoid a final COMMIT
             printSQLError(exc);

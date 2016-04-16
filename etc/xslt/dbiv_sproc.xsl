@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Generates a Stored Procedure Stub for Dbat interactive views äöü
-    @(#) $Id: dbiv_sproc.xsl 941 2012-05-22 17:05:49Z gfis $
+    @(#) $Id$
     2012-06-27: timestamp(19) with space
     2012-06-25: without sql_state and update_count
     2012-04-17, Dr. Georg Fischer: copied from dbiv_spec.xsl

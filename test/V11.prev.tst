@@ -12,7 +12,7 @@ SELECT DISTINCT gender
 						when gender = 'M' then 'male' 
 						else                   'female' end 
 FROM relatives 
-ORDER BY 1;
+ORDER BY gender;
 :SQL -->
 <!-- SQL:
 SELECT '' || '=' 
@@ -37,7 +37,7 @@ FROM relatives
 WHERE name like '%'
         and family like '%'
         and gender like '%' 
-ORDER BY 1,2;
+ORDER BY name,family;
 :SQL -->
 <Worksheet ss:Name="Select1">
 <Table>

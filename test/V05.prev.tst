@@ -54,7 +54,7 @@ SELECT DISTINCT gender
 						when gender = 'M' then 'male' 
 						else                   'female' end 
 FROM relatives 
-ORDER BY 1;
+ORDER BY gender;
 :SQL -->
 
         <select name="search_gender" size="3">
@@ -107,7 +107,7 @@ FROM relatives
 WHERE name like '%'
         and family like 'Ritter%'
         and gender like '%' 
-ORDER BY 1,2;
+ORDER BY name,family;
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
 <tr><th title="update">Upd.</th><th title="delete">Del.</th><th title="name">Name</th><th title="family">Family</th><th title="gender">Gender</th><th title="birth">Birthdate</th><th title="place">Place</th><th title="decease">Died</th></tr>

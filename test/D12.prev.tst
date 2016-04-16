@@ -31,7 +31,7 @@ CREATE TABLE spec_index
 	, lang	VARCHAR(8) NOT NULL
 	, title	VARCHAR(64)
 	, comment	VARCHAR(512)
-	, params	VARCHAR(128)
+	, params	VARCHAR(1024)
 	, CONSTRAINT PK29 PRIMARY KEY (subdir, lang, name)
 	);
 COMMIT;

@@ -1,5 +1,6 @@
 /*  TableColumn - bean with properties of an abstract column
     @(#) $Id$
+    2016-02-10: values may not be null if wrapped
     2014-11-11: wrap="verbatim"
     2014-11-10: s|getHrefValue -> s|getWrappedValue; SQLAction.separateURLfromValue now is this.separatedWrapperAndValue
     2014-11-06: additional property wrap
@@ -625,6 +626,9 @@ public class TableColumn implements Cloneable {
      *  As a special case, the value <em>null</em> is passed through.
      */
     public void separateWrappedValue(String values, String targetEncoding, int escapingRule, int nullText) {
+        if (values == null) {
+            values = "";
+        }
         String displayValue = null;
         String href = this.getHref();
         String wrap = this.getWrap();
@@ -634,7 +638,7 @@ public class TableColumn implements Cloneable {
         } else if (wrap != null) { // e.g. wrap="javascript:," values="a,b,c" for comma separator
             if (false) {
             } else if (wrap.startsWith("javascript:")) {
-                String separator = wrap.substring(wrap.indexOf(':') + 1);
+                String separator = wrap.substring(wrap.indexOf(':') + 1); // ":" + sep were appended in SpecificationHandler
                 String[] parts = values.split(Pattern.quote(separator));
                 int ipart = 0;
                 StringBuffer buffer = new StringBuffer(128);
@@ -646,19 +650,21 @@ public class TableColumn implements Cloneable {
                         buffer.append(',');
                     }
                     if (false) {
-                    } else if (typeName.startsWith("INT") || typeName.startsWith("DEC")) { // numerical - without quotes
+                    } else if (typeName.startsWith("INT") || typeName.startsWith("DEC")) { // numerical - without quotes in Javascript
                         buffer.append(parts[ipart]);
-                    } else { // with quotes
+                    } else { // with quotes n Javascript
                         buffer.append('"');
                         buffer.append(parts[ipart]);
                         buffer.append('"');
                     }
                     ipart ++;
                 } // while ipart
-                buffer.append(");");
+                if (parts.length > 0) { // values was not empty
+                    buffer.append(");");
+                }
                 this.setWrappedValue(buffer.toString());
                 displayValue = "";
-            } else if (wrap.startsWith("verbatim:")) {
+            } else if (wrap.startsWith("verbatim:")) { // HTML in the SQL table cell's value is passed through without modification
                 escapingRule = 0;
                 this.setWrappedValue(null);
                 displayValue = values;

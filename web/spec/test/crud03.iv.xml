@@ -2,6 +2,7 @@
 <!--
 	Interactive view definition for test form crud03.xml
     @(#) $Id$
+    2016-04-16: order by ordinal is deprecated
     2012-03-15: type="action" fields
     2012-02-27, Dr. Georg Fischer
 -->
@@ -43,7 +44,7 @@
 						else                   'female' end 
 					</db:col>
 					<db:from>relatives</db:from>
-					<db:order by="1" />
+					<db:order by="gender" />
 				</select>
 	    	</listbox>
 	    	</field>
@@ -67,7 +68,7 @@
 	    	<write>'<parm name="remote_user" />'</write>
 	    	</field>
 	    <where></where>
-	    <order by="1,2" />
+	    <order by="name,family" />
 	</view>
 	
 	<ht:h3>Help text follows here</ht:h3>

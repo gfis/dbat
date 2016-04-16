@@ -2,7 +2,7 @@
 <!--
     Transforms the descriptions of a stored Procedure's interface into a Java class
     suitable for calling this interface
-    @(#) $Id: genSPCaller.xsl 856 2012-01-11 07:06:18Z gfis $
+    @(#) $Id$
     2011-12-16, Dr. Georg Fischer: copied from genRecord.xsl
 -->
 <!--

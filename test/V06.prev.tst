@@ -40,7 +40,7 @@ SELECT DISTINCT gender
 						when gender = 'M' then 'male' 
 						else                   'female' end 
 FROM relatives 
-ORDER BY 1;
+ORDER BY gender;
 :SQL -->
 
         <select name="gender" size="2">

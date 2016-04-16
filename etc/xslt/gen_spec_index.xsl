@@ -2,6 +2,7 @@
 <!--
     Generate an INSERT statement for the descriptive table spec_index
     @(#) $Id$
+    2016-04-16: evaluate <parm>s
     2012-04-13: COMMIT behind every INSERT
     2011-03-17: normalize-space
     2011-02-10: Dr. Georg Fischer
@@ -23,7 +24,7 @@
 -->
 <xsl:stylesheet version="1.0"
         xmlns:xsl ="http://www.w3.org/1999/XSL/Transform"
-		xmlns:ht  ="http://www.w3.org/1999/xhtml"
+        xmlns:ht  ="http://www.w3.org/1999/xhtml"
         xmlns:db  ="http://www.teherba.org/2007/dbat"
         >
     <xsl:output method="text" /> <!-- i.e. Java source code -->
@@ -51,32 +52,47 @@
         </xsl:choose>
     </xsl:variable>
 
-    <xsl:template match="db:dbat">
-		<xsl:value-of select='concat("&#10;INSERT INTO spec_index", " (subdir, name, lang, title, comment, params) VALUES (&#10;&#9;")' />
-		<xsl:value-of select='concat("&apos;", $subdir	)' />
-		<xsl:value-of select='concat("&apos;,&apos;", $name		)' />
-		<xsl:value-of select='concat("&apos;,&apos;", $lang		)' />
-		<xsl:value-of select='concat("&apos;,&apos;", @title	)' />
-		<xsl:value-of select='concat("&apos;", ",&#10;&#9;&apos;"		)' />
-		<xsl:apply-templates select="db:comment" />
-		<xsl:value-of select='concat("&apos;", ",&apos;"		)' />
-		<xsl:apply-templates select="ht:form" />
-		<xsl:value-of select='concat("&apos;", ");")' />
-		<xsl:value-of select='concat("&#10;", "COMMIT;")' />
+	<xsl:template match="@*|node()">
+		<xsl:copy>
+			<xsl:apply-templates select="@*|node()" />
+		</xsl:copy>
 	</xsl:template>
- 		
+
+    <xsl:template match="db:dbat">
+        <xsl:value-of select='concat("&#10;INSERT INTO spec_index", " (subdir, name, lang, title, comment, params) VALUES (&#10;&#9;")' />
+        <xsl:value-of select='concat("&apos;", $subdir  )' />
+        <xsl:value-of select='concat("&apos;,&apos;", $name      )' />
+        <xsl:value-of select='concat("&apos;,&apos;", $lang      )' />
+        <xsl:value-of select='concat("&apos;,&apos;", @title     )' />
+        <xsl:value-of select='concat("&apos;", ",&#10;&#9;&apos;")' />
+        <xsl:apply-templates select="db:comment" />
+        <xsl:value-of select='concat("&apos;", "&#10;&#9;,&apos;")' />
+        <xsl:apply-templates select="ht:form" />
+        <xsl:apply-templates select="node()" mode="parm" />
+        <xsl:value-of select='concat("&apos;", ");"              )' />
+        <xsl:value-of select='concat("&#10;", "COMMIT;")' />
+    </xsl:template>
+        
     <xsl:template match="db:comment">
-		<xsl:if test="@lang = $lang">
-			<xsl:value-of select="concat(normalize-space(.), ' ')" />
-		</xsl:if>
+        <xsl:if test="@lang = $lang">
+            <xsl:value-of select="concat(normalize-space(.), ' ')" />
+        </xsl:if>
+    </xsl:template>
+    
+	<xsl:template match="node()" mode="parm">
+       	<xsl:apply-templates select="node()" mode="parm" />
+	</xsl:template>
+
+    <xsl:template match="db:parm" mode="parm">
+        <xsl:value-of select="concat('&amp;', ./@name, '=', ./@init, ' ')" />
     </xsl:template>
     
     <xsl:template match="ht:form">
-		<xsl:for-each select="ht:input">
-			<xsl:if test="string-length(./@size) &gt; 0">
-				<xsl:value-of select="concat('&amp;', ./@name, '=', ./@init, ' ')" />
-			</xsl:if>
-		</xsl:for-each>
+        <xsl:for-each select="ht:input">
+            <xsl:if test="string-length(./@size) &gt; 0">
+                <xsl:value-of select="concat('&amp;', ./@name, '=', ./@init, ' ')" />
+            </xsl:if>
+        </xsl:for-each>
     </xsl:template>
     
 </xsl:stylesheet>

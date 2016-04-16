@@ -2,6 +2,7 @@
 
 # Test Dbat functions with MySQL, and other utility targets
 # @(#) $Id$
+# 2016-04-16: unique parameters in generated SQL of target spec_index; $(SUDO)
 # 2015-04-07: parameter LANG=en for spec_index and dbiv
 # 2014-11-10: regression*.log now in test/; validation and dbiv processing
 # 2014-11-08: target identify with etc/util/git_version.pl; no gopher
@@ -26,8 +27,14 @@ TESTDIR=test
 # the following can be overriden outside for single or subset tests,
 # for example make regression TEST=U%
 TEST="%"
+# for Windows, SUDO should be empty
+SUDO=
 
 all: regression
+#----
+copy:
+	cp -v web/spec/javascript.js c:$(TOMC)/spec
+	cp -v ../../drk/migr/spec/*.xml c:$(TOMC)/spec/migr
 #-------------------------------------------------------------------
 # Perform a regression test (a complete run > 250 testcases with TEST=% takes > 17 s)
 #	java -Djdk.net.registerGopherProtocol=true -cp dist/dbat.jar
@@ -141,6 +148,8 @@ spec_gen:
 							>> etc/sql/spec_index_insert.sql
 	echo '--'				>> etc/sql/spec_index_insert.sql
 	echo 'commit;'			>> etc/sql/spec_index_insert.sql
+	perl -i*.bak etc/xslt/unify_parms.pl \
+							   etc/sql/spec_index_insert.sql
 spec_cre:
 	$(DBAW) -f etc/sql/spec_index_create.sql
 spec_ins:
@@ -165,42 +174,43 @@ form_gen_xalan:
 	| tee web/spec/test/crud03.xml
 #--------------------------------------
 ajax:
-	sudo cp -v web/spec/test/ajax*.xml	 	$(TOMC)/spec/test/
-	sudo cp -v web/spec/http_request.js 	$(TOMC)/spec/
+	$(SUDO) cp -v web/spec/test/ajax*.xml	 	$(TOMC)/spec/test/
+	$(SUDO) cp -v web/spec/http_request.js 	$(TOMC)/spec/
 #-------------------------------------
 crud: crud01 crud02 crud03 crud04 crud05
 crud01:
-	make dbiv_spec IV=test/crud01
+	make dbiv_dbat IV=test/crud01
 	diff -C0 web/spec/test/crud01.xml crud01.tmp
 crud02:
-	make dbiv_spec  IV=test/crud02
+	make dbiv_dbat  IV=test/crud02
 	make dbiv_sproc IV=test/crud02
 crud03:
-	make dbiv_spec IV=test/crud03
+	make dbiv_dbat IV=test/crud03
 crud04:
-	make dbiv_spec IV=test/crud04
-	sudo cp -v web/spec/http_request.js 	$(TOMC)/spec/
-	sudo cp -v web/spec/test/ajax02.xml	 	$(TOMC)/spec/test/
+	make dbiv_dbat IV=test/crud04
+	$(SUDO) cp -v web/spec/http_request.js 	$(TOMC)/spec/
+	$(SUDO) cp -v web/spec/test/ajax02.xml	 	$(TOMC)/spec/test/
 	diff -C0 web/spec/test/crud04.xml crud04.tmp
 crud05:
-	make dbiv_spec IV=test/crud05
+	make dbiv_dbat IV=test/crud05
 	sed -e "s/crud05/crud01/g" web/spec/test/crud05.xml > crud05.tmp
 	diff -C0 web/spec/test/crud01.xml crud05.tmp
 #-------------------------------------
 # precompile a single IV, e.g. with
 # make dbiv_dbat IV=test/crud03
+dbiv_spec: dbiv_dbat
 dbiv_dbat:
 	echo $(IV) | xargs -l -iqqq xsltproc --novalid \
 	--stringparam lang   $(LANG)  \
 	--stringparam method $(METHOD) \
 	web/xslt/dbiv_dbat.xsl web/spec/qqq.iv.xml >web/spec/$(IV).xml
-	sudo touch 								$(TOMC)/spec/$(IV).xml
-	sudo cp -v web/spec/$(IV).xml 			$(TOMC)/spec/$(IV).xml
-	sudo cp -v web/spec/test/stylesheet.css $(TOMC)/spec/test
+	$(SUDO) touch 								$(TOMC)/spec/$(IV).xml
+	$(SUDO) cp -v web/spec/$(IV).xml 			$(TOMC)/spec/$(IV).xml
+	$(SUDO) cp -v web/spec/test/stylesheet.css $(TOMC)/spec/test
 #--------------------------------------
 desp:
-	sudo cp -v web/spec/$(SPEC).xml			$(TOMC)/spec/$(SPEC).xml
-	# sudo cp -v web/spec/http_request.js 	$(TOMC)/spec
+	$(SUDO) cp -v web/spec/$(SPEC).xml			$(TOMC)/spec/$(SPEC).xml
+	# $(SUDO) cp -v web/spec/http_request.js 	$(TOMC)/spec
 #--------------------------------------
 spr:
 	make dbiv_sproc IV=test/crud02
@@ -222,11 +232,11 @@ zipart:
 	src/main/java/org/teherba/dbat/format/SQLTable.java \
 	src/main/java/org/teherba/dbat/SQLAction.java \
 	src/main/java/org/teherba/dbat/SpecificationHandler.java \
-	etc/xslt/dbiv_spec.xsl \
+	etc/xslt/dbiv_dbat.xsl \
 	etc/xslt/dbiv_sproc.xsl \
 	$(TESTDIR)/all_test.cases \
 	web/spec/test/crud0*.xml \
 	makefile
 #--------------------------------------
 misc:
-	sudo cp -v web/spec/test/check_word.xml $(TOMC)/spec/test
+	$(SUDO) cp -v web/spec/test/check_word.xml $(TOMC)/spec/test

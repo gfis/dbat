@@ -19,6 +19,9 @@
    * http://www.xerial.org/trac/Xerial/wiki/SQLiteJDBC
 	 sqlite-jdbc-3.6.20.1.jar
    * http://www.zentus.com/
+   
+   * SortTable.js from Stuart Langridge, 
+     http://www.kryogenix.org/code/browser/sorttable/
 
    Please read the different LICENSE files present in the root directory of
    this distribution.
