@@ -150,6 +150,7 @@
             <entry key="build.number" type="int"  value="1"   operation="+" />
             <entry key="build.date"   type="date" value="now" pattern="yyyy-MM-dd HH.mm.ss" />
             <entry key="build.jdk"                value="for JDK ${jdk.version}" />
+            <entry key="build.git"                value="@(#) $$Id$$" />
         </propertyfile>
 
         <!-- copy any properties (especially log4j.properties) to build directory -->

@@ -9,3 +9,5 @@ makefile	ident
 *.xsd	ident
 *.xsl	ident
 *.xslt	ident
+*.MF	ident
+build.number	ident
