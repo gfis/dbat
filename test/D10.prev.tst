@@ -4,7 +4,7 @@
 	xmlns:ht="http://www.w3.org/1999/xhtml"
 	>
 <!--
-	@(#) $Id$
+	@(#) S/Id/S
 -->
 	<ht:h2>c01</ht:h2>
 	<ht:form method="get">

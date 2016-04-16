@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
-    Interactive view definition for test form crud01.xml, with AJAX subquery
+    Interactive view definition for test form crud04.xml, with AJAX subquery
     @(#) $Id$
     2013-01-14: references to test.crud03 replaced
     2012-05-21: with help URLs on field names
