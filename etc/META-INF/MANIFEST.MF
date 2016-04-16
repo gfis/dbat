@@ -9,8 +9,6 @@ Specification-Title: dbat
 Specification-Version: 10 for JDK 1.6
 Specification-Vendor: Dr. Georg Fischer
 Implementation-Title: dbat
-Implementation-Version: dbat 748 2016-04-16 22.35.57
-Implementation-Vendor: Dr. Georg Fischer
-Implementation-Vendor-Id: @(#) $Id: fade49c255e795119f2a4f8741043041f7
- 12ea4df3b $
+Implementation-Version: dbat 751 2016-04-16 22.42.02
+Implementation-Vendor: $Id$
 

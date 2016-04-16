@@ -150,7 +150,7 @@
             <entry key="build.number" type="int"  value="1"   operation="+" />
             <entry key="build.date"   type="date" value="now" pattern="yyyy-MM-dd HH.mm.ss" />
             <entry key="build.jdk"                value="for JDK ${jdk.version}" />
-            <entry key="build.git"                value="@(#) $$Id$$" />
+            <entry key="build.git"                value="$$Id$$" />
         </propertyfile>
 
         <!-- copy any properties (especially log4j.properties) to build directory -->
@@ -212,8 +212,7 @@
                 <attribute name="Specification-Vendor"      value="Dr. Georg Fischer"/>
                 <attribute name="Implementation-Title"      value="${ant.project.name}"/>
                 <attribute name="Implementation-Version"    value="${ant.project.name} ${build.number} ${build.date}"/>
-                <attribute name="Implementation-Vendor"     value="Dr. Georg Fischer"/>
-                <attribute name="Implementation-Vendor-Id"  value="@(#) &#x24;Id: fade49c255e795119f2a4f8741043041f712ea4df3b $" />
+                <attribute name="Implementation-Vendor"     value="$$Id$$"/>
             </section>
         </manifest>
         <copy todir="${build.classes}/META-INF">
