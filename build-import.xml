@@ -2,6 +2,7 @@
 <!--
     ant-buildfile for commandline, web application and web service
     @(#) $Id$
+    2016-04-16: MANIFEST.MF back in etc/META-INF, with CVS Id
     2015-02-02: copy to webapps replaced by copy to *.wr and rename to *.war
     2014-11-11: tomcat.base|home moved to build.xml; no catalina-task
     2014-11-08: cleanup; remove Axis / atll web service functionality, and JSPs
@@ -147,7 +148,7 @@
         <propertyfile file="build.number">
             <entry key="build.name"   value="${ant.project.name}" />
             <entry key="build.number" type="int"  value="1"   operation="+" />
-            <entry key="build.date"   type="date" value="now" pattern="yyyy-MM-dd-HH-mm-ss" />
+            <entry key="build.date"   type="date" value="now" pattern="yyyy-MM-dd HH.mm.ss" />
             <entry key="build.jdk"                value="for JDK ${jdk.version}" />
         </propertyfile>
 
@@ -201,7 +202,7 @@
     <target name="manifest">
         <loadproperties srcFile="build.number" />
         <delete failonerror="false" file="${build.classes}/META-INF/MANIFEST.MF" />
-        <manifest file="${build.classes}/META-INF/MANIFEST.MF">
+        <manifest file="${etc.home}/META-INF/MANIFEST.MF">
             <attribute name="Built-By" value="${user.name}"/>
             <attribute name="Main-Class" value="${app.main-class}"/>
             <section name="${ant.project.name}">
@@ -211,6 +212,7 @@
                 <attribute name="Implementation-Title"      value="${ant.project.name}"/>
                 <attribute name="Implementation-Version"    value="${ant.project.name} ${build.number} ${build.date}"/>
                 <attribute name="Implementation-Vendor"     value="Dr. Georg Fischer"/>
+                <attribute name="Implementation-Vendor-Id"  value="@(#) &#x24;Id: fade49c255e795119f2a4f8741043041f712ea4df3b $" />
             </section>
         </manifest>
         <copy todir="${build.classes}/META-INF">

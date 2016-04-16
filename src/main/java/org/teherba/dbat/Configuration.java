@@ -1,5 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
- *  @(#) $Id$ 2016-04-16 14:26:30 gfis
+ *  @(#) $Id$ 2016-04-16 14:43:35
+ *  2016-04-16: read versionString from META-INF/MANFEST.MF
  *  2014-11-11: major version 9; update $\Id content with etc/util/git_version.pl
  *  2014-11-03: always respond with MIME type application/xhtml+xml
  *  2014-02-16: application/xhtml+xml if System.getProperty("os.name"       ).startsWith("Windows 8")
@@ -32,9 +33,11 @@ package org.teherba.dbat;
 import  org.teherba.common.CommandTokenizer;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.xtrans.BaseTransformer;
-import  java.io.Serializable;
+import  java.io.BufferedReader;
 import  java.io.File;
 import  java.io.FileInputStream;
+import  java.io.InputStreamReader;
+import  java.io.Serializable;
 import  java.sql.Connection;
 import  java.sql.DriverManager;
 import  java.util.HashMap;
@@ -496,16 +499,26 @@ public class Configuration implements Serializable {
     public static String getVersionString() {
         // public final static String CVSID = "@(#) $Id$";
         //                                     0    1    2                                                 3                                        4
-        String[] vers = CVSID.split("\\s+");
-        // V8         up to 2014-11-07
-        // V9.* starting at 2014-11-08
-        String result = "Dbat V9.";
-        if (vers.length >= 5) { // CVS, SVN Id: HTMLTable.java 946 2012-05-29 15:53:06Z gfis
-            result += (vers[3] + "    ").substring(0,4).trim() + "/" + vers[4];
-        } else { // unmodified git Id c.f. above
-            result += (vers[2] + "    ").substring(0,4).trim();
+    /*
+        String result = "Dbat V";
+            if (false) { // old code
+                String[] vers = CVSID.split("\\s+");
+                // V8         up to 2014-11-07
+                // V9.* starting at 2014-11-08
+                if (vers.length >= 5) { // CVS, SVN Id: HTMLTable.java 946 2012-05-29 15:53:06Z gfis
+                    result += (vers[3] + "    ").substring(0,4).trim() + "/" + vers[4];
+                } else { // unmodified git Id c.f. above
+                    result += (vers[2] + "    ").substring(0,4).trim();
+                }
+                // old code
+            } else { // new code
+                result = versionString;
+            }
+        if (result.length() <= 6) {
+            result += "9.555/2015-05-05";
         }
-        return result;
+    */
+        return versionString;
     } // getVersionString
 
     /** whether to print header and trailer */
@@ -558,6 +571,9 @@ public class Configuration implements Serializable {
     /** Maps connection identifiers (short database instance ids) to {@link DataSource Datasources} */
     private LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap;
 
+    /** Version String to be used in Messages */
+    private static String versionString;
+
     //================================
     // Constructor and initialization
     //================================
@@ -566,6 +582,50 @@ public class Configuration implements Serializable {
      */
     public Configuration() {
         log = Logger.getLogger(Configuration.class.getName());
+        String result = "Dbat V";
+        try {
+            /*
+            Name: dbat
+            Specification-Title: Dbat
+            Specification-Version: 10 for JDK 1.6
+            Specification-Vendor: Dr. Georg Fischer
+            Implementation-Title: Dbat
+            Implementation-Version: Dbat 730 2016-04-16 19:56:58
+            Implementation-Vendor: Dr. Georg Fischer
+            Implementation-Vendor-Id: @(#) $Id$
+            */
+            String[] parts = null;
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    this.getClass().getClassLoader().getResourceAsStream("META-INF/MANIFEST.MF"))
+                    );
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                if (false) {
+                } else if (line.startsWith("Specification-Version:" )) {
+                    parts = line.split(" ");
+                    if (parts.length >= 2) {
+                        result += parts[1];
+                    } else {
+                        result += "9";
+                    }
+                } else if (line.startsWith("Implementation-Version:")) {
+                    parts = line.split(" ");
+                    if (parts.length >= 4) {
+                        String buildNo = parts[2].replaceAll("\\.", "");
+                        if (false) { // force buildNo to 4 digits
+                        } else if (buildNo.length() > 4) {
+                            buildNo = buildNo.substring(buildNo.length() - 4);
+                        } else if (buildNo.length() < 4) {
+                            buildNo = ("0000".substring(buildNo.length())) + buildNo;
+                        }
+                        result += "." + buildNo + "/" + parts[3];
+                    }
+                }
+            } // while reading lines from MANIFEST.MF
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+        versionString = result;
     } // Constructor
 
     /** Initializes the class for the 1st (or 2nd, 3rd etc) call.

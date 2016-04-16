@@ -27,8 +27,8 @@
 
 <project name="dbat" default="dist" basedir=".">
     <!-- the 5 needed for build-import.xml -->
-    <property name="app.name"           value="dbat" />
-    <property name="app.version"        value="9.0" />
+    <property name="app.name"           value="Dbat" />
+    <property name="app.version"        value="10" />
     <property name="app.main-class"     value="org.teherba.dbat.Dbat" />
     <property name="tomcat.base"        value="/var/lib/tomcat" />
     <property name="tomcat.home"        value="/usr/share/tomcat" />

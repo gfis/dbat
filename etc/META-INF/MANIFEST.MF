@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.9.6
+Created-By: 1.7.0_45-b18 (Oracle Corporation)
+Built-By: gfis
+Main-Class: org.teherba.dbat.Dbat
+
+Name: dbat
+Specification-Title: dbat
+Specification-Version: 10 for JDK 1.6
+Specification-Vendor: Dr. Georg Fischer
+Implementation-Title: dbat
+Implementation-Version: dbat 745 2016-04-16 21.33.55
+Implementation-Vendor: Dr. Georg Fischer
+Implementation-Vendor-Id: @(#) $Id: fade49c255e795119f2a4f8741043041f7
+ 12ea4df3b $
+

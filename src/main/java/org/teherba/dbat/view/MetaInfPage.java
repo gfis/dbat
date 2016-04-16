@@ -1,6 +1,6 @@
 /*  MetaInfPage.java - show meta data
  *  @(#) $Id$
- *	2012-07-01: subpackage view
+ *  2012-07-01: subpackage view
  *  2012-02-11, Georg Fischer: copied from metaInf.jsp
  */
 /*
@@ -27,37 +27,37 @@ import  javax.servlet.http.HttpServletResponse;
 import  org.apache.log4j.Logger;
 
 /** This class prints the metadata for the application:
- *	<ul>
- *	<li>License,</li>
- *	<li>JAR Manifest, and</li>
- *	<li>Notices for included software packages</li>
- *	</ul>
+ *  <ul>
+ *  <li>License,</li>
+ *  <li>JAR Manifest, and</li>
+ *  <li>Notices for included software packages</li>
+ *  </ul>
  *  @author Dr. Georg Fischer
  */
 public class MetaInfPage {
-	public final static String CVSID = "@(#) $Id$";
-	public final static long serialVersionUID = 19470629;
+    public final static String CVSID = "@(#) $Id$";
+    public final static long serialVersionUID = 19470629;
 
-	/** log4j logger (category) */
-	private Logger log;
+    /** log4j logger (category) */
+    private Logger log;
 
-	/** No-argument constructor
-	 */
-	public MetaInfPage() {
-		log = Logger.getLogger(MetaInfPage.class.getName());
-	} // constructor()
-	
-	/** Processes an http GET request
-	 *  @param request request with header fields
-	 *  @param response response with writer
-	 *  @throws IOException
-	 */
-	public void forward(HttpServletRequest request, HttpServletResponse response) {
-		try {
-			PrintWriter out = response.getWriter();
-			response.setCharacterEncoding("UTF-8");
+    /** No-argument constructor
+     */
+    public MetaInfPage() {
+        log = Logger.getLogger(MetaInfPage.class.getName());
+    } // constructor()
+    
+    /** Processes an http GET request
+     *  @param request request with header fields
+     *  @param response response with writer
+     *  @throws IOException
+     */
+    public void forward(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            PrintWriter out = response.getWriter();
+            response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html; charset=UTF-8");
-			response.setCharacterEncoding("UTF-8");
+            response.setCharacterEncoding("UTF-8");
             out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             out.write("\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n");
             out.write("    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
@@ -102,7 +102,8 @@ public class MetaInfPage {
                 out.write("\n<tt>\n<pre>\n");
                 
                 BufferedReader reader = new BufferedReader(new InputStreamReader
-                (this.getClass().getClassLoader().getResourceAsStream(fileName)));
+                        (this.getClass().getClassLoader().getResourceAsStream(fileName))
+                        );
                 while ((line = reader.readLine()) != null) {
                     out.println(line);
                 } // while
@@ -110,10 +111,10 @@ public class MetaInfPage {
             out.write("</pre>\n</tt>\n<p>\nBack to the <a href=\"index.html\">Dbat input form</a>\n");
             out.write("<br />\nQuestions, remarks to: <a href=\"mailto:punctum@punctum.com\">Dr. Georg Fischer</a></p>");
             out.write("</body></html>\n");
-		} catch (Exception exc) {
-			log.error(exc.getMessage(), exc);
-		} finally {
-		}
-	} // forward
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        } finally {
+        }
+    } // forward
 
 } // MetaInfPage

@@ -141,6 +141,18 @@ HTTP view=more spec=test.index lang=en
 
 TEST MR2 more web de
 HTTP view=more spec=test.index lang=de
+
+TEST MR3 SQL console web en
+HTTP view=con lang=en
+
+TEST MR4 SQL console web de
+HTTP view=con lang=de
+
+TEST MR5 license web 
+HTTP view=license
+
+TEST MR6 notice web 
+HTTP view=notice
 #-------------------
 TEST I01 insert statements
 DATA -- fill table
