@@ -252,7 +252,7 @@ public class MorePage {
             }
             out.write("<br />\n");
             //----------------------------------------
-			out.write("<a href=\"servlet?view=validate&value=M&regex=\\w\">");
+            out.write("<a href=\"servlet?view=validate&value=M&regex=\\w\">");
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("Regex-Validierung</a>");

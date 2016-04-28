@@ -1,5 +1,6 @@
 /*  Reader for text file, returns a string without any whitespace
  *  @(#) $Id$
+ *  2016-04-22: MAKE command
  *  2016-04-16: macro PWD = System.getProperty("user.dir")
  *  2015-09-08: continue lines with "\\" at the end
  *  2015-03-26: cat after cp (if *.prev.tst did not exist)
@@ -87,6 +88,8 @@ Dbat Vx.hhhh/yyyy-mm-dd - DataBase Application Tool
  *  <table>
  *  <tr><td>ARGS=   </td><td>commandline arguments which are appended to the CALL command</td></tr>
  *  <tr><td>PACKAGE=</td><td>define the class name prefix for all following CALL commands (default: <em>org.teherba</em>) </td></tr>
+ *  <tr><td>MAKE=   </td><td>define the make command and its options (default: <em>make -f makefile</em></td></tr>
+ *  <tr><td>PWD     </td><td>built-in macro which returns the current working directory</td></tr>
  *  <tr><td>SORT=   </td><td>define the sort command and its options (default: <em>sort</em></td></tr>
  *  <tr><td>URL=    </td><td>define the URL prefix for all following HTTP commands (default: <em>http://localhost:8080/dbat/servlet</em>) </td></tr>
  *  <tr><td>XSLT=   </td><td>define the XSLT processor command (default: <em>xsltproc</em>)</td></tr>
@@ -99,6 +102,7 @@ Dbat Vx.hhhh/yyyy-mm-dd - DataBase Application Tool
  *  <tr><td>ECHO    </td><td>output the rest of the line in the test logfile</td></tr>
  *  <tr><td>EXIT    </td><td>immediately stop execution of test commands</td></tr>
  *  <tr><td>HTTP    </td><td>get a Web page from an URL</td></tr>
+ *  <tr><td>MAKE    </td><td>calls some target in a <em>makefile</em> with the <em>make</em> utility</td></tr>
  *  <tr><td>SORT    </td><td>sort a file</td></tr>
  *  <tr><td>TEST    </td><td>start of a test case with description</td></tr>
  *  <tr><td>XSLT    </td><td>execute an XSLT stylesheet</td></tr>
@@ -281,6 +285,7 @@ public class RegressionTester {
         String argsPrefix       = ""; // default for ARGS macro
         String diffPrefix       = "diff -Z "; // -Z = ignore line ends
         String baseURL          = "http://localhost:8080/dbat/servlet"; // default for URL macro
+        String makePrefix       = "make -f makefile";
         String sortPrefix       = "sort ";
         String xsltPrefix       = "xsltproc ";
         String cmd              = null; // system command to be executed
@@ -396,6 +401,9 @@ public class RegressionTester {
                             } else if (verb.equals("DIFF")) {
                                 diffPrefix  = rest;
                                 macros.put(verb, diffPrefix);
+                            } else if (verb.equals("MAKE")) {
+                                makePrefix  = rest;
+                                macros.put(verb, makePrefix);
                             } else if (verb.equals("PACKAGE")) {
                                 classPrefix = rest + (rest.endsWith(".") ? "" : ".");
                                 macros.put(verb, classPrefix);
@@ -537,6 +545,9 @@ public class RegressionTester {
                             while ((urlLine = urlReader.readLine()) != null) {
                                 thisStream.println(urlLine);
                             } // while urlLine
+
+                        } else if (verb.equals("MAKE")) {
+                            runShellCommand(makePrefix + " " + rest.trim());
 
                         } else if (verb.equals("SORT")) {
                             runShellCommand(sortPrefix + " " + rest.trim());

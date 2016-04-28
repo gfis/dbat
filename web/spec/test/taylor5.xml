@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2016-04-28, Dr. Georg Fischer
+-->
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang="en" 
+        conn="worddb" 
+        title="taylor5"
+        debug="1"
+        uri="test/taylor.html"
+        >
+    <comment lang="en">Select from test table and replace variables in pattern file (file tayloring)</comment>
+    <comment lang="de">Serienbrieffunktion mit Variablenersetzung</comment>
+
+    <ht:h3>Select from test table c01 - file tayloring</ht:h3>
+    
+    <select>
+        <col>year</col>
+        <col>name</col>
+        <col>univ</col>
+        <col>gender</col>
+        <col>birth</col>
+        <from>c01</from>
+        <where> name like '<parm name="name%" />%'
+        </where>
+        <counter desc="person,s"/>
+    </select>
+</dbat>

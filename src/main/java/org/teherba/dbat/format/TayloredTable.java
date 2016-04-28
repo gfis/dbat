@@ -1,5 +1,6 @@
 /*  File Tayloring with the result set of a query
     @(#) $Id$
+    2016-04-28: comment for uri= parameter resp. attribute; startTable with metadata
     2011-08-24: writeGenericRow
     2011-08-12: revised, print the template in end row
     2011-07-19, Dr. Georg Fischer: copied from SeparatedTable
@@ -32,7 +33,12 @@ import  java.util.regex.Pattern;
 import  org.apache.log4j.Logger;
 
 /** This output format first reads a sequential "template" file (a block of text)
- *  which is specified after the <code>-u</code> option in the commandline interface.
+ *  which was specified 
+ *  <ul>
+ *  <li>after the <code>-u</code> option in the commandline interface,</li>
+ *  <li>in an HTTP request parameter <code>&amp;uri=</code>,</li>
+ *  <li>in the root (dbat) element attribute <code>uri=</code> of a specification file.</li>
+ *  </ul>
  *  Reading may happen from STDIN, from a local file, an URL or a <code>data:</code> URI.
  *  <p  />
  *  The template contains variable names, which correspond to the label
@@ -76,18 +82,32 @@ public class TayloredTable extends BaseTable {
      *  and remembers it in {@link #templateText}.
      *  @param tableName name of the table
      */
-    public void startTable(String tableName) {
+    public void startTable(String tableName, TableMetaData tbMetaData) {
         separator = getSeparator();
         try {
-            URIReader reader = new URIReader(getInputURI());
-            StringBuffer content = new StringBuffer(4096);
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                content.append(line); // append all lines from the URI
-                content.append(newline); // and terminate them
-            } // while reading from URI
-            reader.close();
-            templateText = content.toString();
+            String unresid = getInputURI();
+            if (unresid != null) {
+                URIReader reader = new URIReader(unresid);
+                StringBuffer content = new StringBuffer(4096);
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    content.append(line); // append all lines from the URI
+                    content.append(newline); // and terminate them
+                } // while reading from URI
+                reader.close();
+                templateText = content.toString();
+            } else { // fallback: assume tab-separated output lines
+                int ncol = tbMetaData.getColumnCount();
+                int icol = 0;
+                templateText = "";
+                while (icol < ncol) {
+                    if (icol > 0) {
+                        templateText += "\t";
+                    }
+                    templateText += getEnclosedVariable(tbMetaData.getColumn(icol));
+                    icol ++;
+                } // while icol
+            } // fallback
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }

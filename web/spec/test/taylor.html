@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html>
+<!--
+  @(#) $Id$
+  2016-04-28: Georg Fischer
+  This is a test file for output format <em>taylor</em>.
+  It is read with request parameter <em>&amp;uri=taylor.html</em>.
+  It yields an output similiar to that of test case TL1:
+  
+  CALL Dbat -m taylor -s "{}" -u $(DATA) "select * from c01"
+
+-->
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
+<title>Record {name}</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+
+<h3>Family Record for {name}</h3>
+<br />{name} was born {birth}.
+<br />His symbol was {gender}.
+<br />Died in {univ} in year {year}.
+<p style="page-break-after:always">&#xa0;</p>
+</body>
+</html>
+
+

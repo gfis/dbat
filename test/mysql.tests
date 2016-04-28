@@ -519,6 +519,16 @@ CALL Dbat -m taylor -s "[" -u $(DATA) "select * from c01"
 TEST TL4 file tayloring - with data: URI template
 #CALL Dbat -m taylor -s "$" -u data:%09$name%09$univ+$year%0a "select name, univ, year from c01"
 CALL Dbat -m taylor -s "ß" -u "data:%09%c3%9fname%09in+%c3%9funiv+%c3%9fyear%0a" "select name, univ, year from c01"
+
+TEST TL5 file tayloring from web uri
+HTTP spec=test/taylor5&mode=taylor&sep={}
+
+TEST TL6 file tayloring from file uri specified with -u
+CALL Dbat -m taylor -s "{}" -u "web/spec/test/taylor.html" -f "web/spec/test/taylor5.xml" 
+
+TEST TL7 file tayloring from file uri specified in the spec file
+CALL Dbat -m taylor -s "{}" -f "web/spec/test/taylor5.xml" 
+
 #-------------------
 # simple web table selection in various formats
 TEST W01 select

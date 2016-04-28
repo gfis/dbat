@@ -773,14 +773,13 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     private String getResponseHeaders() {
         StringBuffer result = new StringBuffer(512);
     /*  will only work in Tomcat 7.0+ with Servlet API 3.0+
-        ArrayList<String> headerNames = response.getHeaderNames();
-        Iterator<String> hiter = headerNames.iterator();
+    */
+        Iterator<String> hiter = response.getHeaderNames().iterator();
         while (hiter.hasNext()) {
             String name = hiter.next();
             result.append(name);
             result.append(":");
-            ArrayList<String> headerValues = response.getHeaders(name);
-            Iterator<String> viter = headerValues.iterator();
+            Iterator<String> viter = response.getHeaders(name).iterator();
             while (viter.hasNext()) {
                 String value = viter.next();
                 result.append(" ");
@@ -788,7 +787,6 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             } // while values
             result.append("\n");
         } // while name
-    */
         return result.toString();
     } // getResponseHeaders
 
@@ -825,6 +823,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                                                           // xslt=
                                                           // stylesheet=stylesheet.css
                                                           // contenttype=text/html
+                                                          // uri=taylor.html
     /** A(nchor) element tag */
     private static final String A_TAG       = "a"       ; // splits link values on "=" for this namespace
     /** Break element tag */
@@ -1140,6 +1139,14 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 String stylesheet   = getFilesFromAttribute(attrs.getValue("stylesheet"), subDirectory, "css");
                 String xslt         = getFilesFromAttribute(attrs.getValue("xslt")      , subDirectory, "xsl");
                 //--------
+                String inputURI     = attrs.getValue("uri");
+                if (inputURI != null && inputURI.length() > 0 && config.getInputURI() == null) { // can be overwritten by request parameter
+                    config.setInputURI(realPath + inputURI);
+                    if (inputURI.endsWith(".html")) {
+                        response.setContentType("text/html; charset=UTF-8");
+                    }
+                }
+                //--------
                 String namespacePrefix  = attrs.getValue("nsp"); // empty or a short, lowercase prefix
                 tbSerializer.setParameterMap(parameterMap);
                 tbSerializer.writeStart(new String[] // this may throw an exception "could not compile stylesheet"
@@ -1157,8 +1164,9 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                             }
                             , parameterMap
                             );
+                tbSerializer.setInputURI     (config.getInputURI());
                 if (debug >= 1) {
-                    tbSerializer.writeComment(getResponseHeaders());
+                    tbSerializer.writeComment("Response Headers: " + getResponseHeaders());
                     tbSerializer.writeComment("SpecificationHandler.parameterMap: " + dumpMap(parameterMap));
                 }
                 // ROOT_TAG

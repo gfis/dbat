@@ -1,5 +1,6 @@
 /*  Reader for a URL or data URI source
     @(#) $Id$
+    2016-04-28: allow for Windows drive letter "protocol" (-> file:)
     2013-08-14: URL encoding by URI(3 parameter) constructor
     2013-01-04: gopher repaired
     2011-08-06: extended to InputStream interface
@@ -48,6 +49,7 @@ import  org.apache.log4j.Logger;
  *      <li>(mailto: - send email from an URI, does not seem to work)</li>
  *      <li>(netdoc: - rarely used special Java protocol for documentation)</li>
  *      <li>URLs not starting with <em>word:</em> are assumed to be local filenames, too<li>
+ *      <li>even Windows' C:/path is mapped to the file: protocol</li>
  *      </ul>
  *  </li>
  *  <li>data: - data content within an Uniform Resource Identfier (URI) itself</li>
@@ -172,7 +174,10 @@ public class URIReader {
                     inputURI = new URI(unresid);
                     String content = inputURI.getSchemeSpecificPart().replaceAll("\\+", " "); // rather primitive, no BASE64
                     charReader = new BufferedReader(new StringReader(content));
-                } else if (unresid.matches("\\w+\\:.*")) {
+                } else if (unresid.matches("\\w+\\:.*")) { // Windows drive letter
+                	if (unresid.matches("\\w\\:.*")) {
+                		unresid = "file:///" + unresid.substring(0, 1) + "|" + unresid.substring(2);
+                	} // Windows
                     // the JVM has handlers in rt.jar!/sun/net/www/protocol/* for
                     //   file: ftp: gopher: http: https: jar: mailto: netdoc:
                     int colonPos = unresid.indexOf(':');
@@ -214,7 +219,7 @@ public class URIReader {
                 }
             } // byte orientend
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(exc.getMessage() + ", unresid=\"" + unresid + "\"", exc);
         }
     } // Constructor
 

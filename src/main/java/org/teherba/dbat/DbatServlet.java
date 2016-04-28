@@ -1,5 +1,6 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2016-04-28: &uri=... -> config.setInputURI(inputURI);
  *  2014-11-11: handler.setResponse
  *  2014-11-05: transforms and processes dbiv specs also
  *  2012-07-01: subpackage view; ConsolePage
@@ -313,6 +314,7 @@ public class DbatServlet extends HttpServlet {
                 String encoding     = getInputField(request, "enc"      , "UTF-8"   );
                 String language     = getInputField(request, "lang"     , "en"      );
                 String separator    = getInputField(request, "sep"      , ";"       );
+                String inputURI     = getInputField(request, "uri"      , null      );
                 if (mode.compareToIgnoreCase("tsv") == 0) {
                     separator   = "\t";
                 }
@@ -385,6 +387,9 @@ public class DbatServlet extends HttpServlet {
                     handler.setSerializer(tbSerializer);
                     config.setTableSerializer(tbSerializer);
                     handler.setSpecPaths(realPath, "spec/", specName);
+                    if (inputURI != null) {
+                        config.setInputURI(realPath + inputURI);
+                    }
 
                     if (! isDbiv) { // conventional Dbat XML syntax
                         channel = (new FileInputStream (specFile)).getChannel();
