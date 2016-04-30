@@ -1,5 +1,6 @@
 /*  Common JavaScript functions
     @(#) $Id$
+    2016-04-30: mailToLink with up to 3 parameters
     2016-02-09: code.jquery.com commented out; telLink
     2015-04-25: loadPage
     2014-11-10: showImage
@@ -18,10 +19,17 @@ function showImage(imagename, width) {
     document.write('<img src="' + imagename + '" width="' + width + '" title="' + imagename + '" />');
 } // showImage
 
-function mailtoLink(mailAddr) { // surround a mail address by an <a href="mailto:..."> tag
+function mailtoLink(mailAddr, subject, body) { // surround a mail address by an <a href="mailto:..."> tag
     if (mailAddr != "undefined" && mailAddr.length > 0) { // non-empty
-        document.write('<a href="mailto:' + mailAddr + '">' + mailAddr + '</a>');
-    } // non-empty
+        document.write('<a href="mailto:' + mailAddr);
+        if (subject != "undefined") {
+            document.write("?subject=" + subject);
+            if (body != "undefined") {
+                document.write("\&body=" + body);
+            } // with body
+        } // with subject
+        document.write('">' + mailAddr + '</a>');
+    } // with mailAddr
 } // mailtoLink, <a href="mailto:...">
 
 function facebookLink(fbName) { // surround a Facebook name by an <a href="https://www.facebook.com/..."> tag
