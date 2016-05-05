@@ -10,7 +10,6 @@
         javascript="../javascript.js"
         conn="worddb"
         title="image01"
-        debug="2"
         >
     <!-- copy of selec02 -->
     <comment lang="en">Select from a Table with Images</comment>

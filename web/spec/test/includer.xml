@@ -2,7 +2,7 @@
 <!DOCTYPE dbat [
 <!ENTITY rem01 SYSTEM   "http://localhost:8080/dbat/spec/test/include01.xml">
 <!ENTITY loc01 SYSTEM   "file:///home/gfis/work/webapps-super/dbat/web/spec/test/include01.xml">
-<!ENTITY rel01 SYSTEM   "test/include01.xml">
+<!ENTITY rel01 SYSTEM   "include01.xml">
 <!ENTITY loc12 SYSTEM   "http://localhost:8080/dbat/spec/test/include12.xml">
 ]>
 <dbat conn="worddb"
@@ -16,6 +16,7 @@
     Dbat specification - test the inclusion of system entities
     @(#) $Id$
     Copyright 2012 Dr. Georg Fischer <punctum at punctum dot kom>
+    2016-05-05: specDir removed from relative entity's systemId
     2012-02-16: URLs with/without schema
 	2012-01-23, Georg Fischer
 -->

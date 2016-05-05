@@ -507,7 +507,7 @@ DATA -- tayloring with surrounding escape
   {name} was born {birth}.
   The symbol is {gender}.
   Died in {univ} in year {year}.
-CALL Dbat -m taylor -s "{}" -u $(DATA) -d c01
+CALL Dbat -m taylor -s "{}" -u $(DATA) -t c01
 
 TEST TL3 file tayloring - head only
 DATA -- tayloring with leading escape
@@ -527,7 +527,7 @@ TEST TL6 file tayloring from file uri specified with -u
 CALL Dbat -m taylor -s "{}" -u "web/spec/test/taylor.html" -f "web/spec/test/taylor5.xml" 
 
 TEST TL7 file tayloring from file uri specified in the spec file
-CALL Dbat -m taylor -s "{}" -f "web/spec/test/taylor5.xml" 
+HTTP spec=test/taylor5&mode=taylor&sep={} 
 
 #-------------------
 # simple web table selection in various formats

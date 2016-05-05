@@ -1,7 +1,8 @@
 #!/usr/bin/perl
 
-# postprocess data for spec_index
+# postprocess data for spec_index: squash multiple occurrences of parameters
 # @(#) $Id$
+# 2016-05-05: append "COMMIT;"
 # 2016-04-16, Dr. Georg Fischer
 #------------------------------------------------------------------ 
 # Usage: c.f. makefile
@@ -36,6 +37,11 @@ use strict;
             print "$line";
         }
     } # while <>
+
+    print <<GFis;
+--
+COMMIT;
+GFis
 
 __DATA__
 # Example before processing by this Perl program

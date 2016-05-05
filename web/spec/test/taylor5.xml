@@ -9,7 +9,6 @@
         lang="en" 
         conn="worddb" 
         title="taylor5"
-        debug="1"
         uri="test/taylor.html"
         >
     <comment lang="en">Select from test table and replace variables in pattern file (file tayloring)</comment>

@@ -10,18 +10,13 @@
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
 <script src="spec/test/../javascript.js" type="text/javascript"></script>
 </head><body>
-<!--  -->
-<!-- SpecificationHandler.parameterMap: spec->test.image02
-lang->en
- -->
 
     
     <!--Select from a Table with Pagebreaks-->
     <!--Abfrage einer Tabelle mit Seitenwechseln-->
 
     <h3><a href="servlet?spec=test.index">Test</a>: Select from table with pagebreaks</h3>
-    <!-- SpecificationHandler.SELECT, aggregateIndex=-3 -->
-<!-- SQL:
+    <!-- SQL:
 SELECT 'showImage,' || imagefile || ',100'
 , imagename
 , bytesize

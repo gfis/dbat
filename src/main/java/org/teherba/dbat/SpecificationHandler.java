@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+    2016-05-05: incompatible change: entities with relative systemIds are relative to specDir
     2014-11-10: format="none"
     2014-11-07: <read> element and wrap= attribute in <col>
     2014-03-05: use (ordered) TreeSet for parameterMap, for better reproducibility of web tests
@@ -246,7 +247,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
      */
     public void setRequest(HttpServletRequest request) {
         this.request = request;
-        remoteUser = request.getRemoteUser();
+        remoteUser = request != null ? request.getRemoteUser() : null;
         if (remoteUser == null) {
             remoteUser = "unknown";
         } else {
@@ -349,6 +350,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         errorCode       = 0;
         errorAsterisk   = "";
         remoteUser      = "unknown";
+        setRequest      (null);
+        setResponse     (null);
     } // constructor()
 
     /** Constructor from configuration
@@ -772,21 +775,22 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
      */
     private String getResponseHeaders() {
         StringBuffer result = new StringBuffer(512);
-    /*  will only work in Tomcat 7.0+ with Servlet API 3.0+
-    */
-        Iterator<String> hiter = response.getHeaderNames().iterator();
-        while (hiter.hasNext()) {
-            String name = hiter.next();
-            result.append(name);
-            result.append(":");
-            Iterator<String> viter = response.getHeaders(name).iterator();
-            while (viter.hasNext()) {
-                String value = viter.next();
-                result.append(" ");
-                result.append(value);
-            } // while values
-            result.append("\n");
-        } // while name
+        if (response != null) {
+	    	// will only work in Tomcat 7.0+ with Servlet API 3.0+
+	        Iterator<String> hiter = response.getHeaderNames().iterator();
+	        while (hiter.hasNext()) {
+	            String name = hiter.next();
+	            result.append(name);
+	            result.append(":");
+	            Iterator<String> viter = response.getHeaders(name).iterator();
+	            while (viter.hasNext()) {
+	                String value = viter.next();
+	                result.append(" ");
+	                result.append(value);
+	            } // while values
+	            result.append("\n");
+	        } // while name
+	    } // valid response
         return result.toString();
     } // getResponseHeaders
 
@@ -1142,7 +1146,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 String inputURI     = attrs.getValue("uri");
                 if (inputURI != null && inputURI.length() > 0 && config.getInputURI() == null) { // can be overwritten by request parameter
                     config.setInputURI(realPath + inputURI);
-                    if (inputURI.endsWith(".html")) {
+                    if (inputURI.endsWith(".html") && response!= null) {
                         response.setContentType("text/html; charset=UTF-8");
                     }
                 }
@@ -2090,7 +2094,12 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     realPath = "/" + realPath.substring(0, 1) +  "|/" + realPath.substring(2);
                     // file://e:/webapps... => file:///e|/webapps... - this is understood by MS InternetExplorer also
                 } // Windows
-                url = "file://" + (realPath + systemId).replaceAll("//", "/");
+                String specDir = "";
+                int lastSlashPos = specName.lastIndexOf("/");
+                if (lastSlashPos >= 0) {
+                    specDir = specName.substring(0, lastSlashPos + 1);
+                }
+                url = "file://" + (realPath + specDir + systemId).replaceAll("//", "/");
                 result = new InputSource(url);
             }
             log.info("resolveEntity(\"" + publicId + "\", \"" + systemId + "\") -> " + url);
