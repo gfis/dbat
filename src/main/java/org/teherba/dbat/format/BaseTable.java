@@ -39,6 +39,7 @@ import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.xtrans.BaseTransformer;
 import  java.io.IOException;
+import  java.io.OutputStream;
 import  java.io.PrintWriter;
 import  java.sql.DatabaseMetaData;
 import  java.sql.Types;
@@ -288,21 +289,58 @@ public abstract class BaseTable {
     public void setTargetEncoding(String encoding) {
         targetEncoding = encoding;
     } // setTargetEncoding
+    //--------------------------------------------------
+    /** writer for binary files */
+    protected PrintWriter  charWriter;
+    /** writer for binary files */
+    protected OutputStream byteWriter;
 
-    /** writer for text files */
-    protected PrintWriter charWriter;
-    /** Gets the writer for all output
-     *  @return writer writer to be used for output
-     */
-    public PrintWriter getWriter() {
-        return this.charWriter;
-    } // getWriter
     /** Sets the writer for character data.
      *  @param writer writer to be used to write character data
      */
-    public void setWriter(PrintWriter writer) {
+    public void setCharWriter(PrintWriter writer) {
         this.charWriter = writer;
-    } // setWriter
+    } // setCharWriter
+
+    /** Sets the writer for binary data.
+     *  @param writer writer to be used to write binary data
+     */
+    public void setByteWriter(OutputStream writer) {
+        this.byteWriter = writer;
+    } // setByteWriter
+
+    /** Gets the writer for character data.
+     *  @return writer to be used to write character data
+     */
+    public PrintWriter getCharWriter() {
+        return this.charWriter;
+    } // getCharWriter
+
+    /** Gets the writer for binary data.
+     *  @return writer to be used to write binary data
+     */
+    public OutputStream getByteWriter() {
+        return this.byteWriter;
+    } // getByteWriter
+    //--------------------------------------------------
+    /** whether the file format is binary */
+    protected boolean binary;
+    
+    /** Tells whether the file format handled by this transformer
+     *  uses byte files, or character files if false.
+     *  @return true if the format uses byte files
+     */
+    public boolean isBinaryFormat() {
+        return binary;
+    } // isBinaryFormat
+    
+    /** Sets the binary format property
+     *  @param binary true (false) if the format is (not) binary
+     */
+    public void setBinaryFormat(boolean binary) {
+        this.binary = binary;
+    } // setBinaryFormat
+    
 
     //==============
     // Constructors
@@ -325,7 +363,8 @@ public abstract class BaseTable {
         descriptionMap      = new HashMap/*<1.5*/<String, String>/*1.5>*/(4);
         setSeparator        ("\t");
         setTargetEncoding   ("UTF-8"); // default for XML
-        charWriter          = null;
+        setByteWriter       (null);
+        setCharWriter       (null);
         setFileExtensions   (format);
         setFormatCodes      (format);
     //  setOutputFormat     (format);
@@ -529,12 +568,20 @@ public abstract class BaseTable {
     /** Maps parameter names to arrays of (String) parameter values */
     private HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap;
 
-    /** Sets the parameter map
-     *  @param parameterMap map of request parameters to values
+    /** Sets the parameter map to be uses in the Http request
+     *  @param parameterMap map of request parameters to lists pf values
      */
     public void setParameterMap(HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
         this.parameterMap = parameterMap;
     } // setParameterMap
+
+    /** Sets the value(s) of a (new) parameter 
+     *  @param name   name of the parameter to be set
+     *  @param values list of values to be set 
+     */
+    public void setParameter(String name, String[] values) {
+        this.parameterMap.put(name, values);
+    } // setParameter
 
     /** Appends a row from an SQL result set to the parameter map.
      *  This method is generic for all formats, and cannot be overridden.

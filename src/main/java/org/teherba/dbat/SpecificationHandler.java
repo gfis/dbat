@@ -310,7 +310,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
      */
     public void setSerializer(BaseTable tbSerializer) {
         this.tbSerializer = tbSerializer; // remember it locally
-        this.tbSerializer.setWriter(charWriter);
+        this.tbSerializer.setCharWriter(charWriter);
         this.tbSerializer.setTargetEncoding(targetEncoding);
         if (        tbSerializer instanceof EchoSQL
                 ||  tbSerializer instanceof GenerateSQLJ
@@ -320,20 +320,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         }
     } // setSerializer
 
-    /** Writer for all output */
-    private PrintWriter charWriter;
-    /** Sets the writer for all output
-     *  @param writer writer to be used for output
-     */
-    public void setWriter(PrintWriter writer) {
-        this.charWriter = writer;
-    } // setWriter
-    /** Gets the writer for all output
-     *  @return writer writer to be used for output
-     */
-    public PrintWriter getWriter() {
-        return this.charWriter;
-    } // getWriter
+    // charWRiter and byteWriter are inherited from BaseTransformer
 
     //===================================================
     // Constructor, class initialization and finalization
@@ -776,21 +763,21 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     private String getResponseHeaders() {
         StringBuffer result = new StringBuffer(512);
         if (response != null) {
-	    	// will only work in Tomcat 7.0+ with Servlet API 3.0+
-	        Iterator<String> hiter = response.getHeaderNames().iterator();
-	        while (hiter.hasNext()) {
-	            String name = hiter.next();
-	            result.append(name);
-	            result.append(":");
-	            Iterator<String> viter = response.getHeaders(name).iterator();
-	            while (viter.hasNext()) {
-	                String value = viter.next();
-	                result.append(" ");
-	                result.append(value);
-	            } // while values
-	            result.append("\n");
-	        } // while name
-	    } // valid response
+            // will only work in Tomcat 7.0+ with Servlet API 3.0+
+            Iterator<String> hiter = response.getHeaderNames().iterator();
+            while (hiter.hasNext()) {
+                String name = hiter.next();
+                result.append(name);
+                result.append(":");
+                Iterator<String> viter = response.getHeaders(name).iterator();
+                while (viter.hasNext()) {
+                    String value = viter.next();
+                    result.append(" ");
+                    result.append(value);
+                } // while values
+                result.append("\n");
+            } // while name
+        } // valid response
         return result.toString();
     } // getResponseHeaders
 
@@ -1143,10 +1130,10 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 String stylesheet   = getFilesFromAttribute(attrs.getValue("stylesheet"), subDirectory, "css");
                 String xslt         = getFilesFromAttribute(attrs.getValue("xslt")      , subDirectory, "xsl");
                 //--------
-                String inputURI     = attrs.getValue("uri");
+                String inputURI     = attrs.getValue("uri"); // for mode="taylor" only
                 if (inputURI != null && inputURI.length() > 0 && config.getInputURI() == null) { // can be overwritten by request parameter
                     config.setInputURI(realPath + inputURI);
-                    if (inputURI.endsWith(".html") && response!= null) {
+                    if (inputURI.endsWith(".html") && response!= null) { // adopt the ContentType of the inputURI file
                         response.setContentType("text/html; charset=UTF-8");
                     }
                 }
@@ -1339,6 +1326,9 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 
             } else if (qName.equals(COUNTER_TAG )) {
                 String counterDesc = attrs.getValue("desc");
+                if (counterDesc == null) {
+                    counterDesc = attrs.getValue("name"); // for <select into="parm"> - store likewise
+                }
                 if (counterDesc == null || counterDesc.length() == 0) {
                     // the element was present, but not the attribute: take default word particles
                     counterDesc = Messages.getDefaultCounterDesc(config.getLanguage());

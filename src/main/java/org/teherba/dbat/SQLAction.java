@@ -1354,16 +1354,19 @@ public class SQLAction implements Serializable {
                 tbMetaData.writePreviousRow(tbSerializer, this.isWithHeaders(), htmlRowCount, columnCount);
                 htmlRowCount ++;
             } // last row
-            if (this.isWithHeaders()) { // print row count
-                if (tbMetaData.isPivot()) {
-                    htmlRowCount --; // first data row was really the header row
-                }
-                tbSerializer.writeTableFooter(htmlRowCount, sqlRowCount >= fetchLimit, tbMetaData);
-            } // withHeaders
             if (! intoParm) {
+	            if (this.isWithHeaders()) { // print row count
+    	            if (tbMetaData.isPivot()) {
+        	            htmlRowCount --; // first data row was really the header row
+            	    }
+                	tbSerializer.writeTableFooter(htmlRowCount, sqlRowCount >= fetchLimit, tbMetaData); 
+	            } // withHeaders
                 tbSerializer.writeCommit(sqlRowCount);
                 tbSerializer.endTable();
-            }
+            } else { // intoParm - save rowCount in a new parameter
+	        	String name = tbMetaData.getCounterDesc(1); // singular only, it is the parameter name anyway
+	        	tbSerializer.setParameter(name, new String[] { String.valueOf(htmlRowCount) });
+            } // intoParm
         } catch (Exception exc) {
             log.error(exc.getMessage() + ", SQL=\"" + selectSql + "\"", exc);
             printSQLError(exc);

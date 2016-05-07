@@ -266,7 +266,7 @@ public class Dbat implements Serializable {
             SpecificationHandler handler = new SpecificationHandler(config);
             handler.setParameterMap(config.getParameterMap());
             handler.setEncoding(config.getEncoding(1));
-            handler.setWriter(tableWriter);
+            handler.setCharWriter(tableWriter);
             handler.setSerializer(config.getTableSerializer());
             handler.setSpecPaths("./", "./", specFileName);
             ReadableByteChannel channel = (new FileInputStream (specFileName)).getChannel();
@@ -588,7 +588,7 @@ public class Dbat implements Serializable {
      *  @param tbMetaData properties to be set for one SQL action
      *  needed only if <em>karg &gt; 0</em>
      */
-    public void process(PrintWriter writer, int karg, String[] args, Configuration config, TableMetaData tbMetaData) {
+    private void process(PrintWriter writer, int karg, String[] args, Configuration config, TableMetaData tbMetaData) {
         try {
             if (writer == null) { // write to System.out
                 WritableByteChannel target = Channels.newChannel(System.out);
@@ -598,7 +598,7 @@ public class Dbat implements Serializable {
                 tableWriter = writer; // servlet response or other writer opened by the caller
             }
             BaseTable tableSerializer = config.getTableSerializer();
-            tableSerializer.setWriter(tableWriter);
+            tableSerializer.setCharWriter(tableWriter);
             tableSerializer.setGenerator(config.getGenerator());
             config.setTableSerializer(tableSerializer);
             // System.err.println("tableWriter=" + tableWriter.toString() + ", generator=" + tableSerializer.getGenerator());

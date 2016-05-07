@@ -103,6 +103,8 @@ public class DbatServlet extends HttpServlet {
     private LinkedHashMap<String, DataSource> dsMap;
     /** Environment naming context obtained from <em>lookup("java:comp/env")</em> */
     private Context envContext;
+    /** Whether the response is binary */
+    private boolean binary;
 
     /** Called by the servlet container to indicate to a servlet
      *  that the servlet is being placed into service.
@@ -240,7 +242,8 @@ public class DbatServlet extends HttpServlet {
      *  @param specName name of the specification file
      *  @param encoding target/response encoding
      */
-    private void setResponseHeaders(HttpServletResponse response, String mode, String specName, String encoding) {
+    private boolean setResponseHeaders(HttpServletResponse response, String mode, String specName, String encoding) {
+    	boolean result = false; // assume legible character response output
         String targetFileName = specName;
         try {
             if (false) {
@@ -270,6 +273,7 @@ public class DbatServlet extends HttpServlet {
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
+        return result;
     } // setResponseHeaders
 
     /** Sets the parameter map for the SAX handler
@@ -287,6 +291,7 @@ public class DbatServlet extends HttpServlet {
      *  @throws IOException
      */
     public void generateResponse(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	binary = false; // assume legible character response output
         TableFactory tableFactory = new TableFactory();
         Configuration config = new Configuration();
         config.configure(config.WEB_CALL, dsMap);
@@ -320,7 +325,7 @@ public class DbatServlet extends HttpServlet {
                 }
                 int fetchLimit      = getInputField(request, "fetch"    , 0x7fffffff); // "unlimited"
                 // response.setContentType(config.getHtmlMimeType()); // default
-                setResponseHeaders(response, mode, specName, encoding);
+                binary = setResponseHeaders(response, mode, specName, encoding);
 
                 ReadableByteChannel channel = null;
                 String sourceFileName = realPath + specName + ".xml";
@@ -376,7 +381,7 @@ public class DbatServlet extends HttpServlet {
                     config.setLanguage(language);
                     config.setFetchLimit(fetchLimit);
                     SpecificationHandler handler = new SpecificationHandler(config);
-                    handler.setWriter  (response.getWriter());
+                    handler.setCharWriter(response.getWriter());
                     handler.setEncoding(response.getCharacterEncoding());
                     handler.setRequest (request );
                     handler.setResponse(response);
@@ -444,7 +449,7 @@ public class DbatServlet extends HttpServlet {
                 tbSerializer.setMimeType(response.getContentType());
                 tbSerializer.setSeparator(separator);
                 tbSerializer.setTargetEncoding(encoding);
-                tbSerializer.setWriter(response.getWriter());
+                tbSerializer.setCharWriter(response.getWriter());
                 config.setFormatMode(mode);
                 config.setLanguage(language);
                 config.setFetchLimit(fetchLimit);

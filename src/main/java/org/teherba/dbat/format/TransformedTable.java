@@ -131,7 +131,7 @@ public class TransformedTable extends BaseTable {
             xtransFactory.createPipeLine(pipeLine);
             generator  = xtransFactory.getGenerator();
             serializer = xtransFactory.getSerializer();
-            serializer.setCharWriter(getWriter());
+            serializer.setCharWriter(getCharWriter());
             generator.fireStartDocument();
             generator.fireStartRoot(SpecificationHandler.ROOT_TAG);
             if (debug >= 2) {
@@ -151,7 +151,7 @@ public class TransformedTable extends BaseTable {
                         + "\ngenerator.result="         + generator.getResult()
                         + "\nserializer.contentHandler=" + serializer.getContentHandler()
                         + "\nserializer.result="        + serializer.getResult()
-                        + "\nwriter="                   + getWriter()
+                        + "\nwriter="                   + getCharWriter()
                         );
                 generator.fireLineBreak();
             }
@@ -170,7 +170,7 @@ public class TransformedTable extends BaseTable {
                 generator.fireComment("Test: TransformedTable.writeEnd"
                         + "\ngenerator="                + generator
                         + "\nserializer="               + serializer
-                        + "\nwriter="                   + getWriter()
+                        + "\nwriter="                   + getCharWriter()
                         );
                 generator.fireLineBreak();
                 // serializer.endElement("", SpecificationHandler.ROOT_TAG, SpecificationHandler.ROOT_TAG);

@@ -160,7 +160,8 @@ public class HTMLTable extends XMLTable {
             if (target != null) {
                 charWriter.println("<base target=\"" + target + "\" />");
             }
-       } catch (Exception exc) {
+        } catch (Exception exc) {
+       	    if (false) {
             log.error(exc.getMessage(), exc);
             System.err.println("encoding="  + encoding
                     + ", contenttype="      + contenttype
@@ -169,6 +170,9 @@ public class HTMLTable extends XMLTable {
                     + ", target="           + target
                     + ", title="            + title
                     );
+            } else {
+            	System.out.println("HTMLTable#writeStart: charWriter == null");
+            }
         }
     } // writeStart
 
@@ -208,7 +212,7 @@ public class HTMLTable extends XMLTable {
             writeMarkup("\n<table><tr><td><pre>");
             sqlTable = new SQLTable();
             sqlTable.setOutputFormat("sql");
-            sqlTable.setWriter(charWriter);
+            sqlTable.setCharWriter(charWriter);
             sqlTable.setTargetEncoding(getTargetEncoding());
             sqlTable.startDescription(dbMetaData, schema, tableName, tableType);
         } catch (Exception exc) {

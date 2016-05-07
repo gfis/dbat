@@ -11,11 +11,11 @@
 </head><body>
 
 
-	<!--Fetch Enumerations into Parameters-->
-	<!--Parameter aus einer Enumeration füllen-->
-	
+    <!--Fetch Enumerations into Parameters-->
+    <!--Parameter aus einer Enumeration füllen-->
+    
     <h3>Fetch Enumerations into Parameters <em>code = initcode,
-    	display = initdisplay</em>
+        display = initdisplay</em>
     </h3>
 
     <!-- SQL:
@@ -31,6 +31,7 @@ ORDER BY 1;
 <tr><td>1</td><td>M</td><td>male</td></tr>
 <tr><td>2</td><td>F</td><td>female</td></tr>
 <tr><td>3</td><td>N</td><td>neuter</td></tr>
+<tr><td class="counter" colspan="3">3 codes</td></tr>
 </table>
 
 
@@ -44,24 +45,27 @@ ORDER BY 1;
 :SQL -->
 
 
-	<h3>Parameter Table</h3>
-	<table>
-		<tr>
-			<td>M</td>
-			<td>male</td>
-		</tr>
-		<tr>
-			<td>F</td>
-			<td>female</td>
-		</tr>
-		<tr>
-			<td>N</td>
-			<td>neuter</td>
-		</tr>
-	</table>
-	Continue with <a href="servlet?spec=enum02">enum02</a>
+    <h3>Parameter Table</h3>
+    <table>
+        <tr>
+            <td>M</td>
+            <td>male</td>
+        </tr>
+        <tr>
+            <td>F</td>
+            <td>female</td>
+        </tr>
+        <tr>
+            <td>N</td>
+            <td>neuter</td>
+        </tr>
+    </table>
+    <p>
+    3 codes were fetched.<br />
+    Continue with <a href="servlet?spec=test.enum02">enum02</a>.
+    </p>
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/enum01.xml" type="text/plain">test/enum01</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fenum01&amp;lang=en&amp;code=M&amp;code=F&amp;code=N&amp;display=male&amp;display=female&amp;display=neuter&amp;seq=1&amp;seq=2&amp;seq=3">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fenum01&amp;lang=en&amp;code=M&amp;code=F&amp;code=N&amp;display=male&amp;display=female&amp;display=neuter&amp;seq=1&amp;seq=2&amp;seq=3">more</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fenum01&amp;lang=en&amp;code=M&amp;code=F&amp;code=N&amp;display=male&amp;display=female&amp;display=neuter&amp;seq=1&amp;seq=2&amp;seq=3&amp;code_count=3">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fenum01&amp;lang=en&amp;code=M&amp;code=F&amp;code=N&amp;display=male&amp;display=female&amp;display=neuter&amp;seq=1&amp;seq=2&amp;seq=3&amp;code_count=3">more</a>
 
 </body></html>
