@@ -763,7 +763,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     private String getResponseHeaders() {
         StringBuffer result = new StringBuffer(512);
         if (response != null) {
-            // will only work in Tomcat 7.0+ with Servlet API 3.0+
+    /*  would only work in Tomcat 7.0+ with Servlet API 3.0+
             Iterator<String> hiter = response.getHeaderNames().iterator();
             while (hiter.hasNext()) {
                 String name = hiter.next();
@@ -777,6 +777,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 } // while values
                 result.append("\n");
             } // while name
+    */
         } // valid response
         return result.toString();
     } // getResponseHeaders
