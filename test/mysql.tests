@@ -2,6 +2,7 @@
 
 # Collection of Testcases for Dbat with MySQL driver
 # @(#) $Id: all.tca 955 2012-06-05 07:22:59Z gfis $
+# 2016-05-10: TL%, UA%
 # 2014-04-22: + TI1,2
 # 2014-03-10: + DF1-3
 # 2014-03-05: + XS7, +V1*
@@ -887,6 +888,36 @@ CALL Dbat -m probe -f web/spec/test/selec02.xml
 
 # TEST PR2 probe wrong SQL (WITH for MySQL)
 # CALL Dbat -m probe -f web/spec/test/with_cte.xml
+#-------------------
+# Test different User-Agents for "view-source:" link feature in trailer
+
+TEST UA1 Firefox - yes
+REQUEST=User-Agent:Firefox/46
+HTTP spec=test.pivot03
+
+TEST UA2 Microsoft Edge - no
+REQUEST=User-Agent:Edge/
+HTTP spec=test.pivot03
+
+TEST UA2D view-source: difference
+DIFF test/UA1.this.tst test/UA2.this.tst
+
+TEST UA3 Chrome - yes
+REQUEST=User-Agent:Chrome/
+HTTP spec=test.pivot03
+
+TEST UA4 Opera - yes
+REQUEST=User-Agent:OPR/
+HTTP spec=test.pivot03
+
+TEST UA5 Safari - no
+REQUEST=User-Agent:Safari/
+HTTP spec=test.pivot03
+
+TEST UA6 - remove property
+REQUEST=User-Agent:
+HTTP spec=test.pivot03
+
 #-------------------
 TEST VS1 CLI visible grouping test with TSV
 CALL Dbat -g sp1 -m tsv  -f web/spec/test/visible05.xml

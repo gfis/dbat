@@ -1,5 +1,6 @@
 /*  Reader for a URL or data URI source
     @(#) $Id$
+    2016-05-10: with URLConnection, make User-Agent header settable
     2016-04-28: allow for Windows drive letter "protocol" (-> file:)
     2013-08-14: URL encoding by URI(3 parameter) constructor
     2013-01-04: gopher repaired
@@ -32,8 +33,11 @@ import  java.io.StringReader;
 import  java.lang.IllegalArgumentException;
 import  java.net.URI;
 import  java.net.URL;
+import  java.net.URLConnection;
 import  java.nio.channels.Channels;
 import  java.nio.channels.ReadableByteChannel;
+import  java.util.Iterator;
+import  java.util.Map;
 import  org.apache.log4j.Logger;
 
 /** This reader reads from the following sources:
@@ -117,6 +121,9 @@ public class URIReader {
     /** whether the reader is character oriented (in contrast to byte streams) */
     private boolean isEncoded;
 
+    /** underlying URLConnection */
+    private URLConnection urlConn;
+    
     /** generalized local input stream */
     private InputStream byteStream;
     /** Gets the byte input stream for this URI
@@ -148,8 +155,8 @@ public class URIReader {
      *  @param unresid the Uniform Resource Identifier to be used: URL or <em>data:</em> URI
      */
     public URIReader(String unresid) {
-        this(unresid, "UTF-8");
-    } // Constructor
+        this(unresid, "UTF-8", null);
+    } // Constructor(1)
 
     /** Construct from a URI and specifiy character set encoding (if character oriented),
      *  or <code>null</code> (if byte oriented reading should be performed).
@@ -158,71 +165,104 @@ public class URIReader {
      *  or <code>null</code> (byte oriented)
      */
     public URIReader(String unresid, String enc) {
+    	this(unresid, enc, null);
+	} // Constructor(2)
+	
+    /** Construct from a URI and specifiy character set encoding (if character oriented),
+     *  or <code>null</code> (if byte oriented reading should be performed).
+     *  @param unresid the Uniform Resource Identifier to be used: URL or <em>data:</em> URI
+     *  @param enc character set to be used to read from bytes (character oriented),
+     *  or <code>null</code> (byte oriented)
+     *  @param propMap optional map for request properties, 
+     *  or null if no properties should be associated
+     */
+    public URIReader(String unresid, String enc, Map<String,String> propMap) {
         log = Logger.getLogger(URIReader.class.getName());
         this.encoding = enc;
         isEncoded   = enc != null;
         charReader  = null; // the protocol is unreadable so far
         byteStream  = null; // the protocol is unreadable so far
+        urlConn     = null;
         try {
-            if (isEncoded) {
-                ReadableByteChannel channel = null;
-                if (false) {
-                } else if (unresid == null || unresid.equals("-")) { // read from STDIN
-                    channel = Channels.newChannel(System.in);
+            ReadableByteChannel channel = null;
+            if (false) {
+            } else if (unresid == null || unresid.equals("-")) { // read from STDIN
+                channel = Channels.newChannel(System.in);
+                if (isEncoded) {
                     charReader = new BufferedReader(Channels.newReader(channel, this.encoding));
-                } else if (unresid.startsWith("data:")) {
-                    inputURI = new URI(unresid);
-                    String content = inputURI.getSchemeSpecificPart().replaceAll("\\+", " "); // rather primitive, no BASE64
+                } else {
+                    byteStream = System.in;
+                }
+            } else if (unresid.startsWith("data:"))            { // data:
+                inputURI = new URI(unresid);
+                String content = inputURI.getSchemeSpecificPart().replaceAll("\\+", " "); // rather primitive, no BASE64
+                if (isEncoded) {
                     charReader = new BufferedReader(new StringReader(content));
-                } else if (unresid.matches("\\w+\\:.*")) { // Windows drive letter
-                	if (unresid.matches("\\w\\:.*")) {
-                		unresid = "file:///" + unresid.substring(0, 1) + "|" + unresid.substring(2);
-                	} // Windows
-                    // the JVM has handlers in rt.jar!/sun/net/www/protocol/* for
-                    //   file: ftp: gopher: http: https: jar: mailto: netdoc:
-                    int colonPos = unresid.indexOf(':');
-                    int sharpPos = unresid.indexOf('#');
-                    if (sharpPos < 0) {
-                        sharpPos = unresid.length(); // behind the end
-                    }
-                    inputURI = new URI(unresid.substring(0, colonPos)
-                            , unresid.substring(colonPos + 1, sharpPos)
-                            , (sharpPos >= unresid.length() ? null : unresid.substring(sharpPos + 1))
-                            );
-                    // URL url = inputURI.toURL();
-                    URL url = new URL(inputURI.toASCIIString());
-                    if (! unresid.startsWith("mailto:")) {
-                        charReader = new BufferedReader(new InputStreamReader(url.openStream(), this.encoding));
-                    } // else still unreadable
-                } else { // this will (probably) be an absolute or relative file URL
+                } else {
+                    byteStream = new ByteArrayInputStream(content.getBytes(this.encoding)); // or US_ASCII ?
+                }
+            } else if (unresid.startsWith("mailto:")) {
+                // ??? - ignore, read empty file
+            } else if (unresid.matches("\\w+\\:.*"))           { // http: file: ftp: etc.
+                if (unresid.matches("\\w\\:.*")) { // Windows drive letter
+                    unresid = "file:///" + unresid.substring(0, 1) + "|" + unresid.substring(2);
+                } // Windows
+                // the JVM has handlers in rt.jar!/sun/net/www/protocol/* for
+                //   file: ftp: gopher: http: https: jar: mailto: netdoc:
+                int colonPos = unresid.indexOf(':');
+                int sharpPos = unresid.indexOf('#');
+                if (sharpPos < 0) {
+                    sharpPos = unresid.length(); // behind the end
+                }
+                inputURI = new URI(unresid.substring(0, colonPos)
+                        , unresid.substring(colonPos + 1, sharpPos)
+                        , (sharpPos >= unresid.length() ? null : unresid.substring(sharpPos + 1))
+                        );
+                URL url = new URL(inputURI.toASCIIString());
+                urlConn = url.openConnection();
+
+                if (propMap != null) { // set connection properties
+                	Iterator<String> piter = propMap.keySet().iterator();
+                	while (piter.hasNext()) {
+                		String key = piter.next();
+                		String value = propMap.get(key); 
+                		urlConn.setRequestProperty(key, value);
+                	} // while piter
+                } // propMap was set
+                
+                if (isEncoded) {
+                    charReader = new BufferedReader(new InputStreamReader(urlConn.getInputStream(), this.encoding));
+                } else {
+                    byteStream = urlConn.getInputStream();
+                }
+            } else { // this will (probably) be an absolute or relative file URL
+                if (isEncoded) {
                     channel = (new FileInputStream (unresid)).getChannel();
                     charReader = new BufferedReader(Channels.newReader(channel, this.encoding));
-                }
-                // encoded, characters
-
-            } else { // byte oriented
-                if (false) {
-                } else if (unresid == null || unresid.equals("-")) { // read from STDIN
-                    byteStream = System.in;
-                } else if (unresid.startsWith("data:")) {
-                    inputURI = new URI(unresid);
-                    String content = inputURI.getSchemeSpecificPart().replaceAll("\\+", " "); // rather primitive, no BASE64
-                    byteStream = new ByteArrayInputStream(content.getBytes(this.encoding)); // or US_ASCII ?
-                } else if (unresid.matches("\\w+\\:.*")) {
-                    inputURI = new URI(unresid);
-                    URL url = inputURI.toURL();
-                    if (! unresid.startsWith("mailto:")) {
-                        byteStream = url.openStream();
-                    } // else still unreadable
-                } else { // this will (probably) be an absolute or relative file URL
+                } else {
                     byteStream = new FileInputStream(unresid);
                 }
-            } // byte orientend
+            }
         } catch (Exception exc) {
             log.error(exc.getMessage() + ", unresid=\"" + unresid + "\"", exc);
         }
-    } // Constructor
+    } // Constructor(3)
 
+    /** Sets a property of the URLConnection.
+     *  If the conneciton is not set, the call is silently ignored.
+     *  @param key   the name of the property to be set, for example "User-Agent"
+     *  @param value the value to be set for the property
+     */
+    public void setRequestProperty(String key, String value) {
+        try {
+            if (urlConn != null) {
+                urlConn.setRequestProperty(key, value);
+            }
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        } 
+    } // setRequestProperty
+    
     //==========================
     // BufferedReader Interface
     //==========================
