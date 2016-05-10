@@ -20,4 +20,4 @@
         <input type="submit" value="Show"></input>  
         <a href="servlet?spec=test.ins1">Neuer Eintrag</a>
     </form>
-    <h3 class="error">XML SAX parsing error: The content of elements must consist of well-formed character data or markup. in Dbat specification, line 29, column 10, cause: null</h3></body></html>
+    <h3 class="error">XML SAX parsing error: Der Content von Elementen muss aus ordnungsgemäß formatierten Zeichendaten oder Markups bestehen. in Dbat specification, line 29, column 10, cause: null</h3></body></html>

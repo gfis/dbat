@@ -1,4 +1,4 @@
-ECHO 2016-05-07 18:35:18
+ECHO 2016-05-10 09:49:38
 Test A01 parameterized link with defaults
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m html -f web/spec/test/parmlink.xml
 ========> passed A01 parameterized link with defaults
@@ -250,55 +250,41 @@ http "http://localhost:8080/dbat/servlet?spec=test.selec01"
 ========> passed Y05 spec file with dot
 Test Y06 XML syntax error, CLI
 java -cp dist/dbat.jar org.teherba.dbat.Dbat -c etc/worddb.properties -e UTF-8 -m html  -f web/spec/test/badxml.xml 2> nul
-2016-05-07 18:35:30,755 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
- 2016-05-07 18:35:30,767 12   [main] ERROR org.teherba.dbat.Dbat  - Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
+2016-05-10 09:49:48,438 0    [main] ERROR org.teherba.xtrans.BaseTransformer  - BaseTransformer: Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
+ 2016-05-10 09:49:48,458 20   [main] ERROR org.teherba.dbat.Dbat  - Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
  org.xml.sax.SAXParseException; lineNumber: 29; columnNumber: 10; Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
 	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(Unknown Source)
 	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(Unknown Source)
 	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl.parse(Unknown Source)
-	at org.teherba.dbat.Dbat.parseXML(Dbat.java:231)
-	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:274)
-	at org.teherba.dbat.Dbat.process(Dbat.java:644)
-	at org.teherba.dbat.Dbat.processArguments(Dbat.java:734)
-	at org.teherba.dbat.Dbat.main(Dbat.java:764)
+	at org.teherba.dbat.Dbat.parseXML(Dbat.java:228)
+	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:270)
+	at org.teherba.dbat.Dbat.process(Dbat.java:640)
+	at org.teherba.dbat.Dbat.processArguments(Dbat.java:728)
+	at org.teherba.dbat.Dbat.main(Dbat.java:758)
 	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
 	at java.lang.reflect.Method.invoke(Unknown Source)
 	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:509)
 	at org.teherba.common.RegressionTester.main(RegressionTester.java:603)
-2016-05-07 18:35:30,767 12   [main] ERROR org.teherba.dbat.Dbat  - Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
+2016-05-10 09:49:48,470 32   [main] ERROR org.teherba.dbat.Dbat  - Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
  org.xml.sax.SAXParseException; lineNumber: 29; columnNumber: 10; Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen.
 	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(Unknown Source)
 	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(Unknown Source)
 	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl.parse(Unknown Source)
-	at org.teherba.dbat.Dbat.parseXML(Dbat.java:231)
-	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:274)
-	at org.teherba.dbat.Dbat.process(Dbat.java:644)
-	at org.teherba.dbat.Dbat.processArguments(Dbat.java:734)
-	at org.teherba.dbat.Dbat.main(Dbat.java:764)
+	at org.teherba.dbat.Dbat.parseXML(Dbat.java:228)
+	at org.teherba.dbat.Dbat.processXMLFile(Dbat.java:270)
+	at org.teherba.dbat.Dbat.process(Dbat.java:640)
+	at org.teherba.dbat.Dbat.processArguments(Dbat.java:728)
+	at org.teherba.dbat.Dbat.main(Dbat.java:758)
 	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
 	at java.lang.reflect.Method.invoke(Unknown Source)
 	at org.teherba.common.RegressionTester.runTests(RegressionTester.java:509)
 	at org.teherba.common.RegressionTester.main(RegressionTester.java:603)
-*** test/Y06.prev.tst	Sun Feb  1 22:43:52 2015
---- test/Y06.this.tst	Sat May  7 18:35:30 2016
-***************
-*** 23 ****
-!     <h3 class="error">XML SAX parsing error: The content of elements must consist of well-formed character data or markup. in Dbat specification, line 29, column 10, cause: null</h3></body></html>
---- 23 ----
-!     <h3 class="error">XML SAX parsing error: Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen. in Dbat specification, line 29, column 10, cause: null</h3></body></html>
-========> FAILED Y06 XML syntax error, CLI
+========> passed Y06 XML syntax error, CLI
 Test Y07 XML syntax error, web
 http "http://localhost:8080/dbat/servlet?spec=test.badxml"
-*** test/Y07.prev.tst	Sun Feb  1 22:43:52 2015
---- test/Y07.this.tst	Sat May  7 18:35:30 2016
-***************
-*** 23 ****
-!     <h3 class="error">XML SAX parsing error: The content of elements must consist of well-formed character data or markup. in Dbat specification, line 29, column 10, cause: null</h3></body></html>
---- 23 ----
-!     <h3 class="error">XML SAX parsing error: Der Content von Elementen muss aus ordnungsgem‰ﬂ formatierten Zeichendaten oder Markups bestehen. in Dbat specification, line 29, column 10, cause: null</h3></body></html>
-========> FAILED Y07 XML syntax error, web
+========> passed Y07 XML syntax error, web
 Test Y08 redirected spec file, wait time 0 s
 http "http://localhost:8080/dbat/servlet?spec=test.redir0"
 ========> passed Y08 redirected spec file, wait time 0 s
@@ -882,5 +868,5 @@ Test VA3 echo with var elements
 http "http://localhost:8080/dbat/servlet?spec=test.var02&mode=echo"
 ========> passed VA3 echo with var elements
    0 tests recreated,
-   2 tests FAILED,
- 277 tests passed in 34963 ms
+   0 tests FAILED,
+ 279 tests passed in 37509 ms

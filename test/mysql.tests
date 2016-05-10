@@ -610,10 +610,6 @@ CALL Dbat -m jdbc -d c01
 TEST D10 output default specification
 CALL Dbat -m spec -d c01
 
-# describe for Excel nyi
-# TEST D11 output Excel
-# CALL Dbat -m xls  -d c01
-
 TEST D12 web describe with specification
 HTTP spec=describe
 #-------------------

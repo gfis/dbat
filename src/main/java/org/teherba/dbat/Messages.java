@@ -320,8 +320,11 @@ public class Messages implements Serializable {
             result.append(scriptPart);
             if (withLink) {
                 result.append("<a target=\"_blank\" href=\"");
+            //  result.append("view-source:"); // View-source is applied in SpecificationHandler
                 result.append(specUrl);
-                result.append("\" type=\"text/plain\">");
+                result.append("\"");
+                result.append(" type=\"text/plain\""); // neither text/xml, application/xhtml+xml nor application/xml did work
+                result.append(">"); 
             }
             result.append(specName);
             if (withLink) {

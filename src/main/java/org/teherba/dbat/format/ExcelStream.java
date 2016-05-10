@@ -1,10 +1,6 @@
 /*  Generator for an Excel 2003 XML table
     @(#) $Id$
-    2016-05-07: newline appended
-    2014-11-10: s|getHrefValue -> s|getWrappedValue
-    2011-08-24: writeGenericRow
-    2011-01-21: sheet names Select1, Select2 ...; translate to &apos; in character strings
-    2010-07-24: copied from XMLTable
+    2016-05-ß8: copied from ExcelTable
 */
 /*
  * Copyright 2006 Dr. Georg Fischer <punctum at punctum dot kom>
@@ -30,7 +26,7 @@ import  java.sql.Types;
 import  java.util.ArrayList;
 import  java.util.HashMap;
 
-/** Generator for an Excel 2002 (Office 2003) XML table.
+/** Generator for binary Excel 97 *.xls and Excel 2007 OOXMLXML table.
  *  The format is described in <a href="http://msdn.microsoft.com/en-us/library/aa140066%28office.10%29.aspx">http://msdn.microsoft.com/en-us/library/aa140066%28office.10%29.aspx</a>
  *  This is not to be confused with the <em>Office Open XML</em> of Office 2007 and later, c.f.
  *  <a href="http://en.wikipedia.org/wiki/Microsoft_Office_XML_formats">http://en.wikipedia.org/wiki/Microsoft_Office_XML_formats</a>.
@@ -39,7 +35,7 @@ import  java.util.HashMap;
  *  interpretation of strings of the form 'mm-nn-pp'.
  *  @author Dr. Georg Fischer
  */
-public class ExcelTable extends BaseTable {
+public class ExcelStream extends BaseTable {
     public final static String CVSID = "@(#) $Id$";
 
     /** whether an XML declaration was already output */
@@ -51,33 +47,32 @@ public class ExcelTable extends BaseTable {
 
     /** No-args Constructor
      */
-    public ExcelTable() {
+    public ExcelStream() {
         super();
-        setFormatCodes("xls");
-        setDescription("en", "Excel");
-        xmlDeclared = false;
-        encoding = "UTF-8";
-        sheetCounter = 0;
+        setBinaryFormat	(true);
+        setFormatCodes	("xlsx");
+        setDescription	("en", "Excel 2007");
+        xmlDeclared 	= false;
+        encoding 		= "UTF-8";
+        sheetCounter 	= 0;
     } // Constructor
 
     /** Constructor with format
      *  @param format = "xls"
      */
-    public ExcelTable(String format) {
+    public ExcelStream(String format) {
         super(format);
         xmlDeclared = false;
         encoding = "UTF-8";
     } // Constructor
 
     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
-     *  @param attributes array of 0 or more (name, value) strings which specify features in the file header.
+     *  @param attributes array of 0 or more pairs of strings (name1, value1, name2, value2 and so on) 
+     *  which specify features in the header of the file to be generated.
+     *  The possible attribute names are described in {@link BaseTable#writeStart}.
      *  @param parameterMap map of request parameters to values
-     *  The following names are interpreted:
-     *  <ul>
-     *  <li>encoding - encoding to be used for the output stream</li>
-     *  </ul>
      */
-    public void writeStart(String[] attributes,  HashMap<String, String[]> parameterMap) {
+    public void writeStart(String[] attributes,  HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
         try {
             String encoding = getTargetEncoding();
             int iattr = attributes.length;
@@ -89,7 +84,7 @@ public class ExcelTable extends BaseTable {
                 }
             } // while iattr
             charWriter.print("<?xml version=\"1.0\" encoding=\"" + encoding + "\" ?>"       + newline
-                    +        "<?mso-application progid=\"Excel.Sheet\"?>"                   + newline
+                    +        "<?mso-application progid=\"Excel.Sheet\"?><!-- Stream -->"    + newline
                     +        "<Workbook"                                                    + newline
                     +        "   xmlns=\"urn:schemas-microsoft-com:office:spreadsheet\""    + newline
                     +        "   xmlns:o=\"urn:schemas-microsoft-com:office:office\""       + newline
@@ -253,4 +248,4 @@ public class ExcelTable extends BaseTable {
         } // switch rowType
     } // writeGenericRow
 
-} // ExcelTable
+} // ExcelStream

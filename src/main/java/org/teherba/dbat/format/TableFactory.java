@@ -76,7 +76,8 @@ public class TableFactory {
         try {
             serializers = new ArrayList<BaseTable>(32);
             addSerializer("HTMLTable"         );
-            addSerializer("ExcelTable"        );
+            addSerializer("ExcelTable"        ); // Excel 2003 XML format
+            addSerializer("ExcelStream"       ); // same as ExcelTable, but with binary response
             addSerializer("XMLTable"          );
             addSerializer("FixedWidthTable"   );
             addSerializer("SeparatedTable"    );

@@ -80,20 +80,12 @@ public class HTMLTable extends XMLTable {
     private String language;
 
     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
-     *  @param params array of 0 or more (name, value) string which specify features in the file header.
+     *  @param attributes array of 0 or more pairs of strings (name1, value1, name2, value2 and so on) 
+     *  which specify features in the header of the file to be generated.
+     *  The possible attribute names are described in {@link BaseTable#writeStart}.
      *  @param parameterMap map of request parameters to values
-     *  The following names are interpreted:
-     *  <ul>
-     *  <li>contenttype - MIME type for the document content</li>
-     *  <li>encoding - encoding to be used for the output stream</li>
-     *  <li>javascript - names of the files containing JavaScript functions (multiple, separated by whitespace)</li>
-     *  <li>stylesheet - names of the CSS files (multiple, separated by whitespace)</li>
-     *  <li>encoding - encoding to be used for the output stream</li>
-     *  <li>target - target of HTML base element, for example "_blank"</li>
-     *  <li>title - title for the HTML head element, and the browser window</li>
-     *  </ul>
      */
-    public void writeStart(String[] params,  HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
+    public void writeStart(String[] attributes,  HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
         String contenttype  = getMimeType();
         String encoding     = getTargetEncoding();
         String javascript   = null;
@@ -105,23 +97,23 @@ public class HTMLTable extends XMLTable {
         String xslt         = null;
         tableSeqNo = 0;
         try {
-            int iparam = params.length;
-            while (iparam > 0) {
-                iparam -= 2;
+            int iattr = attributes.length;
+            while (iattr > 0) {
+                iattr -= 2;
                 if (false) {
-                } else if (params[iparam].equals("contenttype"))    { contenttype   = params[iparam + 1];
-                } else if (params[iparam].equals("encoding"))       { encoding      = params[iparam + 1];
-                } else if (params[iparam].equals("javascript"))     {
-                    javascript = params[iparam + 1];
+                } else if (attributes[iattr].equals("contenttype"))    { contenttype   = attributes[iattr + 1];
+                } else if (attributes[iattr].equals("encoding"))       { encoding      = attributes[iattr + 1];
+                } else if (attributes[iattr].equals("javascript"))     {
+                    javascript = attributes[iattr + 1];
                     isSortable = javascript.indexOf("sorttable") >= 0;
-                } else if (params[iparam].equals("lang"))           { language      = params[iparam + 1];
-                } else if (params[iparam].equals("stylesheet"))     { stylesheet    = params[iparam + 1];
-                } else if (params[iparam].equals("target"))         { target        = params[iparam + 1];
-                } else if (params[iparam].equals("title"))          { title         = params[iparam + 1];
-                } else if (params[iparam].equals("xslt"))           { xslt          = params[iparam + 1];
+                } else if (attributes[iattr].equals("lang"))           { language      = attributes[iattr + 1];
+                } else if (attributes[iattr].equals("stylesheet"))     { stylesheet    = attributes[iattr + 1];
+                } else if (attributes[iattr].equals("target"))         { target        = attributes[iattr + 1];
+                } else if (attributes[iattr].equals("title"))          { title         = attributes[iattr + 1];
+                } else if (attributes[iattr].equals("xslt"))           { xslt          = attributes[iattr + 1];
                 } else { // "dummy" - skip pair
                 }
-            } // while iparam
+            } // while iattr
 
             charWriter.println("<?xml version=\"1.0\" encoding=\"" + encoding + "\"?>");
             charWriter.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\""
@@ -161,17 +153,17 @@ public class HTMLTable extends XMLTable {
                 charWriter.println("<base target=\"" + target + "\" />");
             }
         } catch (Exception exc) {
-       	    if (false) {
-            log.error(exc.getMessage(), exc);
-            System.err.println("encoding="  + encoding
-                    + ", contenttype="      + contenttype
-                    + ", javascript="       + javascript
-                    + ", stylesheet="       + stylesheet
-                    + ", target="           + target
-                    + ", title="            + title
-                    );
+            if (true) {
+                log.error(exc.getMessage(), exc);
+                System.err.println("encoding="  + encoding
+                        + ", contenttype="      + contenttype
+                        + ", javascript="       + javascript
+                        + ", stylesheet="       + stylesheet
+                        + ", target="           + target
+                        + ", title="            + title
+                        );
             } else {
-            	System.out.println("HTMLTable#writeStart: charWriter == null");
+                System.out.println("HTMLTable#writeStart: charWriter == null");
             }
         }
     } // writeStart

@@ -380,13 +380,18 @@ public class DbatServlet extends HttpServlet {
                     config.setFormatMode(mode);
                     config.setLanguage(language);
                     config.setFetchLimit(fetchLimit);
+                    BaseTable tbSerializer = tableFactory.getTableSerializer(mode);
                     SpecificationHandler handler = new SpecificationHandler(config);
-                    handler.setCharWriter(response.getWriter());
+	                if (tbSerializer.isBinaryFormat()) {
+		                tbSerializer.setByteWriter(response.getOutputStream());
+	    	        } else {
+	        	        tbSerializer.setCharWriter(response.getWriter());
+	            	}
+                    // handler.setCharWriter(response.getWriter());
                     handler.setEncoding(response.getCharacterEncoding());
                     handler.setRequest (request );
                     handler.setResponse(response);
                     uncheckedSetParameterMap(handler, request);
-                    BaseTable tbSerializer = tableFactory.getTableSerializer(mode);
                     tbSerializer.setMimeType(response.getContentType());
                     tbSerializer.setSeparator(separator);
                     handler.setSerializer(tbSerializer);
@@ -420,6 +425,7 @@ public class DbatServlet extends HttpServlet {
                             session.setAttribute("view", view);
                         }
                     } // ! successful
+                    tbSerializer.close();
                 } // found
             } catch (Exception exc) {
                 log.error(exc.getMessage(), exc);
@@ -449,7 +455,11 @@ public class DbatServlet extends HttpServlet {
                 tbSerializer.setMimeType(response.getContentType());
                 tbSerializer.setSeparator(separator);
                 tbSerializer.setTargetEncoding(encoding);
-                tbSerializer.setCharWriter(response.getWriter());
+                if (tbSerializer.isBinaryFormat()) {
+	                tbSerializer.setByteWriter(response.getOutputStream());
+	            } else {
+	                tbSerializer.setCharWriter(response.getWriter());
+	            }
                 config.setFormatMode(mode);
                 config.setLanguage(language);
                 config.setFetchLimit(fetchLimit);
@@ -477,6 +487,7 @@ public class DbatServlet extends HttpServlet {
                         );
                 sqlAction.terminate();
                 tbSerializer.writeEnd();
+                tbSerializer.close();
             } catch (Exception exc) {
                 log.error(exc.getMessage(), exc);
             } finally {

@@ -33,6 +33,7 @@ Included JDBC drivers:
 Implemented output formats (-m):
   html      HTML
   xls       Excel
+  xlsx      Excel 2007
   xml       XML
   fix       Fixed width columns
   csv,tsv   Separated Values

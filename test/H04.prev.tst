@@ -52,6 +52,7 @@ Eingebundene JDBC-Treiber:
 Implementierte Ausgabeformate (-m):
   html      HTML
   xls       Excel
+  xlsx      Excel 2007
   xml       XML
   fix       Spalten fester Breite
   csv,tsv   Werte mit Trennzeichen

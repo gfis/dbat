@@ -3,24 +3,25 @@
     @(#) $Id$
     2013-04-03, Dr. Georg Fischer: copied from align02.xml
 -->
-<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
-		xmlns:ht="http://www.w3.org/1999/xhtml"
-		encoding="UTF-8"
-		lang="en" 
-		conn="worddb" 
-		title="align01"
-		>
-	<comment lang="en">Select from test table with explicit widths</comment>
-	<comment lang="de">Abfrage der Test-Tabelle mit festen Zellenbreiten</comment>
+<?xml-stylesheet type ="text/xsl" href="xslt/force-xml-tree.xsl"?>
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang="en" 
+        conn="worddb" 
+        title="align01"
+        >
+    <comment lang="en">Select from test table with explicit widths</comment>
+    <comment lang="de">Abfrage der Test-Tabelle mit festen Zellenbreiten</comment>
 
     <ht:h3>Select from test table b04 - with alignment</ht:h3>
     
     <select limit="8">
-        <col label="Name" 	align="left"	width="16">name</col>
-        <col label="right"	align="right"	width="8">len as c6</col> 
-        <col label="100 pt"	align="right" style="min-width:100px">len</col> 
-        <col label="300 pt"	align="right" style="min-width:300px">len</col> 
-        <col label="20 em"	align="right" style="min-width:20em">len</col> 
+        <col label="Name"   align="left"    width="16">name</col>
+        <col label="right"  align="right"   width="8">len as c6</col> 
+        <col label="100 pt" align="right" style="min-width:100px">len</col> 
+        <col label="300 pt" align="right" style="min-width:300px">len</col> 
+        <col label="20 em"  align="right" style="min-width:20em">len</col> 
         <from>b04</from>
     </select>                                      
 </dbat>

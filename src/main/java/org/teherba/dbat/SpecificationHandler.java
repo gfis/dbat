@@ -310,7 +310,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
      */
     public void setSerializer(BaseTable tbSerializer) {
         this.tbSerializer = tbSerializer; // remember it locally
-        this.tbSerializer.setCharWriter(charWriter);
+    //    this.tbSerializer.setCharWriter(charWriter);
         this.tbSerializer.setTargetEncoding(targetEncoding);
         if (        tbSerializer instanceof EchoSQL
                 ||  tbSerializer instanceof GenerateSQLJ
@@ -321,6 +321,13 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     } // setSerializer
 
     // charWRiter and byteWriter are inherited from BaseTransformer
+
+    /** This method may not be called.
+     *  @param writer
+     */
+    public void setCharWriter(PrintWriter writer) {
+        log.error("SpecificationHandler.setCharWriter may not be called");
+    } // setCharWriter
 
     //===================================================
     // Constructor, class initialization and finalization
@@ -376,7 +383,26 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             if (! (tbSerializer instanceof HTMLTable)) {
                 trailerSelect += " plain";
             }
-            String specUrl  = urlPath + specName + (config.getCallType() == Configuration.CLI_CALL ? "" : ".xml");
+            String specPath = "";
+            int callType = config.getCallType();
+            if (trailerSelect.contains(" script")) {
+                if (callType == Configuration.WEB_CALL) { // test for possible link with "view-source:" schema
+                    String userAgent = request.getHeader("User-Agent");
+                    if (userAgent != null
+                            &&  (   userAgent.indexOf("Firefox/") >= 0
+                                ||  userAgent.indexOf("Chrome/" ) >= 0
+                                ||  userAgent.indexOf("OPR/"    ) >= 0 // Opera now V37; >= V17
+                                )
+                            &&  (   userAgent.indexOf("Edge/"   ) <  0 // and all Internet Explorer versions do not know view-source:
+                                )
+                            ) { // User-Agent is suitable
+                        specPath = request.getRequestURL().toString(); // all upto, but not inlcuding "?" - http://localhost:8080/dbat/servlet
+                        int spos = specPath.lastIndexOf("/");
+                        specPath = "view-source:" + specPath.substring(0, spos) + "/";
+                    } // User-Agent suitable for view-source:
+                } // WEB_CALL
+            } // "script" was present
+            String specUrl  = specPath + urlPath + specName + (callType == Configuration.CLI_CALL ? "" : ".xml");
             String xlsUrl   = "servlet?&amp;mode=xls"
                             + repeatURLParameters();
             String moreUrl  = "servlet?&amp;view=more&amp;mode=" + tbSerializer.getOutputFormat()
@@ -816,6 +842,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                                                           // stylesheet=stylesheet.css
                                                           // contenttype=text/html
                                                           // uri=taylor.html
+                                                          // debug=0
+                                                          // manner=jdbc|sqlj|stp
     /** A(nchor) element tag */
     private static final String A_TAG       = "a"       ; // splits link values on "=" for this namespace
     /** Break element tag */
@@ -983,7 +1011,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     /** Receive notification of the end of the XML document.
      */
     public void endDocument() {
-        charWriter.close();
+        // charWriter.close();
     } // endDocument
 
     //==================================================================
@@ -1157,7 +1185,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                             , parameterMap
                             );
                 tbSerializer.setInputURI     (config.getInputURI());
-                if (debug >= 1) {
+                if (debug >= 1 && config.getCallType() == Configuration.WEB_CALL) {
                     tbSerializer.writeComment("Response Headers: " + getResponseHeaders());
                     tbSerializer.writeComment("SpecificationHandler.parameterMap: " + dumpMap(parameterMap));
                 }
@@ -1771,6 +1799,14 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 if (! isSuccessful()) {
                     tbSerializer.writeMarkup(Messages.getErrorNotice(config.getLanguage()));
                 } // with errors
+                if (debug >= 1 && config.getCallType() == Configuration.WEB_CALL) {
+                   tbSerializer.writeComment("SpecificationHandler: realPath=\"" + realPath
+                            + "\", urlPath=\"" + urlPath
+                            + "\", specName=\"" + specName
+                            + "\", requestURL=\"" + request.getRequestURL().toString()
+                            + "\", User-Agent=\"" + request.getHeader("User-Agent")
+                            );
+                }
                 tbSerializer.writeTrailer(getTrailer(trailerSelect, config.getLanguage(), specName));
                 tbSerializer.writeEnd();
                 // </dbat>
@@ -1881,11 +1917,6 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             } else if (qName.equals(DESCRIBE_TAG  )) {
                 // tablePattern was set in startElement
                 sqlBuffer.append(colBuffer.toString().trim());
-            /*
-                String commandLine = "-m sql -d " + sqlBuffer.toString();
-                tbSerializer.writeMarkup("<h3>Command Line: " + commandLine + "</h3>");
-                dbat.processCommandLine(charWriter, commandLine);
-            */
                 sqlAction.describeTables(config.getDefaultSchema(), sqlBuffer.toString());
                 currentNameSpace = config.HTML_URI; // back to HTML
                 parentStmt = "";

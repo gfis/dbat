@@ -1,5 +1,6 @@
 /*  Base class for file format representing table descriptions or results sets
     @(#) $Id$
+    2016-05-08: close(); end of WW2 + 71 years
     2014-03-04: ignore pseudo columns
     2012-11-27: writeCommit
     2012-05-14: appendToParameters should not apply links
@@ -115,7 +116,7 @@ public abstract class BaseTable {
     //======================================
 
     /** human readable description of the format in different languages, key is 2-letter ISO (country) code */
-    protected HashMap/*<1.5*/<String, String>/*1.5>*/ descriptionMap;
+    protected HashMap<String, String> descriptionMap;
     /** Gets the human readable description of the format.
      *  @param language ISO country code for the language: "en", "de"
      *  @return text describing the format of this table
@@ -325,7 +326,7 @@ public abstract class BaseTable {
     //--------------------------------------------------
     /** whether the file format is binary */
     protected boolean binary;
-    
+
     /** Tells whether the file format handled by this transformer
      *  uses byte files, or character files if false.
      *  @return true if the format uses byte files
@@ -333,14 +334,14 @@ public abstract class BaseTable {
     public boolean isBinaryFormat() {
         return binary;
     } // isBinaryFormat
-    
+
     /** Sets the binary format property
      *  @param binary true (false) if the format is (not) binary
      */
     public void setBinaryFormat(boolean binary) {
         this.binary = binary;
     } // setBinaryFormat
-    
+
 
     //==============
     // Constructors
@@ -360,18 +361,17 @@ public abstract class BaseTable {
      */
     public BaseTable(String format) {
         log = Logger.getLogger(BaseTable.class.getName());
-        descriptionMap      = new HashMap/*<1.5*/<String, String>/*1.5>*/(4);
+        descriptionMap      = new HashMap<String, String>(4);
         setSeparator        ("\t");
         setTargetEncoding   ("UTF-8"); // default for XML
         setByteWriter       (null);
         setCharWriter       (null);
         setFileExtensions   (format);
         setFormatCodes      (format);
-    //  setOutputFormat     (format);
         setMimeType         ("text/plain");
         setDescription      ("en", format.toUpperCase());
         newline             = System.getProperty("line.separator");
-        pseudoAttributes      = new StringBuffer(64);
+        pseudoAttributes    = new StringBuffer(64);
     } // Constructor(format)
 
     //===================
@@ -542,7 +542,7 @@ public abstract class BaseTable {
      *  @param parameterMap map of request parameters to values
      *  @return a block of lines of ENTITY definitions terminated by newlines
      */
-    public String getEntitiesFromParameters(Map/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
+    public String getEntitiesFromParameters(Map<String, String[]> parameterMap) {
         StringBuffer result = new StringBuffer(256);
         Iterator<String> parmIter = parameterMap.keySet().iterator();
         while (parmIter.hasNext()) {
@@ -566,18 +566,18 @@ public abstract class BaseTable {
     } // getEntitiesFromParameters
 
     /** Maps parameter names to arrays of (String) parameter values */
-    private HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap;
+    private HashMap<String, String[]> parameterMap;
 
     /** Sets the parameter map to be uses in the Http request
      *  @param parameterMap map of request parameters to lists pf values
      */
-    public void setParameterMap(HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
+    public void setParameterMap(HashMap<String, String[]> parameterMap) {
         this.parameterMap = parameterMap;
     } // setParameterMap
 
-    /** Sets the value(s) of a (new) parameter 
+    /** Sets the value(s) of a (new) parameter
      *  @param name   name of the parameter to be set
-     *  @param values list of values to be set 
+     *  @param values list of values to be set
      */
     public void setParameter(String name, String[] values) {
         this.parameterMap.put(name, values);
@@ -589,7 +589,7 @@ public abstract class BaseTable {
      *  @param tbMetaData meta data for the table
      *  @param columnList contains the row to be written
      */
-    public final void appendToParameters(int rowIndex, TableMetaData tbMetaData, ArrayList/*<1.5*/<TableColumn>/*1.5>*/ columnList) {
+    public final void appendToParameters(int rowIndex, TableMetaData tbMetaData, ArrayList<TableColumn> columnList) {
         int ncol = columnList.size();
         int icol = 0;
         while (icol < ncol) {
@@ -616,29 +616,47 @@ public abstract class BaseTable {
      *-------------------------------------------------------*/
 
     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
-     *  @param params array of 0 or more (name, value) string which specify features in the file header.
+     *  @param attributes array of 0 or more pairs of strings (name1, value1, name2, value2 and so on) 
+     *  which specify features in the header of the file to be generated.
      *  @param parameterMap map of request parameters to values
-     *  The following names are interpreted:
+     *  The following "attribute" names are interpreted:
      *  <ul>
      *  <li>contenttype - MIME type for the document content</li>
      *  <li>encoding - encoding to be used for the output stream</li>
      *  <li>javascript - names of the files containing JavaScript functions (multiple, separated by whitespace)</li>
+     *  <li>lang - code for the language the specification is written for: en, de </li>
      *  <li>namespace="no" - whether not to output an <code>xmlns</code> attribute on the <code>&lt;dbat&gt;</code> root element</li>
+     *  <li>specname - name of the specification file, relative to <em>urlpath</em></li>
      *  <li>stylesheet - names of the CSS files (multiple, separated by whitespace)</li>
-     *  <li>target - target of HTML base element, for example "_blank"</li>
+     *  <li>target - target of HTML base element, for example <code>_blank</code></li>
      *  <li>title - title for the HTML head element, and the browser window</li>
+     *  <li>urlpath - URL of the specification subdirectory, for example <code>http://.../dbat/spec/</code></li>
      *  <li>xslt="subdir.filename" - whether to perform XSLT</li>
      *  </ul>
      */
-    public void writeStart(String[] params,  HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
-        // log.warn("writeStart should not be called");
+    public void writeStart(String[] attributes,  HashMap<String, String[]> parameterMap) {
     } // writeStart
 
     /** Ends a file that may contain several table descriptions and/or a SELECT result sets
      */
     public void writeEnd() {
-        // log.warn("writeEnd should not be called");
     } // writeEnd
+
+    /** Flushes and closes the output printer or stream writer
+     */
+    public void close() {
+        try {
+            if (isBinaryFormat()) {
+                byteWriter.flush();
+                byteWriter.close();
+            } else {
+                charWriter.flush();
+                charWriter.close();
+            }
+        } catch(Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+    } // close
 
     /** Writes trailer information
      *  @param trailer trailing elements with links to spec file, Excel output, timestamp etc.
@@ -869,7 +887,7 @@ public abstract class BaseTable {
      */
     public void writeSQLInstruction(TableMetaData tbMetaData, String sqlInstruction
             , int action, int verbose
-            , ArrayList/*<1.5*/<String>/*1.5>*/ variables) {
+            , ArrayList<String> variables) {
         String separator = ";";
         writeComment("SQL:\n" + sqlInstruction.trim() + separator + "\n:SQL", verbose);
     } // writeSQLInstruction
@@ -928,7 +946,7 @@ public abstract class BaseTable {
      *  @param tbMetaData meta data for the table
      *  @param columnList contains the row to be written
      */
-    public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList/*<1.5*/<TableColumn>/*1.5>*/ columnList) {
+    public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList<TableColumn> columnList) {
         TableColumn column = null;
         String pseudo = null;
         int ncol = columnList.size();

@@ -64,7 +64,7 @@ public class Configuration implements Serializable {
     /** Namespace URI of old Dbat specifications */
     public static final String DBAT_URI = "http://www.teherba.org/2007/dbat";
     /** Namespace URI of new Dbat specifications */
-    public static final String DBAN_URI = "http://www.teherba.org/2011/dbat";
+    public static final String DBIV_URI = "http://www.teherba.org/2011/dbiv";
     /** Namespace URI of HTML tags (&lt;form&gt;, &lt;select&gt; and so on) */
     public static final String HTML_URI = "http://www.w3.org/1999/xhtml";
     /** Name of the pseudo variable parameter for updateCount = number of affected rows */

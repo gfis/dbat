@@ -66,7 +66,7 @@ import  org.teherba.dbat.format.TableGenerator;
 import  java.io.Serializable;
 import  java.io.BufferedReader;
 import  java.io.FileInputStream;
-import  java.io.PrintStream;
+import  java.io.OutputStream;
 import  java.io.PrintWriter;
 import  java.io.Reader;
 import  java.nio.channels.Channels;
@@ -133,9 +133,6 @@ public class Dbat implements Serializable {
     private String  argsSql;
     /** -v: whether to print verbose remarks */
     private int verbose;
-
-    /** Internal writer for the string to be output */
-    private PrintWriter tableWriter;
 
     /** Delivers <em>SomeTable</em>s */
     private TableFactory    tableFactory;
@@ -216,9 +213,9 @@ public class Dbat implements Serializable {
      *  executes the generated SQL against the database
      *  @param charReader reader for input, already opened
      *  @param handler SAX handler for Dbat specifications, must be already configured
-     *  @param tableSerializer serializer for output format
+     *  @param tbSerializer serializer for output format
      */
-    public void parseXML(Reader charReader, SpecificationHandler handler, BaseTable tableSerializer) 
+    public void parseXML(Reader charReader, SpecificationHandler handler, BaseTable tbSerializer) 
             throws Exception {
         try {
             SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
@@ -230,24 +227,24 @@ public class Dbat implements Serializable {
             try { // protect against XML errors
                 saxParser.parse(new InputSource(charReader), handler);
             } catch (SAXParseException exc) { // XML errors
-                tableSerializer.writeMarkup("<h3 class=\"error\">XML SAX parsing error: " 
+                tbSerializer.writeMarkup("<h3 class=\"error\">XML SAX parsing error: " 
                         + exc.getMessage() 
                         + " in Dbat specification, line " + exc.getLineNumber()
                         + ", column " + exc.getColumnNumber()
                         + ", cause: " + exc.getCause()
                         +  "</h3>");
                 // exc.printStackTrace();
-                tableSerializer.writeEnd();
+                tbSerializer.writeEnd();
                 throw exc;
             } catch (Exception exc) { // XML errors
-                tableSerializer.writeMarkup("<h3 class=\"error\">XML processing error: " 
+                tbSerializer.writeMarkup("<h3 class=\"error\">XML processing error: " 
                         + exc.getMessage() 
                 //      + " in Dbat specification, line " + exc.getLineNumber()
                 //      + ", column " + exc.getColumnNumber()
                         + ", cause: " + exc.getCause()
                         +  "</h3>");
                 // exc.printStackTrace();
-                tableSerializer.writeEnd();
+                tbSerializer.writeEnd();
                 throw exc;
             } // catch XML errors
         } catch (Exception exc) {
@@ -266,7 +263,6 @@ public class Dbat implements Serializable {
             SpecificationHandler handler = new SpecificationHandler(config);
             handler.setParameterMap(config.getParameterMap());
             handler.setEncoding(config.getEncoding(1));
-            handler.setCharWriter(tableWriter);
             handler.setSerializer(config.getTableSerializer());
             handler.setSpecPaths("./", "./", specFileName);
             ReadableByteChannel channel = (new FileInputStream (specFileName)).getChannel();
@@ -571,11 +567,11 @@ public class Dbat implements Serializable {
                 config.setSeparator("");
             }
             config.setFormatMode(formatMode);
-            BaseTable tableSerializer = tableFactory.getTableSerializer(formatMode);
-            tableSerializer.setTargetEncoding(config.getEncoding(1));
-            tableSerializer.setSeparator     (config.getSeparator());
-            tableSerializer.setInputURI      (config.getInputURI());
-            config.setTableSerializer        (tableSerializer);
+            BaseTable tbSerializer = tableFactory.getTableSerializer(formatMode);
+            tbSerializer.setTargetEncoding(config.getEncoding(1));
+            tbSerializer.setSeparator     (config.getSeparator());
+            tbSerializer.setInputURI      (config.getInputURI());
+            config.setTableSerializer     (tbSerializer);
         } // at least 1 argument
         return karg;
     } // evaluateOptions
@@ -589,34 +585,34 @@ public class Dbat implements Serializable {
      *  needed only if <em>karg &gt; 0</em>
      */
     private void process(PrintWriter writer, int karg, String[] args, Configuration config, TableMetaData tbMetaData) {
-        try {
+        BaseTable tbSerializer = config.getTableSerializer();
+  		PrintWriter  charWriter; // Internal writer for character output
+   		OutputStream byteWriter; // Internal writer for binary    output
+        try {  
             if (writer == null) { // write to System.out
                 WritableByteChannel target = Channels.newChannel(System.out);
-                tableWriter = new PrintWriter(Channels.newWriter(target, config.getEncoding(1)), true); // autoFlush
+                charWriter = new PrintWriter(Channels.newWriter(target, config.getEncoding(1)), true); // autoFlush
                 // System.err.println("set PrintWriter=System.out");
             } else {
-                tableWriter = writer; // servlet response or other writer opened by the caller
+                charWriter = writer; // servlet response or other writer opened by the caller
             }
-            BaseTable tableSerializer = config.getTableSerializer();
-            tableSerializer.setCharWriter(tableWriter);
-            tableSerializer.setGenerator(config.getGenerator());
-            config.setTableSerializer(tableSerializer);
-            // System.err.println("tableWriter=" + tableWriter.toString() + ", generator=" + tableSerializer.getGenerator());
-            // tableWriter.println("tableWriter wrote this");
+            tbSerializer.setCharWriter(charWriter);
 
+            tbSerializer.setGenerator(config.getGenerator());
+            config.setTableSerializer(tbSerializer);
             sqlAction  = new SQLAction(config);
             long startTime = System.nanoTime();
             if (writer == null 
-                    && ! (tableSerializer instanceof TableGenerator)
+                    && ! (tbSerializer instanceof TableGenerator)
                     && ! (mainAction == 'f' && isSourceType(".xml"))) {
-                tableSerializer.setParameterMap(config.getParameterMap());
+                tbSerializer.setParameterMap(config.getParameterMap());
                 String language = "en";
                 Object obj      = config.getParameterMap().get("lang");
                 if (obj != null) {
                     language    = ((String[]) obj)[0]; // override it from the HttpRequest
                 }
                 config.setLanguage(language);
-                tableSerializer.writeStart(new String[] 
+                tbSerializer.writeStart(new String[] 
                         { "encoding"    , config.getEncoding(1)
                         , "contenttype" , config.getHtmlMimeType() 
                         , "nsp"         , config.getNamespacePrefix()
@@ -685,25 +681,22 @@ public class Dbat implements Serializable {
                         );
             }
             if (writer == null 
-                    && ! (tableSerializer instanceof TableGenerator)
+                    && ! (tbSerializer instanceof TableGenerator)
                     && ! (mainAction == 'f' && isSourceType(".xml"))) { // channel from System.out - flush it
-                tableSerializer.writeEnd();
-                tableWriter.flush();
-                // System.err.println("Dbat.process.close");
-                tableWriter.close();
+                tbSerializer.writeEnd();
             }
-
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         } finally {
-            // tableWriter.flush();
             sqlAction.terminate();
             terminate();
+            tbSerializer.close();
         }
     } // process
 
     /** Executes a {@link Dbat} command line as if it were passed by the shell,
-     *  and prints the resulting rows in the specified format
+     *  and prints the resulting rows in the specified format.
+     *  This method is used by the deprecated {@link DbatService}.
      *  @param writer PrintWriter for result output
      *  @param commandLine command line with options, SQL, file- and/or tablenames
      */
@@ -716,10 +709,11 @@ public class Dbat implements Serializable {
      *  @param writer PrintWriter for result output
      *  @param stmtSql options, file- and/or tablenames
      */
+/*
     public void processStatement(PrintWriter writer, String stmtSql) {
         processArguments(writer, new String [] { stmtSql });
     } // processStatement
-
+*/
     /** Processes all command line arguments, executes the SQL, 
      *  and prints the resulting rows in the specified format.
      *  Only one main action (SQL instruction) will be executed if no
