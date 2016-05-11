@@ -14,7 +14,7 @@
     <!--Gibt die DDL-Beschreibung einer Tabelle oder View aus-->
     <!--Shows the DDL Description of a Table or View-->
 
-    <h2>DDL of Table/View(s) <em>product_order%</em></h2>
+    <h3><a href="index.html">Dbat</a> - DDL of Table/View(s) <em>product_order%</em></h3>
     
     <form method="get" action="servlet?spec=describe"><input name="spec" type="hidden" value="describe" />
 

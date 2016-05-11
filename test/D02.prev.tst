@@ -17,7 +17,7 @@ CREATE TABLE c01
 	, univ	VARCHAR(16) -- Town
 	, year	INT -- Decease Year
 	, gender	CHAR(1) -- some escaped character
-	, birth	DATE
+	, birth	DATE -- (10)
 	, CONSTRAINT PK29 PRIMARY KEY (name)
 	);
 COMMIT;

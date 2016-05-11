@@ -16,7 +16,7 @@
 <!--
 lang="de" 
 -->
-<h3><a href="/index.html">Dbat</a>-Optionen auf der Kommandzeile</h3>
+<h3><a href="index.html">Dbat</a>-Optionen auf der Kommandzeile</h3>
 <pre>
 Dbat Vx.hhhh/yyyy-mm-dd - DataBase Application Tool
 Aufruf:

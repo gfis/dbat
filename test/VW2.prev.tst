@@ -3,6 +3,6 @@
 DROP   VIEW vw1;
 CREATE VIEW vw1
 	( name	VARCHAR(16) NOT NULL -- Name of the Relative
-	, birth	DATE
+	, birth	DATE -- (10)
 	);
 COMMIT;
