@@ -1,6 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$ 2016-04-16 14:43:35
- *  2016-04-16: read versionString from META-INF/MANFEST.MF
+ *  2016-04-16: read versionString from classloader's META-INF/MANFEST.MF, scan through all resources
  *  2014-11-11: major version 9; update $\Id content with etc/util/git_version.pl
  *  2014-11-03: always respond with MIME type application/xhtml+xml
  *  2014-02-16: application/xhtml+xml if System.getProperty("os.name"       ).startsWith("Windows 8")
@@ -38,8 +38,10 @@ import  java.io.File;
 import  java.io.FileInputStream;
 import  java.io.InputStreamReader;
 import  java.io.Serializable;
+import  java.net.URL;
 import  java.sql.Connection;
 import  java.sql.DriverManager;
+import  java.util.Enumeration;
 import  java.util.HashMap;
 import  java.util.Iterator;
 import  java.util.LinkedHashMap;
@@ -594,34 +596,40 @@ public class Configuration implements Serializable {
             Implementation-Vendor: Dr. Georg Fischer
             Implementation-Vendor-Id: @(#) $Id$
             */
-            String[] parts = null;
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    this.getClass().getClassLoader().getResourceAsStream("META-INF/MANIFEST.MF"))
-                    );
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                if (false) {
-                } else if (line.startsWith("Specification-Version:" )) {
-                    parts = line.split(" ");
-                    if (parts.length >= 2) {
-                        result += parts[1];
-                    } else {
-                        result += "9";
-                    }
-                } else if (line.startsWith("Implementation-Version:")) {
-                    parts = line.split(" ");
-                    if (parts.length >= 4) {
-                        String buildNo = parts[2].replaceAll("\\.", "");
-                        if (false) { // force buildNo to 4 digits
-                        } else if (buildNo.length() > 4) {
-                            buildNo = buildNo.substring(buildNo.length() - 4);
-                        } else if (buildNo.length() < 4) {
-                            buildNo = ("0000".substring(buildNo.length())) + buildNo;
-                        }
-                        result += "." + buildNo + "/" + parts[3];
-                    }
-                }
-            } // while reading lines from MANIFEST.MF
+            ClassLoader cloader = this.getClass().getClassLoader();
+            Enumeration<URL> resources = cloader.getResources("META-INF/MANIFEST.MF");
+            boolean busy = true;
+            while (busy && resources.hasMoreElements()) {
+                URL url = resources.nextElement();
+                // System.out.println("Configuration.0: url=" + url.toString());
+                if (url.toString().indexOf("/dbat") >= 0) { // our MANIFEST.MF
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                    String line = null;
+                    while ((line = reader.readLine()) != null) {
+                        String[] parts = line.split("\\s+");
+                        if (false) {
+                        } else if (line.startsWith("Specification-Version:" )) {
+                            if (parts.length >= 2) {
+                                result += parts[1];
+                            } else {
+                                result += "10";
+                            }
+                        } else if (line.startsWith("Implementation-Version:")) {
+                            if (parts.length >= 4) {
+                                String buildNo = parts[2].replaceAll("\\.", "");
+                                if (false) { // force buildNo to 4 digits
+                                } else if (buildNo.length() > 4) {
+                                    buildNo = buildNo.substring(buildNo.length() - 4);
+                                } else if (buildNo.length() < 4) {
+                                    buildNo = ("0000".substring(buildNo.length())) + buildNo;
+                                }
+                                result += "." + buildNo + "/" + parts[3];
+                            } // >= 4 parts
+                        } // Implementation-Version
+                    } // our MANIFEST.MF
+                } // while reading lines from MANIFEST.MF
+            } // while resources
+                
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }

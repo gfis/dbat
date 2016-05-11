@@ -16,7 +16,7 @@
     <comment lang="en">in all areas</comment>
     <comment lang="de">in allen Teilbereichen</comment>
     
-    <ht:h2>All <ht:a href="index.html">Dbat</ht:a> Specifications</ht:h2>
+    <ht:h3>All <ht:a href="index.html">Dbat</ht:a> Specifications</ht:h3>
     
     <select group="subdir">
         <col name="subdir" label="Area" style="visible">subdir</col>

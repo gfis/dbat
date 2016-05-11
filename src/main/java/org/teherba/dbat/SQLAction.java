@@ -90,7 +90,7 @@ public class SQLAction implements Serializable {
     public  static final SimpleDateFormat DATE_FORMAT       = new SimpleDateFormat("yyyy-MM-dd");
     /** ISO time format */
     public  static final SimpleDateFormat TIME_FORMAT       = new SimpleDateFormat("HH:mm:ss");
-    /** ISO timestamp without milliseconds */
+    /** ISO timestamp with milliseconds */
     public  static final SimpleDateFormat TIMESTAMP_FORMAT  = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss.SSS");
 
     /** whether to use batch INSERTs */

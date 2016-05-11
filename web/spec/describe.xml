@@ -8,12 +8,13 @@
     >
 <!--
     @(#) $Id$
+    2016-04-11: link back to Dbat home
     2011-02-15: Dr. Georg Fischer
 -->    
     <comment lang="de">Gibt die DDL-Beschreibung einer Tabelle oder View aus</comment>
     <comment lang="en">Shows the DDL Description of a Table or View</comment>
 
-    <ht:h2>DDL of Table/View(s) <ht:em><parm name="table" />%</ht:em></ht:h2>
+    <ht:h3><ht:a href="index.html">Dbat</ht:a> - DDL of Table/View(s) <ht:em><parm name="table" />%</ht:em></ht:h3>
     
     <ht:form method="get">
         <ht:input label="Name" name="table" maxsize="64" size="32" init="spec_ind" />% &#xa0;&#xa0;&#xa0;

@@ -1,5 +1,6 @@
 /*  Generator for an SQL table (DDL or INSERT statements)
     @(#) $Id$
+    2016-05-11: describe width of DATE/TIME/TIMESTAMP columns as comment
     2014-03-04: ignore pseudo columns
     2013-01-04: comments before COMMIT with trailing ";" for DB2 commandline processor
     2012-11-27: writeCommit
@@ -237,6 +238,11 @@ public class SQLTable extends BaseTable {
                     cellBuffer.append("," + String.valueOf(decimalDigits));
                 }
                 cellBuffer.append(")");
+            } else if (dataType == Types.DATE
+            		|| dataType == Types.TIME
+            		|| dataType == Types.TIMESTAMP
+            		) {
+                cellBuffer.append(" -- (" + width + ")");
             }
             if (column.isNullable()) {
                 cellBuffer.append(" NOT NULL");

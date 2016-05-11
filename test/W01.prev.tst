@@ -10,9 +10,9 @@
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
 </head><body>
 
-	<!--Select from test table-->
-	<!--Abfrage der Test-Tabelle-->
-	
+    <!--Select from test table-->
+    <!--Abfrage der Test-Tabelle-->
+    
     <h3>Select from test table c01</h3>
     <form method="get" action="servlet?spec=test/selec01"><input name="spec" type="hidden" value="test/selec01" />
 

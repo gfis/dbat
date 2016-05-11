@@ -1,5 +1,6 @@
 /*  HelpPage.java - show the language specific commandline help text
  *  @(#) $Id$
+ *  2016-04-11: link to index.html was not relative
  *  2012-11-22: disable comment output for environment and session attributes
  *  2012-07-01: subpackage view
  *  2012-02-11, Georg Fischer: copied from help.jsp
@@ -95,7 +96,7 @@ public class HelpPage {
             } // while parmIter
             out.write("\n<body>\n<!--\nlang=\"");
             out.write(language);
-            out.write("\" \n-->\n<h3><a href=\"/index.html\">Dbat</a>");
+            out.write("\" \n-->\n<h3><a href=\"index.html\">Dbat</a>");
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("-Optionen auf der Kommandzeile");

@@ -1,5 +1,6 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2016-05-11: read Configuration in init(); Kim = 15
  *  2016-04-28: &uri=... -> config.setInputURI(inputURI);
  *  2014-11-11: handler.setResponse
  *  2014-11-05: transforms and processes dbiv specs also
@@ -105,6 +106,8 @@ public class DbatServlet extends HttpServlet {
     private Context envContext;
     /** Whether the response is binary */
     private boolean binary;
+    /** Dbat's configuration data */
+    Configuration config;
 
     /** Called by the servlet container to indicate to a servlet
      *  that the servlet is being placed into service.
@@ -114,6 +117,7 @@ public class DbatServlet extends HttpServlet {
     public void init() throws ServletException {
         log = Logger.getLogger(DbatServlet.class.getName());
         ServletContext context = getServletContext();
+        config = new Configuration();
         try {
             envContext = (Context) new InitialContext().lookup("java:comp/env"); // get the environment naming context
             dsMap = new LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/(4);
@@ -292,9 +296,8 @@ public class DbatServlet extends HttpServlet {
      */
     public void generateResponse(HttpServletRequest request, HttpServletResponse response) throws IOException {
     	binary = false; // assume legible character response output
-        TableFactory tableFactory = new TableFactory();
-        Configuration config = new Configuration();
         config.configure(config.WEB_CALL, dsMap);
+        TableFactory tableFactory = new TableFactory();
         request.setCharacterEncoding("UTF-8");
         boolean isDbiv = false; // whether the input file is a Dbiv specification
         String specName             = getInputField(request, "spec"     , "index").replaceAll("\\.", "/");

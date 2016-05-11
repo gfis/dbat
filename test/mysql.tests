@@ -204,13 +204,13 @@ TEST DE1 create table with DECIMALs
 DATA
   drop table if exists de1;
   create table de1
-  ( name0  VARCHAR(16) not null
-  , dec1   DECIMAL(18)
-  , dec2   DECIMAL(18,3)
-  , date3  DATE
-  , fill1  VARCHAR(1)
-  , time4  TIME
-  , fill2  VARCHAR(1)
+  ( name0  VARCHAR  (16) not null
+  , dec1   DECIMAL  (18)
+  , dec2   DECIMAL  (18,3)
+  , date3  DATE     
+  , fill1  VARCHAR  (1)
+  , time4  TIME     
+  , fill2  VARCHAR  (1)
   , ts5    TIMESTAMP
   , PRIMARY KEY (name0)
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;

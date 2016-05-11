@@ -11,34 +11,39 @@
 </head><body>
 
 
-    <!--Liste der Spezifikationen mit Hervorhebung eines Schlagworts
+    <!--Spalte mit Hervorhebung eines Teilworts
     -->
-    <!--List of Specifications with Highlighting of a Keyword
+    <!--Column with Highlighting of a Keyword
     -->
 
     <h2><a href="index.html">Dbat</a> - Test Specifications</h2>
+    <h3>Select with highlighting in column <em>University</em></h3>
     <form method="get" action="servlet?spec=test/highlight"><input name="spec" type="hidden" value="test/highlight" />
 
-        Keyword: <input name="keyword" maxsize="72" size="72" init="ajax" value="ajax"></input>  
+        Keyword: <input name="keyword" maxsize="72" size="20" init="er" value="ajax"></input>  
         <input type="submit" value="Search"></input>
     </form>
 
     <!-- SQL:
-SELECT subdir
-, subdir ||  '.' || name
-, REPLACE(UPPER(comment),UPPER('ajax'), '<span style="background: lightsalmon;">' || UPPER('ajax') || '</span>')
-, params 
-FROM spec_index 
-WHERE subdir = 'test'
-        
-            AND UPPER(comment) LIKE UPPER('%ajax%') 
-ORDER BY 1,2;
+SELECT name
+, REPLACE(UPPER(univ),UPPER('ajax'), '<span style="background: lightsalmon;">' || UPPER('ajax') || '</span>')
+, year
+, gender
+, birth 
+FROM c01 
+ORDER BY name;
 :SQL -->
 <table id="tab1"><!-- table_not_specified -->
-<tr><th title="subdir">Area</th><th title="subdir ||  '.' || name">Script</th><th title="REPLACE(UPPER(comment),UPPER('ajax'), '<span style=&quot;background: lightsalmon;&quot;>' || UPPER('ajax') || '</span>')">Description</th><th title="params">Parameters with defaults</th></tr>
-<tr><td class="visible">test</td><td><a href="servlet?&amp;spec=test.ajax01">test.ajax01</a></td><td>ERSTER <span style="background: lightsalmon;">AJAX</span>-TEST</td><td>&amp;changed=</td></tr>
-<tr><td class="invisible">test</td><td><a href="servlet?&amp;spec=test.ajax02">test.ajax02</a></td><td>DATEN FÜR SPEZIFIKATION <span style="background: lightsalmon;">AJAX</span>01.XML</td><td>&amp;name=Dorothea</td></tr>
-<tr><td class="counter" colspan="4">2 Scripts</td></tr>
+<tr><th title="name">Name</th><th title="REPLACE(UPPER(univ),UPPER('ajax'), '<span style=&quot;background: lightsalmon;&quot;>' || UPPER('ajax') || '</span>')">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
+<tr><td>Dorothea</td><td>LÜBARS</td><td align="right">1985</td><td>$</td><td>1910-02-07</td></tr>
+<tr><td>Eberhard</td><td>GROß-GERAU</td><td align="right">1945</td><td>&gt;</td><td>1912-11-17</td></tr>
+<tr><td>Fritz</td><td>WALDSHUT</td><td align="right">1995</td><td>&lt;</td><td>1907-08-08</td></tr>
+<tr><td>Ilse</td><td>LÜBARS</td><td align="right">1983</td><td>$</td><td>1909-02-09</td></tr>
+<tr><td>Johannes</td><td>SCHRAMBERG</td><td align="right">1992</td><td>&lt;</td><td>1911-06-03</td></tr>
+<tr><td>Lucie</td><td>LÜBARS</td><td align="right">1984</td><td>'</td><td>1887-07-09</td></tr>
+<tr><td>Maria</td><td>HERMSDORF</td><td align="right">1999</td><td>#</td><td>1914-09-17</td></tr>
+<tr><td>Martha</td><td>FREIBURG</td><td align="right">1999</td><td>&amp;</td><td>1909-11-17</td></tr>
+<tr><td class="counter" colspan="5">8 Persons</td></tr>
 </table>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/highlight.xml" type="text/plain">test/highlight</a>,

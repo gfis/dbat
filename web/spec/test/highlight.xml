@@ -8,37 +8,34 @@
         >
 <!--
     @(#) $Id$
+    2016-05-10: totally revised - FROM c01
     2016-04-16: WHERE independant of lang
     2015-04-22, Dr. Georg Fischer: copied from spec/test/index.xml
             remark="REPLACE(comment...)"
 -->
-    <comment lang="de">Liste der Spezifikationen mit Hervorhebung eines Schlagworts
+    <comment lang="de">Spalte mit Hervorhebung eines Teilworts
     </comment>
-    <comment lang="en">List of Specifications with Highlighting of a Keyword
+    <comment lang="en">Column with Highlighting of a Keyword
     </comment>
 
     <ht:h2><ht:a href="index.html">Dbat</ht:a> - Test Specifications</ht:h2>
+    <ht:h3>Select with highlighting in column <em>University</em></ht:h3>
     <ht:form method="get">
-        <ht:input label="Keyword" name="keyword" maxsize="72" size="72" init="ajax" /> &#xa0;
+        <ht:input label="Keyword" name="keyword" maxsize="72" size="20" init="er" /> &#xa0;
         <ht:input type="submit" value="Search" />
     </ht:form>
 
-    <select group="subdir">
-        <col name="subdir" label="Area" style="visible">subdir</col>
-        <col label="Script" href="servlet?&amp;spec=">subdir ||  '.' || name</col>
-        <col label="Description">
-            REPLACE(UPPER(comment),UPPER('<parm name="keyword" />'), '<ht:span style="background: lightsalmon;">' || UPPER('<parm name="keyword" />') || '</ht:span>')
+    <select limit="2048">
+        <col label="Name"       >name</col>
+        <col label="University">
+            REPLACE(UPPER(univ),UPPER('<parm name="keyword" />'), '<ht:span style="background: lightsalmon;">' || UPPER('<parm name="keyword" />') || '</ht:span>')
         </col>
-        <col label="Parameters with defaults">params</col>
-        <from>spec_index
-        </from>
-        <where>subdir = 'test'
-        <!--
-            AND lang = 'en'
-        -->
-            AND UPPER(comment) LIKE UPPER('%<parm name="keyword" />%')
-        </where>
-        <order by="1,2" />
-        <counter desc="Script,s" />
+        <col label="Year"  align="right">year</col>
+        <col label="Gender"     >gender</col>
+        <col label="Birthdate"  >birth</col>
+        <from>c01</from>
+        <order by="name" />
+        <counter desc="Person,s"/>
     </select>
 </dbat>
+

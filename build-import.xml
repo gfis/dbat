@@ -211,7 +211,7 @@
                 <attribute name="Specification-Vendor"      value="${build.git}"/>
                 <attribute name="Implementation-Title"      value="${ant.project.name}"/>
                 <attribute name="Implementation-Version"    value="${ant.project.name} ${build.number} ${build.date}"/>
-                <attribute name="Implementation-Vendor"     value="Dr. GEorg Fischer, Kenzingen"/>
+                <attribute name="Implementation-Vendor"     value="Dr. Georg Fischer, Kenzingen"/>
             </section>
         </manifest>
         <copy todir="${build.classes}/META-INF">

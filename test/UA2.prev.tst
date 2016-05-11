@@ -1,19 +1,3 @@
-ECHO 2016-05-10 21:44:34
-Test UA1 Firefox - yes
-http "http://localhost:8080/dbat/servlet?spec=test.pivot03"
-========> passed UA1 Firefox - yes
-Test UA2 Microsoft Edge - no
-http "http://localhost:8080/dbat/servlet?spec=test.pivot03"
-========> passed UA2 Microsoft Edge - no
-Test UA2D view-source: difference
-diff -Z  test/UA1.this.tst test/UA2.this.tst
-========> passed UA2D view-source: difference
-Test UA3 Chrome - yes
-http "http://localhost:8080/dbat/servlet?spec=test.pivot03"
-========> passed UA3 Chrome - yes
-Test UA4 Opera - yes
-http "http://localhost:8080/dbat/servlet?spec=test.pivot03"
-cp test/UA4.this.tst test/UA4.prev.tst
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" [
@@ -52,18 +36,8 @@ FROM pivot;
 </table>
 
 
-<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="view-source:http://localhost:8080/dbat/spec/test/pivot03.xml" type="text/plain">test/pivot03</a>,
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/pivot03.xml" type="text/plain">test/pivot03</a>,
 <a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.pivot03&amp;lang=en&amp;name=%25r">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.pivot03&amp;lang=en&amp;name=%25r">more</a>
 
 </body></html>
-========> recreated  UA4 Opera - yes
-Test UA5 Safari - no
-http "http://localhost:8080/dbat/servlet?spec=test.pivot03"
-========> passed UA5 Safari - no
-Test UA6 - remove property
-http "http://localhost:8080/dbat/servlet?spec=test.pivot03"
-========> passed UA6 - remove property
-   1 tests recreated,
-   0 tests FAILED,
-   6 tests passed in 493 ms
