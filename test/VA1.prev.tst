@@ -28,7 +28,7 @@ FROM relatives
 WHERE name like  ? 
 ORDER BY 1;
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="name">Name</th><th title="family">Family</th><th title="birth">Birthdate</th></tr>
 <tr><td>Dorothea</td><td>Fischer</td><td>1910-02-07</td></tr>
 <tr><td>Eberhard</td><td>Fischer</td><td>1912-11-17</td></tr>

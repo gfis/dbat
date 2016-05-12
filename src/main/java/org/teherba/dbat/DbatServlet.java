@@ -247,31 +247,37 @@ public class DbatServlet extends HttpServlet {
      *  @param encoding target/response encoding
      */
     private boolean setResponseHeaders(HttpServletResponse response, String mode, String specName, String encoding) {
-    	boolean result = false; // assume legible character response output
-        String targetFileName = specName;
+        boolean result = false; // assume legible character response output
+        String targetFileName = specName.replaceAll("/", ".");
+        String mimeType = "";
         try {
             if (false) {
             } else if (mode.startsWith("html")) {
-                targetFileName += ".html";
-                response.setContentType("text/html;charset=" + encoding);
-            } else if (mode.startsWith("tsv" )
-                    || mode.startsWith("xls" )
-                    ) {
-                targetFileName += (mode.startsWith("xls" ) ? ".xml" : ".csv");
-                response.setContentType("application/vnd.ms-excel;charset=" + encoding);
+                targetFileName +=     ".html";
+                mimeType =            "text/html";
+            } else if (mode.startsWith("tsv" )) {
+                targetFileName +=     ".csv";
+                mimeType =            "application/vnd.ms-excel";
             } else if (mode.startsWith("csv" )) {
-                targetFileName += ".txt";
-                response.setContentType("text/comma-separated-values;charset=" + encoding);
+                targetFileName +=     ".txt";
+                mimeType =            "text/comma-separated-values";
+            } else if (mode.startsWith("xlsx")) {
+                targetFileName +=     ".xlsx";
+                mimeType =            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            } else if (mode.startsWith("xls")) {
+                targetFileName +=     ".xls";
+                mimeType =            "application/vnd.ms-excel;charset=";
             } else if (mode.startsWith("xml" )
                     || mode.startsWith("spec")
                     || mode.startsWith("trans")
                     ) {
-                targetFileName += ".xml";
-                response.setContentType("text/xml;charset=" + encoding);
+                targetFileName +=     ".xml";
+                mimeType =            "text/xml";
             } else { // echo, fix, jdbc, json, sql, taylor, wiki and all others
-                targetFileName += ".txt";
-                response.setContentType("text/plain");
+                targetFileName +=     ".txt";
+                mimeType =            "text/plain";
             }
+            response.setContentType(mimeType + ";charset=" + encoding);
             response.setHeader("Content-Disposition", "inline; filename=\"" + targetFileName + "\"");
             response.setCharacterEncoding(encoding);
         } catch (Exception exc) {
@@ -295,7 +301,7 @@ public class DbatServlet extends HttpServlet {
      *  @throws IOException
      */
     public void generateResponse(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    	binary = false; // assume legible character response output
+        binary = false; // assume legible character response output
         config.configure(config.WEB_CALL, dsMap);
         TableFactory tableFactory = new TableFactory();
         request.setCharacterEncoding("UTF-8");
@@ -385,11 +391,11 @@ public class DbatServlet extends HttpServlet {
                     config.setFetchLimit(fetchLimit);
                     BaseTable tbSerializer = tableFactory.getTableSerializer(mode);
                     SpecificationHandler handler = new SpecificationHandler(config);
-	                if (tbSerializer.isBinaryFormat()) {
-		                tbSerializer.setByteWriter(response.getOutputStream());
-	    	        } else {
-	        	        tbSerializer.setCharWriter(response.getWriter());
-	            	}
+                    if (tbSerializer.isBinaryFormat()) {
+                        tbSerializer.setByteWriter(response.getOutputStream());
+                    } else {
+                        tbSerializer.setCharWriter(response.getWriter());
+                    }
                     // handler.setCharWriter(response.getWriter());
                     handler.setEncoding(response.getCharacterEncoding());
                     handler.setRequest (request );
@@ -459,10 +465,10 @@ public class DbatServlet extends HttpServlet {
                 tbSerializer.setSeparator(separator);
                 tbSerializer.setTargetEncoding(encoding);
                 if (tbSerializer.isBinaryFormat()) {
-	                tbSerializer.setByteWriter(response.getOutputStream());
-	            } else {
-	                tbSerializer.setCharWriter(response.getWriter());
-	            }
+                    tbSerializer.setByteWriter(response.getOutputStream());
+                } else {
+                    tbSerializer.setCharWriter(response.getWriter());
+                }
                 config.setFormatMode(mode);
                 config.setLanguage(language);
                 config.setFetchLimit(fetchLimit);

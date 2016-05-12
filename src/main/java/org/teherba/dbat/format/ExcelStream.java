@@ -22,6 +22,13 @@ package org.teherba.dbat.format;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.dbat.format.BaseTable;
+import  org.apache.poi.ss.usermodel.Cell;
+import  org.apache.poi.ss.usermodel.Row;
+import  org.apache.poi.ss.usermodel.Sheet;
+import  org.apache.poi.ss.usermodel.Workbook;
+import  org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import  org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import  java.io.BufferedOutputStream;
 import  java.sql.Types;
 import  java.util.ArrayList;
 import  java.util.HashMap;
@@ -38,32 +45,34 @@ import  java.util.HashMap;
 public class ExcelStream extends BaseTable {
     public final static String CVSID = "@(#) $Id$";
 
-    /** whether an XML declaration was already output */
-    protected boolean xmlDeclared;
     /** encoding for output */
     private String encoding;
-    /** sequential counter for Worksheets in a Workbook */
-    private int sheetCounter;
+    /** sequential counter for {@link Row}s in a {@link Sheet} */
+    private int rowNo;
+    /** sequential counter for {@link Sheet}s in a {@link Workbook} */
+    private int sheetNo;
+    /** {@link workbook} to be generated */
+    private Workbook wbook;
+    /** current {@link Sheet} to be filled with {@link Row}s and {@link Cell}s */
+    private Sheet sheet;
 
     /** No-args Constructor
      */
     public ExcelStream() {
-        super();
-        setBinaryFormat	(true);
-        setFormatCodes	("xlsx");
-        setDescription	("en", "Excel 2007");
-        xmlDeclared 	= false;
-        encoding 		= "UTF-8";
-        sheetCounter 	= 0;
+    	this("xlsx,xls");
     } // Constructor
 
     /** Constructor with format
-     *  @param format = "xls"
+     *  @param format = "xlsx,xls"
      */
     public ExcelStream(String format) {
-        super(format);
-        xmlDeclared = false;
-        encoding = "UTF-8";
+        super();
+        setBinaryFormat (true);
+        setFormatCodes  (format);
+        setDescription  ("en", "Excel");
+        encoding        = "UTF-8";
+        sheetNo         = 0;
+        rowNo           = 0;
     } // Constructor
 
     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
@@ -83,17 +92,16 @@ public class ExcelStream extends BaseTable {
                     encoding = attributes[iattr + 1];
                 }
             } // while iattr
-            charWriter.print("<?xml version=\"1.0\" encoding=\"" + encoding + "\" ?>"       + newline
-                    +        "<?mso-application progid=\"Excel.Sheet\"?><!-- Stream -->"    + newline
-                    +        "<Workbook"                                                    + newline
-                    +        "   xmlns=\"urn:schemas-microsoft-com:office:spreadsheet\""    + newline
-                    +        "   xmlns:o=\"urn:schemas-microsoft-com:office:office\""       + newline
-                    +        "   xmlns:x=\"urn:schemas-microsoft-com:office:excel\""        + newline
-                    +        "   xmlns:ss=\"urn:schemas-microsoft-com:office:spreadsheet\"" + newline
-                    +        "   xmlns:html=\"http://www.w3.org/TR/REC-html40\">"           + newline
-                    );
-            xmlDeclared = true;
-            sheetCounter = 0;
+
+            if (this.getOutputFormat().equals("xls")) {
+                wbook = new HSSFWorkbook();
+                setMimeType("application/vnd.ms-excel"); // BIFF file
+            } else { // "xlsx
+                wbook = new XSSFWorkbook();
+                setMimeType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // OfficeOpenXML format 
+            }
+            sheetNo = 0;
+            rowNo   = 0;
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
@@ -103,7 +111,11 @@ public class ExcelStream extends BaseTable {
      */
     public void writeEnd() {
         try {
-            charWriter.print("</Workbook>" + newline);
+            if (byteWriter == null) {
+                System.err.println("ExcelStream#writeEnd: byteWriter == null");
+                byteWriter = new BufferedOutputStream(System.out);
+            }
+            wbook.write(byteWriter);
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
@@ -113,41 +125,20 @@ public class ExcelStream extends BaseTable {
      *  @param tableName name of the table
      */
     public void startTable(String tableName) {
-        try {
-            sheetCounter ++;
-            if (! xmlDeclared) {
-                writeStart(new String[] { "encoding", encoding }, null);
-                xmlDeclared = true;
-            }
-            charWriter.print("<Worksheet ss:Name=\""
-                    + (tableName.equals("table_not_specified") ? "Select" + String.valueOf(sheetCounter) : tableName)
-                    + "\">" + newline);
-            charWriter.print("<Table>" + newline);
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-        }
+        sheet = wbook.createSheet(tableName);
+        sheetNo ++;
+        rowNo = 0;
     } // startTable
 
     /** Terminates  a table
      */
     public void endTable() {
-         try {
-            charWriter.print("</Table>" + newline);
-            charWriter.print("</Worksheet>" + newline);
-         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-        }
     } // endTable
 
     /** Writes a comment line.
      *  @param line string to be output as a comment line
      */
     public void writeComment(String line) {
-        try {
-            charWriter.print("<!-- " + line + " -->" + newline);
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-        }
     } // writeComment
 
     /** Tells, for the specific format, the rule to be applied for escaping.
@@ -162,7 +153,7 @@ public class ExcelStream extends BaseTable {
      *  </ul>
      */
     public int getEscapingRule() {
-        return 3;
+        return 0;
     } // getEscapingRule
 
     /** Writes a complete header, data or alternate data row with all tags and cell contents.
@@ -179,7 +170,16 @@ public class ExcelStream extends BaseTable {
         int icol = 0;
         switch (rowType) {
             case HEADER:
-                charWriter.print("<Row>");
+            /*           
+                headerRow.setHeightInPoints(12.75f);
+                for (int i = 0; i < titles.length; i++) {
+                    Cell cell = headerRow.createCell(i);
+                    cell.setCellValue(titles[i]);
+                    cell.setCellStyle(styles.get("header"));
+                }
+            */
+                Row row = sheet.createRow(rowNo ++);
+                row.setHeightInPoints(12.75f);
                 while (icol < ncol) {
                     column = columnList.get(icol);
                     pseudo = column.getPseudo();
@@ -193,15 +193,14 @@ public class ExcelStream extends BaseTable {
                         if (header == null) {
                             header = "&nbsp;";
                         }
-                        charWriter.print("<Cell><Data ss:Type=\"String\">");
-                        charWriter.print(header);
-                        charWriter.print("</Data></Cell>" + newline);
+                        Cell cell = row.createCell(icol);
+                        cell.setCellValue(header);
                     }
                     icol ++;
                 } // while icol
-                charWriter.print("</Row>" + newline);
                 break;
             case DATA:
+            /*
                 charWriter.print("<Row>");
                 StringBuffer result = new StringBuffer(256);
                 while (icol < ncol) {
@@ -212,10 +211,6 @@ public class ExcelStream extends BaseTable {
                         if (false) {
                         } else if (pseudo.equals("style")) {
                             nextStyle = column.getValue();
-                    /*
-                        } else if (pseudo.equals("url")) {
-                            nextLobURL = column.getValue();
-                    */
                         }
                     } else { // pseudo == null
                         result.append("<Cell");
@@ -244,6 +239,49 @@ public class ExcelStream extends BaseTable {
                     icol ++;
                 } // while icol
                 charWriter.print("</Row>" + newline);
+        */
+                row = sheet.createRow(rowNo ++);
+                row.setHeightInPoints(12.75f);
+                StringBuffer result = new StringBuffer(256);
+                while (icol < ncol) {
+                    result.setLength(0);
+                    column = columnList.get(icol);
+                    pseudo = column.getPseudo();
+                    if (pseudo != null) {
+                        if (false) {
+                        } else if (pseudo.equals("style")) {
+                            nextStyle = column.getValue();
+                        }
+                    } else { // pseudo == null
+                    /*
+                        result.append("<Cell");
+                        if (column.getWrappedValue() != null) {
+                            result.append(" ss:HRef=\"");
+                            result.append(column.getWrappedValue());
+                            result.append("\"");
+                        }
+                        result.append("><Data ss:Type=\"");
+                        int    dataType = column.getDataType();
+                        if (false) {
+                        } else if (dataType == Types.DECIMAL                               ) {
+                            result.append("Number");
+                        } else if (dataType == Types.DATE       || dataType == Types.TIMESTAMP) {
+                            result.append("DateTime");
+                        } else { // if (dataType == Types.CHAR  || dataType == Types.VARCHAR  ) {
+                            result.append("String");
+                        }
+                        result.append("\">");
+                        result.append(column.getValue());
+                        nextStyle = null;
+                        result.append("</Data></Cell>");
+                        result.append(newline);
+                        charWriter.print(result.toString());
+                    */
+                        Cell cell = row.createCell(icol);
+                        cell.setCellValue(column.getValue());
+                    } // pseudo == null
+                    icol ++;
+                } // while icol
                 break;
         } // switch rowType
     } // writeGenericRow

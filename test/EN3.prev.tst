@@ -26,7 +26,7 @@ FROM en1
 WHERE lang = 'eng' 
 ORDER BY 1;
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="seq">seq</th><th title="code">code</th><th title="display">display</th></tr>
 <tr><td>1</td><td>M</td><td>male</td></tr>
 <tr><td>2</td><td>F</td><td>female</td></tr>

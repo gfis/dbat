@@ -52,8 +52,7 @@ Included JDBC drivers:
   org.sqlite.JDBC V3.7
 Implemented output formats (-m):
   html      HTML
-  xls       Excel
-  xlsx      Excel 2007
+  xlsx,xls  Excel
   xml       XML
   fix       Fixed width columns
   csv,tsv   Separated Values

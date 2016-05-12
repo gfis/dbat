@@ -22,7 +22,7 @@ SELECT univ
 FROM c01
         	where univ like 'L%';
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td class="visible">Lübars</td><td>$</td><td>1909-02-09</td></tr>
 <tr><td class="invisible">Lübars</td><td>$</td><td>1910-02-07</td></tr>

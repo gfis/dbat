@@ -33,7 +33,7 @@ WHERE name like '%'
         and gender like '%' 
 ORDER BY name,family;
 :SQL -->
-<table id="tab1" name="table_not_specified">
+<table id="tab1" name="table2">
 <tr><th>Upd.</th>
 <th>Del.</th>
 <th>Name</th>

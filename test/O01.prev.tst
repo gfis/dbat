@@ -30,7 +30,7 @@ FROM c01
 WHERE name like 'Mar%' 
 ORDER BY 1;
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="concat(concat(concat(          name, '  '), '='), name)">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td><a href="servlet?spec=test.order02&amp;name=Maria&amp;name=Maria">Maria</a></td><td>Hermsdorf</td><td align="right">1999</td><td>#</td><td>1914-09-17</td></tr>
 <tr><td><a href="servlet?spec=test.order02&amp;name=Martha&amp;name=Martha">Martha</a></td><td>Freiburg</td><td align="right">1999</td><td>&amp;</td><td>1909-11-17</td></tr>

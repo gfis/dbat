@@ -18,7 +18,7 @@ SELECT name
 , year 
 FROM c01;
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="name">Name</th><th title="year">Year</th></tr>
 <tr><td>Martha</td><td align="right">1999</td></tr>
 <tr><td>Johannes</td><td align="right">1992</td></tr>

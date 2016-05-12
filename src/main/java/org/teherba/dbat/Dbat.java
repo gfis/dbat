@@ -65,6 +65,7 @@ import  org.teherba.dbat.format.TableFactory;
 import  org.teherba.dbat.format.TableGenerator;
 import  java.io.Serializable;
 import  java.io.BufferedReader;
+import  java.io.BufferedOutputStream;
 import  java.io.FileInputStream;
 import  java.io.OutputStream;
 import  java.io.PrintWriter;
@@ -586,18 +587,29 @@ public class Dbat implements Serializable {
      */
     private void process(PrintWriter writer, int karg, String[] args, Configuration config, TableMetaData tbMetaData) {
         BaseTable tbSerializer = config.getTableSerializer();
-  		PrintWriter  charWriter; // Internal writer for character output
-   		OutputStream byteWriter; // Internal writer for binary    output
+        boolean binary = tbSerializer.isBinaryFormat();
+        PrintWriter  charWriter; // Internal writer for character output
+        OutputStream byteWriter; // Internal writer for binary    output
         try {  
             if (writer == null) { // write to System.out
-                WritableByteChannel target = Channels.newChannel(System.out);
-                charWriter = new PrintWriter(Channels.newWriter(target, config.getEncoding(1)), true); // autoFlush
-                // System.err.println("set PrintWriter=System.out");
-            } else {
-                charWriter = writer; // servlet response or other writer opened by the caller
-            }
-            tbSerializer.setCharWriter(charWriter);
-
+                if (binary) {
+                    byteWriter = new BufferedOutputStream(System.out);
+                    tbSerializer.setByteWriter(byteWriter);
+                } else {
+                    WritableByteChannel target = Channels.newChannel(System.out);
+                    charWriter = new PrintWriter(Channels.newWriter(target, config.getEncoding(1)), true); // autoFlush
+                    tbSerializer.setCharWriter(charWriter);
+                }
+            } else { // writer from caller
+                if (binary) {
+                    byteWriter = null; // ??
+                    tbSerializer.setByteWriter(byteWriter);
+                } else {
+                    charWriter = writer; // servlet response or other writer opened by the caller
+                    tbSerializer.setCharWriter(charWriter);
+                }
+            } // writer from caller
+            
             tbSerializer.setGenerator(config.getGenerator());
             config.setTableSerializer(tbSerializer);
             sqlAction  = new SQLAction(config);

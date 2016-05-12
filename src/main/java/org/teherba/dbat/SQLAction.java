@@ -1355,17 +1355,17 @@ public class SQLAction implements Serializable {
                 htmlRowCount ++;
             } // last row
             if (! intoParm) {
-	            if (this.isWithHeaders()) { // print row count
-    	            if (tbMetaData.isPivot()) {
-        	            htmlRowCount --; // first data row was really the header row
-            	    }
-                	tbSerializer.writeTableFooter(htmlRowCount, sqlRowCount >= fetchLimit, tbMetaData); 
-	            } // withHeaders
+                if (this.isWithHeaders()) { // print row count
+                    if (tbMetaData.isPivot()) {
+                        htmlRowCount --; // first data row was really the header row
+                    }
+                    tbSerializer.writeTableFooter(htmlRowCount, sqlRowCount >= fetchLimit, tbMetaData); 
+                } // withHeaders
                 tbSerializer.writeCommit(sqlRowCount);
                 tbSerializer.endTable();
             } else { // intoParm - save rowCount in a new parameter
-	        	String name = tbMetaData.getCounterDesc(1); // singular only, it is the parameter name anyway
-	        	tbSerializer.setParameter(name, new String[] { String.valueOf(htmlRowCount) });
+                String name = tbMetaData.getCounterDesc(1); // singular only, it is the parameter name anyway
+                tbSerializer.setParameter(name, new String[] { String.valueOf(htmlRowCount) });
             } // intoParm
         } catch (Exception exc) {
             log.error(exc.getMessage() + ", SQL=\"" + selectSql + "\"", exc);
@@ -1814,7 +1814,7 @@ public class SQLAction implements Serializable {
             this.execCommitStatement();
             insertStmt.close();
         } catch (Exception exc) {
-        	System.err.println("** offending line: " + line);
+            System.err.println("** offending line: " + line);
             log.error(exc.getMessage(), exc);
             this.setCommitted(true); // avoid a final COMMIT
             printSQLError(exc);

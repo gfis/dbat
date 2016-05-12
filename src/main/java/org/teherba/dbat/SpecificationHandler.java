@@ -322,13 +322,6 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 
     // charWRiter and byteWriter are inherited from BaseTransformer
 
-    /** This method may not be called.
-     *  @param writer
-     */
-    public void setCharWriter(PrintWriter writer) {
-        log.error("SpecificationHandler.setCharWriter may not be called");
-    } // setCharWriter
-
     //===================================================
     // Constructor, class initialization and finalization
     //===================================================
@@ -346,6 +339,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         remoteUser      = "unknown";
         setRequest      (null);
         setResponse     (null);
+        tableNo         = 0;
     } // constructor()
 
     /** Constructor from configuration
@@ -387,19 +381,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             int callType = config.getCallType();
             if (trailerSelect.contains(" script")) {
                 if (callType == Configuration.WEB_CALL) { // test for possible link with "view-source:" schema
-                    String userAgent = request.getHeader("User-Agent");
-                    if (userAgent != null
-                            &&  (   userAgent.indexOf("Firefox/") >= 0
-                                ||  userAgent.indexOf("Chrome/" ) >= 0
-                                ||  userAgent.indexOf("OPR/"    ) >= 0 // Opera now V37; >= V17
-                                )
-                            &&  (   userAgent.indexOf("Edge/"   ) <  0 // and all Internet Explorer versions do not know view-source:
-                                )
-                            ) { // User-Agent is suitable
-                        specPath = request.getRequestURL().toString(); // all upto, but not inlcuding "?" - http://localhost:8080/dbat/servlet
-                        int spos = specPath.lastIndexOf("/");
-                        specPath = "view-source:" + specPath.substring(0, spos) + "/";
-                    } // User-Agent suitable for view-source:
+                	specPath = Messages.getViewSourceLink(request);
                 } // WEB_CALL
             } // "script" was present
             String specUrl  = specPath + urlPath + specName + (callType == Configuration.CLI_CALL ? "" : ".xml");
@@ -596,6 +578,24 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         validateField(name, values, new AttributesImpl(attrs));
         return result;
     } // getParameterForSQL
+
+    /** Prefix for the generation of table identifiers */
+    private static final String TABLE_ID_PREFIX = "table";
+    /** sequential count of generated tables (SELECT statements) */
+    private int tableNo;
+    
+    /** Gets an id= attribute, or generates one, and stores it in the table metadata
+     *  @param attrs set of XML attributes
+     *  @param tbMetaData table metadata
+     */
+    private void getIdAttribute(Attributes attrs, TableMetaData tbMetaData) {
+        String tableId = attrs.getValue("id");
+        tableNo ++;
+        if (tableId == null) {
+            tableId = TABLE_ID_PREFIX + String.valueOf(tableNo);
+        }
+        tbMetaData.setIdentifier(tableId);
+    } // getIdAttribute
 
     /** Gets a space separated list of filenames with proper pathes and extensions
      *  from a list of subdirectory-relative filenames
@@ -1028,6 +1028,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
      *  If there are no attributes, it shall be an empty Attributes object.
      */
     public void startElement(String uri, String localName, String qName, Attributes attrs) {
+        String tableId = null; // <select id=".."> or sequentially generated
         if (disabled) {
         } else
         try { // if there is any exception, further SAX event processing will be disabled
@@ -1210,7 +1211,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 
             } else if (qName.equals(CALL_TAG    )) {
                 initializeAction();
-                tbMetaData.setIdentifier            (attrs.getValue("id")           ); // pass null if feature is not desired
+                getIdAttribute(attrs, tbMetaData);
                 String procName = attrs.getValue("name");
                 if (procName == null) { // no name attribute - take "undefined" instead
                     procName = "undefined";
@@ -1372,7 +1373,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 sqlBuffer.append("DELETE ");
                 columnNo = 0;
                 initializeAction();
-                tbMetaData.setIdentifier            (attrs.getValue("id")           ); // pass null if feature is not desired
+                getIdAttribute(attrs, tbMetaData);
                 currentNameSpace = config.DBAT_URI; // leave HTML, enter specification syntax
 
             } else if (qName.equals(DESCRIBE_TAG)) {
@@ -1434,7 +1435,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 sqlBuffer.append("INSERT ");
                 columnNo = 0;
                 initializeAction();
-                tbMetaData.setIdentifier            (attrs.getValue("id")           ); // pass null if feature is not desired
+                getIdAttribute(attrs, tbMetaData);
                 currentNameSpace = config.DBAT_URI; // leave HTML, enter specification syntax
 
             } else if (qName.equals(INTO_TAG    )) {
@@ -1603,7 +1604,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     tbMetaData.setAggregationSeparator  (attrs.getValue("with")         ); // char or "pivot"; pass null if default
                     String fetchTarget              =    attrs.getValue("into")          ; // null (default) or "parm"
                     tbMetaData.setGroupColumns          (attrs.getValue("group")        ); // pass null if feature is not desired
-                    tbMetaData.setIdentifier            (attrs.getValue("id")           ); // pass null if feature is not desired
+                    getIdAttribute(attrs, tbMetaData);
                     currentNameSpace = config.DBAT_URI; // leave HTML, enter specification syntax
                     if (false) {
                     } else if (fetchTarget != null && fetchTarget.startsWith("par")) {
@@ -1631,7 +1632,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 sqlBuffer.append("UPDATE ");
                 columnNo = 0;
                 initializeAction();
-                tbMetaData.setIdentifier            (attrs.getValue("id")           ); // pass null if feature is not desired
+                getIdAttribute(attrs, tbMetaData);
                 currentNameSpace = config.DBAT_URI; // leave HTML, enter specification syntax
 
             } else if (qName.equals(VALUES_TAG  )) {

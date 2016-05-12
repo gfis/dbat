@@ -1,6 +1,6 @@
 { "tables": 
 [ { "table":
-  { "name": "table_not_specified"
+  { "name": "table2"
   , "thead": ["Name","Family","Gender","Birthdate","Place","Died"]
   , "tbody": 
     [ ["Dorothea","Fischer","F","1910-02-07","Berlin",1985]

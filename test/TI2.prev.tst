@@ -33,7 +33,7 @@ SELECT name
 FROM c01 
 ORDER BY name;
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="name">Name</th><th title="REPLACE(UPPER(univ),UPPER('ajax'), '<span style=&quot;background: lightsalmon;&quot;>' || UPPER('ajax') || '</span>')">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td>Dorothea</td><td>LÜBARS</td><td align="right">1985</td><td>$</td><td>1910-02-07</td></tr>
 <tr><td>Eberhard</td><td>GROß-GERAU</td><td align="right">1945</td><td>&gt;</td><td>1912-11-17</td></tr>

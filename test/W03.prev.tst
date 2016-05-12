@@ -9,7 +9,7 @@ SELECT name
 FROM c01 
 WHERE name like '%r%';
 :SQL -->
-<table id="tab1" name="table_not_specified">
+<table id="tab1" name="table1">
 <tr><th>Name</th>
 <th>University</th>
 <th>Year</th>

@@ -1,5 +1,6 @@
 /*  MorePage.java - replacement for more.jsp: input form with all parameters
  *  @(#) $Id$
+ *  2016-05-12: view-source link
  *  2012-11-22: superfluous quote behind lang= caused format descriptions "null"
  *  2012-07-01: subpackage view
  *  2012-02-11, Georg Fischer: copied from more.jsp
@@ -20,11 +21,13 @@
  * limitations under the License.
  */
 package org.teherba.dbat.view;
+import  org.teherba.dbat.Messages;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.TableFactory;
 import  java.io.PrintWriter;
 import  java.util.Iterator;
 import  java.util.Map;
+import  java.util.TreeMap;
 import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;
 import  org.apache.log4j.Logger;
@@ -92,7 +95,7 @@ public class MorePage {
             String mode         = "html";
             String language     = "en";
             String specName     = "?";
-            Map parameterMap = request.getParameterMap(); // do not! use /*<1.5*/<String, String[]>/*1.5>*/
+            Map parameterMap = request.getParameterMap(); // do not! use <String, String[]>
             Iterator /*<1.5*<String>*1.5>*/ parmIter = parameterMap.keySet().iterator();
             StringBuffer inputFields = new StringBuffer(256);
 
@@ -135,11 +138,10 @@ public class MorePage {
             } else {
                 out.write(" Specification ");
             }
-            out.write("<em><a href=\"spec/");
-            out.write(specName.replaceAll("\\.", "/"));
-            out.write(".xml\">");
-            out.write(specName);
-            out.write("</a></em>\n</h3>\n");
+            out.write("<em><a href=\"" + Messages.getViewSourceLink(request) 
+                    + "spec/" + specName.replaceAll("\\.", "/") + ".xml\">"
+                    + specName
+                    +"</a></em>\n</h3>\n");
             //----------------------------------------
             out.write("<form action=\"servlet\" method=\"get\">\n");
             out.write("<input type = \"hidden\" name=\"view\" value=\"\" />\n");
@@ -209,18 +211,28 @@ public class MorePage {
             } // while index
             out.write("</select>\n</td>\n");
             //----------------------------------------
-            out.write("<td>\n<select name=\"mode\" size=\"");
-            out.write(String.valueOf(tableFactory.getCount()));
-            out.write("\">\n");
-            Iterator /*<1.5*/<BaseTable>/*1.5>*/ iter = tableFactory.getIterator();
+            TreeMap<String,String> options = new TreeMap<String,String>();          
+            Iterator<BaseTable> iter = tableFactory.getIterator();
             while (iter.hasNext()) {
                 BaseTable tableFormat = (BaseTable) iter.next();
-                String code = tableFormat.getFirstFormatCode();
-                out.write(  "<option value=\"" + code + "\""
+                String[] codes = tableFormat.getFormatCodes().split(",");
+                int icode = 0;
+                while (icode < codes.length) {
+                    String code = codes[icode];
+                    options.put(code
+                          , "<option value=\"" + code + "\""
                           + (code.equals(mode) ? " selected=\"1\"" : "") + ">"
                           + code + " - " + tableFormat.getDescription(language) 
                           + "</option>\n");
+                    icode ++;
+                } // while icode
             } // while iter
+            out.write("<td>\n<select name=\"mode\" size=\"" + String.valueOf(options.size()) + "\">\n");
+            Iterator<String> oiter = options.keySet().iterator();
+            while (oiter.hasNext()) {
+                String key = oiter.next();
+                out.write(options.get(key));
+            } // while oiter
             out.write("</select><p />&nbsp;\n</td>\n");
             //----------------------------------------
             out.write("<td>\n");

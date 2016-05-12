@@ -19,7 +19,7 @@
         Name: <input name="name" maxsize="20" size="10" init="%r" value="%r"></input>%    
         <input type="submit" value="Submit"></input>
     </form>
-    
+
     <!-- SQL:
 SELECT year
 , name
@@ -30,7 +30,7 @@ SELECT year
 FROM c01 
 WHERE name like '%r%';
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1999</td><td>Martha</td><td>Freiburg</td><td>&amp;</td><td>1909-11-17</td>
 <script type="text/javascript">with(document.getElementById("tab1").rows[1]){className="red";}</script></tr>

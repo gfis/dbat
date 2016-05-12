@@ -9,7 +9,7 @@
         lang="en"
         conn="worddb"
         title="multijs"
-        javascript="sorttable.js http_request.js"
+        javascript="../sorttable.js ../http_request.js"
         >
     <comment lang="en">Test with 2 Javascripts</comment>
     <comment lang="de">Test mit 2 Javascripts</comment>

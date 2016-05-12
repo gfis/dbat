@@ -1,5 +1,6 @@
 /*  Messages.java - Static help texts and other language specific messages for Dbat.
  *  @(#) $Id$
+ *  2016-05-12: getViewSourceLink
  *  2012-12-10: getSortTitle
  *  2012-11-22: "V" before JDBC driver version
  *  2012-10-19: comment for 'usage' method removed; getDefaultCounterDesc
@@ -33,6 +34,7 @@ import  java.sql.DriverManager;
 import  java.text.SimpleDateFormat;
 import  java.util.Date;
 import  java.util.Enumeration;
+import  javax.servlet.http.HttpServletRequest;
 import  org.xml.sax.helpers.AttributesImpl;
 
 /** Language specific message texts and formatting for Dbat's user interface.
@@ -259,6 +261,30 @@ public class Messages implements Serializable {
         }
         return result.toString();
     } // getSortTitle
+
+    /** Gets a link to the source representation of a specification file
+     *  with "view-source:" and the full URL
+     *  if the user's browser knows this feature, or the empty string otherwise
+     *  @param request Http request with User-Agent header and the URL
+     *  @return link or ampty string
+     */
+    public static String getViewSourceLink(HttpServletRequest request) {
+    	String result = "";
+        String userAgent = request.getHeader("User-Agent");
+        if (userAgent != null
+                &&  (   userAgent.indexOf("Firefox/") >= 0
+                    ||  userAgent.indexOf("Chrome/" ) >= 0
+                    ||  userAgent.indexOf("OPR/"    ) >= 0 // Opera now V37; >= V17
+                    )
+                &&  (   userAgent.indexOf("Edge/"   ) <  0 // and all Internet Explorer versions do not know view-source:
+                    )
+                ) { // User-Agent is suitable
+            result = request.getRequestURL().toString(); // all upto, but not inlcuding "?" - http://localhost:8080/dbat/servlet
+            int spos = result.lastIndexOf("/");
+            result = "view-source:" + result.substring(0, spos) + "/";
+        } // User-Agent suitable for view-source:
+        return result;
+    } // getViewSourceLink
 
     /** Gets the markup text for the page trailer.
      *  For HTML and XML, the text contains links.

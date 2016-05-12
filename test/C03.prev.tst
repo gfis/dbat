@@ -31,7 +31,7 @@ SELECT case when year < 1980 then 'gry' else 'wht' end
 , birth 
 FROM c01;
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="Year of Decease">Year</th><th title="Family Name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right" class="wht"><a href="servlet?spec=test/selec01&amp;name=Martha&amp;year=1999">1999</a></td><td class="blu"><a href="servlet?spec=test/selec01&amp;year=1999&amp;name=Martha">Martha</a></td><td class="lye">Freiburg</td><td>&amp;</td><td>1909-11-17</td></tr>
 <tr><td align="right" class="wht"><a href="servlet?spec=test/selec01&amp;name=Johannes&amp;year=1992">1992</a></td><td class="wht"><a href="servlet?spec=test/selec01&amp;year=1992&amp;name=Johannes">Johannes</a></td><td class="lye">Schramberg</td><td>&lt;</td><td>1911-06-03</td></tr>

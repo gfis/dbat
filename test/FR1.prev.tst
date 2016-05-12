@@ -27,7 +27,7 @@ SELECT year
 FROM c01 
 WHERE name like 'Johannes%';
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1992</td><td class="red">Johannes</td><td>Schramberg</td><td>&lt;</td><td>1911-06-03</td></tr>
 </table>
@@ -45,7 +45,7 @@ SELECT year
 FROM c01 
 WHERE name like 'Johannes%';
 :SQL -->
-<table id="tab2"><!-- table_not_specified -->
+<table id="table2">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1992</td><td>Johannes</td><td>Schramberg</td><td>&lt;</td><td>1911-06-03</td>
 <script type="text/javascript">with(document.getElementById("tab2").rows[1]){className="red";}</script></tr>
@@ -64,7 +64,7 @@ SELECT year
 FROM c01 
 WHERE name like 'Johannes%';
 :SQL -->
-<table id="tab3"><!-- table_not_specified -->
+<table id="table3">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1992</td><td style="color:white;background-color:red">Johannes</td><td>Schramberg</td><td>&lt;</td><td>1911-06-03</td></tr>
 </table>
@@ -82,7 +82,7 @@ SELECT year
 FROM c01 
 WHERE name like 'Johannes%';
 :SQL -->
-<table id="tab4"><!-- table_not_specified -->
+<table id="table4">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1992</td><td>Johannes</td><td>Schramberg</td><td>&lt;</td><td>1911-06-03</td>
 <script type="text/javascript">with(document.getElementById("tab4").rows[1].style){color="white";backgroundColor="red";}</script></tr>

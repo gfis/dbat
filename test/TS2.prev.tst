@@ -29,7 +29,7 @@ SELECT name
 FROM c01 
 WHERE name like '%r%';
 :SQL -->
-<table id="tab1"><!-- c01 -->
+<table id="c01">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td>Martha</td><td>Freiburg</td><td align="right">1999</td><td>&amp;</td><td>1909-11-17</td></tr>
 <tr><td>Eberhard</td><td>Groß-Gerau</td><td align="right">1945</td><td>&gt;</td><td>1912-11-17</td></tr>

@@ -47,8 +47,7 @@ Output Format</td>
 <td>
 <select name="mode" size="6">
 <option value="html" selected="1">html - HTML</option>
-<option value="xls">xls - Excel</option>
-<option value="xlsx">xlsx - Excel 2007</option>
+<option value="xlsx">xlsx - Excel</option>
 <option value="xml">xml - XML</option>
 <option value="fix">fix - Fixed width columns</option>
 <option value="csv">csv - Separated Values</option>

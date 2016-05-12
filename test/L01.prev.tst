@@ -40,7 +40,7 @@ FROM c01
 WHERE substr(name, 1, 1) in ('M', 'L') 
 ORDER BY 3;
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="birth">Birthdate</th></tr>
 <tr><td>Lucie</td><td>Lübars</td><td>1887-07-09</td></tr>
 <tr><td>Martha</td><td>Freiburg</td><td>1909-11-17</td></tr>
@@ -58,7 +58,7 @@ FROM c01
 WHERE year(birth) in (1887, 1914) 
 ORDER BY 3;
 :SQL -->
-<table id="tab2"><!-- table_not_specified -->
+<table id="table2">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="birth">Birthdate</th></tr>
 <tr><td>Lucie</td><td>Lübars</td><td>1887-07-09</td></tr>
 <tr><td>Maria</td><td>Hermsdorf</td><td>1914-09-17</td></tr>
@@ -75,7 +75,7 @@ FROM c01
 WHERE cast(year(birth) as char) in ('1910', '1911') 
 ORDER BY 3;
 :SQL -->
-<table id="tab3"><!-- table_not_specified -->
+<table id="table3">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="birth">Birthdate</th></tr>
 <tr><td>Dorothea</td><td>Lübars</td><td>1910-02-07</td></tr>
 <tr><td>Johannes</td><td>Schramberg</td><td>1911-06-03</td></tr>

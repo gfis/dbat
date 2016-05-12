@@ -8,8 +8,8 @@
 <meta name="robots" content="noindex, nofollow" />
 <title>multijs</title>
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
-<script src="spec/test/sorttable.js" type="text/javascript"></script>
-<script src="spec/test/http_request.js" type="text/javascript"></script>
+<script src="spec/test/../sorttable.js" type="text/javascript"></script>
+<script src="spec/test/../http_request.js" type="text/javascript"></script>
 </head><body>
 
     <!--Test with 2 Javascripts-->
@@ -32,7 +32,7 @@ SELECT year
 FROM c01 
 WHERE name like '%%';
 :SQL -->
-<table id="tab1" class="sortable"><!-- table_not_specified -->
+<table id="table1" class="sortable">
 <thead>
 <tr><th title="Click =&gt; Sort">Year</th><th title="Click =&gt; Sort">Name</th><th title="Click =&gt; Sort">University</th><th title="Click =&gt; Sort">Gender</th><th title="Click =&gt; Sort">Birthdate</th></tr>
 </thead>

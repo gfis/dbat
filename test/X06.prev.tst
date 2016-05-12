@@ -21,7 +21,7 @@
         <input type="submit" value="Submit"></input>
     </form>
 
-    <table id="tab1"><!-- x00 -->
+    <table id="x00">
 <tr><th>Name</th><th>Count</th><th>Last</th></tr>
 <tr><td>or</td><td>1</td><td>Dorothea</td></tr>
 </table>

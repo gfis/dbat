@@ -9,7 +9,7 @@
 <title>dbat</title>
 <link rel="stylesheet" type="text/css" href="stylesheet.css" />
 </head><body>
-<table id="tab1"><!-- x00 -->
+<table id="x00">
 <tr><th>in1</th><th>out:int2</th><th>out:varchar3</th></tr>
 <tr><td>i</td><td>3</td><td>Maria</td></tr>
 </table>

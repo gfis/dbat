@@ -36,7 +36,7 @@ WHERE name    >=  ?
             and changed >=  ? 
 ORDER BY 1;
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="name">Name</th><th title="family">Family</th><th title="gender">Gender</th><th title="birth">Birthdate</th><th title="decease">Decease</th></tr>
 <tr><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>1999</td></tr>
 <tr><td>Martha</td><td>Fischer</td><td align="center">F</td><td>1909-11-17</td><td>1999</td></tr>

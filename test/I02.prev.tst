@@ -35,7 +35,7 @@ SELECT name
 FROM c01 
 WHERE name like '%';
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td>Martha</td><td>Freiburg</td><td align="right">1999</td><td>&amp;</td><td>1909-11-17</td></tr>
 <tr><td>Johannes</td><td>Schramberg</td><td align="right">1992</td><td>&lt;</td><td>1911-06-03</td></tr>
@@ -62,7 +62,7 @@ SELECT name
 FROM c01 
 WHERE name like '%';
 :SQL -->
-<table id="tab2"><!-- table_not_specified -->
+<table id="table2">
 <tr><th title="name">Name</th><th title="birth">Birthdate</th></tr>
 <tr><td>Martha</td><td>1909-11-17</td></tr>
 <tr><td>Johannes</td><td>1911-06-03</td></tr>
@@ -93,7 +93,7 @@ SELECT name
 FROM c01 
 WHERE name like '%';
 :SQL -->
-<table id="tab3"><!-- table_not_specified -->
+<table id="table3">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td>Martha</td><td>Freiburg</td><td align="right">1999</td><td>&amp;</td><td>1909-11-17</td></tr>
 <tr><td>Johannes</td><td>Schramberg</td><td align="right">1992</td><td>&lt;</td><td>1911-06-03</td></tr>
@@ -120,7 +120,7 @@ SELECT name
 FROM c01 
 WHERE name like '%';
 :SQL -->
-<table id="tab4"><!-- table_not_specified -->
+<table id="table4">
 <tr><th title="name">Name</th><th title="birth">Birthdate</th></tr>
 <tr><td>Martha</td><td>1909-11-17</td></tr>
 <tr><td>Johannes</td><td>1911-06-03</td></tr>
@@ -151,7 +151,7 @@ SELECT name
 FROM c01 
 WHERE name like '%';
 :SQL -->
-<table id="tab5"><!-- table_not_specified -->
+<table id="table5">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td>Martha</td><td>Freiburg</td><td align="right">1999</td><td>&amp;</td><td>1909-11-17</td></tr>
 <tr><td>Johannes</td><td>Schramberg</td><td align="right">1992</td><td>&lt;</td><td>1911-06-03</td></tr>
@@ -178,7 +178,7 @@ SELECT name
 FROM c01 
 WHERE name like '%';
 :SQL -->
-<table id="tab6"><!-- table_not_specified -->
+<table id="table6">
 <tr><th title="name">Name</th><th title="birth">Birthdate</th></tr>
 <tr><td>Martha</td><td>1909-11-17</td></tr>
 <tr><td>Johannes</td><td>1911-06-03</td></tr>

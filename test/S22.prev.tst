@@ -11,7 +11,7 @@ SELECT concat(name, concat('*', cast(year as char)))
 FROM c01 
 WHERE name like '%';
 :SQL -->
-<table id="tab1" name="table_not_specified">
+<table id="tab1" name="table1">
 <tr><th>Year</th>
 <th>Name</th>
 <th>Year</th>

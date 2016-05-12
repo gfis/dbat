@@ -20,7 +20,7 @@ SELECT sp1
 , concat(sp1, concat('=', concat(sp2, concat('=', sp3)))) 
 FROM pivot;
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="sp1">Application</th><th title="concat(sp1, concat('=', concat(sp2, concat('=', sp3))))">Aggr. Column</th></tr>
 <tr><td><a href="servlet?spec=test/selec01&amp;name="></a></td><td><a href="servlet?spec=test/selec01&amp;alpha=&amp;beta=c1&amp;gamma=S1">S1</a>, <a href="servlet?spec=test/selec01&amp;alpha=&amp;beta=c2&amp;gamma=S2">S2</a>, <a href="servlet?spec=test/selec01&amp;alpha=&amp;beta=c3&amp;gamma=S3">S3</a></td></tr>
 </table>

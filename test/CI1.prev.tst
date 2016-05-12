@@ -25,7 +25,7 @@
 SELECT count(*) 
 FROM c01;
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="count(*)">Number of Rows</th></tr>
 <tr><td>8</td></tr>
 </table>

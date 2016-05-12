@@ -342,7 +342,6 @@ public abstract class BaseTable {
         this.binary = binary;
     } // setBinaryFormat
 
-
     //==============
     // Constructors
     //==============

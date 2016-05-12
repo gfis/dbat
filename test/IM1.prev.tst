@@ -24,7 +24,7 @@ SELECT 'showImage,' || imagefile || ',100'
 FROM im1 
 ORDER BY 1;
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="'showImage,' || imagefile || ',100'">Image</th><th title="imagename">Name</th><th title="bytesize">Size</th><th title="description">Verbatim Description</th></tr>
 <tr><td><script type="text/javascript">showImage("img/flowers/120px-Flower_in_Georgia.jpg","100");</script></td><td>120px-Flower_in_Georgia</td><td align="right">4964</td><td><span class="F">blue</span> flower</td></tr>
 <tr><td><script type="text/javascript">showImage("img/flowers/120px-Georgian_Snow_Rose.jpg","100");</script></td><td>120px-Georgian_Snow_Rose</td><td align="right">5006</td><td>Snow Rose</td></tr>

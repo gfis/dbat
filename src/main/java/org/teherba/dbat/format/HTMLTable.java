@@ -68,7 +68,16 @@ public class HTMLTable extends XMLTable {
     /** No-args Constructor
      */
     public HTMLTable() {
-        super("html");
+        this("html");
+    } // Constructor
+
+    /** Constructor with format
+     *  @param format = "xml"
+     */
+    public HTMLTable(String format) {
+        super();
+        setFormatCodes(format);
+        setDescription("en", "HTML");
     } // Constructor
 
     // method 'endTable'        is inherited from XMLTable
@@ -288,11 +297,11 @@ public class HTMLTable extends XMLTable {
         try {
             tableSeqNo ++;
             tableRowNo = 0;
-            charWriter.print("<table id=\"tab" + String.valueOf(tableSeqNo) + "\"");
+            charWriter.print("<table id=\"" + tableName + "\"");
             if (isSortable) {
                 charWriter.print(" class=\"sortable\"");
             }
-            charWriter.println("><!-- " + tableName + " -->");
+            charWriter.println(">");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }

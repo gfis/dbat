@@ -51,8 +51,7 @@ Eingebundene JDBC-Treiber:
   org.sqlite.JDBC V3.7
 Implementierte Ausgabeformate (-m):
   html      HTML
-  xls       Excel
-  xlsx      Excel 2007
+  xlsx,xls  Excel
   xml       XML
   fix       Spalten fester Breite
   csv,tsv   Werte mit Trennzeichen

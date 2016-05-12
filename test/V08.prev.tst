@@ -26,7 +26,7 @@ WHERE name = 'Teherba'
         and family = 'Ritter'
         and gender = '';
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 </table>
 
     <form method="post" action="servlet?spec=test/crud03"><input name="spec" type="hidden" value="test/crud03" />

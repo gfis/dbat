@@ -25,7 +25,7 @@ SELECT name
 FROM c01 
 WHERE name like 'Ilse%';
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="name">Name</th></tr>
 <tr><td>Ilse</td></tr>
 <tr><td class="counter" colspan="1">1 row</td></tr>
@@ -37,7 +37,7 @@ SELECT name
 FROM c01 
 WHERE name like 'Ilse%';
 :SQL -->
-<table id="tab2"><!-- table_not_specified -->
+<table id="table2">
 <tr><th title="name">Name</th></tr>
 <tr><td>Ilse</td></tr>
 <tr><td class="counter" colspan="1">1 Person</td></tr>
@@ -49,7 +49,7 @@ SELECT name
 FROM c01 
 WHERE name like 'Ilse%';
 :SQL -->
-<table id="tab3"><!-- table_not_specified -->
+<table id="table3">
 <tr><th title="name">Name</th></tr>
 <tr><td>Ilse</td></tr>
 <tr><td class="counter" colspan="1">1 Person</td></tr>
@@ -61,7 +61,7 @@ SELECT name
 FROM c01 
 WHERE name like 'Ilse%';
 :SQL -->
-<table id="tab4"><!-- table_not_specified -->
+<table id="table4">
 <tr><th title="name">Name</th></tr>
 <tr><td>Ilse</td></tr>
 <tr><td class="counter" colspan="1">1 Person</td></tr>

@@ -22,7 +22,7 @@
     </form>
 
 	<h3>Vertical Result</h3>
-    <table id="tab1"><!-- x07 -->
+    <table id="x07">
 <tr><th align="left" class="vert">Name</th><td class="vert">row2</td></tr><tr><th align="left" class="vert">Dec1</th><td class="vert">194706290530000000</td></tr><tr><th align="left" class="vert">Dec2</th><td class="vert">194706.290</td></tr><tr><th align="left" class="vert">Date3</th><td class="vert">1981-08-09</td></tr><tr><th align="left" class="vert">Time4</th><td class="vert">11:30:00</td></tr><tr><th align="left" class="vert">TS5</th><td class="vert">1981-08-09 11:30:00.000</td></tr>
 </table>
 

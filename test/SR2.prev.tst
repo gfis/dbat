@@ -31,7 +31,7 @@ SELECT year
 FROM c01 
 WHERE name like '%%';
 :SQL -->
-<table id="tab1" class="sortable"><!-- table_not_specified -->
+<table id="table1" class="sortable">
 <thead>
 <tr><th title="Klick =&gt; Sort">Year</th><th title="Klick =&gt; Sort">Name</th><th title="Klick =&gt; Sort">University</th><th title="Klick =&gt; Sort">Gender</th><th title="Klick =&gt; Sort">Birthdate</th></tr>
 </thead>

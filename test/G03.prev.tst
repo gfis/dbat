@@ -22,7 +22,7 @@ SELECT sp1
 FROM pivot 
 ORDER BY 1,2,3;
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="sp1">Column 1</th><th title="sp2">Column 2</th><th title="sp3">Column 3</th></tr>
 <tr><td></td><td>c1</td><td>S1</td></tr>
 <tr><td></td><td>c2</td><td>S2</td></tr>

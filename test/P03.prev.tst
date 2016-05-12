@@ -12,7 +12,7 @@
 <!-- SQL:
 select sp1, sp2, sp3 from pivot order by 1, 2;
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table_not_specified">
 <tr><th>sp1</th><th>S1</th><th>S2</th><th>S3</th><th>S4</th><th>S5</th></tr>
 <tr><td>A</td><td>A1</td><td>A2</td><td>A3</td><td>A4</td><td>A5</td></tr>
 <tr><td>B</td><td>B1</td><td>B2</td><td>B3</td><td>B4</td><td>B5</td></tr>

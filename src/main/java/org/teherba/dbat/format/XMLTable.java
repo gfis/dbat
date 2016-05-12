@@ -59,18 +59,16 @@ public class XMLTable extends BaseTable {
     /** No-args Constructor
      */
     public XMLTable() {
-        super();
-        setFormatCodes("xml");
-        setDescription("en", "XML");
-        xmlDeclared = false;
-        encoding = "UTF-8";
+    	this("xml");
     } // Constructor
 
     /** Constructor with format
      *  @param format = "xml"
      */
     public XMLTable(String format) {
-        super(format);
+        super();
+        setFormatCodes(format);
+        setDescription("en", "XML");
         xmlDeclared = false;
         encoding = "UTF-8";
     } // Constructor

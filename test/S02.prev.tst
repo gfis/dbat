@@ -12,7 +12,7 @@
 <!-- SQL:
 SELECT * FROM c01;
 :SQL -->
-<table id="tab1"><!-- c01 -->
+<table id="c01">
 <tr><th>name</th><th>univ</th><th>year</th><th>gender</th><th>birth</th></tr>
 <tr><td>Martha</td><td>Freiburg</td><td>1999</td><td>&amp;</td><td>1909-11-17</td></tr>
 <tr><td>Johannes</td><td>Schramberg</td><td>1992</td><td>&lt;</td><td>1911-06-03</td></tr>

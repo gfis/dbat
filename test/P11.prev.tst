@@ -1,6 +1,6 @@
 { "tables": 
 [ { "table":
-  { "name": "table_not_specified"
+  { "name": "table1"
   , "thead": ["Application","S1","S2","S3","S4","S5"]
   , "tbody": 
     [ ["A","A1","A2","A3","A4","A5"]

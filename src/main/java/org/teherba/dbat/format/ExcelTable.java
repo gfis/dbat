@@ -47,26 +47,24 @@ public class ExcelTable extends BaseTable {
     /** encoding for output */
     private String encoding;
     /** sequential counter for Worksheets in a Workbook */
-    private int sheetCounter;
+    private int sheetNo;
 
     /** No-args Constructor
      */
     public ExcelTable() {
-        super();
-        setFormatCodes("xls");
-        setDescription("en", "Excel");
-        xmlDeclared = false;
-        encoding = "UTF-8";
-        sheetCounter = 0;
+        this("xls");
     } // Constructor
 
     /** Constructor with format
      *  @param format = "xls"
      */
     public ExcelTable(String format) {
-        super(format);
+        super();
+        setFormatCodes(format);
+        setDescription("en", "Excel");
         xmlDeclared = false;
         encoding = "UTF-8";
+        sheetNo = 0;
     } // Constructor
 
     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
@@ -98,7 +96,7 @@ public class ExcelTable extends BaseTable {
                     +        "   xmlns:html=\"http://www.w3.org/TR/REC-html40\">"           + newline
                     );
             xmlDeclared = true;
-            sheetCounter = 0;
+            sheetNo = 0;
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
@@ -119,13 +117,13 @@ public class ExcelTable extends BaseTable {
      */
     public void startTable(String tableName) {
         try {
-            sheetCounter ++;
+            sheetNo ++;
             if (! xmlDeclared) {
                 writeStart(new String[] { "encoding", encoding }, null);
                 xmlDeclared = true;
             }
             charWriter.print("<Worksheet ss:Name=\""
-                    + (tableName.equals("table_not_specified") ? "Select" + String.valueOf(sheetCounter) : tableName)
+                    + (tableName.equals("table_not_specified") ? "Select" + String.valueOf(sheetNo) : tableName)
                     + "\">" + newline);
             charWriter.print("<Table>" + newline);
         } catch (Exception exc) {

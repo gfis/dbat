@@ -32,7 +32,7 @@ SELECT name || '*' || cast(year as char)
 FROM c01 
 WHERE name like '%';
 :SQL -->
-<table id="tab1"><!-- table_not_specified -->
+<table id="table1">
 <tr><th title="name || '*' || cast(year as char)">Year</th><th title="concat(cast(year as char), concat('=', name))">Name</th><th title="concat(cast(year as char), concat('=e.', cast(year as char)))">Year</th><th title="concat(name, concat('=f.', name))">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right"><a href="servlet?spec=test/selec01&amp;name=Martha&amp;year=1999">1999</a></td><td><a href="servlet?spec=test/selec01&amp;year=1999&amp;name=Martha">Martha</a></td><td align="right"><a href="servlet?spec=spec1&amp;prefix=1999&amp;prefix2=e.1999">e.1999</a></td><td><a href="servlet?spec=spec1&amp;prefix=Martha&amp;prefix2=f.Martha">f.Martha</a></td><td>Freiburg</td><td>&amp;</td><td>1909-11-17</td></tr>
 <tr><td align="right"><a href="servlet?spec=test/selec01&amp;name=Johannes&amp;year=1992">1992</a></td><td><a href="servlet?spec=test/selec01&amp;year=1992&amp;name=Johannes">Johannes</a></td><td align="right"><a href="servlet?spec=spec1&amp;prefix=1992&amp;prefix2=e.1992">e.1992</a></td><td><a href="servlet?spec=spec1&amp;prefix=Johannes&amp;prefix2=f.Johannes">f.Johannes</a></td><td>Schramberg</td><td>&lt;</td><td>1911-06-03</td></tr>
