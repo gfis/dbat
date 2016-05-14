@@ -44,7 +44,8 @@ TEST A04 Web parameterized link with parameters
 HTTP spec=test/parmlink name=F year=2013
 #-------------------
 TEST B01 create table with BLOB
-DATA drop table if exists b01 ;
+DATA --
+  drop table if exists b01 ;
   create table b01
   ( name varchar(16) not null
   , content BLOB
@@ -63,7 +64,8 @@ TEST B03 describe BLOB table
 CALL Dbat -d b01
 
 TEST B04 create table with CLOB
-DATA DROP TABLE if exists b04;
+DATA --
+  DROP TABLE if exists b04;
   CREATE TABLE            b04
   ( name VARCHAR(16) not null   COMMENT 'key for the LOB'
   , len  INT                    COMMENT 'size of the LOB content'
@@ -76,9 +78,10 @@ TEST B05 describe CLOB table
 CALL Dbat -d b04
 
 TEST B06 insert from URI into CLOB
-DATA +noversion 194706 web/noversion.txt
-+B04.data.tmp 2906 test/B04.data.tmp
-+B06.data.tmp 64 test/B06.data.tmp
+DATA #
+ noversion 194706 web/noversion.txt
+ B04.data.tmp 2906 test/B04.data.tmp
+ B06.data.tmp 64 test/B06.data.tmp
 CALL Dbat -r b04 $(DATA)
 
 # TEST B07 select from CLOB
@@ -94,7 +97,8 @@ TEST B09 select from CLOB
 CALL Dbat "select * from b04"
 
 TEST B10 create table with image filenames
-DATA DROP TABLE if exists im1;
+DATA #
+  DROP TABLE if exists im1;
   CREATE TABLE            im1
   ( imagefile VARCHAR(128) not null   COMMENT 'image filename with path'
   , imagename VARCHAR(32)  not null   COMMENT 'name without path'
@@ -111,7 +115,8 @@ TEST B12 show iamge table values
 CALL Dbat -m csv -s "\t" -1024 im1
 #-------------------
 TEST C01 create table
-DATA drop table if exists c01 ;
+DATA #
+  drop table if exists c01 ;
   create table c01
   ( name varchar(16) not null   COMMENT 'Name of the Relative'
   , univ varchar(16)            COMMENT 'Town'
@@ -149,10 +154,10 @@ HTTP view=con lang=en
 TEST MR4 SQL console web de
 HTTP view=con lang=de
 
-TEST MR5 license web 
+TEST MR5 license web
 HTTP view=license
 
-TEST MR6 notice web 
+TEST MR6 notice web
 HTTP view=notice
 #-------------------
 TEST I01 insert statements
@@ -201,15 +206,15 @@ HTTP spec=test/counter01 name=x
 #-------------------
 # de1 = table with decimals
 TEST DE1 create table with DECIMALs
-DATA
-  drop table if exists de1;
+DATA #
+  DROP TABLE IF EXISTS de1;
   create table de1
   ( name0  VARCHAR  (16) not null
   , dec1   DECIMAL  (18)
   , dec2   DECIMAL  (18,3)
-  , date3  DATE     
+  , date3  DATE
   , fill1  VARCHAR  (1)
-  , time4  TIME     
+  , time4  TIME
   , fill2  VARCHAR  (1)
   , ts5    TIMESTAMP
   , PRIMARY KEY (name0)
@@ -218,7 +223,7 @@ DATA
 CALL Dbat -f $(DATA)
 
 TEST DE2 fill table with DECIMALs
-DATA
+DATA #
   insert into de1 values('row1', 123456780123456789, 123456.345, {d '2011-08-01'}, ' ', {t '23:13:00'}, ' ', {ts '2011-08-01 23:13:00.000'});
   insert into de1 values('row2', 194706290530000000, 194706.290, {d '1981-08-09'}, ' ', {t '11:30:00'}, ' ', {ts '1981-08-09 11:30:00.000'});
   commit;
@@ -227,7 +232,7 @@ DATA
 CALL Dbat -f $(DATA)
 
 TEST DE3 fill table with DECIMALs, verbose output
-DATA
+DATA #
   insert into de1 values('row3', 123456780123456789, 123456.345, {d '2011-08-01'}, ' ', {t '23:13:00'}, ' ', {ts '2011-08-01 23:13:00.000'});
   insert into de1 values('row4', 194706290530000000, 194706.290, {d '1981-08-09'}, ' ', {t '11:30:00'}, ' ', {ts '1981-08-09 11:30:00.000'});
   commit;
@@ -251,7 +256,8 @@ TEST DE8 decimal table as fix
 CALL Dbat -m fix    -200 de1
 
 TEST DF1 raw input of decimal and date/time formats
-DATA row5;194706290530000005;194706.295;1981-08-05;;11:30:05;;1981-08-05 11:30:05.005
+DATA #
+ row5;194706290530000005;194706.295;1981-08-05;;11:30:05;;1981-08-05 11:30:05.005
 CALL Dbat -m csv -s ";" -r de1 test/DF1.data.tmp
 
 TEST DF2 check raw input of decimal and date/time formats
@@ -262,7 +268,7 @@ CALL Dbat "delete from de1 where name0 = 'row5';"
 #-------------------
 # stored procedures
 TEST X00 create procedure x00
-DATA
+DATA #
   DROP   PROCEDURE if exists x00 $
   CREATE PROCEDURE x00 (IN part varchar(20), OUT num int, OUT last varchar(20))
   BEGIN
@@ -275,7 +281,7 @@ DATA
 CALL Dbat -v -sp "$" -f $(DATA)
 
 TEST X01 create procedure x01 with 2 result sets
-DATA
+DATA #
   DROP   PROCEDURE if exists x01 $
   CREATE PROCEDURE x01 (IN x CHAR(1))
   BEGIN
@@ -304,7 +310,7 @@ TEST X06 call by servlet with parameter
 HTTP spec=test/callproc part=or
 
 TEST X07 create procedure x07
-DATA
+DATA #
   DROP   PROCEDURE if exists x07 $
   CREATE PROCEDURE x07
     ( IN  iname0 VARCHAR(16)
@@ -427,11 +433,11 @@ HTTP spec=test.redir0
 TEST Y09 redirected spec file, wait time 3 s, German
 HTTP spec=test.redir3
 
-TEST Y10 rewriting with JavaScript - when
-HTTP spec=test.rewrite DB2SYS=DB2N
+TEST Y10 rewriting with JavaScript - otherwise
+HTTP spec=test.rewrite DBSYS=ORA0
 
-TEST Y11 rewriting with JavaScript - otherwise
-HTTP spec=test.rewrite DB2SYS=DB2I
+TEST Y11 rewriting with JavaScript - when
+HTTP spec=test.rewrite DBSYS=ORA1
 #-------------------
 # console page
 TEST SC1 show SQL console page
@@ -454,12 +460,14 @@ TEST CT1 tokenizing preprogrammed commandline string
 CALL CommandTokenizer
 
 TEST CT2 tokenizing from file
-DATA call -in '2011-07-21 17:39:00'
+DATA #
+    call -in '2011-07-21 17:39:00'
     call  my.pr1 -in "2 double quoted" -in:int 29647 -in '3 single quoted';
 CALL CommandTokenizer -f $(DATA)
 
 TEST CT3 tokenizing from file with SQL syntax
-DATA call -in '2011-07-21 17:39:00'
+DATA #
+    call -in '2011-07-21 17:39:00'
     call  my.pr1 -in "2 double quoted" -in:int 29647 -in '3 single quoted';
 CALL CommandTokenizer -sql $(DATA)
 #-------------------------------
@@ -525,10 +533,10 @@ TEST TL5 file tayloring from web uri
 HTTP spec=test/taylor5&mode=taylor&sep={}
 
 TEST TL6 file tayloring from file uri specified with -u
-CALL Dbat -m taylor -s "{}" -u "web/spec/test/taylor.html" -f "web/spec/test/taylor5.xml" 
+CALL Dbat -m taylor -s "{}" -u "web/spec/test/taylor.html" -f "web/spec/test/taylor5.xml"
 
 TEST TL7 file tayloring from file uri specified in the spec file
-HTTP spec=test/taylor5&mode=taylor&sep={} 
+HTTP spec=test/taylor5&mode=taylor&sep={}
 
 #-------------------
 # simple web table selection in various formats
@@ -559,8 +567,11 @@ HTTP spec=test/selec01 mode=echo
 TEST W10 show default specification
 HTTP spec=test/selec01 mode=spec
 
-TEST W11 select as Excel
-HTTP spec=test/selec01 mode=xls
+TEST W11 select as HTML
+HTTP spec=test/selec01 mode=html
+
+TEST W11E select as Excel-2007
+HTTPZ spec=test/selec01 mode=xlsx
 
 TEST W12 select with "." in specName
 HTTP spec=test.selec01
@@ -648,8 +659,11 @@ HTTP spec=test/with_cte mode=echo
 TEST E03 Web echo - 3 SELECTs
 HTTP spec=test/listbox mode=echo
 
-TEST S11 Excel format
-CALL Dbat -m xls  -29 c01
+TEST S11 HTML format
+CALL Dbat -m html -29 c01
+
+TEST S11E Excel-2007 format
+CALLZ Dbat -m xlsx -29 c01
 
 TEST S12 select for SQL UPDATEs
 CALL Dbat -m update -29 c01
@@ -660,8 +674,11 @@ CALL Dbat -m fix -l 4,4 "select name, len from b04"
 TEST S15 select fixed columns with alignment
 CALL Dbat -m fix -f web/spec/test/align02.xml
 
-TEST S16 multiple tables, Excel format
-CALL Dbat -m xls -f web/spec/test/selec03.xml
+TEST S16 multiple tables, HTML format
+CALL Dbat -m html -f web/spec/test/selec03.xml
+
+TEST S16E multiple tables, Excel-2007 format
+CALLZ Dbat -m xlsx -f web/spec/test/selec03.xml
 
 TEST S21 select as HTML with linked values
 CALL Dbat -m html -f web/spec/test/selec02.xml
@@ -681,8 +698,11 @@ CALL Dbat -m echo -f web/spec/test/selec02.xml
 TEST S26 select fixed columns with linked values
 CALL Dbat -m fix  -f web/spec/test/selec02.xml
 
-TEST S27 Excel format with linked values
-CALL Dbat -m xls  -f web/spec/test/selec02.xml
+TEST S27 HTML format with linked values
+CALL Dbat -m html  -f web/spec/test/selec02.xml
+
+TEST S27E Excel-2007 format with linked values
+CALLZ Dbat -m xlsx  -f web/spec/test/selec02.xml
 
 TEST S28 select for SQL UPDATEs with linked values
 CALL Dbat -m update -f web/spec/test/selec02.xml
@@ -700,7 +720,8 @@ CALL Dbat -n c01
 #--------------------------
 # enumerations, fetch into parameterMap
 TEST EN1 create table with enumerations
-DATA drop table if exists en1;
+DATA #
+  drop table if exists en1;
   create table en1
   ( seq     INT not null
   , code    VARCHAR(16)
@@ -711,7 +732,7 @@ DATA drop table if exists en1;
 CALL Dbat -f $(DATA)
 
 TEST EN2 fill table with enumerations
-DATA
+DATA #
   insert into en1 values( 1, 'M', 'eng', 'male');
   insert into en1 values( 2, 'F', 'eng', 'female');
   insert into en1 values( 3, 'N', 'eng', 'neuter');
@@ -728,7 +749,8 @@ HTTP spec=test/enum02
 #--------------------------
 # aggregation, pivot and grouping
 TEST C02 create pivot table
-DATA drop table if exists pivot ;
+DATA #
+  drop table if exists pivot ;
   create table pivot
   ( sp1 varchar(8)
   , sp2 varchar(8)
@@ -743,8 +765,11 @@ CALL Dbat -m html -f web/spec/test/color04.xml
 TEST C04 web colors
 HTTP spec=test/color04
 
-TEST C05 web colors, Excel
-HTTP spec=test/color04 mode=xls
+TEST C05  web colors, Wiki
+HTTP spec=test/color04 mode=wiki
+
+TEST C05E web colors, Excel-2007
+HTTPZ spec=test/color04 mode=xlsx
 
 TEST C06 CLI with column element (fails if MySQL does not know "||" concatenation)
 CALL Dbat -m html -f web/spec/test/column02.xml
@@ -773,19 +798,56 @@ TEST R00 clear pivot table for raw input test
 CALL Dbat "delete from pivot"
 
 TEST R01 tsv raw table input test
-CALL Dbat -r pivot test/pivot_test.tsv
+# there must be 1 space before the tab
+DATA --
+ 	c1	S1
+ 	c2	S2
+ 	c3	S3
+ 	c4	S4
+ 	c5 	S5
+ A	c1	A1
+ A	c2	A2
+ A	c3	A3
+ A	c4	A4
+ A	c5	A5
+ B	c1	B1
+ B	c2	B2
+ B	c3	B3
+ B	c4	B4
+ B	c5	B5
+ C	c1	C1
+ C	c2	C2
+ C	c3	C3
+ C	c4	C4
+ C	c5	C5
+ D	c1	D1
+ D	c2	D2
+ D	c3	D3
+ D	c4	D4
+ D	c5	D5
+CALL Dbat -r pivot $(DATA)
 
 TEST R02 check tsv input
 CALL Dbat "select * from pivot order by 1,2,3;"
 
 TEST R03 raw fix input
-CALL Dbat -l 8,8,4 -m fix -r pivot test/pivot_test.fix
+DATA --
+ test    fix     0001
+ test    fix     0002
+ test    fix     0003
+ test    fix     0004
+CALL Dbat -l 8,8,4 -m fix -r pivot $(DATA)
 
 TEST R04 check fix input
 CALL Dbat "select * from pivot where sp2 = 'fix' order by 1,2,3;"
 
 TEST R05 raw csv input
-CALL Dbat -s ";" -m csv -r pivot test/pivot_test.csv
+DATA --
+ test;csv;0001
+ test;csv;0002
+ test;csv;0003
+ test;csv;0004
+CALL Dbat -s ";" -m csv -r pivot $(DATA)
 
 TEST R06 check csv input
 CALL Dbat "select * from pivot where sp2 = 'csv' order by 1,2,3;"
@@ -837,13 +899,16 @@ HTTP spec=test.aggr01 mode=fix
 TEST AG7 Web aggregation test with TSV
 HTTP spec=test.aggr01 mode=tsv
 
-TEST AG8 Web aggregation test with XLS
-HTTP spec=test.aggr01 mode=xls
+TEST AG8 Web aggregation test with XML
+HTTP spec=test.aggr01 mode=xml
+
+TEST AG8E Web aggregation test with Excel-2007 xlsx
+HTTPZ spec=test.aggr01 mode=xlsx
 
 TEST AG9 Web aggregation test with fetchLimit
 HTTP spec=test.aggr01 fetch=3
 #-------------------
-#Pivot tables
+# Pivot tables
 TEST P03 aggregation test with HTML
 CALL Dbat -a sp2 -sa "pivot" -m html "select sp1, sp2, sp3 from pivot order by 1, 2"
 
@@ -859,8 +924,11 @@ HTTP spec=test/pivot03 mode=fix
 TEST P07 Web pivot test with tsv
 HTTP spec=test/pivot03 mode=tsv
 
-TEST P08 Web pivot test with xls
-HTTP spec=test/pivot03 mode=xls
+TEST P08 Web pivot test with xml
+HTTP spec=test/pivot03 mode=xml
+
+TEST P08E Web pivot test with Excel-2007 xlsx
+HTTPZ spec=test/pivot03 mode=xlsx
 
 TEST P09 Web pivot test with fetchLimit
 HTTP spec=test/pivot03 fetch=10
@@ -957,7 +1025,7 @@ HTTP spec=test/choose07 par=29-06
 #-------------------
 # table with foreign keys
 TEST FK1 create tables with foreign keys
-DATA
+DATA #
     -- Foreign key example from MySQL 5 manual, slightly changed such that it
     -- runs through http://developer.mimer.se/validator/parser99/index.tml#parser
     -- @(#) $Id: all.tca 955 2012-06-05 07:22:59Z gfis $
@@ -1123,8 +1191,11 @@ HTTP spec=test.crud03 view=del2 search_name= search_family=Ritter name=Teherba f
 TEST V10 Show dbiv in wiki format
 HTTP spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=xml
 
-TEST V11 Show dbiv in Excel format
-HTTP spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=xls
+TEST V11 Show dbiv in HTML format
+HTTP spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=html
+
+TEST V11E Show dbiv in Excel-2007 format
+HTTPZ spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=xlsx
 
 TEST V12 Show dbiv in fixed format
 HTTP spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=fix

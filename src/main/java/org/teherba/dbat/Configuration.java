@@ -95,9 +95,10 @@ public class Configuration implements Serializable {
     public void setAutoCommit(boolean auto) {
         autoCommit = auto;
     } // setAutoCommit
-
+    //--------
     /** Opened connection to some database */
     private Connection con;
+
     /** Eventually open the connection and return it
      *  @return open database connection
      */
@@ -134,7 +135,7 @@ public class Configuration implements Serializable {
             } // while busy
         } // dsMap != null
     } // setConnectionId(0)
-
+    //--------
     /** Schema which is used when none is specified with the table's name */
     private String  defaultSchema;
     /** Gets the default schema
@@ -149,7 +150,7 @@ public class Configuration implements Serializable {
     public void setDefaultSchema(String schema) {
         this.defaultSchema = schema;
     } // setDefaultSchema
-
+    //--------
     /** URL of the JDBC driver */
     private String  driverURL;
     /** Gets the JDBC driver's URL
@@ -164,7 +165,7 @@ public class Configuration implements Serializable {
     public void setDriverURL(String urn) {
         this.driverURL = urn;
     } // setDriverURL
-
+    //--------
     /** which encodings to use for source [0] and target [1]: ISO-8859-1 (default), UTF-8 and so on */
     private String[] encoding;
     /** Gets the encoding for source or target
@@ -185,8 +186,8 @@ public class Configuration implements Serializable {
             encoding[1] = enc;
         }
     } // setEncoding
-
-    /** max. number of rows to be fetched; default "infinite" */
+    //--------
+    /** maximum number of rows to be fetched; default "infinite" */
     private int     fetchLimit;
     /** Gets the maximum number of rows to be fetched
      *  @return  maximum number of rows to be fetched
@@ -200,7 +201,7 @@ public class Configuration implements Serializable {
     public void setFetchLimit(int fetchLimit) {
         this.fetchLimit = fetchLimit;
     } // setFetchLimit
-
+    //--------
     /** input/output format = mode: tsv (default), csv, fix, html and so on*/
     private String  formatMode;
     /** Gets the format
@@ -215,7 +216,7 @@ public class Configuration implements Serializable {
     public void setFormatMode(String mode) {
         this.formatMode = mode;
     } // setFormatMode
-
+    //--------
     /** generator for SAX events */
     protected BaseTransformer generator;
     /** Gets the generator
@@ -230,7 +231,7 @@ public class Configuration implements Serializable {
     public void setGenerator(BaseTransformer generator) {
         this.generator = generator;
     } // setGenerator
-
+    //--------
     /** MIME type for HTML output (constant per application) */
     private String htmlMimeType;
     /** Gets the MIME type to be returned for HTML target format
@@ -238,7 +239,7 @@ public class Configuration implements Serializable {
     public String getHtmlMimeType() {
         return this.htmlMimeType;
     } // getHtmlMimeType
-
+    //--------
     /** URI for additional input file */
     private   String inputURI;
     /** Gets the URI of an additional input file (-u option)
@@ -253,7 +254,7 @@ public class Configuration implements Serializable {
     public void setInputURI(String uri) {
         inputURI = uri;
     } // setInputURI
-
+    //--------
     /** Language to be used for footer and messages */
     private String language;
     /** Gets the language (for messages)
@@ -268,7 +269,7 @@ public class Configuration implements Serializable {
     public void setLanguage(String iso2) {
         language = iso2;
     } // setLanguage
-
+    //--------
     /** when processing SQL by JDBC */
     public static final int JDBC_MANNER = 0;
     /** when processing SQL by SQLJ */
@@ -289,7 +290,7 @@ public class Configuration implements Serializable {
     public void setManner(int manner) {
         this.manner = manner;
     } // setManner
-
+    //--------
     /** insert a COMMIT statement after this number of rows in a result set (modes -sql/jdbc, -update) */
     private int maxCommit;
     /** Gets the commit limit
@@ -304,7 +305,7 @@ public class Configuration implements Serializable {
     public void setMaxCommit(int maxCommit) {
         this.maxCommit = maxCommit;
     } // setMaxCommit
-
+    //--------
     /** Namespace prefix (for XML output) */
     private String  namespacePrefix;
     /** Gets the namespace prefix
@@ -319,7 +320,7 @@ public class Configuration implements Serializable {
     public void setNamespacePrefix(String namespacePrefix) {
         this.namespacePrefix = namespacePrefix;
     } // setNamespacePrefix
-
+    //--------
     /** whether to write the value <em>null</em> in text formats: 0 = omit, 1 = write "null" */
     private int nullText;
     /** Tells whether the value <em>null</em> should be written in text formats;
@@ -335,7 +336,7 @@ public class Configuration implements Serializable {
     public void setNullText(int nullText) {
         this.nullText = nullText;
     } // setNullText
-
+    //--------
     /** Map for parameters (placeholders) embedded in the XML specification.
      *  The SAX handler will take parameter values from here when
      *  it encounters a <code>&lt;parm&gt;</code> element.
@@ -364,7 +365,7 @@ public class Configuration implements Serializable {
             parameterMap.put(key, map.get(key));
         } // while key
     } // setParameterMap
-
+    //--------
     /** Name of a file with user defineable properties (related to the connection) */
     private String  propFileName;
     /** User defineable properties, database connection parameters and other properties.
@@ -378,7 +379,7 @@ public class Configuration implements Serializable {
      *  </ol>
      */
     private Properties props;
-
+    //--------
     /** Constant for syntax of MySQL RDBMS */
     public static final int MYSQL   = 1;
     /** Constant for syntax of IBM's DB2 RDBMS */
@@ -415,7 +416,7 @@ public class Configuration implements Serializable {
     public int getRdbmsId() {
         return rdbmsId;
     } // getRdbmsId
-
+    //--------
     /** input/output format separator for tsv, csv modes */
     private String  separator;
     /** Gets the input/output format separator (for csv, tsv)
@@ -430,7 +431,7 @@ public class Configuration implements Serializable {
     public void setSeparator(String separator) {
         this.separator = separator;
     } // setSeparator
-
+    //--------
     /** Stored Procedure text separator */
     private String  procSeparator;
     /** Gets the Stored Procedure text separator
@@ -445,7 +446,7 @@ public class Configuration implements Serializable {
     public void setProcSeparator(String separator) {
         this.procSeparator = separator;
     } // setProcSeparator
-
+    //--------
     /** Output format serializer */
     private BaseTable tableSerializer;
     /** Gets the output format serializer
@@ -460,7 +461,7 @@ public class Configuration implements Serializable {
     public void setTableSerializer(BaseTable tableSerializer) {
         this.tableSerializer = tableSerializer;
     } // setTableSerializer
-
+    //--------
     /** how to trim CHAR and VARCHAR column values */
     private int trimSides;
     /** Tells how CHARs and VARCHARs should be trimmed by INSERT and SELECT
@@ -475,7 +476,7 @@ public class Configuration implements Serializable {
     public void setTrimSides(int trimSides) {
         this.trimSides = trimSides;
     } // setTrimSides
-
+    //--------
     /** whether to print verbose messages: 0 = none, 1 = some, 2 = many */
     private int verbose;
     /** Sets the level of verbose output
@@ -490,100 +491,15 @@ public class Configuration implements Serializable {
     public int getVerbose() {
         return this.verbose;
     } // getVerbose
-
-    /** Gets the program's version.
-     *  The value returned is reasonable only if this source file was changed and git committed before the build!
-     *  Target <em>identify</em> in <em>dbat/makefile</em> should be run before!
-     *  @return a string of the form "Dbat Vm.hhhh/isodate",
-     *  where m is the major version,
-     *  and hhhh are the first 4 digits of the git hash number
-     */
-    public static String getVersionString() {
-        // public final static String CVSID = "@(#) $Id$";
-        //                                     0    1    2                                                 3                                        4
-    /*
-        String result = "Dbat V";
-            if (false) { // old code
-                String[] vers = CVSID.split("\\s+");
-                // V8         up to 2014-11-07
-                // V9.* starting at 2014-11-08
-                if (vers.length >= 5) { // CVS, SVN Id: HTMLTable.java 946 2012-05-29 15:53:06Z gfis
-                    result += (vers[3] + "    ").substring(0,4).trim() + "/" + vers[4];
-                } else { // unmodified git Id c.f. above
-                    result += (vers[2] + "    ").substring(0,4).trim();
-                }
-                // old code
-            } else { // new code
-                result = versionString;
-            }
-        if (result.length() <= 6) {
-            result += "9.555/2015-05-05";
-        }
-    */
-        return versionString;
-    } // getVersionString
-
-    /** whether to print header and trailer */
-    private boolean withHeaders;
-    /** Tells whether to output table header rows
-     *  @return false if no table header rows should be written (default: true)
-     */
-    public boolean isWithHeaders() {
-        return withHeaders;
-    } // isWithHeaders
-    /** Defines whether to output table header rows
-     *  @param withHeaders false if no table header rows should be written  (default: true)
-     */
-    public void setWithHeaders(boolean withHeaders) {
-        this.withHeaders = withHeaders;
-    } // setWithHeaders
-
-    /** name of ZIP file for (B)LOB values */
-    private String  zipFileName;
-    /** Gets the name of the ZIP file for LOBs
-     *  @return zipFileName a name of a ZIP file
-     */
-    public String getZipFileName() {
-        return zipFileName;
-    } // getZipFileName
-    /** Sets the name of the ZIP file for LOBs
-     *  @param zipFileName a name of a ZIP file
-     */
-    public void setZipFileName(String zipFileName) {
-        this.zipFileName = zipFileName;
-    } // setZipFileName
-
-    /** when called from the commandline - no DB connection pooling */
-    public static final int CLI_CALL  = 0;
-    /** when called from the web application - Tomcat's DBCP */
-    public static final int WEB_CALL  = 1;
-    /** when called as a SOAP service - ??? (like CLI_CALL so far) */
-    public static final int SOAP_CALL = 2;
-    /** when called from the commandline - use BasicDataSource */
-    // public static final int DSO_CALL  = 3;
-    /** Remembers the type of activation (one of the xxx_CALL constants) */
-    private int callType;
-    /** Gets the type of activation.
-     *  @return one of the constants *_CALL
-     */
-    public int getCallType() {
-        return callType;
-    } // getCallType
-
-    /** Maps connection identifiers (short database instance ids) to {@link DataSource Datasources} */
-    private LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap;
-
+    //--------
     /** Version String to be used in Messages */
     private static String versionString;
 
-    //================================
-    // Constructor and initialization
-    //================================
-
-    /** No-args Constructor
+    /** Sets the program's version, which is a String of the form "Dbat Vm.hhhh/isodate",
+     *  where m is the major version,
+     *  and hhhh are the build number as 4 digits (zero padded)
      */
-    public Configuration() {
-        log = Logger.getLogger(Configuration.class.getName());
+    public void setVersionString() {
         String result = "Dbat V";
         try {
             /*
@@ -629,11 +545,82 @@ public class Configuration implements Serializable {
                     } // our MANIFEST.MF
                 } // while reading lines from MANIFEST.MF
             } // while resources
-                
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
         versionString = result;
+    } // getVersionString
+
+    /** Gets the program's version.
+     *  The value returned is reasonable only if this source file was changed and git committed before the build!
+     *  Target <em>identify</em> in <em>dbat/makefile</em> should be run before!
+     *  @return a string of the form "Dbat Vm.hhhh/isodate",
+     *  where m is the major version,
+     *  and hhhh are the build number as 4 digits (zero padded)
+     */
+    public static String getVersionString() {
+        return versionString;
+    } // getVersionString
+    //--------
+    /** whether to print header and trailer */
+    private boolean withHeaders;
+    /** Tells whether to output table header rows
+     *  @return false if no table header rows should be written (default: true)
+     */
+    public boolean isWithHeaders() {
+        return withHeaders;
+    } // isWithHeaders
+    /** Defines whether to output table header rows
+     *  @param withHeaders false if no table header rows should be written  (default: true)
+     */
+    public void setWithHeaders(boolean withHeaders) {
+        this.withHeaders = withHeaders;
+    } // setWithHeaders
+    //--------
+    /** name of ZIP file for (B)LOB values */
+    private String  zipFileName;
+    /** Gets the name of the ZIP file for LOBs
+     *  @return zipFileName a name of a ZIP file
+     */
+    public String getZipFileName() {
+        return zipFileName;
+    } // getZipFileName
+    /** Sets the name of the ZIP file for LOBs
+     *  @param zipFileName a name of a ZIP file
+     */
+    public void setZipFileName(String zipFileName) {
+        this.zipFileName = zipFileName;
+    } // setZipFileName
+    //--------
+    /** when called from the commandline - no DB connection pooling */
+    public static final int CLI_CALL  = 0;
+    /** when called from the web application - Tomcat's DBCP */
+    public static final int WEB_CALL  = 1;
+    /** when called as a SOAP service - ??? (like CLI_CALL so far) */
+    public static final int SOAP_CALL = 2;
+    /** when called from the commandline - use BasicDataSource */
+    // public static final int DSO_CALL  = 3;
+    /** Remembers the type of activation (one of the xxx_CALL constants) */
+    private int callType;
+    /** Gets the type of activation.
+     *  @return one of the constants *_CALL
+     */
+    public int getCallType() {
+        return callType;
+    } // getCallType
+    //--------
+    /** Maps connection identifiers (short database instance ids) to {@link DataSource Datasources} */
+    private LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap;
+
+    //================================
+    // Constructor and initialization
+    //================================
+
+    /** No-args Constructor
+     */
+    public Configuration() {
+        log = Logger.getLogger(Configuration.class.getName());
+        setVersionString();
     } // Constructor
 
     /** Initializes the class for the 1st (or 2nd, 3rd etc) call.
@@ -872,15 +859,6 @@ public class Configuration implements Serializable {
         return result;
     } // openConnection
 
-    /** Closes the built-in (local) database connection,
-     *  also if there are previous exceptions
-     *  @param parmCon connection to be closed
-     */
-    private void closeConnection(Connection parmCon) {
-        con = parmCon;
-        closeConnection();
-    } // closeConnection()
-
     /** Closes the database connection, also if there are previous exceptions
      */
     public  void closeConnection() {
@@ -928,7 +906,7 @@ public class Configuration implements Serializable {
         try {
             config.configure(Configuration.CLI_CALL);
             Connection con = config.openConnection();
-            config.closeConnection(con);
+            config.closeConnection();
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         } finally {

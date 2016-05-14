@@ -10,17 +10,17 @@
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
 </head><body>
 
-	<!--Rewriting of Parameters-->
-	<!--Parameter umschreiben-->
+    <!--Rewriting of Parameters-->
+    <!--Parameter umschreiben-->
 
     <h3>Rewriting of Parameters</h3>
-	<script language="javascript" type="text/javascript">
-		window.location.href=
-		"http://localhost:8080/dbat/servlet?spec=test.selec01&name=R%&DB2SYS=DB2I";
-	</script>
+    <script language="javascript" type="text/javascript">
+        window.location.href=
+        "http://localhost:8080/dbat/servlet?spec=test.selec01&name=R%&DBSYS=ORA2";
+    </script>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/rewrite.xml" type="text/plain">test/rewrite</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;DB2SYS=DB2I&amp;spec=test.rewrite&amp;lang=en">Excel</a>,
-<a href="servlet?&amp;view=more&amp;mode=html&amp;DB2SYS=DB2I&amp;spec=test.rewrite&amp;lang=en">more</a>
+<a target="_blank" href="servlet?&amp;mode=xls&amp;DBSYS=ORA1&amp;spec=test.rewrite&amp;lang=en">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;DBSYS=ORA1&amp;spec=test.rewrite&amp;lang=en">more</a>
 
 </body></html>

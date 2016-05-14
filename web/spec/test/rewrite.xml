@@ -3,22 +3,22 @@
     @(#) $Id$
     2013-02-04: Dr. Georg Fischer
 -->
-<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
-		xmlns:ht="http://www.w3.org/1999/xhtml"
-		encoding="UTF-8"
-		lang="en" 
-		conn="worddb" 
-		title="rewrite"
-		>
-	<comment lang="en">Rewriting of Parameters</comment>
-	<comment lang="de">Parameter umschreiben</comment>
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang="en" 
+        conn="worddb" 
+        title="rewrite"
+        >
+    <comment lang="en">Rewriting of Parameters</comment>
+    <comment lang="de">Parameter umschreiben</comment>
 
     <ht:h3>Rewriting of Parameters</ht:h3>
-	<ht:script language="javascript" type="text/javascript">
-		window.location.href=
-		"http://localhost:8080/dbat/servlet?spec=test.selec01&amp;name=R%&amp;DB2SYS=<choose>
-			<when name="DB2SYS" match="DB2N">DB2E</when>
-			<otherwise><parm name="DB2SYS" /></otherwise></choose>";
-	</ht:script>
+    <ht:script language="javascript" type="text/javascript">
+        window.location.href=
+        "http://localhost:8080/dbat/servlet?spec=test.selec01&amp;name=R%&amp;DBSYS=<choose>
+            <when name="DBSYS" match="ORA1">ORA2</when>
+            <otherwise><parm name="DBSYS" /></otherwise></choose>";
+    </ht:script>
 
 </dbat>

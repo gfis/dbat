@@ -25,6 +25,7 @@
 package org.teherba.common;
 import  java.io.BufferedReader;
 import  java.io.ByteArrayInputStream;
+import  java.io.ByteArrayOutputStream;
 import  java.io.FileInputStream;
 import  java.io.InputStream;
 import  java.io.InputStreamReader;
@@ -36,8 +37,11 @@ import  java.net.URL;
 import  java.net.URLConnection;
 import  java.nio.channels.Channels;
 import  java.nio.channels.ReadableByteChannel;
+import  java.util.Date;
 import  java.util.Iterator;
 import  java.util.Map;
+import  java.util.zip.ZipEntry;
+import  java.util.zip.ZipInputStream;
 import  org.apache.log4j.Logger;
 
 /** This reader reads from the following sources:
@@ -121,9 +125,20 @@ public class URIReader {
     /** whether the reader is character oriented (in contrast to byte streams) */
     private boolean isEncoded;
 
+    /** Tells whether the reader returns a stream of binary bytes
+     *  (otherwise it is character oriented)
+     *  @return true for binary stream, false for character string
+     */
+    public boolean isBinary() {
+        return ! isEncoded;
+    } // isBinary
+
+    /** whether the writer should pipe the output through <em>unzip</em> */
+    private boolean doUnzip;
+
     /** underlying URLConnection */
     private URLConnection urlConn;
-    
+
     /** generalized local input stream */
     private InputStream byteStream;
     /** Gets the byte input stream for this URI
@@ -148,7 +163,8 @@ public class URIReader {
     /** No-args Constructor
      */
     public URIReader() {
-        this("-"); // read from STDIN (character oriented)
+        log = Logger.getLogger(URIReader.class.getName());
+        this.encoding = "UTF-8";
     } // Constructor
 
     /** Construct from an URI (character oriented)
@@ -165,21 +181,28 @@ public class URIReader {
      *  or <code>null</code> (byte oriented)
      */
     public URIReader(String unresid, String enc) {
-    	this(unresid, enc, null);
-	} // Constructor(2)
-	
+        this(unresid, enc, null);
+    } // Constructor(2)
+
     /** Construct from a URI and specifiy character set encoding (if character oriented),
      *  or <code>null</code> (if byte oriented reading should be performed).
+     *  A pseudo encoding of "zip" pipes the binary input through an unzip operation.
      *  @param unresid the Uniform Resource Identifier to be used: URL or <em>data:</em> URI
      *  @param enc character set to be used to read from bytes (character oriented),
      *  or <code>null</code> (byte oriented)
-     *  @param propMap optional map for request properties, 
+     *  @param propMap optional map for request properties,
      *  or null if no properties should be associated
      */
     public URIReader(String unresid, String enc, Map<String,String> propMap) {
         log = Logger.getLogger(URIReader.class.getName());
         this.encoding = enc;
-        isEncoded   = enc != null;
+        doUnzip = false;
+        isEncoded = enc != null;
+        if (isEncoded && enc.equals("zip")) {
+            isEncoded = false;
+            this.encoding = "UTF-8"; // for output of unzip -p
+            doUnzip = true;
+        }
         charReader  = null; // the protocol is unreadable so far
         byteStream  = null; // the protocol is unreadable so far
         urlConn     = null;
@@ -222,14 +245,14 @@ public class URIReader {
                 urlConn = url.openConnection();
 
                 if (propMap != null) { // set connection properties
-                	Iterator<String> piter = propMap.keySet().iterator();
-                	while (piter.hasNext()) {
-                		String key = piter.next();
-                		String value = propMap.get(key); 
-                		urlConn.setRequestProperty(key, value);
-                	} // while piter
+                    Iterator<String> piter = propMap.keySet().iterator();
+                    while (piter.hasNext()) {
+                        String key = piter.next();
+                        String value = propMap.get(key);
+                        urlConn.setRequestProperty(key, value);
+                    } // while piter
                 } // propMap was set
-                
+
                 if (isEncoded) {
                     charReader = new BufferedReader(new InputStreamReader(urlConn.getInputStream(), this.encoding));
                 } else {
@@ -243,11 +266,66 @@ public class URIReader {
                     byteStream = new FileInputStream(unresid);
                 }
             }
+
+            if (doUnzip) {
+                charReader = unzipStream(byteStream);
+                isEncoded = true;
+            } // doUnzip
         } catch (Exception exc) {
             log.error(exc.getMessage() + ", unresid=\"" + unresid + "\"", exc);
         }
     } // Constructor(3)
 
+    /** Unzips a stream of bytes and returns
+     *  a character reader for the concatenated contents of all entry files.
+     *  Long XML lines are broken up in addition, and filenames are interspersed.
+     *  @param byteStream some input stream
+     *  @return a character reader for the unzipped, concatenated contents
+     */
+    public BufferedReader unzipStream(InputStream byteStream) {
+        BufferedReader result = null;
+        try {
+            if (true) {
+                // slurp the whole zip file into zbuffer
+                ByteArrayOutputStream
+                baos = new ByteArrayOutputStream(16384);
+                int len = 16384;
+                byte[] zbuffer = new byte[16384];
+                while ((len = byteStream.read(zbuffer)) > 0) {
+                    baos.write(zbuffer, 0, len);
+                } // while byteStream
+                baos.close(); // no effect
+                zbuffer = baos.toByteArray();
+                byteStream.close();
+
+                // Unzip zbuffer and write contents to ubuffer
+                ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(zbuffer));
+                baos = new ByteArrayOutputStream(16384);
+                ZipEntry zentry = null;
+                byte[] ubuffer = new byte[16384];
+                while ((zentry = zis.getNextEntry()) != null) {
+                    baos.write(("<!-- " + zentry.getName() + " -->\n").getBytes("UTF-8")); // intersperse filename
+                    len = ubuffer.length;
+                    while ((len = zis.read(ubuffer)) > 0) {
+                        baos.write(ubuffer, 0, len);
+                    } // while
+                } // while zentry
+                zis.close();
+                baos.close(); // no effect
+
+                // cause charReader to read from ubuffer
+                ubuffer = baos.toByteArray();
+                result = new BufferedReader(new StringReader(
+                        (new String(ubuffer, 0, ubuffer.length, this.encoding))
+                        .replaceAll("\\\"><", "\">\n<") // break long XML lines
+                        ));
+            } // doUnzip
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+        return result;
+    } // unzipStream
+    
     /** Sets a property of the URLConnection.
      *  If the conneciton is not set, the call is silently ignored.
      *  @param key   the name of the property to be set, for example "User-Agent"
@@ -260,9 +338,9 @@ public class URIReader {
             }
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
-        } 
+        }
     } // setRequestProperty
-    
+
     //==========================
     // BufferedReader Interface
     //==========================
@@ -270,12 +348,11 @@ public class URIReader {
      */
     public void close() throws IOException {
         try {
-            if (false) {
-            } else if (this.charReader != null && isEncoded) {
+            if (this.charReader != null) {
                 this.charReader.close();
-            } else if (this.byteStream != null) {
+            }
+            if (this.byteStream != null) {
                 this.byteStream.close();
-            } else {
             }
         } catch (IOException exc) {
             throw exc;
@@ -517,7 +594,7 @@ public class URIReader {
         Logger log = Logger.getLogger(URIReader.class.getName());
         int iarg = 0;
         try {
-            if (iarg == args.length) { // without an argument, several protocols are checked
+            if (args.length == 0) { // without an argument, several protocols are checked
                 new URIReader("http://www.teherba.org");
                 String protocols[] =
                         { "http://www.teherba.org/index.html"
@@ -542,13 +619,26 @@ public class URIReader {
                     }
                     iprot ++;
                 } // while iprot
-            } else { // argument is a single URI which is read and printed to STDOUT
-                URIReader in = new URIReader(args[iarg ++]);
-                String line = "";
-                while ((line = in.readLine()) != null) {
-                    System.out.println(line);
-                } // while reading
-                in.close();
+            } else { // argument is a URI (with an optional encoding) which is read and printed to STDOUT
+                String uri = args[iarg ++];
+                String enc = null;
+                if (iarg < args.length) {
+                    enc = args[iarg ++];
+                }
+                URIReader ureader = new URIReader(uri, enc);
+                if (ureader.isBinary()) { // binary
+                    byte[] bbuf = new byte[4096];
+                    int len = bbuf.length;
+                    while ((len = ureader.read(bbuf, 0, len)) > 0) {
+                        System.out.write(bbuf, 0, len);
+                    } // while binary reading
+                } else { // character
+                    String line = null;
+                    while ((line = ureader.readLine()) != null) {
+                        System.out.println(line);
+                    } // while reading
+                }
+                ureader.close();
             }
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);

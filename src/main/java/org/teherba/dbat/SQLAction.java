@@ -1359,7 +1359,7 @@ public class SQLAction implements Serializable {
                     if (tbMetaData.isPivot()) {
                         htmlRowCount --; // first data row was really the header row
                     }
-                    tbSerializer.writeTableFooter(htmlRowCount, sqlRowCount >= fetchLimit, tbMetaData); 
+                    tbSerializer.writeTableFooter(htmlRowCount, sqlRowCount >= fetchLimit, tbMetaData);
                 } // withHeaders
                 tbSerializer.writeCommit(sqlRowCount);
                 tbSerializer.endTable();

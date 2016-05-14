@@ -278,7 +278,24 @@ public class ExcelStream extends BaseTable {
                         charWriter.print(result.toString());
                     */
                         Cell cell = row.createCell(icol);
-                        cell.setCellValue(column.getValue());
+	        			String value = column.getValue();
+	        			if (value == null) {
+	        			    result.append("NULL");
+	        			} else {
+	        			    switch (column.getDataType()) {
+	        			        case Types.DECIMAL:
+	        			        	break;
+	        			        default: // all numeric types: INT, DECIMAL
+	        			        case Types.CHAR:
+	        			        case Types.VARCHAR:
+	        			        	break;
+	        			        case Types.DATE:
+	        			        case Types.TIME:
+	        			        case Types.TIMESTAMP:
+	        			            break;
+	        			    } // switch type
+	        			} // not NULL
+                        cell.setCellValue(value);
                     } // pseudo == null
                     icol ++;
                 } // while icol
