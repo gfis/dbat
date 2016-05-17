@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2016-05-17: Dr. Georg Fischer
+-->
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang="en" 
+        conn="worddb" 
+        title="selecde1"
+        >
+    <!-- copy of selec02 -->
+    <comment lang="en">Select with date, decimal, and timestamp</comment>
+    <comment lang="de">Abfrage mit Date, Decimal und Timestamp</comment>
+
+    <ht:h3>Select from table <ht:em>de1</ht:em></ht:h3>
+    <select>
+        <col label="name0"              >name0</col>
+        <col label="dec1"  align="right">dec1 </col>
+        <col label="dec2"  align="right">dec2 </col>
+        <col label="date3"              >date3</col>
+        <col label="time4"              >time4</col>
+        <col label="ts5"                >ts5  </col>
+        <from>de1</from>
+		<order by="name0" />
+        <counter desc="row,s"/>
+    </select>
+</dbat>

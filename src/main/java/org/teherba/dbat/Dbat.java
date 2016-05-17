@@ -54,7 +54,6 @@
  * limitations under the License.
  */
 package org.teherba.dbat;
-import  org.teherba.common.TimestampFilterStream;
 import  org.teherba.dbat.Configuration;
 import  org.teherba.dbat.Messages;
 import  org.teherba.dbat.SpecificationHandler;

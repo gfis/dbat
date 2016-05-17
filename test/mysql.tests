@@ -255,6 +255,15 @@ CALL Dbat -m json   -200 de1
 TEST DE8 decimal table as fix
 CALL Dbat -m fix    -200 de1
 
+TEST WE8 decimal table as HTML
+CALL Dbat -m html   -200 de1
+
+TEST DE8E decimal table as Excel-2007
+CALLZ Dbat -m xlsx   -200 de1
+
+TEST WE9E decimal table as Excel-2007
+HTTPZ test/selecde1 mode=xlsx
+
 TEST DF1 raw input of decimal and date/time formats
 DATA #
  row5;194706290530000005;194706.295;1981-08-05;;11:30:05;;1981-08-05 11:30:05.005

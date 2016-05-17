@@ -29,16 +29,100 @@
 </cp:coreProperties>
 <!-- xl/sharedStrings.xml -->
 <?xml version="1.0" encoding="UTF-8"?>
-<sst count="93" uniqueCount="55" xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
-<si><t>Name</t></si><si><t>University</t></si><si><t>Year</t></si><si><t>Gender</t></si><si><t>Birthdate</t></si><si><t>Martha</t></si><si><t>Freiburg</t></si><si><t>1999</t></si><si><t>&amp;</t></si><si><t>1909-11-17</t></si><si><t>Eberhard</t></si><si><t>Groß-Gerau</t></si><si><t>1945</t></si><si><t>></t></si><si><t>1912-11-17</t></si><si><t>Fritz</t></si><si><t>Waldshut</t></si><si><t>1995</t></si><si><t>&lt;</t></si><si><t>1907-08-08</t></si><si><t>Maria</t></si><si><t>Hermsdorf</t></si><si><t>#</t></si><si><t>1914-09-17</t></si><si><t>Dorothea</t></si><si><t>Lübars</t></si><si><t>1985</t></si><si><t>$</t></si><si><t>1910-02-07</t></si><si><t>e.1999</t></si><si><t>f.Martha</t></si><si><t>1992</t></si><si><t>Johannes</t></si><si><t>e.1992</t></si><si><t>f.Johannes</t></si><si><t>Schramberg</t></si><si><t>1911-06-03</t></si><si><t>e.1945</t></si><si><t>f.Eberhard</t></si><si><t>e.1995</t></si><si><t>f.Fritz</t></si><si><t>f.Maria</t></si><si><t>1983</t></si><si><t>Ilse</t></si><si><t>e.1983</t></si><si><t>f.Ilse</t></si><si><t>1909-02-09</t></si><si><t>e.1985</t></si><si><t>f.Dorothea</t></si><si><t>1984</t></si><si><t>Lucie</t></si><si><t>e.1984</t></si><si><t>f.Lucie</t></si><si><t>'</t></si><si><t>1887-07-09</t></si></sst><!-- xl/styles.xml -->
+<sst count="138" uniqueCount="48" xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+<si><t>Name</t></si><si><t>University</t></si><si><t>Year</t></si><si><t>Gender</t></si><si><t>Birthdate</t></si><si><t/></si><si><t>Martha</t></si><si><t>Freiburg</t></si><si><t>&amp;</t></si><si><t>Eberhard</t></si><si><t>Groß-Gerau</t></si><si><t>></t></si><si><t>Fritz</t></si><si><t>Waldshut</t></si><si><t>&lt;</t></si><si><t>Maria</t></si><si><t>Hermsdorf</t></si><si><t>#</t></si><si><t>Dorothea</t></si><si><t>Lübars</t></si><si><t>$</t></si><si><t>1999</t></si><si><t>e.1999</t></si><si><t>f.Martha</t></si><si><t>1992</t></si><si><t>Johannes</t></si><si><t>e.1992</t></si><si><t>f.Johannes</t></si><si><t>Schramberg</t></si><si><t>1945</t></si><si><t>e.1945</t></si><si><t>f.Eberhard</t></si><si><t>1995</t></si><si><t>e.1995</t></si><si><t>f.Fritz</t></si><si><t>f.Maria</t></si><si><t>1983</t></si><si><t>Ilse</t></si><si><t>e.1983</t></si><si><t>f.Ilse</t></si><si><t>1985</t></si><si><t>e.1985</t></si><si><t>f.Dorothea</t></si><si><t>1984</t></si><si><t>Lucie</t></si><si><t>e.1984</t></si><si><t>f.Lucie</t></si><si><t>'</t></si></sst><!-- xl/styles.xml -->
 <?xml version="1.0" encoding="UTF-8"?>
 <styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
-<numFmts count="0"/><fonts count="1">
-<font><sz val="11.0"/><color indexed="8"/><name val="Calibri"/><family val="2"/><scheme val="minor"/></font></fonts><fills count="2">
+<numFmts count="1">
+<numFmt numFmtId="164" formatCode="yyyy-mm-dd"/></numFmts><fonts count="42">
+<font><sz val="11.0"/><color indexed="8"/><name val="Calibri"/><family val="2"/><scheme val="minor"/></font><font><name val="Calibri"/><sz val="11.0"/><b val="true"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/><b val="true"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font><font><name val="Calibri"/><sz val="11.0"/></font></fonts><fills count="2">
 <fill><patternFill patternType="none"/></fill><fill><patternFill patternType="darkGray"/></fill></fills><borders count="1">
 <border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1">
-<xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="1">
-<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/></cellXfs></styleSheet><!-- xl/workbook.xml -->
+<xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="110">
+<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="center"/></xf><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="3" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="3" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="1" fontId="3" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="3" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="164" fontId="3" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="4" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="5" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="6" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="6" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="1" fontId="6" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="6" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="164" fontId="6" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="7" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="8" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="9" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="9" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="1" fontId="9" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="9" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="164" fontId="9" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="10" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="11" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="12" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="12" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="1" fontId="12" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="12" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="164" fontId="12" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="13" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="14" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="15" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="15" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="1" fontId="15" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="15" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="164" fontId="15" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="16" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="17" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="center"/></xf><xf numFmtId="0" fontId="18" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="19" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="19" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="19" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="19" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="19" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="19" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="164" fontId="19" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="20" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="21" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="22" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="22" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="22" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="22" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="22" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="22" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="164" fontId="22" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="23" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="24" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="25" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="25" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="25" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="25" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="25" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="25" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="164" fontId="25" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="26" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="27" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="28" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="28" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="28" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="28" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="28" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="28" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="164" fontId="28" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="29" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="30" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="31" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="31" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="31" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="31" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="31" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="31" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="164" fontId="31" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="32" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="33" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="34" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="34" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="34" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="34" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="34" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="34" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="164" fontId="34" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="35" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="36" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="37" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="37" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="37" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="37" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="37" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="37" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="164" fontId="37" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="38" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="39" fillId="0" borderId="0" xfId="0" applyFont="true"/><xf numFmtId="0" fontId="40" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="40" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="40" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="40" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="40" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="0" fontId="40" fillId="0" borderId="0" xfId="0" applyFont="true">
+<alignment horizontal="left"/></xf><xf numFmtId="164" fontId="40" fillId="0" borderId="0" xfId="0" applyFont="true" applyNumberFormat="true">
+<alignment horizontal="right"/></xf><xf numFmtId="0" fontId="41" fillId="0" borderId="0" xfId="0" applyFont="true"/></cellXfs></styleSheet><!-- xl/workbook.xml -->
 <?xml version="1.0" encoding="UTF-8"?>
 <workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
 <workbookPr date1904="false"/><bookViews><workbookView activeTab="0"/></bookViews><sheets><sheet name="table1" r:id="rId3" sheetId="1"/><sheet name="table2" r:id="rId4" sheetId="2"/></sheets></workbook><!-- xl/_rels/workbook.xml.rels -->
@@ -52,115 +136,115 @@
 <!-- xl/worksheets/sheet1.xml -->
 <?xml version="1.0" encoding="UTF-8"?>
 <worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
-<dimension ref="A1"/><sheetViews><sheetView workbookViewId="0" tabSelected="true"/></sheetViews><sheetFormatPr defaultRowHeight="15.0"/><sheetData><row r="1" ht="12.75" customHeight="true">
-<c r="A1" t="s">
-<v>0</v></c><c r="B1" t="s">
-<v>1</v></c><c r="C1" t="s">
-<v>2</v></c><c r="D1" t="s">
-<v>3</v></c><c r="E1" t="s">
-<v>4</v></c></row><row r="2" ht="12.75" customHeight="true">
-<c r="A2" t="s">
-<v>5</v></c><c r="B2" t="s">
-<v>6</v></c><c r="C2" t="s">
-<v>7</v></c><c r="D2" t="s">
-<v>8</v></c><c r="E2" t="s">
-<v>9</v></c></row><row r="3" ht="12.75" customHeight="true">
-<c r="A3" t="s">
-<v>10</v></c><c r="B3" t="s">
-<v>11</v></c><c r="C3" t="s">
-<v>12</v></c><c r="D3" t="s">
-<v>13</v></c><c r="E3" t="s">
-<v>14</v></c></row><row r="4" ht="12.75" customHeight="true">
-<c r="A4" t="s">
-<v>15</v></c><c r="B4" t="s">
-<v>16</v></c><c r="C4" t="s">
-<v>17</v></c><c r="D4" t="s">
-<v>18</v></c><c r="E4" t="s">
-<v>19</v></c></row><row r="5" ht="12.75" customHeight="true">
-<c r="A5" t="s">
-<v>20</v></c><c r="B5" t="s">
-<v>21</v></c><c r="C5" t="s">
-<v>7</v></c><c r="D5" t="s">
-<v>22</v></c><c r="E5" t="s">
-<v>23</v></c></row><row r="6" ht="12.75" customHeight="true">
-<c r="A6" t="s">
-<v>24</v></c><c r="B6" t="s">
-<v>25</v></c><c r="C6" t="s">
-<v>26</v></c><c r="D6" t="s">
-<v>27</v></c><c r="E6" t="s">
-<v>28</v></c></row></sheetData><pageMargins bottom="0.75" footer="0.3" header="0.3" left="0.7" right="0.7" top="0.75"/></worksheet><!-- xl/worksheets/sheet2.xml -->
+<dimension ref="A1"/><sheetViews><sheetView workbookViewId="0" tabSelected="true"/></sheetViews><sheetFormatPr defaultRowHeight="15.0"/><cols><col min="1" max="1" width="16.0" customWidth="true"/><col min="2" max="2" width="16.0" customWidth="true"/><col min="3" max="3" width="11.0" customWidth="true"/><col min="4" max="4" width="1.0" customWidth="true"/><col min="5" max="5" width="12.0" customWidth="true"/></cols><sheetData><row r="1">
+<c r="A1" t="s" s="1">
+<v>0</v></c><c r="B1" t="s" s="1">
+<v>1</v></c><c r="C1" t="s" s="1">
+<v>2</v></c><c r="D1" t="s" s="1">
+<v>3</v></c><c r="E1" t="s" s="1">
+<v>4</v></c></row><row r="2">
+<c r="A2" t="s" s="3">
+<v>6</v></c><c r="B2" t="s" s="4">
+<v>7</v></c><c r="C2" t="n" s="5">
+<v>1999.0</v></c><c r="D2" t="s" s="6">
+<v>8</v></c><c r="E2" t="n" s="7">
+<v>3609.0</v></c></row><row r="3">
+<c r="A3" t="s" s="10">
+<v>9</v></c><c r="B3" t="s" s="11">
+<v>10</v></c><c r="C3" t="n" s="12">
+<v>1945.0</v></c><c r="D3" t="s" s="13">
+<v>11</v></c><c r="E3" t="n" s="14">
+<v>4705.0</v></c></row><row r="4">
+<c r="A4" t="s" s="17">
+<v>12</v></c><c r="B4" t="s" s="18">
+<v>13</v></c><c r="C4" t="n" s="19">
+<v>1995.0</v></c><c r="D4" t="s" s="20">
+<v>14</v></c><c r="E4" t="n" s="21">
+<v>2777.0</v></c></row><row r="5">
+<c r="A5" t="s" s="24">
+<v>15</v></c><c r="B5" t="s" s="25">
+<v>16</v></c><c r="C5" t="n" s="26">
+<v>1999.0</v></c><c r="D5" t="s" s="27">
+<v>17</v></c><c r="E5" t="n" s="28">
+<v>5374.0</v></c></row><row r="6">
+<c r="A6" t="s" s="31">
+<v>18</v></c><c r="B6" t="s" s="32">
+<v>19</v></c><c r="C6" t="n" s="33">
+<v>1985.0</v></c><c r="D6" t="s" s="34">
+<v>20</v></c><c r="E6" t="n" s="35">
+<v>3691.0</v></c></row></sheetData><pageMargins bottom="0.75" footer="0.3" header="0.3" left="0.7" right="0.7" top="0.75"/></worksheet><!-- xl/worksheets/sheet2.xml -->
 <?xml version="1.0" encoding="UTF-8"?>
 <worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
-<dimension ref="A1"/><sheetViews><sheetView workbookViewId="0"/></sheetViews><sheetFormatPr defaultRowHeight="15.0"/><sheetData><row r="1" ht="12.75" customHeight="true">
-<c r="A1" t="s">
-<v>2</v></c><c r="B1" t="s">
-<v>0</v></c><c r="C1" t="s">
-<v>2</v></c><c r="D1" t="s">
-<v>0</v></c><c r="E1" t="s">
-<v>1</v></c><c r="F1" t="s">
-<v>3</v></c><c r="G1" t="s">
-<v>4</v></c></row><row r="2" ht="12.75" customHeight="true">
-<c r="A2" t="s">
-<v>7</v></c><c r="B2" t="s">
-<v>5</v></c><c r="C2" t="s">
-<v>29</v></c><c r="D2" t="s">
-<v>30</v></c><c r="E2" t="s">
-<v>6</v></c><c r="F2" t="s">
-<v>8</v></c><c r="G2" t="s">
-<v>9</v></c></row><row r="3" ht="12.75" customHeight="true">
-<c r="A3" t="s">
-<v>31</v></c><c r="B3" t="s">
-<v>32</v></c><c r="C3" t="s">
-<v>33</v></c><c r="D3" t="s">
-<v>34</v></c><c r="E3" t="s">
-<v>35</v></c><c r="F3" t="s">
-<v>18</v></c><c r="G3" t="s">
-<v>36</v></c></row><row r="4" ht="12.75" customHeight="true">
-<c r="A4" t="s">
-<v>12</v></c><c r="B4" t="s">
-<v>10</v></c><c r="C4" t="s">
-<v>37</v></c><c r="D4" t="s">
-<v>38</v></c><c r="E4" t="s">
-<v>11</v></c><c r="F4" t="s">
-<v>13</v></c><c r="G4" t="s">
-<v>14</v></c></row><row r="5" ht="12.75" customHeight="true">
-<c r="A5" t="s">
-<v>17</v></c><c r="B5" t="s">
-<v>15</v></c><c r="C5" t="s">
-<v>39</v></c><c r="D5" t="s">
-<v>40</v></c><c r="E5" t="s">
-<v>16</v></c><c r="F5" t="s">
-<v>18</v></c><c r="G5" t="s">
-<v>19</v></c></row><row r="6" ht="12.75" customHeight="true">
-<c r="A6" t="s">
-<v>7</v></c><c r="B6" t="s">
-<v>20</v></c><c r="C6" t="s">
-<v>29</v></c><c r="D6" t="s">
-<v>41</v></c><c r="E6" t="s">
-<v>21</v></c><c r="F6" t="s">
-<v>22</v></c><c r="G6" t="s">
-<v>23</v></c></row><row r="7" ht="12.75" customHeight="true">
-<c r="A7" t="s">
-<v>42</v></c><c r="B7" t="s">
-<v>43</v></c><c r="C7" t="s">
-<v>44</v></c><c r="D7" t="s">
-<v>45</v></c><c r="E7" t="s">
-<v>25</v></c><c r="F7" t="s">
-<v>27</v></c><c r="G7" t="s">
-<v>46</v></c></row><row r="8" ht="12.75" customHeight="true">
-<c r="A8" t="s">
-<v>26</v></c><c r="B8" t="s">
-<v>24</v></c><c r="C8" t="s">
-<v>47</v></c><c r="D8" t="s">
-<v>48</v></c><c r="E8" t="s">
-<v>25</v></c><c r="F8" t="s">
-<v>27</v></c><c r="G8" t="s">
-<v>28</v></c></row><row r="9" ht="12.75" customHeight="true">
-<c r="A9" t="s">
-<v>49</v></c><c r="B9" t="s">
-<v>50</v></c><c r="C9" t="s">
-<v>51</v></c><c r="D9" t="s">
-<v>52</v></c><c r="E9" t="s">
-<v>25</v></c><c r="F9" t="s">
-<v>53</v></c><c r="G9" t="s">
-<v>54</v></c></row></sheetData><pageMargins bottom="0.75" footer="0.3" header="0.3" left="0.7" right="0.7" top="0.75"/></worksheet>
+<dimension ref="A1"/><sheetViews><sheetView workbookViewId="0"/></sheetViews><sheetFormatPr defaultRowHeight="15.0"/><cols><col min="1" max="1" width="28.0" customWidth="true"/><col min="2" max="2" width="28.0" customWidth="true"/><col min="3" max="3" width="25.0" customWidth="true"/><col min="4" max="4" width="35.0" customWidth="true"/><col min="5" max="5" width="16.0" customWidth="true"/><col min="6" max="6" width="1.0" customWidth="true"/><col min="7" max="7" width="12.0" customWidth="true"/></cols><sheetData><row r="1">
+<c r="A1" t="s" s="37">
+<v>2</v></c><c r="B1" t="s" s="37">
+<v>0</v></c><c r="C1" t="s" s="37">
+<v>2</v></c><c r="D1" t="s" s="37">
+<v>0</v></c><c r="E1" t="s" s="37">
+<v>1</v></c><c r="F1" t="s" s="37">
+<v>3</v></c><c r="G1" t="s" s="37">
+<v>4</v></c></row><row r="2">
+<c r="A2" t="s" s="39">
+<v>21</v></c><c r="B2" t="s" s="40">
+<v>6</v></c><c r="C2" t="s" s="41">
+<v>22</v></c><c r="D2" t="s" s="42">
+<v>23</v></c><c r="E2" t="s" s="43">
+<v>7</v></c><c r="F2" t="s" s="44">
+<v>8</v></c><c r="G2" t="n" s="45">
+<v>3609.0</v></c></row><row r="3">
+<c r="A3" t="s" s="48">
+<v>24</v></c><c r="B3" t="s" s="49">
+<v>25</v></c><c r="C3" t="s" s="50">
+<v>26</v></c><c r="D3" t="s" s="51">
+<v>27</v></c><c r="E3" t="s" s="52">
+<v>28</v></c><c r="F3" t="s" s="53">
+<v>14</v></c><c r="G3" t="n" s="54">
+<v>4172.0</v></c></row><row r="4">
+<c r="A4" t="s" s="57">
+<v>29</v></c><c r="B4" t="s" s="58">
+<v>9</v></c><c r="C4" t="s" s="59">
+<v>30</v></c><c r="D4" t="s" s="60">
+<v>31</v></c><c r="E4" t="s" s="61">
+<v>10</v></c><c r="F4" t="s" s="62">
+<v>11</v></c><c r="G4" t="n" s="63">
+<v>4705.0</v></c></row><row r="5">
+<c r="A5" t="s" s="66">
+<v>32</v></c><c r="B5" t="s" s="67">
+<v>12</v></c><c r="C5" t="s" s="68">
+<v>33</v></c><c r="D5" t="s" s="69">
+<v>34</v></c><c r="E5" t="s" s="70">
+<v>13</v></c><c r="F5" t="s" s="71">
+<v>14</v></c><c r="G5" t="n" s="72">
+<v>2777.0</v></c></row><row r="6">
+<c r="A6" t="s" s="75">
+<v>21</v></c><c r="B6" t="s" s="76">
+<v>15</v></c><c r="C6" t="s" s="77">
+<v>22</v></c><c r="D6" t="s" s="78">
+<v>35</v></c><c r="E6" t="s" s="79">
+<v>16</v></c><c r="F6" t="s" s="80">
+<v>17</v></c><c r="G6" t="n" s="81">
+<v>5374.0</v></c></row><row r="7">
+<c r="A7" t="s" s="84">
+<v>36</v></c><c r="B7" t="s" s="85">
+<v>37</v></c><c r="C7" t="s" s="86">
+<v>38</v></c><c r="D7" t="s" s="87">
+<v>39</v></c><c r="E7" t="s" s="88">
+<v>19</v></c><c r="F7" t="s" s="89">
+<v>20</v></c><c r="G7" t="n" s="90">
+<v>3328.0</v></c></row><row r="8">
+<c r="A8" t="s" s="93">
+<v>40</v></c><c r="B8" t="s" s="94">
+<v>18</v></c><c r="C8" t="s" s="95">
+<v>41</v></c><c r="D8" t="s" s="96">
+<v>42</v></c><c r="E8" t="s" s="97">
+<v>19</v></c><c r="F8" t="s" s="98">
+<v>20</v></c><c r="G8" t="n" s="99">
+<v>3691.0</v></c></row><row r="9">
+<c r="A9" t="s" s="102">
+<v>43</v></c><c r="B9" t="s" s="103">
+<v>44</v></c><c r="C9" t="s" s="104">
+<v>45</v></c><c r="D9" t="s" s="105">
+<v>46</v></c><c r="E9" t="s" s="106">
+<v>19</v></c><c r="F9" t="s" s="107">
+<v>47</v></c><c r="G9" t="n" s="108">
+<v>-1.0</v></c></row></sheetData><pageMargins bottom="0.75" footer="0.3" header="0.3" left="0.7" right="0.7" top="0.75"/></worksheet>

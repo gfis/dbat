@@ -29,7 +29,6 @@ SQL statements must contain a space. Enclose them in double quotes.
 Filenames may not contain spaces. '-' is STDIN.
 Included JDBC drivers:
   com.mysql.jdbc.Driver V5.1
-  org.sqlite.JDBC V3.7
 Implemented output formats (-m):
   html      HTML
   xlsx,xls  Excel

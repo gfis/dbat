@@ -1,6 +1,7 @@
 /*  Generator for an Excel 2003 XML table
     @(#) $Id$
-    2016-05-ß8: copied from ExcelTable
+    2016-05-17: formatting of header line
+    2016-05-08: copied from ExcelTable
 */
 /*
  * Copyright 2006 Dr. Georg Fischer <punctum at punctum dot kom>
@@ -19,10 +20,14 @@
  */
 
 package org.teherba.dbat.format;
+import  org.teherba.dbat.SQLAction; // DATE/TIME(STAMP)_FORMAT
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.dbat.format.BaseTable;
 import  org.apache.poi.ss.usermodel.Cell;
+import  org.apache.poi.ss.usermodel.CellStyle;
+import  org.apache.poi.ss.usermodel.DataFormat;
+import  org.apache.poi.ss.usermodel.Font;
 import  org.apache.poi.ss.usermodel.Row;
 import  org.apache.poi.ss.usermodel.Sheet;
 import  org.apache.poi.ss.usermodel.Workbook;
@@ -30,6 +35,7 @@ import  org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import  org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import  java.io.BufferedOutputStream;
 import  java.sql.Types;
+import  java.text.SimpleDateFormat;
 import  java.util.ArrayList;
 import  java.util.HashMap;
 
@@ -55,11 +61,13 @@ public class ExcelStream extends BaseTable {
     private Workbook wbook;
     /** current {@link Sheet} to be filled with {@link Row}s and {@link Cell}s */
     private Sheet sheet;
+    /** DataFormat for <em>wbook</em> */
+    private DataFormat wbDataFormat;
 
     /** No-args Constructor
      */
     public ExcelStream() {
-    	this("xlsx,xls");
+        this("xlsx,xls");
     } // Constructor
 
     /** Constructor with format
@@ -73,16 +81,25 @@ public class ExcelStream extends BaseTable {
         encoding        = "UTF-8";
         sheetNo         = 0;
         rowNo           = 0;
+        wbDataFormat    = null;
     } // Constructor
 
+    /** decimal points should be converted to this String (a comma) if it is != null */
+    private String decimalSeparator;
+
     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
-     *  @param attributes array of 0 or more pairs of strings (name1, value1, name2, value2 and so on) 
+     *  @param attributes array of 0 or more pairs of strings (name1, value1, name2, value2 and so on)
      *  which specify features in the header of the file to be generated.
      *  The possible attribute names are described in {@link BaseTable#writeStart}.
      *  @param parameterMap map of request parameters to values
      */
     public void writeStart(String[] attributes,  HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
         try {
+            decimalSeparator = null;
+            String[] pdec = parameterMap.get("decimal");
+            if (pdec != null && ! pdec[0].equals(".")) {
+                decimalSeparator = pdec[0];
+            }
             String encoding = getTargetEncoding();
             int iattr = attributes.length;
             while (iattr > 0) {
@@ -98,8 +115,9 @@ public class ExcelStream extends BaseTable {
                 setMimeType("application/vnd.ms-excel"); // BIFF file
             } else { // "xlsx
                 wbook = new XSSFWorkbook();
-                setMimeType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // OfficeOpenXML format 
+                setMimeType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // OfficeOpenXML format
             }
+            wbDataFormat = wbook.createDataFormat();
             sheetNo = 0;
             rowNo   = 0;
         } catch (Exception exc) {
@@ -168,18 +186,17 @@ public class ExcelStream extends BaseTable {
         String pseudo = null;
         int ncol = columnList.size();
         int icol = 0;
+        Row  row  = null;
+        Cell cell = null;
+        Font font       = wbook.createFont();
+        CellStyle style = wbook.createCellStyle();
+        style.setFont(font);
         switch (rowType) {
             case HEADER:
-            /*           
-                headerRow.setHeightInPoints(12.75f);
-                for (int i = 0; i < titles.length; i++) {
-                    Cell cell = headerRow.createCell(i);
-                    cell.setCellValue(titles[i]);
-                    cell.setCellStyle(styles.get("header"));
-                }
-            */
-                Row row = sheet.createRow(rowNo ++);
-                row.setHeightInPoints(12.75f);
+                row = sheet.createRow(rowNo ++);
+                // row.setHeightInPoints(12.75f);
+                font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+                style.setAlignment(CellStyle.ALIGN_CENTER);
                 while (icol < ncol) {
                     column = columnList.get(icol);
                     pseudo = column.getPseudo();
@@ -193,58 +210,48 @@ public class ExcelStream extends BaseTable {
                         if (header == null) {
                             header = "&nbsp;";
                         }
-                        Cell cell = row.createCell(icol);
+                        cell = row.createCell(icol);
                         cell.setCellValue(header);
+                        cell.setCellStyle(style);
                     }
+                    int width = column.getWidth();
+                    switch (column.getDataType()) {
+                        default: // all numeric types: INT, DECIMAL ...
+                        case Types.INTEGER:
+                        case Types.NUMERIC:
+                        case Types.SMALLINT:
+                        case Types.TINYINT:
+                            break;
+                        case Types.FLOAT:
+                        case Types.DOUBLE:
+                        case Types.REAL:
+                        case Types.DECIMAL:
+                            width ++; // for the point
+                            break;
+                        case Types.CHAR:
+                        case Types.VARCHAR:
+                            break;
+                        case Types.DATE:
+                            width = (width <= 10) ? 12 : width;
+                            break;
+                        case Types.TIME:
+                            width = (width <=  8) ? 10 : width;
+                            break;
+                        case Types.TIMESTAMP:
+                            width = (width <= 19) ? 21 : width;
+                            break;
+                    } // switch type
+                    sheet.setColumnWidth(icol, 256 * width);
                     icol ++;
                 } // while icol
                 break;
             case DATA:
-            /*
-                charWriter.print("<Row>");
-                StringBuffer result = new StringBuffer(256);
-                while (icol < ncol) {
-                    result.setLength(0);
-                    column = columnList.get(icol);
-                    pseudo = column.getPseudo();
-                    if (pseudo != null) {
-                        if (false) {
-                        } else if (pseudo.equals("style")) {
-                            nextStyle = column.getValue();
-                        }
-                    } else { // pseudo == null
-                        result.append("<Cell");
-                        if (column.getWrappedValue() != null) {
-                            result.append(" ss:HRef=\"");
-                            result.append(column.getWrappedValue());
-                            result.append("\"");
-                        }
-                        result.append("><Data ss:Type=\"");
-                        int    dataType = column.getDataType();
-                        if (false) {
-                        } else if (dataType == Types.DECIMAL                               ) {
-                            result.append("Number");
-                        } else if (dataType == Types.DATE       || dataType == Types.TIMESTAMP) {
-                            result.append("DateTime");
-                        } else { // if (dataType == Types.CHAR  || dataType == Types.VARCHAR  ) {
-                            result.append("String");
-                        }
-                        result.append("\">");
-                        result.append(column.getValue());
-                        nextStyle = null;
-                        result.append("</Data></Cell>");
-                        result.append(newline);
-                        charWriter.print(result.toString());
-                    } // pseudo == null
-                    icol ++;
-                } // while icol
-                charWriter.print("</Row>" + newline);
-        */
                 row = sheet.createRow(rowNo ++);
-                row.setHeightInPoints(12.75f);
-                StringBuffer result = new StringBuffer(256);
+                // row.setHeightInPoints(12.75f);
+                font  = wbook.createFont();
                 while (icol < ncol) {
-                    result.setLength(0);
+                    style = wbook.createCellStyle();
+                    style.setFont(font);
                     column = columnList.get(icol);
                     pseudo = column.getPseudo();
                     if (pseudo != null) {
@@ -253,49 +260,75 @@ public class ExcelStream extends BaseTable {
                             nextStyle = column.getValue();
                         }
                     } else { // pseudo == null
-                    /*
-                        result.append("<Cell");
-                        if (column.getWrappedValue() != null) {
-                            result.append(" ss:HRef=\"");
-                            result.append(column.getWrappedValue());
-                            result.append("\"");
-                        }
-                        result.append("><Data ss:Type=\"");
-                        int    dataType = column.getDataType();
-                        if (false) {
-                        } else if (dataType == Types.DECIMAL                               ) {
-                            result.append("Number");
-                        } else if (dataType == Types.DATE       || dataType == Types.TIMESTAMP) {
-                            result.append("DateTime");
-                        } else { // if (dataType == Types.CHAR  || dataType == Types.VARCHAR  ) {
-                            result.append("String");
-                        }
-                        result.append("\">");
-                        result.append(column.getValue());
-                        nextStyle = null;
-                        result.append("</Data></Cell>");
-                        result.append(newline);
-                        charWriter.print(result.toString());
-                    */
-                        Cell cell = row.createCell(icol);
-	        			String value = column.getValue();
-	        			if (value == null) {
-	        			    result.append("NULL");
-	        			} else {
-	        			    switch (column.getDataType()) {
-	        			        case Types.DECIMAL:
-	        			        	break;
-	        			        default: // all numeric types: INT, DECIMAL
-	        			        case Types.CHAR:
-	        			        case Types.VARCHAR:
-	        			        	break;
-	        			        case Types.DATE:
-	        			        case Types.TIME:
-	        			        case Types.TIMESTAMP:
-	        			            break;
-	        			    } // switch type
-	        			} // not NULL
-                        cell.setCellValue(value);
+                        cell = row.createCell(icol);
+                        String value = column.getValue();
+                        if (value == null) {
+                            value = "NULL";
+                        } else {
+                            try {
+                                switch (column.getDataType()) {
+                                default: // all numeric types: INT, DECIMAL ...
+                                case Types.FLOAT:
+                                case Types.DOUBLE:
+                                case Types.INTEGER:
+                                case Types.NUMERIC:
+                                case Types.SMALLINT:
+                                case Types.TINYINT:
+                                case Types.REAL:
+                                    style.setDataFormat(wbDataFormat.getFormat("0"));
+                                    style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                    cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    cell.setCellValue(Double.valueOf(value));
+                                    break;
+                                case Types.DECIMAL:
+                                    style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                    cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    cell.setCellValue(Double.valueOf(value));
+                                    int decimalDigits = column.getDecimal(); // not yet filled properly, therefore:
+                                    decimalDigits = 0;
+                                    int dotPos = value.indexOf('.');
+                                    if (dotPos >= 0) {
+                                        decimalDigits = value.length() - 1 - dotPos;
+                                    }
+                                    String fraction = "00";
+                                    if (false) {
+                                    } else if (decimalDigits <= 0 || decimalDigits > 10) {
+                                        style.setDataFormat(wbDataFormat.getFormat("0"));
+                                    } else if (decimalDigits <= 10) {
+                                        fraction = "0000000000".substring(0, decimalDigits);
+                                        style.setDataFormat(wbDataFormat.getFormat("0." + fraction));
+                                    }
+                                    break;
+                                case Types.CHAR:
+                                case Types.VARCHAR:
+                                    style.setAlignment(CellStyle.ALIGN_LEFT);
+                                    cell.setCellType(Cell.CELL_TYPE_STRING);
+                                    cell.setCellValue(value);
+                                    break;
+                                case Types.DATE:
+                                    style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                    cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    cell.setCellValue(SQLAction.DATE_FORMAT.parse(value));
+                                    style.setDataFormat(wbDataFormat.getFormat("yyyy-mm-dd")); 
+                                    break;
+                                case Types.TIME:
+                                    style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                    cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    cell.setCellValue(SQLAction.TIME_FORMAT.parse(value));
+                                    style.setDataFormat(wbDataFormat.getFormat("hh:mm:ss")); 
+                                    break;
+                                case Types.TIMESTAMP:
+                                    style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                    cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    cell.setCellValue(SQLAction.TIMESTAMP_FORMAT.parse(value));
+                                    style.setDataFormat(wbDataFormat.getFormat("yyyy-mm-dd hh:mm:ss")); 
+                                    break;
+                                } // switch type
+                            } catch (Exception exc) { // treat the value as text
+                                    cell.setCellValue(value);
+                            }
+                            cell.setCellStyle(style);
+                        } // not NULL
                     } // pseudo == null
                     icol ++;
                 } // while icol

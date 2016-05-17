@@ -1,5 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$ 2016-04-16 14:43:35
+ *  2016-05-17: decimalMark
  *  2016-04-16: read versionString from classloader's META-INF/MANFEST.MF, scan through all resources
  *  2014-11-11: major version 9; update $\Id content with etc/util/git_version.pl
  *  2014-11-03: always respond with MIME type application/xhtml+xml
@@ -135,6 +136,21 @@ public class Configuration implements Serializable {
             } // while busy
         } // dsMap != null
     } // setConnectionId(0)
+    //--------
+    /** Character for the decimal point or comma */
+    private String  decimalSeparator;
+    /** Gets the decimal separator
+     *  @return a point or comma
+     */
+    public String getDecimalSeparator() {
+        return this.decimalSeparator;
+    } // getDecimalSeparator
+    /** Sets the decimal separator
+     *  @param decimalSeparator a point or comma
+     */
+    public void setDecimalSeparator(String separator) {
+        this.decimalSeparator = separator;
+    } // setDecimalSeparator
     //--------
     /** Schema which is used when none is specified with the table's name */
     private String  defaultSchema;
@@ -653,6 +669,7 @@ public class Configuration implements Serializable {
         setTrimSides    (2); // trim on both sides
         setParameterMap (new HashMap/*<1.5*/<String, String[]>/*1.5>*/());
         setProcSeparator(null); // no default
+        setDecimalSeparator("."); // US-English convention
         propFileName    = ""; // default (built-in) connection properties
         props           = new Properties();
         // (0) set hardcoded default values
@@ -681,21 +698,27 @@ public class Configuration implements Serializable {
 
     /** Evaluates a set of non-JDBC properties and remembers them in local variables:
      *  <ul>
-     *  <li>schema= the default DB schema</li>
-     *  <li>maxcommit=250 number of rows after which a COMMIT statement is inserted by formats -sql/jdbc, -update</li>
+     *  <li>decimal="." the character to be used as decimal separator</li>
+     *  <li>commit=250 number of rows after which a COMMIT statement is inserted by formats -sql/jdbc, -update</li>
      *  <li>null=1(0) if the <em>null</em> value should be (not) written by text formats</li>
-     *  <li>trimsides=2 how CHAR and VARCHAR values are trimmed: 0 = never, 1 = rtrim, 2 = trim on both sides</li>
+     *  <li>schema= the default DB schema</li>
+     *  <li>trim=2 how CHAR and VARCHAR values are trimmed: 0 = never, 1 = rtrim, 2 = trim on both sides</li>
      *  </ul>
      */
     public void evaluateProperties() {
         // (3) evaluate non-JDBC oriented properties
         String prop = null;
-        setDefaultSchema(props.getProperty("schema"   , ""   ).trim());
         try {
             prop =       props.getProperty("commit"   , "250").trim();
             setMaxCommit(Integer.parseInt(prop));
         } catch (Exception exc) {
             setMaxCommit(getFetchLimit());
+        }
+        { // try not necessary
+            prop =       props.getProperty("decimal"  , "."  ).trim();
+            if (prop != null) {
+                setDecimalSeparator(prop);
+            }
         }
         try {
             prop =       props.getProperty("null"     , "1"  ).trim();
@@ -703,6 +726,7 @@ public class Configuration implements Serializable {
         } catch (Exception exc) {
             setNullText(1);
         }
+        setDefaultSchema(props.getProperty("schema"   , ""   ).trim());
         try {
             prop =       props.getProperty("trim"     , "2"  ).trim();
             setTrimSides(Integer.parseInt(prop));

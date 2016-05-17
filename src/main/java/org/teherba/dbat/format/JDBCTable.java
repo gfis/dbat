@@ -24,7 +24,7 @@ import  org.teherba.dbat.format.SQLTable;
 /** Generator for a JDBC table (INSERT statements for all rows).
  *  The output is the same as for SQL, except that dates, times and
  *  timestamps are written as JDBC escape sequences "{d", "{t" and "{ts" respectively. 
- *	These features depend on <em>isJDBC</em> and are implemented in {@link SQLTable}.
+ *  These features depend on <em>isJDBC</em> and are implemented in {@link SQLTable}.
  *  @author Dr. Georg Fischer
  */
 public class JDBCTable extends SQLTable {
@@ -34,8 +34,8 @@ public class JDBCTable extends SQLTable {
      */
     public JDBCTable() {
         super("jdbc");
-		setDescription("en", "SQL with JDBC escapes");
-		setDescription("de", "SQL mit JDBC-Escapes");
+        setDescription("en", "SQL with JDBC escapes");
+        setDescription("de", "SQL mit JDBC-Escapes");
         isJDBC = true;
     } // Constructor
     

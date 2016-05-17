@@ -125,11 +125,27 @@ public class SQLAction implements Serializable {
      */
     public void setConfiguration(Configuration config) {
         this.config = config;
-        setMaxCommit(config.getMaxCommit());
-        setNullText (config.getNullText ());
-        setTrimSides(config.getTrimSides());
+        setMaxCommit       (config.getMaxCommit       ());
+        setDecimalSeparator(config.getDecimalSeparator());
+        setNullText        (config.getNullText        ());
+        setTrimSides       (config.getTrimSides       ());
     } // setConfiguration
-
+    //--------
+    /** Character for the decimal point or comma */
+    private String  decimalSeparator;
+    /** Gets the decimal separator
+     *  @return a point or comma
+     */
+    public String getDecimalSeparator() {
+        return this.decimalSeparator;
+    } // getDecimalSeparator
+    /** Sets the decimal separator
+     *  @param decimalSeparator a point or comma
+     */
+    public void setDecimalSeparator(String separator) {
+        this.decimalSeparator = separator;
+    } // setDecimalSeparator
+    //--------
     /** Rule how to escape a value, from {@link BaseTable}.
      *  The following escaping rules are currently observed:
      *  <ul>
@@ -141,7 +157,7 @@ public class SQLAction implements Serializable {
      *  </ul>
      */
     private   int escapingRule;
-
+    //--------
     /** max. number of rows to be fetched; default "infinite" */
     private int fetchLimit;
     /** Gets the maximum number of rows to be fetched
@@ -156,7 +172,7 @@ public class SQLAction implements Serializable {
     public void setFetchLimit(int fetchLimit) {
         this.fetchLimit = fetchLimit;
     } // setFetchLimit
-
+    //--------
     /** number of SQL instructions executed in this action */
     private int instructionSum;
     /** Gets the number of instructions executed in this action
@@ -171,7 +187,7 @@ public class SQLAction implements Serializable {
     private void setInstructionSum(int instructionSum) {
         this.instructionSum = instructionSum;
     } // getInstructionSum
-
+    //--------
     /** number of rows affected by a DML statement (UPDATE/INSERT/DELETE) */
     private int manipulatedSum;
     /** Gets the number of rows affected by this action
@@ -186,7 +202,7 @@ public class SQLAction implements Serializable {
     private void setManipulatedSum(int manipulatedSum) {
         this.manipulatedSum = manipulatedSum;
     } // setManipulatedSum
-
+    //--------
     /** insert a COMMIT statement after this number of rows in a result set (modes -sql/jdbc, -update) */
     private int maxCommit;
     /** Gets the commit limit
@@ -201,7 +217,7 @@ public class SQLAction implements Serializable {
     public void setMaxCommit(int maxCommit) {
         this.maxCommit = maxCommit;
     } // setMaxCommit
-
+    //--------
     /** whether to write the value <em>null</em> in text formats: 0 = omit, 1 = write "null" */
     private int nullText;
     /** Tells whether the value <em>null</em> should be written in text formats
@@ -216,10 +232,10 @@ public class SQLAction implements Serializable {
     public void setNullText(int nullText) {
         this.nullText = nullText;
     } // setNullText
-
+    //--------
     /** encoding of URLs, from {@link BaseTable} */
     private   String targetEncoding;
-
+    //--------
     /** how to trim CHAR and VARCHAR column values */
     private int trimSides;
     /** Tells how CHARs and VARCHARs should be trimmed by INSERT and SELECT
@@ -234,7 +250,7 @@ public class SQLAction implements Serializable {
     public void setTrimSides(int trimSides) {
         this.trimSides = trimSides;
     } // setTrimSides
-
+    //--------
     /** whether to print header and trailer */
     private boolean withHeaders;
     /** Tells whether to output table header rows
