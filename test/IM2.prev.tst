@@ -28,17 +28,17 @@ ORDER BY 1;
 <table id="table1">
 <tr><th title="'showImage,' || imagefile || ',100'">Image</th><th title="imagename">Name</th><th title="bytesize">Size</th><th title="description">Verbatim Description</th></tr>
 <tr><td><script type="text/javascript">showImage("img/flowers/120px-Flower_in_Georgia.jpg","100");</script></td><td>120px-Flower_in_Georgia</td><td align="right">4964</td><td><span class="F">blue</span> flower</td>
-<script type="text/javascript">with(document.getElementById("tab1").rows[1]){className="pagebreak";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table1").rows[1]){className="pagebreak";}</script></tr>
 <tr><td><script type="text/javascript">showImage("img/flowers/120px-Georgian_Snow_Rose.jpg","100");</script></td><td>120px-Georgian_Snow_Rose</td><td align="right">5006</td><td>Snow Rose</td>
-<script type="text/javascript">with(document.getElementById("tab1").rows[2]){className="pagebreak";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table1").rows[2]){className="pagebreak";}</script></tr>
 <tr><td><script type="text/javascript">showImage("img/flowers/120px-Orange_flower_of_Georgia.jpg","100");</script></td><td>120px-Orange_flower_of_Georgia</td><td align="right">3101</td><td><span class="B">orange</span> flower</td>
-<script type="text/javascript">with(document.getElementById("tab1").rows[3]){className="pagebreak";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table1").rows[3]){className="pagebreak";}</script></tr>
 <tr><td><script type="text/javascript">showImage("img/flowers/120px-Tusheti_Flower.jpg","100");</script></td><td>120px-Tusheti_Flower</td><td align="right">3714</td><td>violet&#xa0;flower (hard space entity)</td>
-<script type="text/javascript">with(document.getElementById("tab1").rows[4]){className="pagebreak";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table1").rows[4]){className="pagebreak";}</script></tr>
 <tr><td><script type="text/javascript">showImage("img/flowers/120px-Xtidaylily-0575.jpg","100");</script></td><td>120px-Xtidaylily-0575</td><td align="right">8446</td><td><strong>purple<br />flower</strong></td>
-<script type="text/javascript">with(document.getElementById("tab1").rows[5]){className="pagebreak";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table1").rows[5]){className="pagebreak";}</script></tr>
 <tr><td><script type="text/javascript">showImage("img/flowers/90px-Flower_in_Georgia.jpg","100");</script></td><td>90px-Flower_in_Georgia</td><td align="right">5426</td><td><em>rose<br />flower</em></td>
-<script type="text/javascript">with(document.getElementById("tab1").rows[6]){className="pagebreak";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table1").rows[6]){className="pagebreak";}</script></tr>
 <tr><td class="counter" colspan="5">6 Flowers</td></tr>
 </table>
 

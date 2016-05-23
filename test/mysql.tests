@@ -506,7 +506,7 @@ TEST UR6 relative file
 CALL URIReader "web/noversion.txt"
 
 TEST UR7 data URI
-CALL URIReader "data:this+is%20the+text+to+be+read"
+CALL URIReader "data:this+is%20the+text+to+be+read" UTF-8
 #======================================================================
 # back to the main method of class Dbat
 PACKAGE=org.teherba.dbat

@@ -13,7 +13,7 @@
     <!--Colors on columns and rows-->
     <!--Farben auf Spalten und Zeilen-->
 
-    <h3>Select with styles/classes on columns and rows for Johannes</h3>
+    <h3>Select with styles/classes on columns and rows for Johannes%</h3>
 
 	<a name="block0"></a>
     <h4>Class on column</h4>
@@ -34,7 +34,7 @@ WHERE name like 'Johannes%';
 
 
 	<a name="block1"></a>
-    <h4>Class on rows (with Javascript)</h4>
+    <h4>Class on rows</h4>
     <!-- SQL:
 SELECT year
 , name
@@ -48,7 +48,7 @@ WHERE name like 'Johannes%';
 <table id="table2">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1992</td><td>Johannes</td><td>Schramberg</td><td>&lt;</td><td>1911-06-03</td>
-<script type="text/javascript">with(document.getElementById("tab2").rows[1]){className="red";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table2").rows[1]){className="red";}</script></tr>
 </table>
 
 
@@ -71,7 +71,7 @@ WHERE name like 'Johannes%';
 
 
 	<a name="block3"></a>
-    <h4>Styles on rows (with Javascript)</h4>
+    <h4>Styles on rows</h4>
     <!-- SQL:
 SELECT year
 , name
@@ -85,7 +85,7 @@ WHERE name like 'Johannes%';
 <table id="table4">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1992</td><td>Johannes</td><td>Schramberg</td><td>&lt;</td><td>1911-06-03</td>
-<script type="text/javascript">with(document.getElementById("tab4").rows[1].style){color="white";backgroundColor="red";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table4").rows[1].style){color="white";backgroundColor="red";}</script></tr>
 </table>
 
 

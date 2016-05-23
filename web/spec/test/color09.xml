@@ -14,7 +14,7 @@
     <comment lang="en">Colors on columns and rows</comment>
     <comment lang="de">Farben auf Spalten und Zeilen</comment>
 
-    <ht:h3>Select with styles/classes on columns and rows for <parm name="name" init="" /></ht:h3>
+    <ht:h3>Select with styles/classes on columns and rows for <parm name="name" init="" />%</ht:h3>
 
 	<ht:a name="block0" />
     <ht:h4>Class on column</ht:h4>
@@ -31,7 +31,7 @@
     </select>
 
 	<ht:a name="block1" />
-    <ht:h4>Class on rows (with Javascript)</ht:h4>
+    <ht:h4>Class on rows</ht:h4>
     <select>
         <col label="Year"  align="right" >year</col>
         <col label="Name"       >name</col>
@@ -59,7 +59,7 @@
     </select>
 
 	<ht:a name="block3" />
-    <ht:h4>Styles on rows (with Javascript)</ht:h4>
+    <ht:h4>Styles on rows</ht:h4>
     <select>
         <col label="Year"  align="right" >year</col>
         <col label="Name"       >name</col>

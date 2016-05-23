@@ -13,7 +13,7 @@
     <!--Colors on columns and rows-->
     <!--Farben auf Spalten und Zeilen-->
 
-    <h3>Select with styles/classes on columns and rows for </h3>
+    <h3>Select with styles/classes on columns and rows for %</h3>
 
 	<a name="block0"></a>
     <h4>Class on column</h4>
@@ -41,7 +41,7 @@ WHERE name like '%';
 
 
 	<a name="block1"></a>
-    <h4>Class on rows (with Javascript)</h4>
+    <h4>Class on rows</h4>
     <!-- SQL:
 SELECT year
 , name
@@ -55,21 +55,21 @@ WHERE name like '%';
 <table id="table2">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1999</td><td>Martha</td><td>Freiburg</td><td>&amp;</td><td>1909-11-17</td>
-<script type="text/javascript">with(document.getElementById("tab2").rows[1]){className="red";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table2").rows[1]){className="red";}</script></tr>
 <tr><td align="right">1992</td><td>Johannes</td><td>Schramberg</td><td>&lt;</td><td>1911-06-03</td>
-<script type="text/javascript">with(document.getElementById("tab2").rows[2]){className="red";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table2").rows[2]){className="red";}</script></tr>
 <tr><td align="right">1945</td><td>Eberhard</td><td>Groß-Gerau</td><td>&gt;</td><td>1912-11-17</td>
-<script type="text/javascript">with(document.getElementById("tab2").rows[3]){className="blu";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table2").rows[3]){className="blu";}</script></tr>
 <tr><td align="right">1995</td><td>Fritz</td><td>Waldshut</td><td>&lt;</td><td>1907-08-08</td>
-<script type="text/javascript">with(document.getElementById("tab2").rows[4]){className="red";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table2").rows[4]){className="red";}</script></tr>
 <tr><td align="right">1999</td><td>Maria</td><td>Hermsdorf</td><td>#</td><td>1914-09-17</td>
-<script type="text/javascript">with(document.getElementById("tab2").rows[5]){className="red";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table2").rows[5]){className="red";}</script></tr>
 <tr><td align="right">1983</td><td>Ilse</td><td>Lübars</td><td>$</td><td>1909-02-09</td>
-<script type="text/javascript">with(document.getElementById("tab2").rows[6]){className="blu";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table2").rows[6]){className="blu";}</script></tr>
 <tr><td align="right">1985</td><td>Dorothea</td><td>Lübars</td><td>$</td><td>1910-02-07</td>
-<script type="text/javascript">with(document.getElementById("tab2").rows[7]){className="blu";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table2").rows[7]){className="blu";}</script></tr>
 <tr><td align="right">1984</td><td>Lucie</td><td>Lübars</td><td>'</td><td>1887-07-09</td>
-<script type="text/javascript">with(document.getElementById("tab2").rows[8]){className="blu";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table2").rows[8]){className="blu";}</script></tr>
 </table>
 
 
@@ -99,7 +99,7 @@ WHERE name like '%';
 
 
 	<a name="block3"></a>
-    <h4>Styles on rows (with Javascript)</h4>
+    <h4>Styles on rows</h4>
     <!-- SQL:
 SELECT year
 , name
@@ -113,21 +113,21 @@ WHERE name like '%';
 <table id="table4">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1999</td><td>Martha</td><td>Freiburg</td><td>&amp;</td><td>1909-11-17</td>
-<script type="text/javascript">with(document.getElementById("tab4").rows[1].style){color="white";backgroundColor="red";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table4").rows[1].style){color="white";backgroundColor="red";}</script></tr>
 <tr><td align="right">1992</td><td>Johannes</td><td>Schramberg</td><td>&lt;</td><td>1911-06-03</td>
-<script type="text/javascript">with(document.getElementById("tab4").rows[2].style){color="white";backgroundColor="red";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table4").rows[2].style){color="white";backgroundColor="red";}</script></tr>
 <tr><td align="right">1945</td><td>Eberhard</td><td>Groß-Gerau</td><td>&gt;</td><td>1912-11-17</td>
-<script type="text/javascript">with(document.getElementById("tab4").rows[3].style){color="black";backgroundColor="lightblue";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table4").rows[3].style){color="black";backgroundColor="lightblue";}</script></tr>
 <tr><td align="right">1995</td><td>Fritz</td><td>Waldshut</td><td>&lt;</td><td>1907-08-08</td>
-<script type="text/javascript">with(document.getElementById("tab4").rows[4].style){color="white";backgroundColor="red";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table4").rows[4].style){color="white";backgroundColor="red";}</script></tr>
 <tr><td align="right">1999</td><td>Maria</td><td>Hermsdorf</td><td>#</td><td>1914-09-17</td>
-<script type="text/javascript">with(document.getElementById("tab4").rows[5].style){color="white";backgroundColor="red";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table4").rows[5].style){color="white";backgroundColor="red";}</script></tr>
 <tr><td align="right">1983</td><td>Ilse</td><td>Lübars</td><td>$</td><td>1909-02-09</td>
-<script type="text/javascript">with(document.getElementById("tab4").rows[6].style){color="black";backgroundColor="lightblue";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table4").rows[6].style){color="black";backgroundColor="lightblue";}</script></tr>
 <tr><td align="right">1985</td><td>Dorothea</td><td>Lübars</td><td>$</td><td>1910-02-07</td>
-<script type="text/javascript">with(document.getElementById("tab4").rows[7].style){color="black";backgroundColor="lightblue";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table4").rows[7].style){color="black";backgroundColor="lightblue";}</script></tr>
 <tr><td align="right">1984</td><td>Lucie</td><td>Lübars</td><td>'</td><td>1887-07-09</td>
-<script type="text/javascript">with(document.getElementById("tab4").rows[8].style){color="black";backgroundColor="lightblue";}</script></tr>
+<script type="text/javascript">with(document.getElementById("table4").rows[8].style){color="black";backgroundColor="lightblue";}</script></tr>
 </table>
 
 

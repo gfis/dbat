@@ -1,5 +1,6 @@
 /*  Generator for an HTML table
     @(#) $Id$
+    2016-05-19: repair style on rows (table id)
     2015-04-22: repair title="..." attribute for SQL REPLACE with embedded HTML (highlighting)
     2014-11-10: s|getHrefValue -> s|getWrappedValue
     2012-12-10: sortable again and counter 0, language dependant
@@ -290,14 +291,18 @@ public class HTMLTable extends XMLTable {
         sqlTable.describeConstraints(tableName, cstRows);
     } // describeConstraints
 
+    /** local copy of the table's id */
+    private String tableId;
+    
     /** Initializes a table
      *  @param tableName name of the table
      */
     public void startTable(String tableName) {
         try {
+            tableId = tableName;
             tableSeqNo ++;
             tableRowNo = 0;
-            charWriter.print("<table id=\"" + tableName + "\"");
+            charWriter.print("<table id=\"" + tableId + "\"");
             if (isSortable) {
                 charWriter.print(" class=\"sortable\"");
             }
@@ -592,8 +597,8 @@ public class HTMLTable extends XMLTable {
                 } // while icol
                 if (nextStyle != null) { // pseudo column with style behind all real columns => Javascript sets style on row
                     result.append("\n<script type=\"text/javascript\">");
-                    result.append("with(document.getElementById(\"tab");
-                    result.append(String.valueOf(tableSeqNo));
+                    result.append("with(document.getElementById(\"");
+                    result.append(tableId);
                     result.append("\").rows[");
                     result.append(String.valueOf(tableRowNo));
                     result.append("]");

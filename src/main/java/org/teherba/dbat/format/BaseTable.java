@@ -96,7 +96,7 @@ public abstract class BaseTable {
     private final static boolean DEBUG = false;
     /** system dependant newline separator */
     protected String newline;
-    /** Sequential Id for tables: "tab1" etc. */
+    /** Sequential Id for tables: "table1" etc. */
     protected int tableSeqNo;
     /** Sequential number of table row: 0, 1 etc. */
     protected int tableRowNo;
