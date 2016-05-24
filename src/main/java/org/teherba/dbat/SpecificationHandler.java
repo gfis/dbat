@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+    2016-05-24: <connect to="..." />
     2016-05-05: incompatible change: entities with relative systemIds are relative to specDir
     2014-11-10: format="none"
     2014-11-07: <read> element and wrap= attribute in <col>
@@ -808,6 +809,28 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         return result.toString();
     } // getResponseHeaders
 
+    /** Gets the attribute for the id of a (new) connection and stores it in the configuration
+     *  @param attrs the {@link Attributes} attached to the element.
+     *  @param attrName name of the attribute: &lt;dbat conn="connid"&gt; or &lt;connect to="connid" /&gt;
+     */
+    private void saveConnectionAttribute(Attributes attrs, String attrName) {
+        String connectionId = attrs.getValue(attrName);
+        if (connectionId != null) {
+            config.addProperties(connectionId + ".properties");
+            config.setConnectionId(connectionId);
+        } else { 
+            Object obj = parameterMap.get("conn");
+            if (obj != null) {
+                connectionId = ((String[]) obj)[0]; // override it from the HttpRequest
+                config.addProperties(connectionId + ".properties");
+                config.setConnectionId(connectionId);
+                setParameter("conn", connectionId); // store it in links and subsequent requests
+            } else { // &conn= not set in HttpRequest
+                config.setConnectionId(); // default: take first in list
+            }
+        }
+    } // saveConnectionAttribute
+
     //===========================
     // SAX handler for XML input
     //===========================
@@ -879,6 +902,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 
     /** element tag for comment */
     private static final String COMMENT_TAG = "comment" ; // lang=
+    /** connect element tag */
+    private static final String CONNECT_TAG = "connect" ; // to=
     /** element tag for counter */
     private static final String COUNTER_TAG = "counter" ; // desc="row,s"
     /** DELETE element tag */
@@ -1024,7 +1049,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
      *  or the empty string if Namespace processing is not being performed.
      *  @param qName the qualified name (with prefix),
      *  or the empty string if qualified names are not available.
-     *  @param attrs the attributes attached to the element.
+     *  @param attrs the {@link Attributes} attached to the element.
      *  If there are no attributes, it shall be an empty Attributes object.
      */
     public void startElement(String uri, String localName, String qName, Attributes attrs) {
@@ -1137,21 +1162,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     config.setManner(Configuration.JDBC_MANNER);
                 }
                 //--------
-                String connectionId = attrs.getValue("conn");
-                if (connectionId != null) {
-                    config.addProperties(connectionId + ".properties");
-                    config.setConnectionId(connectionId);
-                } else {
-                    obj             = parameterMap.get("conn");
-                    if (obj != null) {
-                        connectionId = ((String[]) obj)[0]; // override it from the HttpRequest
-                        config.addProperties(connectionId + ".properties");
-                        config.setConnectionId(connectionId);
-                        setParameter("conn", connectionId); // store it in links and subsequent requests
-                    } else { // &conn= not set in HttpRequest
-                        config.setConnectionId(); // default: take first in list
-                    }
-                }
+                saveConnectionAttribute(attrs, "conn");             
                 //--------
                 int lastSlashPos = specName.lastIndexOf("/");
                 String subDirectory = urlPath + (lastSlashPos < 0 ? "" : specName.substring(0, lastSlashPos + 1));
@@ -1353,6 +1364,11 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 
             } else if (qName.equals(COMMENT_TAG )) {
                 tbSerializer.writeMarkup("<!--");
+
+            } else if (qName.equals(CONNECT_TAG )) {
+                saveConnectionAttribute(attrs, "to");
+                config.closeConnection(); // previous
+                config.openConnection();  // new one
 
             } else if (qName.equals(COUNTER_TAG )) {
                 String counterDesc = attrs.getValue("desc");

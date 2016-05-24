@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE dbat [
-<!ENTITY rem01 SYSTEM   "http://localhost:8080/dbat/spec/test/include01.xml">
-<!ENTITY loc01 SYSTEM   "file:///home/gfis/work/webapps-super/dbat/web/spec/test/include01.xml">
-<!ENTITY rel01 SYSTEM   "include01.xml">
-<!ENTITY loc12 SYSTEM   "http://localhost:8080/dbat/spec/test/include12.xml">
+<!ENTITY rem01 SYSTEM   "http://localhost:8080/dbat/spec/test/include01.xinc">
+<!ENTITY loc01 SYSTEM   "file:///home/gfis/work/webapps-super/dbat/web/spec/test/include01.xinc">
+<!ENTITY rel01 SYSTEM   "include01.xinc">
+<!ENTITY loc12 SYSTEM   "http://localhost:8080/dbat/spec/test/include12.xinc">
 ]>
-<dbat conn="worddb"
-	encoding="UTF-8"
-	lang="en" 
-	xmlns   ="http://www.teherba.org/2007/dbat"
-	xmlns:ht="http://www.w3.org/1999/xhtml"
-	title="includer"
-	>
 <!--
     Dbat specification - test the inclusion of system entities
     @(#) $Id$
     Copyright 2012 Dr. Georg Fischer <punctum at punctum dot kom>
+    2016-05-24: include*.xinc 
     2016-05-05: specDir removed from relative entity's systemId
     2012-02-16: URLs with/without schema
-	2012-01-23, Georg Fischer
+    2012-01-23, Georg Fischer
 -->
-	<comment lang="en">tests the inclusion of system entities</comment>
-	<comment lang="de">testet die Einbindung von System Entities</comment>
+<dbat conn="worddb"
+    encoding="UTF-8"
+    lang="en" 
+    xmlns   ="http://www.teherba.org/2007/dbat"
+    xmlns:ht="http://www.w3.org/1999/xhtml"
+    title="includer"
+    >
+    <comment lang="en">tests the inclusion of system entities</comment>
+    <comment lang="de">testet die Einbindung von System Entities</comment>
 
     <ht:h2>Inclusion of System Entities</ht:h2>
     <ht:form method="get">
@@ -29,10 +30,10 @@
         <ht:input type="submit" value="Submit" />
     </ht:form>
 
-	<ht:h3>Inclusion of system entity with "http:" schema and absolute path: <ht:em>rem01</ht:em></ht:h3>
-	&rem01;
-	<ht:h3>Inclusion of system entity with "file:" schema and absolute path: <ht:em>loc01</ht:em></ht:h3>
-	&rem01;
-	<ht:h3>Inclusion of system entity with relative path: <ht:em>rel01</ht:em></ht:h3>
-	&rel01;
+    <ht:h3>Inclusion of system entity with "http:" schema and absolute path: <ht:em>rem01</ht:em></ht:h3>
+    &rem01;
+    <ht:h3>Inclusion of system entity with "file:" schema and absolute path: <ht:em>loc01</ht:em></ht:h3>
+    &rem01;
+    <ht:h3>Inclusion of system entity with relative path: <ht:em>rel01</ht:em></ht:h3>
+    &rel01;
 </dbat>

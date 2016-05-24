@@ -3,13 +3,13 @@
     @(#) $Id$
     2012-10-19: Dr. Georg Fischer
 -->
-<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
-		xmlns:ht="http://www.w3.org/1999/xhtml"
-		encoding="UTF-8"
-		title="minusconn"
-		>
-	<comment lang="en">Spec without Connection Id</comment>
-	
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        title="minusconn"
+        >
+    <comment lang="en">Spec without Connection Id</comment>
+    
     <ht:h3>Spec without Connection Id</ht:h3>
     Current connection id: <ht:strong><ht:em><parm name="conn" /></ht:em></ht:strong>
     <ht:form method="get">
@@ -19,8 +19,8 @@
     </ht:form>
 
     <select>
-        <col label="Number of Rows"    	>count(*)</col>
+        <col label="Number of Rows"     >count(*)</col>
         <from><parm name="tabname" /></from>
-	</select>
+    </select>
 
 </dbat>

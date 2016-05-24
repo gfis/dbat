@@ -14,7 +14,7 @@
         encoding="UTF-8"
         lang    ="en"
         conn    ="worddb"
-        script  ="test.crud05"
+        script  ="test/crud05"
         >
     <db:comment lang="en">Maintain Relatives (with field references)</db:comment>
     <ht:h3><ht:a href="servlet?spec=test.index">Test</ht:a> Form - Relatives (with field references)

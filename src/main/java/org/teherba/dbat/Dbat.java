@@ -637,7 +637,7 @@ public class Dbat implements Serializable {
                     // ignore; set by -h
                     break;
                 case 'c':
-                    sqlAction.callStoredProcedure(config.getConnection(), tbMetaData, karg, args);
+                    sqlAction.callStoredProcedure(config.getOpenConnection(), tbMetaData, karg, args);
                     break;
                 case 'd':
                     String tablePattern = tbMetaData.getTableName();

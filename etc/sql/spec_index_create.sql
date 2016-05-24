@@ -1,5 +1,6 @@
 -- Descriptions of all available XML specification scripts
 -- @(#) $Id$
+-- 2016-05-24: INSERTs removed
 -- 2016-04-16: params was VARCHAR(128)
 -- 2011-02-10, Dr. Georg Fischer <punctum@punctum.com>
 --
@@ -13,35 +14,4 @@ CREATE TABLE            spec_index
     , params        VARCHAR(1024)
     , PRIMARY KEY (subdir, lang, name)
     );
-COMMIT;
-insert into spec_index values('datmod'
-    , 'de'
-    , 'fdte'
-    , 'Fachdatenelemente'
-    , ''
-    , '&prefix=IBAN '); 
-insert into spec_index values('datmod'
-    , 'de'
-    , 'ensearch'
-    , 'Entitäten'
-    , ''
-    , '&prefix=PROGR '); 
-insert into spec_index values('datmod'
-    , 'de'
-    , 'outim'
-    , 'Info-Modelle / Produktnummern'
-    , ''
-    , ''); 
-insert into spec_index values('datmod'
-    , 'de'
-    , 'relen'
-    , 'Relationen zwischen Entitäten'
-    , ''
-    , '&prefix=PROGR '); 
-insert into spec_index values('datmod'
-    , 'de'
-    , 'tbsearch'
-    , 'Tabellen'
-    , ''
-    , '&prefix=U6CO '); 
 COMMIT;

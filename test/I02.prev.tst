@@ -10,9 +10,8 @@
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
 </head><body>
 
-
-	<!--tests the inclusion of system entities-->
-	<!--testet die Einbindung von System Entities-->
+    <!--tests the inclusion of system entities-->
+    <!--testet die Einbindung von System Entities-->
 
     <h2>Inclusion of System Entities</h2>
     <form method="get" action="servlet?spec=test/includer"><input name="spec" type="hidden" value="test/includer" />
@@ -21,8 +20,8 @@
         <input type="submit" value="Submit"></input>
     </form>
 
-	<h3>Inclusion of system entity with "http:" schema and absolute path: <em>rem01</em></h3>
-	
+    <h3>Inclusion of system entity with "http:" schema and absolute path: <em>rem01</em></h3>
+    
 
 
 	<h4>Include file <em>include01.xml</em></h4>
@@ -55,7 +54,7 @@ WHERE name like '%';
 
 
 
-	<h4>Nested include file <em>include12.xml</em></h4>
+    <h4>Nested include file <em>include12.xml</em></h4>
     <!-- SQL:
 SELECT name
 , birth 
@@ -79,8 +78,8 @@ WHERE name like '%';
 
 
 
-	<h3>Inclusion of system entity with "file:" schema and absolute path: <em>loc01</em></h3>
-	
+    <h3>Inclusion of system entity with "file:" schema and absolute path: <em>loc01</em></h3>
+    
 
 
 	<h4>Include file <em>include01.xml</em></h4>
@@ -113,7 +112,7 @@ WHERE name like '%';
 
 
 
-	<h4>Nested include file <em>include12.xml</em></h4>
+    <h4>Nested include file <em>include12.xml</em></h4>
     <!-- SQL:
 SELECT name
 , birth 
@@ -137,8 +136,8 @@ WHERE name like '%';
 
 
 
-	<h3>Inclusion of system entity with relative path: <em>rel01</em></h3>
-	
+    <h3>Inclusion of system entity with relative path: <em>rel01</em></h3>
+    
 
 
 	<h4>Include file <em>include01.xml</em></h4>
@@ -171,7 +170,7 @@ WHERE name like '%';
 
 
 
-	<h4>Nested include file <em>include12.xml</em></h4>
+    <h4>Nested include file <em>include12.xml</em></h4>
     <!-- SQL:
 SELECT name
 , birth 

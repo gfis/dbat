@@ -1,6 +1,7 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$ 2016-04-16 14:43:35
- *  2016-05-17: decimalMark
+ *  2016-05-24: getConnection -> getOpenConnection
+ *  2016-05-17: decimalSeparator
  *  2016-04-16: read versionString from classloader's META-INF/MANFEST.MF, scan through all resources
  *  2014-11-11: major version 9; update $\Id content with etc/util/git_version.pl
  *  2014-11-03: always respond with MIME type application/xhtml+xml
@@ -103,12 +104,12 @@ public class Configuration implements Serializable {
     /** Eventually open the connection and return it
      *  @return open database connection
      */
-    public Connection getConnection() {
+    public Connection getOpenConnection() {
         if (con == null) {
             con = openConnection();
         }
         return con;
-    } // getConnection
+    } // getOpenConnection
 
     /** Short identifier of the connection to some database */
     private String connectionId;
@@ -146,7 +147,7 @@ public class Configuration implements Serializable {
         return this.decimalSeparator;
     } // getDecimalSeparator
     /** Sets the decimal separator
-     *  @param decimalSeparator a point or comma
+     *  @param separator a point or comma
      */
     public void setDecimalSeparator(String separator) {
         this.decimalSeparator = separator;

@@ -10,8 +10,8 @@
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
 </head><body>
 
-	<!--Spec without Connection Id-->
-	
+    <!--Spec without Connection Id-->
+    
     <h3>Spec without Connection Id</h3>
     Current connection id: <strong><em>worddb</em></strong>
     <form method="get" action="servlet?spec=test/minusconn"><input name="spec" type="hidden" value="test/minusconn" />

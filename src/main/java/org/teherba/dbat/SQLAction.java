@@ -140,7 +140,7 @@ public class SQLAction implements Serializable {
         return this.decimalSeparator;
     } // getDecimalSeparator
     /** Sets the decimal separator
-     *  @param decimalSeparator a point or comma
+     *  @param separator a point or comma
      */
     public void setDecimalSeparator(String separator) {
         this.decimalSeparator = separator;
@@ -871,7 +871,7 @@ public class SQLAction implements Serializable {
      */
     protected void describeTables(String defaultSchema, String tablePattern) {
         try {
-            Connection con = config.getConnection();
+            Connection con = config.getOpenConnection();
             DatabaseMetaData dbMetaData = con.getMetaData();
             TableMetaData tbMetaData = new TableMetaData();
             switch (config.getRdbmsId()) {
@@ -1468,7 +1468,7 @@ public class SQLAction implements Serializable {
     public void execSQLStatement(TableMetaData tbMetaData, String sqlInstruction
             , ArrayList/*<1.5*/<String>/*1.5>*/ variables
             , HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
-        Connection con          = config.getConnection();
+        Connection con          = config.getOpenConnection();
         BaseTable  tbSerializer = config.getTableSerializer();
         int result = 0;
         PreparedStatement statement = null;
@@ -1682,7 +1682,7 @@ public class SQLAction implements Serializable {
         String line = ""; // a line read from STDIN
         PreparedStatement insertStmt = null;
         try {
-            Connection con = config.getConnection();
+            Connection con = config.getOpenConnection();
             DatabaseMetaData dbMetaData = con.getMetaData();
             tbMetaData.parseTableName(config.getDefaultSchema(), rawTable);
             tbMetaData.fillColumns(dbMetaData, tbMetaData.getSchema(), tbMetaData.getTableBaseName());

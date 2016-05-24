@@ -23,7 +23,7 @@
         <col>gender</col>
         <col>birth</col>
         <from>c01</from>
-        <where> name like '<parm name="name%" />%'
+        <where> name like '<parm name="name" />%'
         </where>
         <counter desc="person,s"/>
     </select>

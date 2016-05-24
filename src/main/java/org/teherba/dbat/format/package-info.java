@@ -6,32 +6,34 @@
  *  There are several groups of formats:
  *  <ul>
  *  <li>Simple, plain text formats: 
- *  {@link org.teherba.dbat.format.FixedWidthTable},
- *  {@link org.teherba.dbat.format.SeparatedTable},
- *  {@link org.teherba.dbat.format.TayloredTable}
+ *      {@link org.teherba.dbat.format.FixedWidthTable},
+ *      {@link org.teherba.dbat.format.SeparatedTable},
+ *      {@link org.teherba.dbat.format.TayloredTable}
  *  </li>
  *  <li>XML and markup oriented formats: 
- *  {@link org.teherba.dbat.format.HTMLTable},
- *  {@link org.teherba.dbat.format.XMLTable},
- *  {@link org.teherba.dbat.format.ExcelTable},
- *  {@link org.teherba.dbat.format.WikiTable},
- *  <ul>
- *  <li>XML Formats which can be further processed by XSLT:
- *  {@link org.teherba.dbat.format.TableGenerator},
- *  {@link org.teherba.dbat.format.TransformedTable}
- *  </li>
-*   </ul>
+ *      {@link org.teherba.dbat.format.HTMLTable},
+ *      {@link org.teherba.dbat.format.XMLTable},
+ *      {@link org.teherba.dbat.format.WikiTable},
+ *      <ul> 
+ *          <li>XML Formats which can be further processed by XSLT:
+ *              {@link org.teherba.dbat.format.TableGenerator},
+ *              {@link org.teherba.dbat.format.TransformedTable}
+ *          </li>
+ *      </ul>
  *  </li>
  *  <li>SQL oriented formats: 
- *  {@link org.teherba.dbat.format.SQLTable},
- *  {@link org.teherba.dbat.format.JDBCTable},
- *  {@link org.teherba.dbat.format.SQLUpdateTable}
+ *      {@link org.teherba.dbat.format.SQLTable},
+ *      {@link org.teherba.dbat.format.JDBCTable},
+ *      {@link org.teherba.dbat.format.SQLUpdateTable}
  *  </li>
  *  <li>Pseudo formats which do not show the results of a query: 
- *  {@link org.teherba.dbat.format.DefaultSpecTable},
- *  {@link org.teherba.dbat.format.EchoSQL},
- *  {@link org.teherba.dbat.format.GenerateSQLJ},
- *  {@link org.teherba.dbat.format.ProbeSQL}
+ *      {@link org.teherba.dbat.format.DefaultSpecTable},
+ *      {@link org.teherba.dbat.format.EchoSQL},
+ *      {@link org.teherba.dbat.format.GenerateSQLJ},
+ *      {@link org.teherba.dbat.format.ProbeSQL}
+ *  </li>
+ *  <li>Excel 2007 binary format (zipped XML):
+ *      {@link org.teherba.dbat.format.ExcelStream}
  *  </li>
  *  </ul>
  */

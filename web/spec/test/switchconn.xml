@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2016-05-24: Dr. Georg Fischer
+-->
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        conn="worddb"
+        title="switchconn"
+        >
+    <comment lang="en">Switch to another database connection</comment>
+    
+    <ht:h3>Select from connection <ht:em>worddb</ht:em></ht:h3>
+
+    <select>
+        <col label="Number of Rows" align="right">count(*)</col>
+        <from>c01</from>
+    </select>
+
+    <ht:h3>Switch to connection <ht:em>mysql</ht:em></ht:h3>
+    <connect to="mysql" />
+    <select>
+        <col label="Number of Rows" align="right">count(*)</col>
+        <from>c01</from>
+    </select>
+
+    <ht:h3>Switch to connection <ht:em>wiki</ht:em></ht:h3>
+    <connect to="wiki" />
+    <select>
+        <col label="Number of Rows" align="right">count(*)</col>
+        <from>users</from>
+    </select>
+
+</dbat>

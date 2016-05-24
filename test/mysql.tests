@@ -2,6 +2,7 @@
 
 # Collection of Testcases for Dbat with MySQL driver
 # @(#) $Id: all.tca 955 2012-06-05 07:22:59Z gfis $
+# 2016-05-24: + CC1
 # 2016-05-10: TL%, UA%
 # 2014-04-22: + TI1,2
 # 2014-03-10: + DF1-3
@@ -180,6 +181,10 @@ HTTP spec=test/includer
 
 TEST I03 check for ANSI concatenation with '||'
 CALL Dbat "SELECT name || ' ' || univ FROM c01 order by name"
+#-------------------
+# Connection switch
+TEST CS1 connection switch to mysql
+HTTP spec=test/switchconn
 #-------------------
 # Connection Id from HTTP request
 TEST CI1 connection id worddb in request

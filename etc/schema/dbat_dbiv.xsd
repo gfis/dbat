@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    dbat.2007.xsd - Schema for Dbat specifications
+    dbat_dbiv.xsd - Schema for Dbat and Dbiv specifications
     @(#) $Id$
+    2016-05-24: <connect to="..." />; <div> allowed at many places
     2014-11-11: WrapType "verbatim"
     2014-11-09: unify dbat and dbiv schemas (German Reunion happened before 25 years)
     2014-11-07: <read> element, wrap= attribute in <col>
@@ -39,6 +40,9 @@
     <xs:element name="dbat"   type="db:DbatType" />
 <!--================================
     dbat root and comment header
+    <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:element name="div"    type="db:DivType" />
+    </xs:choice>
 -->
     <xs:complexType name="DbatType" mixed="true">
         <xs:sequence>
@@ -46,6 +50,7 @@
             <xs:choice minOccurs="1" maxOccurs="unbounded">
                 <xs:element name="call"     type="db:CallType"     />
                 <xs:element name="choose"   type="db:ChooseType"   />
+                <xs:element name="connect"  type="db:ConnectType"  />
                 <xs:element name="delete"   type="db:DeleteType"   />
                 <xs:element name="describe" type="db:DescribeType" />
                 <xs:element name="div"      type="db:DivType"      />
@@ -71,6 +76,7 @@
         <xs:attribute name="stylesheet"     type="xs:string"    />
         <xs:attribute name="target"         type="xs:string"    />
         <xs:attribute name="title"          type="xs:string"    />
+        <xs:attribute name="uri"            type="xs:string"    />
         <xs:attribute name="xslt"           type="xs:string"    />
     </xs:complexType>
 
@@ -151,11 +157,16 @@
         </xs:choice>
     </xs:complexType>
 
+    <xs:complexType name="ConnectType" mixed="true">
+        <xs:attribute name="to" type="xs:NCName" />
+    </xs:complexType>
+
     <xs:complexType name="CounterType">
         <xs:sequence minOccurs="0" maxOccurs="1">
             <xs:element name="counter" />
         </xs:sequence>
         <xs:attribute name="desc" type="xs:string" />
+        <xs:attribute name="name" type="xs:NCName" />
     </xs:complexType>
 
     <xs:complexType name="DeleteType">
@@ -188,6 +199,7 @@
     <xs:complexType name="FromType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="choose"   type="db:ChooseType" />
+            <xs:element name="div"      type="db:DivType"      />
             <xs:element name="listparm" type="db:ListParmType" />
             <xs:element name="parm"     type="db:ParmType" />
             <xs:element name="var"      type="db:VarType" />
@@ -198,6 +210,7 @@
     <xs:complexType name="GroupType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="choose"   type="db:ChooseType" />
+            <xs:element name="div"      type="db:DivType"      />
             <xs:element name="listparm" type="db:ListParmType" />
             <xs:element name="parm"     type="db:ParmType" />
             <xs:element name="var"      type="db:VarType" />
@@ -240,6 +253,7 @@
             <xs:element name="choose"   type="db:ChooseType" />
             <xs:element name="col"      type="db:ColType" />
             <xs:element name="column"   type="db:ColumnType" />
+            <xs:element name="comment"  type="db:CommentType" />
             <xs:element name="delete"   type="db:DeleteType" />
             <xs:element name="describe" type="db:DescribeType" />
             <xs:element name="div"      type="db:DivType" />
@@ -296,6 +310,7 @@
                 <xs:element name="col"      type="db:ColType"      />
                 <xs:element name="column"   type="db:ColumnType" />
                 <xs:element name="choose"   type="db:ChooseType" minOccurs="0" maxOccurs="1" />
+                <xs:element name="div"      type="db:DivType"      />
             </xs:choice>
             <xs:element name="from"     type="db:FromType"     minOccurs="0" maxOccurs="1" />
             <xs:element name="where"    type="db:WhereType"    minOccurs="0" maxOccurs="1" />
@@ -304,9 +319,9 @@
             <xs:element name="counter"  type="db:CounterType"  minOccurs="0" maxOccurs="1" />
         </xs:sequence>
         <xs:attribute name="aggregate"  type="xs:string"    />
-        <xs:attribute name="distinct"   type="db:BoolType"     />
+        <xs:attribute name="distinct"   type="db:BoolType"  />
         <xs:attribute name="group"      type="xs:string"    />
-        <xs:attribute name="headers"    type="db:BoolType"     />
+        <xs:attribute name="headers"    type="db:BoolType"  />
         <xs:attribute name="id"         type="xs:ID"        />
         <xs:attribute name="into"       type="db:IntoParmType" />
         <xs:attribute name="limit"      type="xs:string"    />
@@ -314,7 +329,7 @@
     </xs:complexType>
 
     <xs:complexType name="TrailerType">
-        <xs:attribute name="select"     type="xs:NMTOKENS" />
+        <xs:attribute name="select"     type="xs:string" />
     </xs:complexType>
 
     <xs:complexType name="UpdateType" mixed="true">
@@ -344,6 +359,7 @@
             <xs:element name="choose"   type="db:ChooseType" />
             <xs:element name="col"      type="db:ColType" />
             <xs:element name="column"   type="db:ColumnType" />
+            <xs:element name="comment"  type="db:CommentType" />
             <xs:element name="delete"   type="db:DeleteType" />
             <xs:element name="describe" type="db:DescribeType" />
             <xs:element name="div"      type="db:DivType" />
@@ -364,6 +380,7 @@
     <xs:complexType name="WhereType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="choose"   type="db:ChooseType" />
+            <xs:element name="div"      type="db:DivType"      />
             <xs:element name="listparm" type="db:ListParmType" />
             <xs:element name="parm"     type="db:ParmType" />
             <xs:element name="var"      type="db:VarType" />
@@ -373,6 +390,7 @@
     <xs:complexType name="WithType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="choose"   type="db:ChooseType" />
+            <xs:element name="div"      type="db:DivType"      />
             <xs:element name="listparm" type="db:ListParmType" />
             <xs:element name="parm"     type="db:ParmType" />
             <xs:element name="var"      type="db:VarType" />

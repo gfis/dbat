@@ -57,11 +57,11 @@ public class ExcelStream extends BaseTable {
     private int rowNo;
     /** sequential counter for {@link Sheet}s in a {@link Workbook} */
     private int sheetNo;
-    /** {@link workbook} to be generated */
+    /** {@link Workbook} to be generated */
     private Workbook wbook;
     /** current {@link Sheet} to be filled with {@link Row}s and {@link Cell}s */
     private Sheet sheet;
-    /** DataFormat for <em>wbook</em> */
+    /** {@link DataFormat} for {@link #wbook} */
     private DataFormat wbDataFormat;
 
     /** No-args Constructor
@@ -309,19 +309,19 @@ public class ExcelStream extends BaseTable {
                                     style.setAlignment(CellStyle.ALIGN_RIGHT);
                                     cell.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     cell.setCellValue(SQLAction.DATE_FORMAT.parse(value));
-                                    style.setDataFormat(wbDataFormat.getFormat("yyyy-mm-dd")); 
+                                    style.setDataFormat(wbDataFormat.getFormat("yyyy-mm-dd"));
                                     break;
                                 case Types.TIME:
                                     style.setAlignment(CellStyle.ALIGN_RIGHT);
                                     cell.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     cell.setCellValue(SQLAction.TIME_FORMAT.parse(value));
-                                    style.setDataFormat(wbDataFormat.getFormat("hh:mm:ss")); 
+                                    style.setDataFormat(wbDataFormat.getFormat("hh:mm:ss"));
                                     break;
                                 case Types.TIMESTAMP:
                                     style.setAlignment(CellStyle.ALIGN_RIGHT);
                                     cell.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     cell.setCellValue(SQLAction.TIMESTAMP_FORMAT.parse(value));
-                                    style.setDataFormat(wbDataFormat.getFormat("yyyy-mm-dd hh:mm:ss")); 
+                                    style.setDataFormat(wbDataFormat.getFormat("yyyy-mm-dd hh:mm:ss"));
                                     break;
                                 } // switch type
                             } catch (Exception exc) { // treat the value as text

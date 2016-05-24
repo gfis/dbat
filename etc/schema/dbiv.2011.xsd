@@ -317,6 +317,7 @@
         <xs:restriction base="xs:NMTOKEN">
             <xs:enumeration value="char"        ></xs:enumeration>
             <xs:enumeration value="date"        ></xs:enumeration>
+            <xs:enumeration value="decimal"     ></xs:enumeration>
             <xs:enumeration value="enum"        ></xs:enumeration>
             <xs:enumeration value="int"         ></xs:enumeration>
             <xs:enumeration value="textarea"    ></xs:enumeration>
