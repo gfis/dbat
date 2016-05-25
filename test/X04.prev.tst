@@ -10,9 +10,8 @@
 <link rel="stylesheet" type="text/css" href="./web/spec/test/stylesheet.css" />
 </head><body>
 
-
-	<!--Activation of a Stored Procedure-->
-	<!--Aufruf einer Stored Procedure-->
+    <!--Activation of a Stored Procedure-->
+    <!--Aufruf einer Stored Procedure-->
 
     <h2>Call of Stored Procedure <em>x00</em></h2>
     <form method="get" action="servlet?spec=web/spec/test/callproc.xml"><input name="spec" type="hidden" value="web/spec/test/callproc.xml" />

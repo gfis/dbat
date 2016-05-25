@@ -108,7 +108,6 @@
     </xs:complexType>
 
     <xs:complexType name="ColType" mixed="true" >
-
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:any namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
             <xs:element name="choose"   type="db:ChooseType" />
@@ -117,7 +116,6 @@
             <xs:element name="read"     type="db:ReadType" />
             <xs:element name="var"      type="db:VarType" />
         </xs:choice>
-
         <xs:attribute name="align"  type="db:AlignType" />
         <xs:attribute name="dir"    type="db:DirType"   />
         <xs:attribute name="href"   type="xs:string" />
@@ -130,9 +128,9 @@
         <xs:attribute name="sep"    type="xs:string" />
         <xs:attribute name="sql"    type="xs:string" /><!-- same as "expr" -->
         <xs:attribute name="style"  type="xs:string" />
-        <xs:attribute name="type"   type="xs:string" />
-        <xs:attribute name="width"  type="xs:string" />
-        <xs:attribute name="wrap"   type="xs:string" />
+        <xs:attribute name="type"   type="db:TypeType" />
+        <xs:attribute name="width"  type="xs:unsignedShort" />
+        <xs:attribute name="wrap"   type="db:WrapType" />
     </xs:complexType>
 
     <xs:complexType name="ColumnType" mixed="false" >
@@ -151,8 +149,8 @@
         <xs:element name="sep"      type="xs:string" />
         <xs:element name="sql"      type="xs:string" /><!-- same as "expr" -->
         <xs:element name="style"    type="xs:string" />
-        <xs:element name="type"     type="xs:string" />
-        <xs:element name="width"    type="xs:string" />
+        <xs:element name="type"     type="db:TypeType" />
+        <xs:element name="width"    type="xs:unsignedShort" />
         <xs:element name="wrap"     type="db:WrapType"  />
         </xs:choice>
     </xs:complexType>
@@ -254,6 +252,7 @@
             <xs:element name="col"      type="db:ColType" />
             <xs:element name="column"   type="db:ColumnType" />
             <xs:element name="comment"  type="db:CommentType" />
+            <xs:element name="connect"  type="db:ConnectType"  />
             <xs:element name="delete"   type="db:DeleteType" />
             <xs:element name="describe" type="db:DescribeType" />
             <xs:element name="div"      type="db:DivType" />
@@ -360,6 +359,7 @@
             <xs:element name="col"      type="db:ColType" />
             <xs:element name="column"   type="db:ColumnType" />
             <xs:element name="comment"  type="db:CommentType" />
+            <xs:element name="connect"  type="db:ConnectType"  />
             <xs:element name="delete"   type="db:DeleteType" />
             <xs:element name="describe" type="db:DescribeType" />
             <xs:element name="div"      type="db:DivType" />
@@ -462,6 +462,19 @@
             <xs:enumeration value="jdbc"></xs:enumeration>
             <xs:enumeration value="sqlj"></xs:enumeration>
             <xs:enumeration value="stp" ></xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="TypeType">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="char"        ></xs:enumeration>
+            <xs:enumeration value="date"        ></xs:enumeration>
+            <xs:enumeration value="decimal"     ></xs:enumeration>
+            <xs:enumeration value="enum"        ></xs:enumeration>
+            <xs:enumeration value="int"         ></xs:enumeration>
+            <xs:enumeration value="textarea"    ></xs:enumeration>
+            <xs:enumeration value="time"        ></xs:enumeration>
+            <xs:enumeration value="timestamp"   ></xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
 

@@ -21,7 +21,9 @@
         <ht:h3>Alle <ht:a href="index.html">Dbat</ht:a>-Spezifikationen</ht:h3>
         
         <select group="subdir">
-            <col name="subdir" label="Bereich" style="visible">subdir</col>
+            <col name="subdir" label="Bereich" href="servlet?&amp;spec=&amp;dummy=" style="visible">
+                subdir || '.index' || '=' || subdir
+            </col>
             <col label="Spezifikation" href="servlet?&amp;spec=">subdir || '.' || name</col>
             <col label="Beschreibung">'<ht:strong>' || title || '</ht:strong> &amp;mdash; ' || comment</col>
             <col label="Parameter mit Initialwerten">params</col>
@@ -39,7 +41,9 @@
         <ht:h3>All <ht:a href="index.html">Dbat</ht:a> Specifications</ht:h3>
         
         <select group="subdir">
-            <col name="subdir" label="Area" style="visible">subdir</col>
+            <col name="subdir" label="Area" href="servlet?&amp;spec=&amp;dummy=" style="visible">
+                subdir || '.index' || '=' || subdir
+            </col>
             <col label="Specification" href="servlet?&amp;spec=">subdir || '.' || name</col>
             <col label="Description">'<ht:strong>' || title || '</ht:strong> &amp;mdash; ' || comment</col>
             <col label="Parameters with defaults">params</col>

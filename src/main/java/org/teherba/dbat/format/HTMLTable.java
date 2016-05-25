@@ -492,7 +492,7 @@ public class HTMLTable extends XMLTable {
     private static final String INVISIBLE = "invisible";
 
     /** Writes a complete header, data or alternate data row with all tags and cell contents.
-     *  For group control changes, any {@link #INVISIBLE} style es reset to {@link #VISIBLE}.
+     *  For group control changes, any {@link #INVISIBLE} style is reset to {@link #VISIBLE}.
      *  @param rowType type of the generic row
      *  @param tbMetaData meta data for the table
      *  @param columnList contains the row to be written
@@ -584,7 +584,9 @@ public class HTMLTable extends XMLTable {
                         }
                         nextStyle = null;
                         result.append('>');
-                        result.append(column.getValue());
+                        if (! style.endsWith(INVISIBLE)) {
+                            result.append(column.getValue());
+                        }
                         result.append("</td>");
                     } else if (pseudo.equals("style")) {
                         nextStyle = column.getValue();

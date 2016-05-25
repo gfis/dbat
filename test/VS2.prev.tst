@@ -25,8 +25,8 @@ FROM c01
 <table id="table1">
 <tr><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td class="visible">Lübars</td><td>$</td><td>1909-02-09</td></tr>
-<tr><td class="invisible">Lübars</td><td>$</td><td>1910-02-07</td></tr>
-<tr><td class="invisible">Lübars</td><td>'</td><td>1887-07-09</td></tr>
+<tr><td class="invisible"></td><td>$</td><td>1910-02-07</td></tr>
+<tr><td class="invisible"></td><td>'</td><td>1887-07-09</td></tr>
 </table>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./web/spec/test/visible05.xml" type="text/plain">web/spec/test/visible05.xml</a>,

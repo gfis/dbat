@@ -41,35 +41,40 @@ body,p,h1,h2,h3,h4,dl,dd,dt,ul,ol,li,div,td,th,address,blockquote,nobr,b,i,a,br,
 img
     { display:block; border:0px; margin:0px; padding:0px; }
 table
-    { background:white; border-collapse:collapse; margin-top:3mm; }
+    { background:white; 
+      border-collapse:collapse; 
+      margin-top:3mm; 
+    }
 table.sortable thead {
-    cursor: pointer
+      cursor: pointer
     }
 td,th
-    { vertical-align:top; margin:0px;
+    { vertical-align:top; 
+      margin:0px;
       padding-top:0px; padding-bottom: 0px;padding-left:4px; padding-right:4px;
-      border:1px solid #aaa; }
+      border:        1px solid #aaa; }
 tr
-    { background:lightyellow } /* or lemonchiffon} */
+    { background:    lightyellow } /* or lemonchiffon} */
 .visible
-    { color:black;
-      border-left: 1px solid #aaa;
-      border-right: 1px solid #aaa;
-      border-top: 1px solid #aaa;
+    { color:         black;
+      border-left:   1px solid #aaa;
+      border-right:  1px solid #aaa;
+      border-top:    1px solid #aaa;
       border-bottom: none;
     }
 .invisible
-    { color:lightyellow;
-      border-left: 1px solid #aaa;
-      border-right: 1px solid #aaa;
-      border-top: none;
+    { color:         lightyellow;
+      border-left:   1px solid #aaa;
+      border-right:  1px solid #aaa;
+      border-top:    none;
       border-bottom: none;
     }
 .counter
-    { color:black; background:white;
-      border-left: 1px solid #aaa;
-      border-right: none;
-      border-top: 1px solid #aaa;
+    { color:         black; 
+      background:    white;
+      border-left:   1px solid #aaa;
+      border-right:  none;
+      border-top:    1px solid #aaa;
       border-bottom: none;
     }
 .bold
