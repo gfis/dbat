@@ -1,14 +1,18 @@
 For a build of the application with ant dist, this directory
 should contain the following libraries:
 
--rwxr-xr-x  1 gfis gfis   55147 2012-06-10 21:55 activation.jar
--rw-r--r--  1 gfis gfis   52543 2013-01-04 10:04 commons-exec-1.1.jar
--rw-r--r--  1 gfis gfis  391834 2012-06-10 21:55 log4j-1.2.15.jar
--rw-r--r--  1 gfis gfis  732657 2012-06-10 21:55 mysql-connector-java-5.1.11-bin.jar
--rw-rw-r--  1 gfis gfis     877 2012-06-10 22:30 README.txt
--rwxr-xr-x  1 gfis gfis  192629 2012-06-10 21:55 serializer.jar
--rw-rw-r--  1 gfis gfis 3201128 2012-07-14 22:16 sqlite-jdbc-3.7.2.jar
--rwxr-xr-x  1 gfis gfis  163006 2012-06-25 17:17 tomcat-dbcp.jar
+01.02.2015  23:44            55.147 activation.jar
+11.05.2016  14:41           284.184 commons-codec-1.10.jar
+11.05.2016  14:41            61.829 commons-logging-1.2.jar
+01.03.2016  02:43           489.884 log4j-1.2.17.jar
+01.02.2015  23:44           732.657 mysql-connector-java-5.1.11-bin.jar
+11.05.2016  14:42         2.528.204 poi-3.14-20160307.jar
+02.03.2016  01:45         1.286.511 poi-ooxml-3.14-20160307.jar
+02.03.2016  01:46         5.919.795 poi-ooxml-schemas-3.14-20160307.jar
+01.02.2015  23:44               829 README.txt
+01.02.2015  23:44           192.629 serializer.jar
+01.02.2015  23:44           163.006 tomcat-dbcp.jar
+01.03.2016  02:44         2.730.866 xmlbeans-2.6.0.jar
 
 Most of the libraries can be downloaded from Apache.org, except for the JDBC driver
 libraries (MySQL and SQLite). The latter are optional, more or other JDBC drivers

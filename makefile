@@ -246,3 +246,5 @@ zipart:
 #--------------------------------------
 misc:
 	$(SUDO) cp -v web/spec/test/check_word.xml $(TOMC)/spec/test
+mod:
+	$(DBAW) "update relatives set name='Cäcilie' where name='Cacilie'"

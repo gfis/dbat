@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    @(#) $Id$
+    2016-06-30, Dr. Georg Fischer: for testcases UM%
+-->
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat" 
+        xmlns:db="http://www.teherba.org/2007/dbat" 
+        xmlns:ht="http://www.w3.org/1999/xhtml" 
+        encoding="UTF-8" 
+        conn="worddb" 
+        lang="en"
+        title="test/uml01"
+        >
+    <comment lang="en">Test of URL encoding with accented letters</comment>
+    <comment lang="de">Test der URL-Codierung von Umlauten</comment>
+            
+    <ht:h2><ht:a href="servlet?spec=test.index">Test</ht:a> - Test of URL encoding</ht:h2>
+    <ht:form method="post">
+        <ht:input label="Name" name="name"     maxsize="20" size="10" init="%" /><ht:br />
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+
+    <ht:h3>Search for <ht:em><parm name="name" init="%" /></ht:em></ht:h3>
+    <select>
+        <col label="Name"  link="test/uml01&amp;name=">name</col>
+        <col label="Family"         >family</col>
+        <col label="Gender"         align="center">gender</col>
+        <col label="Birthdate"      >birth</col>
+        <col label="Decease"        >decease</col>
+        <from> relatives </from>
+        <where> name    like '<parm name="name" />'
+        </where>
+        <order by="name" />
+    </select>
+</dbat>
