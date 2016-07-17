@@ -401,6 +401,9 @@ HTTP spec=test/listbox
 
 TEST L02 List Box and List Parameters - preset parameters
 HTTP spec=test/listbox namebox=J namebox=E birthint=1910 birthchar=1914
+
+TEST L03 List Box, multiple options checked
+HTTP spec=test/listboxmult namebox=D namebox=F namebox=J
 #-------------------
 # Textarea fields
 TEST LT1 Textarea - init values

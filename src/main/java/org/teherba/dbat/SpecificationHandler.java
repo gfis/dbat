@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+    2016-07-15: <db:select multiple="yes" />
     2016-05-24: <connect to="..." />
     2016-05-05: incompatible change: entities with relative systemIds are relative to specDir
     2014-11-10: format="none"
@@ -382,7 +383,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             int callType = config.getCallType();
             if (trailerSelect.contains(" script")) {
                 if (callType == Configuration.WEB_CALL) { // test for possible link with "view-source:" schema
-                	specPath = Messages.getViewSourceLink(request);
+                    specPath = Messages.getViewSourceLink(request);
                 } // WEB_CALL
             } // "script" was present
             String specUrl  = specPath + urlPath + specName + (callType == Configuration.CLI_CALL ? "" : ".xml");
@@ -584,7 +585,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     private static final String TABLE_ID_PREFIX = "table";
     /** sequential count of generated tables (SELECT statements) */
     private int tableNo;
-    
+
     /** Gets an id= attribute, or generates one, and stores it in the table metadata
      *  @param attrs set of XML attributes
      *  @param tbMetaData table metadata
@@ -674,6 +675,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 String code     = attrs2.getValue("code");
                 String display  = attrs2.getValue("display");
                 String empty    = attrs2.getValue("empty");
+                String multiple = attrs2.getValue("multiple");
                 if (empty != null) { // prefix with an option with empty value, display="(all)" for example
                     int height = 3; // int because we must compute on it
                     try {
@@ -681,12 +683,18 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                         height ++;
                     } catch (Exception exc) { // if non-numeric - ignore
                     }
-                    tbSerializer.writeMarkup("<select name=\"" + name + "\" size=\"" + String.valueOf(height) + "\">\n");
+                    tbSerializer.writeMarkup("<select name=\"" + name
+                            + "\" size=\"" + String.valueOf(height)
+                            + (multiple != null ? "\" multiple=\"" + multiple : "")
+                            + " \">\n");
                     tbSerializer.writeMarkup("<option value=\"\""
                             + ">" + empty + "</option>\n");
                     // prefix
                 } else {
-                    tbSerializer.writeMarkup("<select name=\"" + name + "\" size=\"" + attrs2.getValue("height") + "\">\n");
+                    tbSerializer.writeMarkup("<select name=\"" + name
+                            + "\" size=\"" + attrs2.getValue("height")
+                            + (multiple != null ? "\" multiple=\"" + multiple : "")
+                            + " \">\n");
                 }
                 String[] codeParm       = parameterMap.get(code   );
                 String[] displayParm    = parameterMap.get(display);
@@ -714,7 +722,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 tbSerializer.writeMarkup("</select>\n");
             } // valid name
             // LISTBOX_TAG
-        } else if (index < 0 && ! qName.equals(SELECT_TAG)) { // no value specified - insert that of the parameter with the same name
+        } else if (index < 0 && ! qName.equals(SELECT_TAG)) {
+            // no value specified - insert that of the parameter with the same name
             name = attrs2.getValue("name");
             if (name != null && ! name.equals("")) { // valid name
                 Object obj = parameterMap.get(name);
@@ -818,7 +827,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         if (connectionId != null) {
             config.addProperties(connectionId + ".properties");
             config.setConnectionId(connectionId);
-        } else { 
+        } else {
             Object obj = parameterMap.get("conn");
             if (obj != null) {
                 connectionId = ((String[]) obj)[0]; // override it from the HttpRequest
@@ -925,7 +934,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     /** INTO element tag */
     private static final String INTO_TAG    = "into"    ;
     /** List parameter element tag */
-    private static final String LISTBOX_TAG = "listbox" ; // label=, name=, height=, code=, display=, empty=
+    private static final String LISTBOX_TAG = "listbox" ; // label=, name=, height=, code=, display=, empty= multiple=
     /** List parameter element tag */
     private static final String LISTPARM_TAG= "listparm"; // name=, in connection with TEXTAREA_TAG
     /** OPTION subelement of HTML &lt;select name="..." &gt; */
@@ -940,7 +949,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     private static final String READ_TAG    = "read"    ; //
     /** SELECT element tag */
     private static final String SELECT_TAG  = "select"  ; // db:select or ht:select
-        // for Dbat: distinct=, limit=, name=, headers=, aggregate=, with=, group=, id=
+        // for Dbat: distinct=, limit=, name=, headers=, aggregate=, with=, group=, id= 
         // subordinate elements: <col>..., <from>, <where>, <group>, <order>
     /** UPDATE element tag */
     private static final String UPDATE_TAG  = "update"  ; // ... <where>
@@ -1162,7 +1171,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     config.setManner(Configuration.JDBC_MANNER);
                 }
                 //--------
-                saveConnectionAttribute(attrs, "conn");             
+                saveConnectionAttribute(attrs, "conn");
                 //--------
                 int lastSlashPos = specName.lastIndexOf("/");
                 String subDirectory = urlPath + (lastSlashPos < 0 ? "" : specName.substring(0, lastSlashPos + 1));
@@ -1473,7 +1482,12 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     if (currentNameSpace.equals(config.HTML_URI)) { // print HTML text unchanged
                         tbSerializer.writeMarkup(params[0]);
                     } else { // result is "('word1', 'word2', ...)"
-                        String[] words = params[0].trim().split("\\s+");
+                        String[] words = null;
+                        if (params.length <= 1) {
+                        	words = params[0].trim().split("\\s+");
+                        } else { // result of <db:listbox multiple="yes" />
+                        	words = params;
+                        }
                         colBuffer.append("("); // empty list
                         if (words.length == 0) {
                             colBuffer.append("\'\'");
