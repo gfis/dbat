@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+    2016-07-27: correction in size= attribute of listbox
     2016-07-15: <db:select multiple="yes" />
     2016-05-24: <connect to="..." />
     2016-05-05: incompatible change: entities with relative systemIds are relative to specDir
@@ -676,25 +677,25 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 String display  = attrs2.getValue("display");
                 String empty    = attrs2.getValue("empty");
                 String multiple = attrs2.getValue("multiple");
+                int height = 3; // int because we must compute on it
+                try {
+                    height = Integer.parseInt(attrs2.getValue("height"));
+                } catch (Exception exc) { // if non-numeric - ignore
+                }
                 if (empty != null) { // prefix with an option with empty value, display="(all)" for example
-                    int height = 3; // int because we must compute on it
-                    try {
-                        height = Integer.parseInt(attrs2.getValue("height"));
-                        height ++;
-                    } catch (Exception exc) { // if non-numeric - ignore
-                    }
+                    height ++;
                     tbSerializer.writeMarkup("<select name=\"" + name
-                            + "\" size=\"" + String.valueOf(height)
-                            + (multiple != null ? "\" multiple=\"" + multiple : "")
-                            + " \">\n");
+                            + "\" size=\"" + String.valueOf(height) + "\""
+                            + (multiple != null ? " multiple=\"" + multiple + "\"" : "")
+                            + ">\n");
                     tbSerializer.writeMarkup("<option value=\"\""
                             + ">" + empty + "</option>\n");
                     // prefix
                 } else {
                     tbSerializer.writeMarkup("<select name=\"" + name
-                            + "\" size=\"" + attrs2.getValue("height")
-                            + (multiple != null ? "\" multiple=\"" + multiple : "")
-                            + " \">\n");
+                            + "\" size=\"" + String.valueOf(height) + "\""
+                            + (multiple != null ? " multiple=\"" + multiple + "\"" : "")
+                            + ">\n");
                 }
                 String[] codeParm       = parameterMap.get(code   );
                 String[] displayParm    = parameterMap.get(display);

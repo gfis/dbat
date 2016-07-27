@@ -26,7 +26,7 @@ FROM c01
 ORDER BY name;
 :SQL -->
 
-            <select name="namebox" size="10" multiple="yes ">
+            <select name="namebox" size="10" multiple="yes">
 <option value="D" selected="yes">Dorothea</option>
 <option value="E">Eberhard</option>
 <option value="F">Fritz</option>
