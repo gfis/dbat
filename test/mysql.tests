@@ -351,6 +351,9 @@ CALL Dbat -m sql -d x07
 
 TEST X10 call procedure x07 into parm
 HTTP spec=test/callx10 iname0=row2
+
+TEST X11 recreate procedure described by X09
+CALL Dbat -m sql -v -sp "$" -f test/X09.this.tst
 #-------------------
 # Tests for the proper output of dbiv_dbat.xsl
 TEST XS1 generate an interactive form for native SQL with INT key

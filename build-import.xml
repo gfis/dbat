@@ -2,6 +2,7 @@
 <!--
     ant-buildfile for commandline, web application and web service
     @(#) $Id$
+    2016-07-30: merge dbat/expand into dbat.jar and use c:/var/lib/tomcat/openlib/*.jar with slim dbat.war
     2016-04-16: MANIFEST.MF back in etc/META-INF, with CVS Id
     2015-02-02: copy to webapps replaced by copy to *.wr and rename to *.war
     2014-11-11: tomcat.base|home moved to build.xml; no catalina-task
@@ -51,7 +52,8 @@
 -->
     <property name="app.path"           value="." />
     <property name="build.home"         value="${basedir}/target" />
-    <property name="build.classes"      value="${build.home}/WEB-INF/classes"/>
+    <property name="build.classes"      value="${build.home}/WEB-INF/classes" />
+    <property name="build.expand"       value="${basedir}/expand" />
     <property name="build.api"          value="${build.home}/api" />
     <property name="dist.home"          value="${basedir}/dist" />
     <property name="tomcat.port"        value="8080" />
@@ -111,29 +113,43 @@
         <mkdir dir="${build.home}/WEB-INF"/>
         <mkdir dir="${build.classes}"/>
         <mkdir dir="${build.classes}/META-INF"/>
-        <mkdir dir="${build.home}/WEB-INF/lib"/>
+        <mkdir dir="${build.expand}"/>
         <mkdir dir="${build.home}/WEB-INF/src"/>
         <mkdir dir="${docs.home}"/>
         <mkdir dir="${docs.home}/api"/>
         <mkdir dir="${dist.home}"/>
+        <!-- The following line must be expanded in (Apache Tomcat)/conf/catalina.properties:
+        common.loader="c:/var/lib/tomcat/openlib/*.jar","${catalina.base}/lib","${catalina.base}/lib/*.jar","${catalina.home}/lib","${catalina.home}/lib/*.jar"
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        Tomcat must be restarted for this to work.
+        -->
+        <mkdir dir="${tomcat.base}/openlib" />       
     </target>
 
     <target name="clean" depends="empty">
-        <unzip dest="${build.classes}">
+        <!-- only when Tomcat is stopped -->
+        <copy todir="${tomcat.base}/openlib">
             <fileset dir="${lib.home}">
-                <include name="*.jar"/>
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+        
+        <unzip dest="${build.expand}">
+            <fileset dir="${lib.home}">
+                <include name="*.jar" />
             </fileset>
         </unzip>
+     
         <delete failonerror="false" quiet="true" verbose="true">
-            <fileset dir="${build.classes}/META-INF" includes="SUN_MICR.*" />
+            <fileset dir="${build.expand}/META-INF" includes="SUN_MICR.*" />
         </delete>
-        <available property="wrong.COM.ibm" filepath="${build.classes}/COM/ibm/db2/app" file="Blob.class" />
+        <available property="wrong.COM.ibm" filepath="${build.expand}/COM/ibm/db2/app" file="Blob.class" />
         <antcall target="wrong.clean.COM" />
     </target>
     <target name="wrong.clean.COM" if="wrong.COM.ibm">
-        <echo message="moving ${build.classes}/COM/ibm/db2 to ${build.classes}/com/ibm/db2" />
-        <move todir="${build.classes}/com">
-            <fileset dir="${build.classes}/COM" />
+        <echo message="moving ${build.expand}/COM/ibm/db2 to ${build.expand}/com/ibm/db2" />
+        <move todir="${build.expand}/com">
+            <fileset dir="${build.expand}/COM" />
         </move>
     </target>
     <!-- ============= echoproperties ==============================================
@@ -226,27 +242,32 @@
         create the binary distributions: jar and war
     -->
     <target name="dist"     depends="prepare,compile,manifest">
-        <jar  jarfile="${dist.home}/${ant.project.name}.jar" basedir="${build.classes}"
-            manifest="${build.classes}/META-INF/MANIFEST.MF"
-        />
-        <war destfile="${dist.home}/${ant.project.name}.war" basedir="${build.home}"
+        <jar    jarfile="${dist.home}/${ant.project.name}.jar" 
+                basedir="${build.classes}"
+                manifest="${build.classes}/META-INF/MANIFEST.MF">
+            <fileset dir="${build.expand}" />
+        </jar>
+        <war destfile="${dist.home}/${ant.project.name}.war" 
+                basedir="${build.home}"
                 manifest="${build.classes}/META-INF/MANIFEST.MF"
                 excludes="**/web.xml,dependencies.txt"
                 webxml="${build.home}/WEB-INF/web.xml"
                 defaultexcludes="no"
                 >
             <metainf dir="${etc.home}/META-INF" includes="*.xml" />
+            <fileset dir="${build.classes}" />
         </war>
         <copy todir="${build.home}/META-INF">
             <fileset dir="${etc.home}/META-INF">
-                <include name="geronimo-application.xml"/>
+                <include name="geronimo-application.xml" />
             </fileset>
         </copy>
-        <ear destfile="${dist.home}/${ant.project.name}.ear" basedir="${etc.home}/META-INF"
+        <ear destfile="${dist.home}/${ant.project.name}.ear" 
+                basedir="${etc.home}/META-INF"
                 excludes="**/application.xml,dependencies.txt"
                 appxml="${etc.home}/META-INF/application.xml"
                 >
-            <fileset dir="${dist.home}" includes="*.war"/>
+            <fileset dir="${dist.home}" includes="*.war" />
         </ear>
     </target>
 
@@ -259,14 +280,6 @@
         <touch file="${dist.home}/${ant.project.name}.war" />
         <copy file="${dist.home}/${ant.project.name}.war"          tofile="${tomcat.base}/webapps/${ant.project.name}.wr"  />
         <move file="${tomcat.base}/webapps/${ant.project.name}.wr" tofile="${tomcat.base}/webapps/${ant.project.name}.war" />
-    <!--
-        <copy todir="${tomcat.base}/webapps">
-            <fileset dir="${dist.home}">
-                <exclude name="*.jar"/>
-                <include name="*.war"/>
-            </fileset>
-        </copy>
-    -->
     </target>
 
     <target name="deploy.ear" >

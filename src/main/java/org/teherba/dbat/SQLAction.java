@@ -577,7 +577,6 @@ public class SQLAction implements Serializable {
                         case DatabaseMetaData.procedureNullableUnknown:
                             break;
                     } // switch
-
                     field = "REMARKS";
                     value = results.getString(field);
                     if (value != null) {

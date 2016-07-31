@@ -1,5 +1,6 @@
 /*  Generator for an SQL table (DDL or INSERT statements)
     @(#) $Id$
+    2016-07-29: describeProcdureCOlumns: IS (NOT) NULL not recognized by MySQL
     2016-05-11: describe width of DATE/TIME/TIMESTAMP columns as comment
     2014-03-04: ignore pseudo columns
     2013-01-04: comments before COMMIT with trailing ";" for DB2 commandline processor
@@ -476,8 +477,10 @@ public class SQLTable extends BaseTable {
                         colBuffer.append(")");
                         break;
                 } // dataType
+            /*  will not be recognized by MySQL
                 colBuffer.append("\t");
                 colBuffer.append(oldRow.get("NULLABLE"));
+            */
                 String remark = oldRow.get("REMARK");
                 if (remark != null && remark.length() > 0) {
                     colBuffer.append("\t-- ");
