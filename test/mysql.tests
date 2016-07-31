@@ -1237,7 +1237,7 @@ TEST UM1 Insert a record with umlaut key
 DATA -- add record
     INSERT INTO relatives VALUES('Cäcilie'   , 'Fischer' , '1919-11-17', 'F' , 'Coburg'        , 1999, {ts'2012-06-28 19:47:06'}, 'testuser');
     commit;
-CALL Dbat -f $(DATA)
+CALL Dbat -v -f $(DATA)
 
 TEST UM2 search for Cäcilie
 HTTP spec=test.uml01 view=sear search_name=Cäcilie
@@ -1246,7 +1246,7 @@ TEST UM3 search for URL-encoded C%C3%A4cilie
 HTTP spec=test.uml01 view=sear search_name=C%C3%A4cilie
 
 TEST UM4 delete record
-CALL Dbat "delete from relatives where name like '%cilie'"
+CALL Dbat -v "delete from relatives where name like '%cilie'"
 #-------------------
 # repeat the V0* tests by directly calling *.iv.xml specifications
 TEST VI2 initial data for DBIV tests

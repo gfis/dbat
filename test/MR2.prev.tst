@@ -21,7 +21,7 @@ enc="ISO-8859-1", mode="html", lang="de", spec="test.index"
 -->
 <h3><a href="index.html">Dbat</a>-Spezifikation <em><a href="spec/test/index.xml">test.index</a></em>
 </h3>
-<form action="servlet" method="get">
+<form action="servlet" method="post">
 <input type = "hidden" name="view" value="" />
 <input type = "hidden" name="spec" value="test.index" />
 <table cellpadding="8"><tr><td class="bold">

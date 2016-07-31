@@ -1,5 +1,6 @@
 /*  MorePage.java - replacement for more.jsp: input form with all parameters
  *  @(#) $Id$
+ *  2016-07-30: <form method="post"> for accented field values
  *  2016-05-12: view-source link
  *  2012-11-22: superfluous quote behind lang= caused format descriptions "null"
  *  2012-07-01: subpackage view
@@ -143,7 +144,7 @@ public class MorePage {
                     + specName
                     +"</a></em>\n</h3>\n");
             //----------------------------------------
-            out.write("<form action=\"servlet\" method=\"get\">\n");
+            out.write("<form action=\"servlet\" method=\"post\">\n");
             out.write("<input type = \"hidden\" name=\"view\" value=\"\" />\n");
             out.write("<input type = \"hidden\" name=\"spec\" value=\"" + specName + "\" />\n");
 
