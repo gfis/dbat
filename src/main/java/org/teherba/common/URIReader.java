@@ -1,5 +1,6 @@
 /*  Reader for a URL or data URI source
     @(#) $Id$
+    2016-08-09: isOpen
     2016-05-10: with URLConnection, make User-Agent header settable
     2016-04-28: allow for Windows drive letter "protocol" (-> file:)
     2013-08-14: URL encoding by URI(3 parameter) constructor
@@ -27,6 +28,7 @@ import  java.io.BufferedReader;
 import  java.io.ByteArrayInputStream;
 import  java.io.ByteArrayOutputStream;
 import  java.io.FileInputStream;
+import  java.io.FileNotFoundException;
 import  java.io.InputStream;
 import  java.io.InputStreamReader;
 import  java.io.IOException;
@@ -102,6 +104,15 @@ public class URIReader {
     public void setEncoding(String enc) {
         this.encoding = enc;
     } // setEncoding
+
+    /** whether the stream could successfully be opened */
+    private boolean isOpened;
+    /** Gets the success status
+     *  @return true if the stream could be opened, false otherwise
+     */
+    public boolean isOpen() {
+        return this.isOpened;
+    } // isOpen
 
     /** URI for additional input file */
     private URI inputURI;
@@ -194,6 +205,7 @@ public class URIReader {
      *  or null if no properties should be associated
      */
     public URIReader(String unresid, String enc, Map<String,String> propMap) {
+    	isOpened = true;
         log = Logger.getLogger(URIReader.class.getName());
         this.encoding = enc;
         doUnzip = false;
@@ -271,7 +283,10 @@ public class URIReader {
                 charReader = unzipStream(byteStream);
                 isEncoded = true;
             } // doUnzip
-        } catch (Exception exc) {
+        } catch (FileNotFoundException fnf) {
+        	isOpened = false; // no message
+        } catch (Exception exc) { 
+        	isOpened = false; // for any problem
             log.error(exc.getMessage() + ", unresid=\"" + unresid + "\"", exc);
         }
     } // Constructor(3)

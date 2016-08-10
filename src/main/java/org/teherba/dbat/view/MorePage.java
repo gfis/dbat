@@ -1,5 +1,6 @@
 /*  MorePage.java - replacement for more.jsp: input form with all parameters
  *  @(#) $Id$
+ *  2016-08-09: Wiki => www.teherba.org/dbat
  *  2016-07-30: <form method="post"> for accented field values
  *  2016-05-12: view-source link
  *  2012-11-22: superfluous quote behind lang= caused format descriptions "null"
@@ -293,7 +294,7 @@ public class MorePage {
             }
             out.write("<br />\n");
             //----------------------------------------
-            out.write("<a href=\"https://github.com/gfis/dbat/wiki\" target=\"_new\">Wiki</a>");
+            out.write("<a href=\"http://www.teherba.org/dbat\" target=\"_new\">Wiki</a>");
             out.write(", <a href=\"https://github.com/gfis/dbat\" target=\"_new\">Git Repository</a>");
             if (false) {
             } else if (language.startsWith("de")) {

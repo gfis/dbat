@@ -1,5 +1,6 @@
 /*  Selects the applicable table generator
     @(#) $Id$
+    2016-08-09: former name DefaultSpecTable -> SpecDescription, + ViewDescription; reordered
     2016-05-12: ExcelStream with Apache POI replaces ExcelTable
     2013-01-18: dynamic, with Class.forName
     2012-06-16: GenerateSQLJ
@@ -77,20 +78,24 @@ public class TableFactory {
         try {
             serializers = new ArrayList<BaseTable>(32);
             addSerializer("HTMLTable"         );
-        //  addSerializer("ExcelTable"        ); // Excel 2003 XML format
-            addSerializer("ExcelStream"       ); // Apache POI HSSF = BIFF (<= 2003) or XSSF = OOXML (>= 2007)
             addSerializer("XMLTable"          );
-            addSerializer("FixedWidthTable"   );
+            addSerializer("ExcelStream"       ); // Apache POI HSSF = BIFF (<= 2003) or XSSF = OOXML (>= 2007)
+            addSerializer("JSONTable"         );
+            addSerializer("WikiTable"         );
+
             addSerializer("SeparatedTable"    );
+            addSerializer("FixedWidthTable"   );
+            addSerializer("TayloredTable"     );
+
             addSerializer("SQLTable"          );
             addSerializer("SQLUpdateTable"    );
             addSerializer("JDBCTable"         );
-            addSerializer("JSONTable"         );
-            addSerializer("DefaultSpecTable"  );
-            addSerializer("TayloredTable"     );
+
             addSerializer("TransformedTable"  );
             addSerializer("TableGenerator"    );
-            addSerializer("WikiTable"         );
+
+            addSerializer("SpecDescription"   );
+            addSerializer("ViewDescription"   );
             addSerializer("EchoSQL"           );
             addSerializer("GenerateSQLJ"      );
             addSerializer("ProbeSQL"          );

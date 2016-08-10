@@ -8,6 +8,7 @@
     >
 <!--
     @(#) $Id$
+    2016-08-09: links to Dbat Spec. and Dbiv Spec.
     2016-04-11: link back to Dbat home
     2011-02-15: Dr. Georg Fischer
 -->    
@@ -15,10 +16,13 @@
     <comment lang="en">Shows the DDL Description of a Table or View</comment>
 
     <ht:h3><ht:a href="index.html">Dbat</ht:a> - DDL of Table/View(s) <ht:em><parm name="table" />%</ht:em></ht:h3>
+    <ht:p />
     
     <ht:form method="get">
-        <ht:input label="Name" name="table" maxsize="64" size="32" init="spec_ind" />% &#xa0;&#xa0;&#xa0;
+        <ht:input label="Name" name="table" maxsize="64" size="32" init="spec_ind" />% <ht:br />
         <ht:input type="submit" value="Show DDL" /> 
+        &#xa0; -&gt; <a href="servlet?spec=describe&amp;mode=spec&amp;table=&amp;dummy="  ><parm name="table" />=Dbat Spec.</a>
+        &#xa0; -&gt; <a href="servlet?spec=describe&amp;mode=dbiv&amp;table=&amp;dummy="  ><parm name="table" />=Dbiv Spec.</a>
     </ht:form>
     
     <describe><parm name="table" />%</describe>

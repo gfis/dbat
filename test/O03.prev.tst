@@ -1,0 +1,11 @@
+-- SQL:
+--select * from (
+--SELECT name
+--, univ
+--, year
+--, gender
+--, birth 
+--FROM c01 
+--WHERE name like '%r%'
+--) probe where 1 = 0  ORDER by birth limit 2;
+--:SQL

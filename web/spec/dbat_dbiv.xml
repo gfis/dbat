@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dbat encoding="UTF-8"
-	conn="worddb"
-	lang="en"
-	xmlns   ="http://www.teherba.org/2007/dbat"
-	xmlns:ht="http://www.w3.org/1999/xhtml"
-	title	="Generate Interactive View"
-	xslt 	="dbat_dbiv.xsl"
-	>
+    conn="worddb"
+    lang="en"
+    xmlns   ="http://www.teherba.org/2007/dbat"
+    xmlns:ht="http://www.w3.org/1999/xhtml"
+    title   ="Generate Interactive View"
+    xslt    ="../xslt/dbat_dbiv.xsl"
+    >
 <!--
     @(#) $Id$
+    2016-08-09: store dbat_dbiv.xsl in ../xslt
     2012-05-14: Dr. Georg Fischer
--->    
-	<comment lang="de">Generiert eine interaktive View auf eine Tabelle</comment>
-	<comment lang="en">Generates an interactive view for a table</comment>
+-->
+    <comment lang="de">Generiert eine interaktive View auf eine Tabelle</comment>
+    <comment lang="en">Generates an interactive view for a table</comment>
 
     <ht:h2>Interactive View for Table <ht:em><parm name="table" />%</ht:em></ht:h2>
-	<ht:form method="get">
-		<ht:input label="Name" name="table" maxsize="64" size="32" init="relatives" />% &#xa0;&#xa0;&#xa0;
-        <ht:input type="submit" value="Generate" /> 
-	</ht:form>
-	<describe><parm name="table" />%</describe>
+    <ht:form method="get">
+        <ht:input label="Name" name="table" maxsize="64" size="32" init="relatives" />% &#xa0;&#xa0;&#xa0;
+        <ht:input type="submit" value="Generate" />
+    </ht:form>
+    <describe><parm name="table" />%</describe>
 </dbat>

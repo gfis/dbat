@@ -111,7 +111,8 @@ public class XMLTable extends BaseTable {
                 charWriter.println("]>");
             }
             charWriter.println("<" + SpecificationHandler.ROOT_TAG
-                        +   ( nsp.length() == 0 ? ""
+                        +   ( nsp.length() == 0 
+                            ? ""
                             : " xmlns:" + nsp + "=\"" + Configuration.DBAT_URI + "\""
                             )
                         + ">");

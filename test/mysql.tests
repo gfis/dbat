@@ -52,6 +52,7 @@ DATA --
   , content BLOB
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
   commit;
+  SELECT COUNT(*) FROM b01;
 CALL Dbat -f $(DATA)
 
 TEST B02 insert statements
@@ -73,6 +74,7 @@ DATA --
   , content TEXT                COMMENT 'character large object (CLOB)'
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
   COMMIT;
+  SELECT COUNT(*) FROM b04;
 CALL Dbat -f $(DATA)
 
 TEST B05 describe CLOB table
@@ -83,7 +85,7 @@ DATA #
  noversion 194706 web/noversion.txt
  B04.data.tmp 2906 test/B04.data.tmp
  B06.data.tmp 64 test/B06.data.tmp
-CALL Dbat -r b04 $(DATA)
+CALL Dbat -v -r b04 $(DATA)
 
 # TEST B07 select from CLOB
 # CALL Dbat "select * from b04"
@@ -92,6 +94,8 @@ TEST B08 insert into CLOB
 DATA -- fill table
     insert into b04 values('align01'    , 194706, 'web/spec/test/align01.xml');
     insert into b04 values('index.jsp'  , 2906, 'http://localhost:8080/dbat/index.jsp');
+    COMMIT;
+    SELECT COUNT(*) FROM b04;
 CALL Dbat -f $(DATA)
 
 TEST B09 select from CLOB
@@ -107,10 +111,11 @@ DATA #
   , description VARCHAR(1024)         COMMENT 'text with embedded HTML'
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
   COMMIT;
+  SELECT COUNT(*) FROM im1;
 CALL Dbat -f $(DATA)
 
 TEST B11 populate table with raw image data
-CALL Dbat -m csv -r im1 web/img/flowers/flowers.dir
+CALL Dbat -m csv -v -r im1 web/img/flowers/flowers.dir
 
 TEST B12 show iamge table values
 CALL Dbat -m csv -s "\t" -1024 im1
@@ -127,6 +132,7 @@ DATA #
   , primary key (name)
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
   commit;
+  SELECT COUNT(*) FROM c01;
 CALL Dbat -f $(DATA)
 #-------------------
 # help page
@@ -225,6 +231,7 @@ DATA #
   , PRIMARY KEY (name0)
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
   commit;
+  SELECT COUNT(*) FROM de1;
 CALL Dbat -f $(DATA)
 
 TEST DE2 fill table with DECIMALs
@@ -272,13 +279,13 @@ HTTPZ test/selecde1 mode=xlsx
 TEST DF1 raw input of decimal and date/time formats
 DATA #
  row5;194706290530000005;194706.295;1981-08-05;;11:30:05;;1981-08-05 11:30:05.005
-CALL Dbat -m csv -s ";" -r de1 test/DF1.data.tmp
+CALL Dbat -m csv -s ";" -v -r de1 test/DF1.data.tmp
 
 TEST DF2 check raw input of decimal and date/time formats
 CALL Dbat -m csv -s ";" -222 de1
 
 TEST DF3 cleanup
-CALL Dbat "delete from de1 where name0 = 'row5';"
+CALL Dbat -v "delete from de1 where name0 = 'row5';"
 #-------------------
 # stored procedures
 TEST X00 create procedure x00
@@ -549,15 +556,17 @@ TEST TL4 file tayloring - with data: URI template
 #CALL Dbat -m taylor -s "$" -u data:%09$name%09$univ+$year%0a "select name, univ, year from c01"
 CALL Dbat -m taylor -s "ß" -u "data:%09%c3%9fname%09in+%c3%9funiv+%c3%9fyear%0a" "select name, univ, year from c01"
 
-TEST TL5 file tayloring from web uri
-HTTP spec=test/taylor5&mode=taylor&sep={}
+TEST TL5 file tayloring from web URI
+HTTP spec=test/taylor5 mode=taylor sep={}
 
-TEST TL6 file tayloring from file uri specified with -u
+TEST TL6 file tayloring from file URI specified with -u
 CALL Dbat -m taylor -s "{}" -u "web/spec/test/taylor.html" -f "web/spec/test/taylor5.xml"
 
-TEST TL7 file tayloring from file uri specified in the spec file
-HTTP spec=test/taylor5&mode=taylor&sep={}
+TEST TL7 file tayloring from file URI specified in the spec file
+HTTP spec=test/taylor5 mode=taylor sep={}
 
+TEST TL8 file tayloring with empty URI -> multiline
+HTTP spec=test/taylor5 mode=taylor sep={} uri=bad
 #-------------------
 # simple web table selection in various formats
 TEST W01 select
@@ -749,6 +758,7 @@ DATA #
   , display VARCHAR(64)
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
   commit;
+  SELECT COUNT(*) FROM en1;
 CALL Dbat -f $(DATA)
 
 TEST EN2 fill table with enumerations
@@ -777,6 +787,7 @@ DATA #
   , sp3 varchar(8)
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
   commit;
+  SELECT COUNT(*) FROM pivot;
 CALL Dbat -f $(DATA)
 
 TEST C03 CLI colors
@@ -815,7 +826,7 @@ HTTP spec=test.color09 fragment= name=Johannes#block2
 #-------------------
 # Raw input tests (-r)
 TEST R00 clear pivot table for raw input test
-CALL Dbat "delete from pivot"
+CALL Dbat -v "delete from pivot"
 
 TEST R01 tsv raw table input test
 # there must be 1 space before the tab
@@ -845,7 +856,7 @@ DATA --
  D	c3	D3
  D	c4	D4
  D	c5	D5
-CALL Dbat -r pivot $(DATA)
+CALL Dbat -v -r pivot $(DATA)
 
 TEST R02 check tsv input
 CALL Dbat "select * from pivot order by 1,2,3;"
@@ -856,7 +867,7 @@ DATA --
  test    fix     0002
  test    fix     0003
  test    fix     0004
-CALL Dbat -l 8,8,4 -m fix -r pivot $(DATA)
+CALL Dbat -v -l 8,8,4 -m fix -r pivot $(DATA)
 
 TEST R04 check fix input
 CALL Dbat "select * from pivot where sp2 = 'fix' order by 1,2,3;"
@@ -867,13 +878,13 @@ DATA --
  test;csv;0002
  test;csv;0003
  test;csv;0004
-CALL Dbat -s ";" -m csv -r pivot $(DATA)
+CALL Dbat -v -s ";" -m csv -r pivot $(DATA)
 
 TEST R06 check csv input
 CALL Dbat "select * from pivot where sp2 = 'csv' order by 1,2,3;"
 
 TEST R07 purge raw test data
-CALL Dbat "delete from pivot where sp1 = 'test'"
+CALL Dbat -v "delete from pivot where sp1 = 'test'"
 #-------------------
 # Grouping tests (-g)
 TEST G01 CLI grouping test with TSV
@@ -974,8 +985,8 @@ HTTP spec=test/xslt_brackets mode=jdbc
 TEST PR1 probe correct SQL
 CALL Dbat -m probe -f web/spec/test/selec02.xml
 
-# TEST PR2 probe wrong SQL (WITH for MySQL)
-# CALL Dbat -m probe -f web/spec/test/with_cte.xml
+TEST PR2 probe wrong SQL (WITH for MySQL)
+CALL Dbat -m probe -f web/spec/test/with_cte.xml
 #-------------------
 # Test different User-Agents for "view-source:" link feature in trailer
 
@@ -1090,6 +1101,7 @@ DATA #
             ( id        DESC
             );
     COMMIT;
+    SELECT COUNT(*) FROM product_order;
 CALL Dbat -f $(DATA)
 
 TEST FK2 describe with foreign keys
@@ -1105,7 +1117,7 @@ DATA --
     select name
     , birth
     from c01;
-CALL Dbat -f $(DATA)
+CALL Dbat -v -f $(DATA)
 
 TEST VW2 describe view
 CALL Dbat -d vw1
@@ -1113,7 +1125,7 @@ CALL Dbat -d vw1
 TEST VW4 drop view
 DATA --
  drop view vw1;
-CALL Dbat -f $(DATA)
+CALL Dbat -v -f $(DATA)
 #-------------------
 # variants of the trailer line
 TEST TR1 web trailer "none"
@@ -1145,7 +1157,7 @@ TEST TS3 CLI XSLT with CLI parameter overriding attribute
 CALL Dbat -m trans -f web/spec/test/xslt_brackets.xml  -p xslt=web/spec/test/formed.xsl
 
 TEST TW1 Web XML+XSLT - basic function
-HTTP spec=test.xslt_brackets mode=trans
+HTTP spec=test.xslt_brackets mode=trans debug=1
 
 TEST TW2 Web XSLT, but with mode=html - no transformation
 HTTP spec=test.xslt_brackets mode=html
@@ -1170,6 +1182,7 @@ DATA -- create table
   , PRIMARY KEY (name, family)
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
   commit;
+  SELECT COUNT(*) FROM relatives;
 CALL Dbat -f $(DATA)
 
 TEST V02 initial data for DBIV tests
@@ -1236,8 +1249,9 @@ HTTP spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=
 TEST UM1 Insert a record with umlaut key 
 DATA -- add record
     INSERT INTO relatives VALUES('Cäcilie'   , 'Fischer' , '1919-11-17', 'F' , 'Coburg'        , 1999, {ts'2012-06-28 19:47:06'}, 'testuser');
-    commit;
-CALL Dbat -v -f $(DATA)
+    COMMIT;
+    SELECT COUNT(*) FROM relatives;
+CALL Dbat -f $(DATA)
 
 TEST UM2 search for Cäcilie
 HTTP spec=test.uml01 view=sear search_name=Cäcilie
@@ -1245,8 +1259,12 @@ HTTP spec=test.uml01 view=sear search_name=Cäcilie
 TEST UM3 search for URL-encoded C%C3%A4cilie
 HTTP spec=test.uml01 view=sear search_name=C%C3%A4cilie
 
-TEST UM4 delete record
-CALL Dbat -v "delete from relatives where name like '%cilie'"
+TEST UM4 delete this record again
+DATA -- delete record
+    DELETE FROM relatives WHERE name LIKE '%cilie'; 
+    COMMIT;
+    SELECT COUNT(*) FROM relatives;
+CALL Dbat -f $(DATA) 
 #-------------------
 # repeat the V0* tests by directly calling *.iv.xml specifications
 TEST VI2 initial data for DBIV tests

@@ -443,6 +443,7 @@ public class SQLAction implements Serializable {
      *  @param sqle SQLException to be processed
      */
     public void printSQLError(Exception sqle) {
+    	System.err.println(sqle.getMessage());
     /*
         while (sqle != null && (sqle instanceof SQLException)) { // Check whether there are more SQLExceptions to process
             if (sqle instanceof DB2Diagnosable) { // Check if DB2-only information exists

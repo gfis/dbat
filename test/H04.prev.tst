@@ -50,19 +50,20 @@ Eingebundene JDBC-Treiber:
   com.mysql.jdbc.Driver V5.1
 Implementierte Ausgabeformate (-m):
   html      HTML
-  xlsx,xls  Excel
   xml       XML
-  fix       Spalten fester Breite
+  xlsx,xls  Excel
+  json      JSON
+  wiki      MediaWiki-Text
   csv,tsv   Werte mit Trennzeichen
+  fix       Spalten fester Breite
+  taylor    Variablenersetzung
   sql       SQL INSERTs
   update    SQL UPDATEs
   jdbc      SQL mit JDBC-Escapes
-  json      JSON
-  spec      Default-Spezifikation
-  taylor    Variablenersetzung
   trans     XML+XSLT
   gen       generate SAX events
-  wiki      MediaWiki-Text
+  spec      Dbat-Spezifikation
+  dbiv,view Dbiv-Spezifikation
   echo      Echo SQL
   sqlj      SQLJ-Generator
   probe     SQL-Syntaxtest

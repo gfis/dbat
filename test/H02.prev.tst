@@ -31,19 +31,20 @@ Included JDBC drivers:
   com.mysql.jdbc.Driver V5.1
 Implemented output formats (-m):
   html      HTML
-  xlsx,xls  Excel
   xml       XML
-  fix       Fixed width columns
+  xlsx,xls  Excel
+  json      JSON
+  wiki      MediaWiki Text
   csv,tsv   Separated Values
+  fix       Fixed width columns
+  taylor    File Tayloring
   sql       SQL INSERTs
   update    SQL UPDATEs
   jdbc      SQL with JDBC escapes
-  json      JSON
-  spec      Default Spec. File
-  taylor    File Tayloring
   trans     XML+XSLT
   gen       generate SAX events
-  wiki      MediaWiki Text
+  spec      Dbat Spec. File
+  dbiv,view Dbiv Spec. File
   echo      Echo SQL
   sqlj      Generate SQLJ
   probe     Probe SQL

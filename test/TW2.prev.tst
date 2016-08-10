@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" [
 ]>
-<?xml-stylesheet type="text/xsl" href="spec/test/test/brackets.xsl" ?>
+<?xml-stylesheet type="text/xsl" href="C:/var/lib/tomcat/webapps/dbat/spec/test/brackets.xsl" ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
@@ -11,9 +11,9 @@
 <link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
 </head><body>
 
-	<!--Select from test table with XSLT-->
-	<!--Abfrage der Test-Tabelle mit XSLT-->
-	
+    <!--Select from test table with XSLT-->
+    <!--Abfrage der Test-Tabelle mit XSLT-->
+    
     <h3>Select from test table c01 with XSLT</h3>
     <form method="get" action="servlet?spec=test/xslt_brackets"><input name="spec" type="hidden" value="test/xslt_brackets" />
 

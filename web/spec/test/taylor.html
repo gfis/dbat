@@ -3,23 +3,22 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <!--
-  2016-05-10: SCCS Id removed
+  2016-08-09: <h3> to <strong> for Wiki example
   2016-04-28: Georg Fischer
   This is a test file for output format <em>taylor</em>.
   It is read with request parameter <em>&amp;uri=taylor.html</em>.
   It yields an output similiar to that of test case TL1:
-  
-  CALL Dbat -m taylor -s "{}" -u $(DATA) "select * from c01"
+    CALL Dbat -m taylor -s "{}" -u $(DATA) "select * from c01"
 -->
 <head>
 <title>Record {name}</title>
 <link rel="stylesheet" type="text/css" href="stylesheet.css" />
 </head>
 <body>
-<h3>Family Record for {name}</h3>
-{name} was born {birth}.<br />
-His symbol was {gender}.<br />
-Died in {univ} in year {year}.
-<p style="page-break-after:always">&nbsp;</p>
+  <strong>Family Record for {name}</strong><br />
+  {name} was born {birth}.<br />
+  His symbol was {gender}.<br />
+  Died in {univ} in year {year}.<br />
+  <br />
 </body>
 </html>

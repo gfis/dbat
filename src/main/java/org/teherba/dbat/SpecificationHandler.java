@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+    2016-08-09: pass "conn" in writeStart; DBIV_TAG; log.info in resolveEntity
     2016-07-27: correction in size= attribute of listbox
     2016-07-15: <db:select multiple="yes" />
     2016-05-24: <connect to="..." />
@@ -617,7 +618,10 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 if (iname >= 1) {
                     buffer.append(' '); // separator
                 }
-                if (! names[iname].startsWith("/")) {
+                if (! names[iname].matches("([a-zA-Z]\\:)?(\\/|\\\\).*")) {
+                    if (extension.equals("xsl")) { // for XSLT always turn relative path into absolute path
+                        buffer.append(realPath.replaceAll("spec\\/?\\Z", ""));
+                    } // make absolute
                     buffer.append(subDirectory);
                 }
                 buffer.append(names[iname]);
@@ -868,7 +872,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     /** prefix for <em>&lt;col link="..."&gt;</em> attribute values */
     private static final String SERVLET_SPEC = "servlet?spec=";
 
-    /** Root element tag */
+    /** Dbat Root element tag */
     public  static final String ROOT_TAG    = "dbat"    ; // target= title= lang=en conn=dbat headers=true encoding=UTF-8
                                                           // javascript=http_request.js
                                                           // xslt=
@@ -877,6 +881,9 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                                                           // uri=taylor.html
                                                           // debug=0
                                                           // manner=jdbc|sqlj|stp
+    /** Dbiv Root element tag */
+    public  static final String DBIV_TAG    = "dbiv"    ; // same as ROOT_TAG, + script="..."
+
     /** A(nchor) element tag */
     private static final String A_TAG       = "a"       ; // splits link values on "=" for this namespace
     /** Break element tag */
@@ -1198,6 +1205,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                             , "urlpath"                                     , urlPath
                             , "title"                                       , title
                             , "lang"                                        , language
+                            , "conn"                                        , config.getConnectionId()
                             , (javascript != null ? "javascript" : "dummy") , javascript
                             , (stylesheet != null ? "stylesheet" : "dummy") , stylesheet
                             , (target     != null ? "target"     : "dummy") , target
@@ -1485,9 +1493,9 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     } else { // result is "('word1', 'word2', ...)"
                         String[] words = null;
                         if (params.length <= 1) {
-                        	words = params[0].trim().split("\\s+");
+                            words = params[0].trim().split("\\s+");
                         } else { // result of <db:listbox multiple="yes" />
-                        	words = params;
+                            words = params;
                         }
                         colBuffer.append("("); // empty list
                         if (words.length == 0) {
@@ -2156,7 +2164,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 url = "file://" + (realPath + specDir + systemId).replaceAll("//", "/");
                 result = new InputSource(url);
             }
-            log.info("resolveEntity(\"" + publicId + "\", \"" + systemId + "\") -> " + url);
+            // log.info("resolveEntity(\"" + publicId + "\", \"" + systemId + "\") -> " + url);
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }

@@ -1,5 +1,6 @@
 /*  Reader for text file, returns a string without any whitespace
  *  @(#) $Id$
+ *  2016-08-10: check for non-empty result file with thisStream.size()
  *  2016-07-11: make -s; implicit macro CASE
  *  2016-05-14: HTTPZ and CALLZ
  *  2016-05-10: optionally set Http request properties
@@ -516,15 +517,16 @@ public class RegressionTester {
 
                         } else if (verb.equals("TEST")) {
                             if (thisStream != null) { // is still open - process results of previous TEST
+                                boolean passed = thisStream.size() > 0L; // must be non-empty
                                 thisStream.close();
                                 System.setOut(realStdOut);
                                 System.setErr(realStdErr);
-                                prevName = thisName.replaceAll("\\.this\\.", ".prev.")
-                                        .replaceAll(".bad", "")
-                                        ;
+                                prevName = thisName.replaceAll("\\.this\\.", ".prev.").replaceAll(".bad", "");
                                 prevFile = new File(prevName);
-                                boolean passed = true; // Think positive!
                                 if (! skipping) {
+                                    if (! passed) {
+                                        realStdOut.println("?? failed because of empty output");
+                                    }
                                     if (prevFile.exists()) { // run diff prev this
                                         cmd = diffPrefix + " -C0 " + prevName + " " + thisName; // -Z = ignore line ends
                                             // context diffs may be used only here, but not in our DIFF command
@@ -536,7 +538,7 @@ public class RegressionTester {
                                             iline ++;
                                         } // while readLine
                                         reader.close();
-                                        passed = iline == 0;
+                                        passed = passed && (iline == 0);
                                         if (passed) {
                                             passedCount ++;
                                         } else {
@@ -596,7 +598,7 @@ public class RegressionTester {
                                 String className = classPrefix + callMatcher.group(1);
                                 String argsStr   = argsPrefix  + callMatcher.group(2);
                                 String[] parts   = CommandTokenizer.split(argsStr);
-                                logText = "java -cp " + System.getProperty("java.class.path") 
+                                logText = "java -cp " + System.getProperty("java.class.path")
                                         + " " + className + " " + argsStr
                                         + (verb.endsWith("Z") ? " | unzip -p" : "");
                                 realStdOut.println(logText);

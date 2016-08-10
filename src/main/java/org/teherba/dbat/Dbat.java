@@ -1,5 +1,6 @@
 /*  Dbat.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2016-08-09: pass "conn" in writeStart
  *  2013-01-05: fit for RegressionTester
  *  2012-08-04: outputFormat -> formatMode, becomes variable for -r
  *  2012-01-10: XML parsing error message with line+column numbers
@@ -628,6 +629,7 @@ public class Dbat implements Serializable {
                         , "contenttype" , config.getHtmlMimeType() 
                         , "nsp"         , config.getNamespacePrefix()
                         , "lang"        , language
+                        , "conn"        , config.getConnectionId()
                         }
                         , config.getParameterMap()
                         );

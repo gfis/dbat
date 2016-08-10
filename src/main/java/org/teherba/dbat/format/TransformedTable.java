@@ -128,6 +128,7 @@ public class TransformedTable extends BaseTable {
                 //  , "-filter", "level"
                     , "-xml", "-"       // STDOUT (not used from here)
                     };
+            log.info("xslt=" + xslt);
             xtransFactory.createPipeLine(pipeLine);
             generator  = xtransFactory.getGenerator();
             serializer = xtransFactory.getSerializer();

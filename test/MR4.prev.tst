@@ -47,19 +47,20 @@ Ausgabeformat</td>
 <td>
 <select name="mode" size="6">
 <option value="html" selected="1">html - HTML</option>
-<option value="xlsx">xlsx - Excel</option>
 <option value="xml">xml - XML</option>
-<option value="fix">fix - Spalten fester Breite</option>
+<option value="xlsx">xlsx - Excel</option>
+<option value="json">json - JSON</option>
+<option value="wiki">wiki - MediaWiki-Text</option>
 <option value="csv">csv - Werte mit Trennzeichen</option>
+<option value="fix">fix - Spalten fester Breite</option>
+<option value="taylor">taylor - Variablenersetzung</option>
 <option value="sql">sql - SQL INSERTs</option>
 <option value="update">update - SQL UPDATEs</option>
 <option value="jdbc">jdbc - SQL mit JDBC-Escapes</option>
-<option value="json">json - JSON</option>
-<option value="spec">spec - Default-Spezifikation</option>
-<option value="taylor">taylor - Variablenersetzung</option>
 <option value="trans">trans - XML+XSLT</option>
 <option value="gen">gen - generate SAX events</option>
-<option value="wiki">wiki - MediaWiki-Text</option>
+<option value="spec">spec - Dbat-Spezifikation</option>
+<option value="dbiv">dbiv - Dbiv-Spezifikation</option>
 <option value="echo">echo - Echo SQL</option>
 <option value="sqlj">sqlj - SQLJ-Generator</option>
 <option value="probe">probe - SQL-Syntaxtest</option>

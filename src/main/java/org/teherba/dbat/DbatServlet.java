@@ -1,5 +1,6 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2016-08-09: pass "conn" in writeStart; mode=spec|view -> *.xml
  *  2016-05-11: read Configuration in init(); Kim = 15
  *  2016-04-28: &uri=... -> config.setInputURI(inputURI);
  *  2014-11-11: handler.setResponse
@@ -268,11 +269,15 @@ public class DbatServlet extends HttpServlet {
                 targetFileName +=     ".xls";
                 mimeType =            "application/vnd.ms-excel;charset=";
             } else if (mode.startsWith("xml" )
-                    || mode.startsWith("spec")
                     || mode.startsWith("trans")
                     ) {
                 targetFileName +=     ".xml";
                 mimeType =            "text/xml";
+            } else if (mode.startsWith("spec")
+                    || mode.startsWith("view")
+                    ) {
+                targetFileName +=     ".xml";
+                mimeType =            "text/plain";
             } else { // echo, fix, jdbc, json, sql, taylor, wiki and all others
                 targetFileName +=     ".txt";
                 mimeType =            "text/plain";
@@ -486,6 +491,7 @@ public class DbatServlet extends HttpServlet {
                 tbSerializer.writeStart(new String[] // this may throw an exception "could not compile stylesheet"
                             { "encoding"                                    , encoding
                             , "specname"                                    , specName
+                            , "conn"                                        , config.getConnectionId()
                             , "title"                                       , "Title"
                             }
                             , new HashMap/*<1.5*/<String, String[]>/*1.5>*/() // parameterMap

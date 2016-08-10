@@ -57,8 +57,9 @@ Sprache</span>
 </select>
 </td>
 <td>
-<select name="mode" size="19">
+<select name="mode" size="21">
 <option value="csv">csv - Werte mit Trennzeichen</option>
+<option value="dbiv">dbiv - Dbiv-Spezifikation</option>
 <option value="echo">echo - Echo SQL</option>
 <option value="fix">fix - Spalten fester Breite</option>
 <option value="gen">gen - generate SAX events</option>
@@ -66,13 +67,14 @@ Sprache</span>
 <option value="jdbc">jdbc - SQL mit JDBC-Escapes</option>
 <option value="json">json - JSON</option>
 <option value="probe">probe - SQL-Syntaxtest</option>
-<option value="spec">spec - Default-Spezifikation</option>
+<option value="spec">spec - Dbat-Spezifikation</option>
 <option value="sql">sql - SQL INSERTs</option>
 <option value="sqlj">sqlj - SQLJ-Generator</option>
 <option value="taylor">taylor - Variablenersetzung</option>
 <option value="trans">trans - XML+XSLT</option>
 <option value="tsv">tsv - Werte mit Trennzeichen</option>
 <option value="update">update - SQL UPDATEs</option>
+<option value="view">view - Dbiv-Spezifikation</option>
 <option value="wiki">wiki - MediaWiki-Text</option>
 <option value="xls">xls - Excel</option>
 <option value="xlsx">xlsx - Excel</option>
@@ -87,7 +89,7 @@ Sprache</span>
 <a href="servlet?spec=describe">describe</a> - DDL einer Tabelle oder View
 <br />
 <a href="servlet?view=help&lang=de">Hilfe</a> - Kommandozeilen-Optionen<br />
-<a href="https://github.com/gfis/dbat/wiki" target="_new">Wiki</a>, <a href="https://github.com/gfis/dbat" target="_new">Git Repository</a> auf github.com<br />
+<a href="http://www.teherba.org/dbat" target="_new">Wiki</a>, <a href="https://github.com/gfis/dbat" target="_new">Git Repository</a> auf github.com<br />
 <a href="docs/api/index.html">API-Dokumentation</a> (Javadoc)
 <br />
 <a href="servlet?view=manifest">Manifest</a>, <a href="servlet?view=license">Lizenz</a>, <a href="servlet?view=notice"  >Referenzen</a><br />

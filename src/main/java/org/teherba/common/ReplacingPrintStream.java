@@ -1,5 +1,6 @@
 /*  PrintStream which replaces some patterns (ISO timestamps) by constant strings for RegressionTester
  *  @(#) $Id$
+ *  2016-08-10: size()
  *  2016-05-14: renamed from TimestampFilterStream; cleaned
  *  2014-11-16: pattern for milliseconds
  *  2013-01-06: HashMap for replacement patterns
@@ -42,6 +43,8 @@ public class ReplacingPrintStream extends PrintStream {
     private String[] replacements = null;
     /** whether the replacements should be done */
     private boolean replacing;
+    /** accumulated length of the output; because of the replacements, the size may not be exact */
+    private long streamSize;
 
     /** Constructor with output file
      *  @param fileName name of the file to be written
@@ -72,6 +75,7 @@ public class ReplacingPrintStream extends PrintStream {
         tfStream = new PrintStream(super.out, true, enc);
         this.replacements = replacements;
         setReplacing(true);
+        streamSize = 0;
     } // Constructor(3)
     
     /** Sets the replacement mode
@@ -108,6 +112,7 @@ public class ReplacingPrintStream extends PrintStream {
      */
     public void print(String str) {
         tfStream.print(replacePatterns(str));
+        streamSize += str.length();
     } // print(String)
 
     /** Prints a string after replacing the patterns from <em>test/regression.properties</em>, and a newline.
@@ -115,8 +120,16 @@ public class ReplacingPrintStream extends PrintStream {
      */
     public void println(String str) {
         tfStream.println(replacePatterns(str));
+        streamSize += str.length() + 1;
     } // println(String)
 
+	/** Get the accumulated stream size 
+	 *  @return character size
+	 */
+	public long size() {
+		return streamSize;
+	} // size
+	
     /** Writes <em>len</em> bytes from the specified byte array to this file output stream,
      *  starting at offset <em>off</em>.
      *  @param b byte array containing the bytes to be written to the stream.
@@ -130,6 +143,7 @@ public class ReplacingPrintStream extends PrintStream {
             tfStream.write(b2, 0, b2.length);
         } catch (Exception exc) {
         }
+        streamSize += len;
     } // write(byte[],int,int)
 
 } // ReplacingPrintStream

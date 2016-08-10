@@ -39,13 +39,17 @@ import  java.text.SimpleDateFormat;
 import  java.util.ArrayList;
 import  java.util.HashMap;
 
-/** Generator for binary Excel 97 *.xls and Excel 2007 OOXMLXML table.
+/** Generator for binary Excel 97 *.xls (BIFF) and Excel 2007 (Office Open XML, OOXML) tables.
  *  The format is described in <a href="http://msdn.microsoft.com/en-us/library/aa140066%28office.10%29.aspx">http://msdn.microsoft.com/en-us/library/aa140066%28office.10%29.aspx</a>
- *  This is not to be confused with the <em>Office Open XML</em> of Office 2007 and later, c.f.
+ *  This is not to be confused with the <em>Microsoft Office XML formats</em> of Office 2003, c.f.
  *  <a href="http://en.wikipedia.org/wiki/Microsoft_Office_XML_formats">http://en.wikipedia.org/wiki/Microsoft_Office_XML_formats</a>.
  *  <p>
- *  In contrast to the CSV import into Excel, this format avoids unwanted date format
+ *  In contrast to the CSV import into Excel, these formats avoid the unwanted date format
  *  interpretation of strings of the form 'mm-nn-pp'.
+ *  <p>
+ *  Depending on the mode ("xlsx" or "xls") the class decides which Excel format (OOXML or BIFF) 
+ *  it should generate. This switch is made easy by the package <em>org.apache.poi.ss.usermodel</em>
+ *  of Apache POI.
  *  @author Dr. Georg Fischer
  */
 public class ExcelStream extends BaseTable {

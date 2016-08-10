@@ -15,11 +15,14 @@
     <!--Shows the DDL Description of a Table or View-->
 
     <h3><a href="index.html">Dbat</a> - DDL of Table/View(s) <em>%</em></h3>
+    <p></p>
     
     <form method="get" action="servlet?spec=describe"><input name="spec" type="hidden" value="describe" />
 
-        Name: <input name="table" maxsize="64" size="32" init="spec_ind" value="spec_ind"></input>%    
+        Name: <input name="table" maxsize="64" size="32" init="spec_ind" value="spec_ind"></input>% <br />
         <input type="submit" value="Show DDL"></input> 
+          -> <a href="servlet?spec=describe&amp;mode=spec&amp;table=spec_ind&amp;dummy=Dbat+Spec.">Dbat Spec.</a>
+          -> <a href="servlet?spec=describe&amp;mode=dbiv&amp;table=spec_ind&amp;dummy=Dbiv+Spec.">Dbiv Spec.</a>
     </form>
     
     

@@ -48,13 +48,13 @@ public class ProbeSQL extends BaseTable {
     public void writeComment(String line) {
     } // writeComment
 
-    /** Writes a comment, but only if the "verbose" level is > 0.
+    /** Writes a comment
      *  @param line string to be output as a comment
      *  @param verbose level of output detail
      */
     public void writeComment(String line, int verbose) {
          try {
-            if (verbose > 0) {
+            if (true || verbose > 0) {
                 charWriter.println("-- " + line.replaceAll("\n", "\n--"));
             }
         } catch (Exception exc) {

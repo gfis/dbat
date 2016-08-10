@@ -10,6 +10,7 @@ CREATE TABLE            b04
 , content TEXT                COMMENT 'character large object (CLOB)'
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
 COMMIT;
+SELECT COUNT(*) FROM b04;
 
 B06.data.tmp	64	noversion 194706 web/noversion.txt
 B04.data.tmp 2906 test/B04.data.tmp
