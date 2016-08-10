@@ -265,7 +265,7 @@ TEST DE7 decimal table as json
 CALL Dbat -m json   -200 de1
 
 TEST DE8 decimal table as fix
-CALL Dbat -m fix    -200 de1
+CALL Dbat -m fix  -l 5,20,12,12,2,12,2,24  -200 de1
 
 TEST WE8 decimal table as HTML
 CALL Dbat -m html   -200 de1

@@ -1,4 +1,4 @@
-row1            123456780123456789 123456.345          yyyy-mm-dd hh:mm:ss yyyy-mm-dd hh:mm:ss
-row2            194706290530000000 194706.290          yyyy-mm-dd hh:mm:ss yyyy-mm-dd hh:mm:ss
-row3            123456780123456789 123456.345          yyyy-mm-dd hh:mm:ss yyyy-mm-dd hh:mm:ss
-row4            194706290530000000 194706.290          yyyy-mm-dd hh:mm:ss yyyy-mm-dd hh:mm:ss
+row1 123456780123456789  123456.345  2011-08-01    23:13:00      yyyy-mm-dd hh:mm:ss.SSS 
+row2 194706290530000000  194706.290  1981-08-09    11:30:00      yyyy-mm-dd hh:mm:ss.SSS 
+row3 123456780123456789  123456.345  2011-08-01    23:13:00      yyyy-mm-dd hh:mm:ss.SSS 
+row4 194706290530000000  194706.290  1981-08-09    11:30:00      yyyy-mm-dd hh:mm:ss.SSS 
