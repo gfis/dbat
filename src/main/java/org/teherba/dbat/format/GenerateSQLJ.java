@@ -1,5 +1,6 @@
 /*  Pseudo format which generates a Java program with embedded SQLJ instructions
     @(#) $Id$
+    2016-08-26: with getISOTimestamp()
     2012-06-16: copied from GenerateSQLJ
 */
 /*
@@ -18,13 +19,10 @@
  * limitations under the License.
  */
 package org.teherba.dbat.format;
-import  org.teherba.dbat.Messages;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.dbat.format.BaseTable;
-import  java.text.SimpleDateFormat;
 import  java.util.ArrayList;
-import  java.util.Date;
 import  java.util.HashMap;
 import  java.util.Iterator;
 import  java.util.LinkedHashMap;
@@ -71,7 +69,7 @@ public class GenerateSQLJ extends BaseTable {
      *  <li>specname - name of the parent spec, which is turned into a suitable Java class name
      *  </ul>
      */
-    public void writeStart(String[] params,  HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
+    public void writeStart(String[] params,  HashMap<String, String[]> parameterMap) {
         methodBuffer = new StringBuffer(8192);
         cursorBuffer = new StringBuffer(2048);
         String targetPackageName = GenerateSQLJ.class.getName().replaceAll("\\.dbat\\..*", ".dbat.sqlj");
@@ -96,19 +94,18 @@ public class GenerateSQLJ extends BaseTable {
 
             charWriter.println("/*  Generated SQLJ class " + targetClassName + " - DO NOT EDIT here!                                  ");
             charWriter.println(" *  @(#) $Id$                                                                 ");
-            charWriter.println(" *  " + Messages.TIMESTAMP_FORMAT.format(new java.util.Date())
-                    +              " by " + GenerateSQLJ.class.getName());
-            charWriter.println(" */                                                                           ");
-            charWriter.println("package " + targetPackageName + ";");
-            charWriter.println("import  org.teherba.dbat.SQLAction;                                           ");
-            charWriter.println("import  org.teherba.dbat.TableMetaData;                                       ");
-            charWriter.println("import  java.math.BigDecimal;                                                 ");
-            charWriter.println("import  java.sql.Date;                                                        ");
-            charWriter.println("import  java.sql.Time;                                                        ");
-            charWriter.println("import  java.sql.Timestamp;                                                   ");
-            charWriter.println("import  sqlj.runtime.*;                                                       ");
-            charWriter.println("import  sqlj.runtime.ref.*;                                                   ");
-            charWriter.println("                                                                              ");
+            charWriter.println(" *  " + BaseTable.getISOTimestamp() + " by " + GenerateSQLJ.class.getName());
+            charWriter.println(" */ ");
+            charWriter.println("package " + targetPackageName + ";"      );
+            charWriter.println("import  org.teherba.dbat.SQLAction;     ");
+            charWriter.println("import  org.teherba.dbat.TableMetaData; ");
+            charWriter.println("import  java.math.BigDecimal;           ");
+            charWriter.println("import  java.sql.Date;                  ");
+            charWriter.println("import  java.sql.Time;                  ");
+            charWriter.println("import  java.sql.Timestamp;             ");
+            charWriter.println("import  sqlj.runtime.*;                 ");
+            charWriter.println("import  sqlj.runtime.ref.*;             ");
+            charWriter.println("                                        ");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }

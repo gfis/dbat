@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
 <link rel="stylesheet" type="text/css" href="stylesheet.css" />
-<title>Database Administration Tool</title>
+<title>Dbat-SQL-Konsole</title>
 <style>
 td,th
 {vertical-align:top;margin:0px;padding-top:0px;padding-bottom:0px;padding-left:10px;padding-right:10px;border:none;}
@@ -16,10 +16,8 @@ td,th
 </script>
 </head>
 <body>
-<!--
-enc="ISO-8859-1", mode="html", lang="de" 
--->
-<h3><a href="index.html">Dbat</a>-Konsole </h3>
+<!--enc="ISO-8859-1", mode="html", lang="de"-->
+<h3><a href="index.html">Dbat</a>-SQL-Konsole</h3>
 <form action="servlet" method="get">
 <input type = "hidden" name="view" value="con2" />
 <table cellpadding="8">
@@ -87,5 +85,4 @@ SQL
 </tr>
 </table>
 </form>
-</body>
-</html>
+</body></html>

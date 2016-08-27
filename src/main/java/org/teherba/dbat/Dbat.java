@@ -56,13 +56,13 @@
  */
 package org.teherba.dbat;
 import  org.teherba.dbat.Configuration;
-import  org.teherba.dbat.Messages;
 import  org.teherba.dbat.SpecificationHandler;
 import  org.teherba.dbat.SQLAction;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.TableFactory;
 import  org.teherba.dbat.format.TableGenerator;
+import  org.teherba.dbat.web.Messages;
 import  java.io.Serializable;
 import  java.io.BufferedReader;
 import  java.io.BufferedOutputStream;

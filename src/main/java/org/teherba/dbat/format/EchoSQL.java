@@ -1,5 +1,6 @@
 /*  Pseudo format which only echoes the SQL statement for the row select
     @(#) $Id$
+    2016-08-26: with getISOTimestamp()
     2011-11-08: end comment better parseable
     2011-08-24: writeGenericRow
     2011-05-31: normal table serializer with single method 'writeComment'
@@ -21,13 +22,10 @@
  * limitations under the License.
  */
 package org.teherba.dbat.format;
-import  org.teherba.dbat.Messages;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.dbat.format.BaseTable;
-import  java.text.SimpleDateFormat;
 import  java.util.ArrayList;
-import  java.util.Date;
 import  java.util.HashMap;
 
 /** This class is only a tiny implementation of {@link org.teherba.dbat.format.BaseTable};
@@ -60,10 +58,10 @@ public class EchoSQL extends BaseTable {
      *  <li>specname - name of the parent spec, which is turned into a suitable Java class name
      *  </ul>
      */
-    public void writeStart(String[] params,  HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
+    public void writeStart(String[] params,  HashMap<String, String[]> parameterMap) {
         stmtNo = 0;
         try {
-            charWriter.println("--[01]--dbat.format.EchoSQL on " + Messages.TIMESTAMP_FORMAT.format(new java.util.Date()) + "----");
+            charWriter.println("--[01]--dbat.format.EchoSQL on " + BaseTable.getISOTimestamp() + "----");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
@@ -88,10 +86,10 @@ public class EchoSQL extends BaseTable {
      *  into any placeholders ("?") in the prepared statement
      */
     public void writeSQLInstruction(TableMetaData tbMetaData, String sqlInstruction
-    		, int action, int verbose
-    		, ArrayList/*<1.5*/<String>/*1.5>*/ variables) {
+            , int action, int verbose
+            , ArrayList<String> variables) {
         stmtNo ++;
-		sqlInstruction = sqlInstruction + " "; // because of trailing PARAMETER_MARKER
+        sqlInstruction = sqlInstruction + " "; // because of trailing PARAMETER_MARKER
         String separator = ";";
         try {
             if (stmtNo >= 2) {

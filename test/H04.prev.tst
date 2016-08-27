@@ -11,11 +11,8 @@
 <script src="script.js" type="text/javascript">
 </script>
 </head>
-
 <body>
-<!--
-lang="de" 
--->
+<!--lang="de"-->
 <h3><a href="index.html">Dbat</a>-Optionen auf der Kommandzeile</h3>
 <pre>
 Dbat Vx.hhhh/yyyy-mm-dd - DataBase Application Tool
@@ -70,10 +67,6 @@ Implementierte Ausgabeformate (-m):
 
 </pre>
 <p><a href="servlet?view=more&lang=de">mehr ...</a></p>
-<span style="font-size:small">
-Fragen, Hinweise:
-<a href="mailto:punctum@punctum.com">Dr. Georg Fischer</a>
-</span>
-</p>
-</body>
-</html>
+<p><span style="font-size:small">
+Questions, remarks: email to  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
+</body></html>

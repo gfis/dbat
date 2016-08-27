@@ -1,5 +1,6 @@
 /*  HelpPage.java - show the language specific commandline help text
  *  @(#) $Id$
+ *  2016-08-26: param BasePage
  *  2016-04-11: link to index.html was not relative
  *  2012-11-22: disable comment output for environment and session attributes
  *  2012-07-01: subpackage view
@@ -20,9 +21,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.teherba.dbat.view;
-import  org.teherba.dbat.Messages;
+package org.teherba.dbat.web;
+import  org.teherba.dbat.web.Messages;
 import  org.teherba.dbat.format.TableFactory;
+import  org.teherba.common.web.BasePage;
 import  java.io.PrintWriter;
 import  java.util.Enumeration;
 import  java.util.Iterator;
@@ -49,31 +51,24 @@ public class HelpPage {
      */
     public HelpPage() {
         log = Logger.getLogger(HelpPage.class.getName());
-    } // constructor()
+    } // Constructor()
     
-    /** Processes an http GET request
+    /** Shows usage information for the commandline utility
      *  @param request request with header fields
      *  @param response response with writer
+     *  @param basePage refers to common web methods and messages
      *  @param tableFactory factory for table serializers
-     *  @throws IOException
      */
-    public void forward(HttpServletRequest request, HttpServletResponse response, TableFactory tableFactory) {
+    public void showHelp(HttpServletRequest request, HttpServletResponse response
+            , BasePage basePage
+            , TableFactory tableFactory
+            ) {
         try {
-            PrintWriter out = response.getWriter();
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("text/html; charset=UTF-8");
-            response.setCharacterEncoding("UTF-8");
-            out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            out.write("\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n");
-            out.write("    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
-            out.write("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
-            out.write("<head>\n");
-            out.write("<meta http-equiv=\"Content-Type\" content=\"application/xhtml+xml;charset=UTF-8\" />\n");
-            out.write("<meta name=\"robots\" content=\"noindex, nofollow\" />\n");
-            out.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"stylesheet.css\" />\n");
+            PrintWriter out = basePage.writeHeader(request, response); // sets 'super.{session|out|language}''
 
             out.write("<title>Dbat help</title>\n");
-            out.write("<script src=\"script.js\" type=\"text/javascript\">\n</script>\n</head>\n");
+            out.write("<script src=\"script.js\" type=\"text/javascript\">\n</script>\n");
+            out.write("</head>\n");
             String[] optLang = new String []
                     /*  0 */ { "de"
                     /*  1 */ , "en"
@@ -82,9 +77,10 @@ public class HelpPage {
                     /*  0 */ { "Deutsch"
                     /*  1 */ , "English"
                     } ;
-            String language = "en";
-            Map parameterMap = request.getParameterMap(); // do not! use /*<1.5*/<String, String[]>/*1.5>*/
-            Iterator /*<1.5*<String>*1.5>*/ parmIter = parameterMap.keySet().iterator();
+            String language = BasePage.getInputField(request, "lang", "en");
+       /*
+            Map parameterMap = request.getParameterMap(); // do NOT! use <String, String[]>
+            Iterator parmIter = parameterMap.keySet().iterator();
             StringBuffer inputFields = new StringBuffer(256);
             while (parmIter.hasNext()) {
                 String name = (String) parmIter.next();
@@ -94,32 +90,35 @@ public class HelpPage {
                     language = values[0];
                 }
             } // while parmIter
-            out.write("\n<body>\n<!--\nlang=\"");
-            out.write(language);
-            out.write("\" \n-->\n<h3><a href=\"index.html\">Dbat</a>");
+       */     
+            out.write("<body>\n");
+            out.write("<!--lang=\"" + language + "\"-->\n");
+            out.write("<h3><a href=\"index.html\">Dbat</a>");
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("-Optionen auf der Kommandzeile");
             } else {
                 out.write(" Commandline Options");
             }
-            out.write("</h3>\n<pre>\n");
+            out.write("</h3>\n");
+            out.write("<pre>\n");
             out.write(Messages.getHelpText(language, tableFactory));
-            out.write("\n</pre>\n<p><a href=\"servlet?view=more&lang=");
-            out.write(language);
-            out.write("\">");
+            out.write("\n</pre>\n");
+            
+            out.write("<p><a href=\"servlet?view=more&lang=" + language + "\">");
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("mehr ...");
             } else {
                 out.write("more ...");
             }
-            
+            out.write("</a></p>\n");
+    /*            
             if (false) { // environment
                 out.write("<!-- Environment:\n");
-                Map/*<1.5*/<String, String>/*1.5>*/ env = System.getenv();
-                TreeSet/*<1.5*/<String>/*1.5>*/ keys = new TreeSet/*<1.5*/<String>/*1.5>*/(env.keySet());
-                Iterator/*<1.5*/<String>/*1.5>*/ iter = keys.iterator();
+                Map<String, String> env = System.getenv();
+                TreeSet<String> keys = new TreeSet<String>(env.keySet());
+                Iterator<String> iter = keys.iterator();
                 while (iter.hasNext()) {
                     String key   = (String) iter.next();
                     String value = (String) env.get(key);
@@ -138,20 +137,11 @@ public class HelpPage {
                 } // while attrs
                 out.write(":SessionAttributes -->\n");
             } // session attributes
-
-            out.write("</a></p>\n");
-            out.write("<span style=\"font-size:small\">\n");
-            if (false) {
-            } else if (language.startsWith("de")) {
-                out.write("Fragen, Hinweise:");
-            } else {
-                out.write("Questions, remarks:");
-            }
-            out.write("\n<a href=\"mailto:punctum@punctum.com\">Dr. Georg Fischer</a>\n</span>\n</p>\n</body>\n</html>\n");
+    */
+            basePage.writeTrailer("quest");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
-        } finally {
         }
-    } // forward
+    } // showHelp
 
 } // HelpPage

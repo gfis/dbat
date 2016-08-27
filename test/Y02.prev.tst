@@ -7,9 +7,11 @@
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
 <link rel="stylesheet" type="text/css" href="stylesheet.css" />
-<title>Message 404</title>
+<title>Dbat-Meldung 404</title>
 </head>
 <body>
-<!--lang=de, messno=404, text=Eine Spezifikationsdatei <em>test/wrong_spec_file</em> wurde nicht gefunden.<br />Bitte rufen Sie die <a href="/dbat">Dbat</a>-Startseite auf., parm=test/wrong_spec_file, par2=, par3=-->
-<h3>404: Eine Spezifikationsdatei <em>test/wrong_spec_file</em> wurde nicht gefunden.<br />Bitte rufen Sie die <a href="/dbat">Dbat</a>-Startseite auf.</h3>
+<!--lang=de, messno=404, text=Eine Spezifikationsdatei <em>test/wrong_spec_file</em> wurde nicht gefunden.<br />Bitte rufen Sie die <a href="index.html">Dbat</a>-Startseite auf., parm=test/wrong_spec_file, par2=, par3=-->
+<h3><a href="index.html">Dbat</a>-Meldung 404: Eine Spezifikationsdatei <em>test/wrong_spec_file</em> wurde nicht gefunden.<br />Bitte rufen Sie die <a href="index.html">Dbat</a>-Startseite auf.</h3>
+<p><span style="font-size:small">
+Fragen, Hinweise: EMail an  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
 </body></html>

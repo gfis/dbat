@@ -1,5 +1,6 @@
 /*  MetaInfPage.java - show meta data
  *  @(#) $Id$
+ *  2016-08-26: package independant; param BasePage
  *  2012-07-01: subpackage view
  *  2012-02-11, Georg Fischer: copied from metaInf.jsp
  */
@@ -18,7 +19,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.teherba.dbat.view;
+package org.teherba.common.web;
+import  org.teherba.common.web.BasePage;
 import  java.io.BufferedReader;
 import  java.io.InputStreamReader;
 import  java.io.PrintWriter;
@@ -26,12 +28,13 @@ import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;
 import  org.apache.log4j.Logger;
 
-/** This class prints the metadata for the application:
+/** This class prints metadata for the application:
  *  <ul>
  *  <li>License,</li>
- *  <li>JAR Manifest, and</li>
+ *  <li>JAR Manifest</li>
  *  <li>Notices for included software packages</li>
  *  </ul>
+ *  The relevant information is read from the JAR file.
  *  @author Dr. Georg Fischer
  */
 public class MetaInfPage {
@@ -45,34 +48,33 @@ public class MetaInfPage {
      */
     public MetaInfPage() {
         log = Logger.getLogger(MetaInfPage.class.getName());
-    } // constructor()
+    } // Constructor()
     
-    /** Processes an http GET request
+    /** Shows meta information for the application. 
+     *  The manifest and other files are read from the JAR file.
      *  @param request request with header fields
      *  @param response response with writer
-     *  @throws IOException
+     *  @param basePage refers to common web methods and messages
+     *  @param view denotes the particular subpage:
+     *  <ul>
+     *  <li>license </li>
+     *  <li>manifest</li>
+     *  <li>notice  </li>
+     *  <li>package (not used)</li>
+     *  <li>root    (not used)</li>
+     *  </ul>
      */
-    public void forward(HttpServletRequest request, HttpServletResponse response) {
+    public void showMetaInf(HttpServletRequest request, HttpServletResponse response
+            , BasePage basePage
+            , String view
+            ) {
         try {
-            PrintWriter out = response.getWriter();
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("text/html; charset=UTF-8");
-            response.setCharacterEncoding("UTF-8");
-            out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            out.write("\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n");
-            out.write("    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
-            out.write("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
-            out.write("<head>\n");
-            out.write("<meta http-equiv=\"Content-Type\" content=\"application/xhtml+xml;charset=UTF-8\" />\n");
-            out.write("<meta name=\"robots\" content=\"noindex, nofollow\" />\n");
-            out.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"stylesheet.css\" />\n");
-
-            out.write("<title>DB Administration Tool</title>\n");
+            PrintWriter out = basePage.writeHeader(request, response); // sets 'super.{session|out|language}''
+            
+            out.write("<title>Dbat MetaInf</title>\n");
             out.write("</head>\n<body>\n");
-            String CVSID = "@(#) $Id$";
-            String line = null;
+            String line     = null;
             String fileName = null;
-            String view = request.getParameter("view");
             if (view == null) {
                 view = "manifest";
             }
@@ -84,7 +86,7 @@ public class MetaInfPage {
                     out.println(packs[ipack].getName());
                 } // for ipack
                 out.write("</pre>\n</tt>\n");
-            } else {
+            } else { // read from a resource in the JAR file
                 if (false) {
                 } else if (view.equals("license")) {
                     out.write("<a name=\"license\" />\n<h3>License</h3>\n");
@@ -100,21 +102,19 @@ public class MetaInfPage {
                     fileName = "META-INF/MANIFEST.MF";
                 }
                 out.write("\n<tt>\n<pre>\n");
-                
                 BufferedReader reader = new BufferedReader(new InputStreamReader
                         (this.getClass().getClassLoader().getResourceAsStream(fileName))
                         );
                 while ((line = reader.readLine()) != null) {
                     out.println(line);
                 } // while
+                out.write("</pre>\n</tt>\n");
             } // not "package"
-            out.write("</pre>\n</tt>\n<p>\nBack to the <a href=\"index.html\">Dbat input form</a>\n");
-            out.write("<br />\nQuestions, remarks to: <a href=\"mailto:punctum@punctum.com\">Dr. Georg Fischer</a></p>");
-            out.write("</body></html>\n");
+            
+            basePage.writeTrailer("back,quest");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
-        } finally {
         }
-    } // forward
+    } // showMetaInf
 
 } // MetaInfPage

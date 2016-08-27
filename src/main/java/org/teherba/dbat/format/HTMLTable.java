@@ -47,7 +47,7 @@
 package org.teherba.dbat.format;
 import  org.teherba.dbat.format.SQLTable; // for <describe>
 import  org.teherba.dbat.format.XMLTable;
-import  org.teherba.dbat.Messages;
+import  org.teherba.dbat.web.Messages;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  java.sql.DatabaseMetaData;

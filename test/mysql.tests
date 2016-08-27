@@ -147,6 +147,9 @@ HTTP view=help lang=en
 
 TEST H04 web help page de
 HTTP view=help lang=de
+
+TEST H05 invalid view request parameter
+HTTP view=root
 #-------------------
 # more page
 TEST MR1 more web page en

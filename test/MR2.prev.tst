@@ -98,7 +98,5 @@ Sprache</span>
 </table>
 </form>
 <p><span style="font-size:small">
-Fragen, Hinweise: <a href="mailto:punctum@punctum.com">Dr. Georg Fischer</a></span>
-</p>
-</body>
-</html>
+Questions, remarks: email to  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
+</body></html>

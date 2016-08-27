@@ -11,11 +11,8 @@
 <script src="script.js" type="text/javascript">
 </script>
 </head>
-
 <body>
-<!--
-lang="en" 
--->
+<!--lang="en"-->
 <h3><a href="index.html">Dbat</a> Commandline Options</h3>
 <pre>
 Dbat Vx.hhhh/yyyy-mm-dd - DataBase Application Tool
@@ -71,10 +68,6 @@ Implemented output formats (-m):
 
 </pre>
 <p><a href="servlet?view=more&lang=en">more ...</a></p>
-<span style="font-size:small">
-Questions, remarks:
-<a href="mailto:punctum@punctum.com">Dr. Georg Fischer</a>
-</span>
-</p>
-</body>
-</html>
+<p><span style="font-size:small">
+Questions, remarks: email to  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
+</body></html>

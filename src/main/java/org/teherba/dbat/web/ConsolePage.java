@@ -1,5 +1,6 @@
 /*  ConsolePage.java - run a query or SQL instruction from a web form
  *  @(#) $Id$
+ *  2016-08-26: param BasePage
  *  2012-07-01, Georg Fischer: copied from MorePage.java
  */
 /*
@@ -17,9 +18,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.teherba.dbat.view;
+package org.teherba.dbat.web;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.TableFactory;
+import  org.teherba.common.web.BasePage;
 import  java.io.PrintWriter;
 import  java.util.Iterator;
 import  java.util.LinkedHashMap;
@@ -29,7 +31,7 @@ import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;
 import  org.apache.log4j.Logger;
 
-/** Prints a form for the selection of 
+/** Prints a form for the selection of
  *  <ul>
  *  <li>a language,</li>
  *  <li>an encoding, </li>
@@ -52,68 +54,41 @@ public class ConsolePage {
      */
     public ConsolePage() {
         log = Logger.getLogger(ConsolePage.class.getName());
-    } // constructor()
-    
-    /** Processes an http GET request
+    } // Constructor()
+
+    /** Shows an input form for SQL command execution
      *  @param request request with header fields
      *  @param response response with writer
+     *  @param basePage refers to common web methods and messages
      *  @param tableFactory factory for table serializers
      *  @param dsMap maps connection identifiers (short database instance ids) to {@link DataSource Datasources}
-     *  @throws IOException
      */
-    public void forward(HttpServletRequest request, HttpServletResponse response, TableFactory tableFactory, LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap) {
+    public void showConsole(HttpServletRequest request, HttpServletResponse response
+            , BasePage basePage
+            , TableFactory tableFactory
+            , LinkedHashMap<String, DataSource> dsMap
+            ) {
         try {
-            PrintWriter out = response.getWriter();
-            request.setCharacterEncoding("UTF-8");
-            response.setContentType("text/html; charset=UTF-8");
-            response.setCharacterEncoding("UTF-8");
-            out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            out.write("\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n");
-            out.write("    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
-            out.write("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
-            out.write("<head>\n");
-            out.write("<meta http-equiv=\"Content-Type\" content=\"application/xhtml+xml;charset=UTF-8\" />\n");
-            out.write("<meta name=\"robots\" content=\"noindex, nofollow\" />\n");
-            out.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"stylesheet.css\" />\n");
+            PrintWriter out = basePage.writeHeader(request, response); // sets 'super.{session|out|language}''
 
-            out.write("<title>Database Administration Tool</title>\n");
-            out.write("<style>\ntd,th\n");
-            out.write("{vertical-align:top;margin:0px;padding-top:0px;padding-bottom:0px;padding-left:10px;padding-right:10px;border:none;}\n</style>\n<script src=\"script.js\" type=\"text/javascript\">\n</script>\n</head>\n");
-            String[] optEnc    = new String []
-                    /*  0 */ { "ISO-8859-1"
-                    /*  1 */ , "UTF-8"
-                    } ;
-            String[] enEnc    = new String []
-                    /*  0 */ { "ISO-8859-1"
-                    /*  1 */ , "UTF-8"
-                    } ;
-            String[] optLang = new String []
-                    /*  0 */ { "de"
-                    /*  1 */ , "en"
-                    } ;
-            String[] enLang = new String []
-                    /*  0 */ { "Deutsch"
-                    /*  1 */ , "English"
-                    } ;
-            String encoding     = "ISO-8859-1";
-            String mode         = "html";
-            String language     = "en";
-            String connectionId = "mysql";
+            String connectionId  = null;
             if (dsMap != null && ! dsMap.isEmpty()) {
-                Iterator /*<1.5*/<String>/*1.5>*/ citer = dsMap.keySet().iterator();
+                Iterator<String> citer = dsMap.keySet().iterator();
                 boolean busy = true;
                 while (busy && citer.hasNext()) {
                     connectionId = (String) citer.next();
                     busy = false; // take first only
                 } // while citer
-            }
-            String intext       = "";
-            int fetchLimit      = 64;
-            
-            Map parameterMap = request.getParameterMap(); // do not! use /*<1.5*/<String, String[]>/*1.5>*/
-            Iterator /*<1.5*<String>*1.5>*/ parmIter = parameterMap.keySet().iterator();
-            StringBuffer inputFields = new StringBuffer(256);
-
+            } // valid dsMap
+            String encoding     = BasePage.getInputField(request, "enc"   , "ISO-8859-1");
+            String mode         = BasePage.getInputField(request, "mode"  , "html"      );
+            String language     = BasePage.getInputField(request, "lang"  , "en"        );
+            connectionId        = BasePage.getInputField(request, "conn"  , "mysql"     );
+            String intext       = BasePage.getInputField(request, "intext", ""          );
+            int    fetchLimit   = BasePage.getInputField(request, "fetch" , 64          );
+    /*
+            Map parameterMap = request.getParameterMap(); // do NOT! use <String, String[]>
+            Iterator parmIter = parameterMap.keySet().iterator();
             while (parmIter.hasNext()) {
                 String name = (String) parmIter.next();
                 String[] values = request.getParameterValues(name);
@@ -139,23 +114,39 @@ public class ConsolePage {
                 } else { // unknown parameter name - ignore
                 } // unknown
             } // while parmIter
-            int index = 0;
-            out.write("<body>\n<!--\nenc=\"");
-            out.write(encoding);
-            out.write("\", mode=\"");
-            out.write(mode);
-            out.write("\", lang=\"");
-            out.write(language);
-            out.write("\" \n-->\n");
-            out.write("<h3><a href=\"index.html\">Dbat</a>");
+    */
+            String consoleWord = null;
             if (false) {
             } else if (language.startsWith("de")) {
-                out.write("-Konsole ");
+                consoleWord = "-SQL-Konsole";
             } else {
-                out.write(" Console ");
+                consoleWord = " SQL console";
             }
-            out.write("</h3>\n");
-            
+
+            out.write("<title>" + basePage.getAppName() + consoleWord + "</title>\n");
+            out.write("<style>\ntd,th\n");
+            out.write("{vertical-align:top;margin:0px;padding-top:0px;padding-bottom:0px;padding-left:10px;padding-right:10px;border:none;}\n</style>\n<script src=\"script.js\" type=\"text/javascript\">\n</script>\n</head>\n");
+            String[] optEnc    = new String []
+                    /*  0 */ { "ISO-8859-1"
+                    /*  1 */ , "UTF-8"
+                    } ;
+            String[] enEnc    = new String []
+                    /*  0 */ { "ISO-8859-1"
+                    /*  1 */ , "UTF-8"
+                    } ;
+            String[] optLang = new String []
+                    /*  0 */ { "de"
+                    /*  1 */ , "en"
+                    } ;
+            String[] enLang = new String []
+                    /*  0 */ { "Deutsch"
+                    /*  1 */ , "English"
+                    } ;
+            int index = 0;
+            out.write("<body>\n");
+            out.write("<!--enc=\"" + encoding + "\", mode=\"" + mode + "\", lang=\"" + language + "\"-->\n");
+            out.write("<h3>" + basePage.get(language, "001") + consoleWord + "</h3>\n"); // link to main page
+
             out.write("<form action=\"servlet\" method=\"get\">\n");
             out.write("<input type = \"hidden\" name=\"view\" value=\"con2\" />\n");
 
@@ -198,7 +189,7 @@ public class ConsolePage {
             out.write("</td>\n");
 
             out.write("</tr>\n<tr valign=\"top\">\n");
-            
+
             out.write("<td>\n<select name=\"enc\" size=\"");
             out.write(String.valueOf(optEnc.length));
             out.write("\">\n");
@@ -226,7 +217,7 @@ public class ConsolePage {
             out.write("\" />\n");
 
             out.write("</td>\n");
-            
+
             out.write("<td>\n<select name=\"lang\" size=\"");
             out.write(String.valueOf(optLang.length));
             out.write("\">\n");
@@ -244,7 +235,7 @@ public class ConsolePage {
             out.write("<td>\n<select name=\"mode\" size=\"");
             out.write("6"); // all formats: String.valueOf(factory.getCount()));
             out.write("\">\n");
-            Iterator /*<1.5*/<BaseTable>/*1.5>*/ titer = tableFactory.getIterator();
+            Iterator <BaseTable> titer = tableFactory.getIterator();
             while (titer.hasNext()) {
                 BaseTable tableFormat = (BaseTable) titer.next();
                 String code = tableFormat.getFirstFormatCode();
@@ -258,7 +249,7 @@ public class ConsolePage {
             out.write("<td>\n<select name=\"conn\" size=\"");
             out.write("3"); // all connection Ids
             out.write("\">\n");
-            Iterator /*<1.5*/<String>/*1.5>*/ diter = dsMap.keySet().iterator();
+            Iterator <String> diter = dsMap.keySet().iterator();
             while (diter.hasNext()) {
                 String connId = (String) diter.next();
                 out.write("<option value=\"" + connId + "\""
@@ -267,7 +258,7 @@ public class ConsolePage {
                           + connId + "</option>\n");
             } // while diter
             out.write("</select>\n<p />");
-            
+
             out.write("<input type=\"submit\" value=\"");
             if (false) {
             } else if (language.startsWith("de")) {
@@ -300,11 +291,11 @@ public class ConsolePage {
             if (intext.trim().length() > 0) {
                 out.write(intext);
             }
-            out.write("</body>\n</html>\n");
+            basePage.writeTrailer("");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         } finally {
         }
-    } // forward
+    } // showConsole
 
 } // ConsolePage

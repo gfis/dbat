@@ -7,11 +7,11 @@
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
 <link rel="stylesheet" type="text/css" href="stylesheet.css" />
-<title>Dbat Message 404</title>
+<title>Dbat Message 405</title>
 </head>
 <body>
-<!--lang=en, messno=404, text=A specification file <em>test/wrong_spec_file</em> was not found.<br />Please check the <a href="index.html">Dbat</a> home page., parm=test/wrong_spec_file, par2=, par3=-->
-<h3><a href="index.html">Dbat</a> Message 404: A specification file <em>test/wrong_spec_file</em> was not found.<br />Please check the <a href="index.html">Dbat</a> home page.</h3>
+<!--lang=en, messno=405, text=Unknown request parameter &amp;view="root", parm=view, par2=root, par3=-->
+<h3><a href="index.html">Dbat</a> Message 405: Unknown request parameter &amp;view="root"</h3>
 <p><span style="font-size:small">
 Questions, remarks: email to  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
 </body></html>

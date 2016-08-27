@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
 <link rel="stylesheet" type="text/css" href="stylesheet.css" />
-<title>DB Administration Tool</title>
+<title>Dbat MetaInf</title>
 </head>
 <body>
 <a name="notice" />
@@ -61,6 +61,7 @@
 </pre>
 </tt>
 <p>
-Back to the <a href="index.html">Dbat input form</a>
-<br />
-Questions, remarks to: <a href="mailto:punctum@punctum.com">Dr. Georg Fischer</a></p></body></html>
+Back to the <a href="index.html">Dbat</a> main page</p>
+<p><span style="font-size:small">
+Questions, remarks: email to  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
+</body></html>

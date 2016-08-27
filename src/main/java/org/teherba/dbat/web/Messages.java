@@ -1,5 +1,6 @@
 /*  Messages.java - Static help texts and other language specific messages for Dbat.
  *  @(#) $Id$
+ *  2016-08-26: package org.teherba.dbat.web
  *  2016-05-12: getViewSourceLink
  *  2012-12-10: getSortTitle
  *  2012-11-22: "V" before JDBC driver version
@@ -25,14 +26,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.teherba.dbat;
+package org.teherba.dbat.web;
 import  org.teherba.dbat.Configuration;
+import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.TableFactory;
+import  org.teherba.common.web.BasePage;
 import  java.io.Serializable;
 import  java.sql.Driver;
 import  java.sql.DriverManager;
-import  java.text.SimpleDateFormat;
-import  java.util.Date;
 import  java.util.Enumeration;
 import  javax.servlet.http.HttpServletRequest;
 import  org.xml.sax.helpers.AttributesImpl;
@@ -57,6 +58,30 @@ public class Messages implements Serializable {
      */
     public Messages() {
     } // Constructor
+    
+    /** Sets the application-specific error message texts
+     *  @param basePage reference to the hash for message texts
+     */
+    public static void addErrorMessageTexts(BasePage basePage) {
+        String appLink = "<a href=\"index.html\">" + basePage.getAppName() + "</a>";
+        //--------
+        basePage.add("en", "001", appLink);
+        basePage.add("de", "001", appLink);
+        //--------
+        basePage.add("en", "301", "Specification file <em>{parm}</em> was moved to <em><a href=\"/dbat/servlet?spec={par2}\">{par2}</a></em>."
+                + "<br />Please update your bookmarks."
+                + "<br />You will be redirected to the new page in {par3} s.");
+        basePage.add("de", "301", "Die Spezifikationsdatei <em>{parm}</em> wurde nach <em><a href=\"/dbat/servlet?spec={par2}\">{par2}</a>"
+                + "</em> verschoben."
+                + "<br />Bitte &auml;ndern Sie Ihre Favoriten/Lesezeichen."
+                + "<br />Sie werden in {par3} s auf die neue Seite umgelenkt.");
+        //--------
+        basePage.add("en", "404", "A specification file <em>{parm}</em> was not found."
+                + "<br />Please check the "    + appLink + " home page.");
+        basePage.add("de", "404", "Eine Spezifikationsdatei <em>{parm}</em> wurde nicht gefunden."
+                + "<br />Bitte rufen Sie die " + appLink + "-Startseite auf.");
+        //--------
+    } // addErrorMessageTexts
 
     /** Gets the default word particles for the count of rows below a result table
      *  @param language ISO country code: "de", "en"
@@ -244,9 +269,6 @@ public class Messages implements Serializable {
         return result;
     } // getTimingMessage
 
-    /** ISO timestamp without milliseconds */
-    public static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
-
     /** Gets the title text for a sortable column.
      *  @param language ISO country code: "de", "en"
      *  @return language specific title attribute for the &lt;th&gt element.
@@ -328,7 +350,7 @@ public class Messages implements Serializable {
         } // out
         if (trailerSelect.contains(" time")) {
             result.append(timePart);
-            result.append(TIMESTAMP_FORMAT.format(new java.util.Date()));
+            result.append(BaseTable.getISOTimestamp());
             comma = true;
         } // time
         if (trailerSelect.contains(" dbat")) {

@@ -1,5 +1,6 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2016-08-25: message texts here; new message 405: unknown request parameter &view=...
  *  2016-08-09: pass "conn" in writeStart; mode=spec|view -> *.xml
  *  2016-05-11: read Configuration in init(); Kim = 15
  *  2016-04-28: &uri=... -> config.setInputURI(inputURI);
@@ -43,12 +44,12 @@ import  org.teherba.dbat.Configuration;
 import  org.teherba.dbat.SpecificationHandler;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.TableFactory;
-import  org.teherba.dbat.view.ConsolePage;
-import  org.teherba.dbat.view.HelpPage;
-import  org.teherba.dbat.view.MessagePage;
-import  org.teherba.dbat.view.MetaInfPage;
-import  org.teherba.dbat.view.MorePage;
-import  org.teherba.dbat.view.ValidatePage;
+import  org.teherba.dbat.web.ConsolePage;
+import  org.teherba.dbat.web.HelpPage;
+import  org.teherba.dbat.web.Messages;
+import  org.teherba.dbat.web.MorePage;
+import  org.teherba.common.web.BasePage;
+import  org.teherba.common.web.MetaInfPage;
 import  org.teherba.xtrans.BaseTransformer;
 import  org.teherba.xtrans.BasicFactory;
 import  org.teherba.xtrans.XMLTransformer;
@@ -108,7 +109,11 @@ public class DbatServlet extends HttpServlet {
     /** Whether the response is binary */
     private boolean binary;
     /** Dbat's configuration data */
-    Configuration config;
+    private Configuration config;
+    /** common code and messages for auxiliary web pages */
+    private BasePage basePage;
+    /** name of this application */
+    private static final String APP_NAME = "Dbat";
 
     /** Called by the servlet container to indicate to a servlet
      *  that the servlet is being placed into service.
@@ -119,6 +124,9 @@ public class DbatServlet extends HttpServlet {
         log = Logger.getLogger(DbatServlet.class.getName());
         ServletContext context = getServletContext();
         config = new Configuration();
+        basePage = new BasePage(APP_NAME);
+        Messages.addErrorMessageTexts(basePage);
+        
         try {
             envContext = (Context) new InitialContext().lookup("java:comp/env"); // get the environment naming context
             dsMap = new LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/(4);
@@ -213,6 +221,7 @@ public class DbatServlet extends HttpServlet {
      *  @param defaultValue default value of the parameter
      *  @return non-null (but possibly empty) string value of the input field
      */
+/*
     private String getInputField(HttpServletRequest request, String name, String defaultValue) {
         String value = request.getParameter(name);
         if (value == null) {
@@ -220,13 +229,14 @@ public class DbatServlet extends HttpServlet {
         }
         return value;
     } // getInputField
-
+*/
     /** Gets the integer value of an HTML input (parameter) field, and if it is not set, pass some default value
      *  @param request request for the HTML form
      *  @param name name of the input field
      *  @param defaultValue default value of the parameter
      *  @return non-null (but possibly empty) string value of the input field
      */
+/*
     private int  getInputField(HttpServletRequest request, String name, int defaultValue) {
         String value = request.getParameter(name);
         int result = defaultValue;
@@ -239,7 +249,7 @@ public class DbatServlet extends HttpServlet {
         }
         return result;
     } // getInputField
-
+*/
     /** Sets the content-disposition with target filename and the content-type
      *  of the response depending on the output format (mode)
      *  @param response response of the Http request (headers are set therein)
@@ -310,34 +320,34 @@ public class DbatServlet extends HttpServlet {
         config.configure(config.WEB_CALL, dsMap);
         TableFactory tableFactory = new TableFactory();
         request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
         boolean isDbiv = false; // whether the input file is a Dbiv specification
-        String specName             = getInputField(request, "spec"     , "index").replaceAll("\\.", "/");
-                // spec subdirectories may be separated by "/" or by "."
+        String specName             = BasePage.getInputField(request, "spec"     , "index")
+        		.replaceAll("\\.", "/"); // spec subdirectories may be separated by "/" or by "."
         if (specName.endsWith("/iv")) {
             isDbiv = true;
             specName = specName.substring(0, specName.length() - 3) + ".iv"; // repair the ending
         } // isDbiv
-        String connectionId         = getInputField(request, "conn"     , "");
+        String connectionId         = BasePage.getInputField(request, "conn"     , "");
         if (connectionId.length() > 0) {
             config.addProperties(connectionId + ".properties");
             config.setConnectionId(connectionId);
-        }
+        } // wiht conn
 
-        String view = request.getParameter("view");
-        // The empty view is the default, and the DBIV view are handled likewise
+        String view                 = BasePage.getInputField(request, "view"     , "");
+        // The empty view is the default, and the DBIV views are handled likewise
         if (view == null || view.length() == 0 || view.matches("del|del2|dat|ins|ins2|upd|upd2|sear")) {
             try {
-                HttpSession session = request.getSession();
                 String waitTime     = "3"; // default
-                String mode         = getInputField(request, "mode"     , "html"    );
-                String encoding     = getInputField(request, "enc"      , "UTF-8"   );
-                String language     = getInputField(request, "lang"     , "en"      );
-                String separator    = getInputField(request, "sep"      , ";"       );
-                String inputURI     = getInputField(request, "uri"      , null      );
+                String mode         = BasePage.getInputField(request, "mode"     , "html"    );
+                String encoding     = BasePage.getInputField(request, "enc"      , "UTF-8"   );
+                String language     = BasePage.getInputField(request, "lang"     , "en"      );
+                String separator    = BasePage.getInputField(request, "sep"      , ";"       );
+                String inputURI     = BasePage.getInputField(request, "uri"      , null      );
                 if (mode.compareToIgnoreCase("tsv") == 0) {
                     separator   = "\t";
                 }
-                int fetchLimit      = getInputField(request, "fetch"    , 0x7fffffff); // "unlimited"
+                int fetchLimit      = BasePage.getInputField(request, "fetch"    , 0x7fffffff); // "unlimited"
                 // response.setContentType(config.getHtmlMimeType()); // default
                 binary = setResponseHeaders(response, mode, specName, encoding);
 
@@ -387,7 +397,7 @@ public class DbatServlet extends HttpServlet {
                     } else { // 404 - really not found
                         session.setAttribute("messno", "404"); // spec not found
                     } // 404
-                    (new MessagePage    ()).forward(request, response);
+                    basePage.writeMessage(request, response);
                 } // not found
 
                 if (found)  {
@@ -448,18 +458,17 @@ public class DbatServlet extends HttpServlet {
             // if (view == null || view.length() == 0 || view.matches("del|del2|dat|ins|ins2|upd|upd2|sear"))
 
         } else if (view.equals("con")) { // View "con" collects the parameters from the SQL Console
-            (new ConsolePage    ()).forward(request, response, tableFactory, dsMap);
+            (new ConsolePage    ()).showConsole(request, response, basePage, tableFactory, dsMap);
 
         } else if (view.equals("con2")) { // View "con2" is for the result of the SQL console
             try {
-                HttpSession session = request.getSession();
                 String waitTime = "3";
-                String mode     = getInputField(request, "mode"     , "html"    );
-                String encoding = getInputField(request, "enc"      , "UTF-8"   );
-                String language = getInputField(request, "lang"     , "en"      );
-                String separator= getInputField(request, "sep"      , ";"       );
-                String intext   = getInputField(request, "intext"   , ";"       );
-                int fetchLimit  = getInputField(request, "fetch"    , 64        );
+                String mode     = BasePage.getInputField(request, "mode"     , "html"    );
+                String encoding = BasePage.getInputField(request, "enc"      , "UTF-8"   );
+                String language = BasePage.getInputField(request, "lang"     , "en"      );
+                String separator= BasePage.getInputField(request, "sep"      , ";"       );
+                String intext   = BasePage.getInputField(request, "intext"   , ";"       );
+                int fetchLimit  = BasePage.getInputField(request, "fetch"    , 64        );
                 if (mode.compareToIgnoreCase("tsv") == 0) {
                     separator   = "\t";
                 }
@@ -511,18 +520,21 @@ public class DbatServlet extends HttpServlet {
 
         // now the views for the auxiliary pages
         } else if (view.equals("help")) {
-            (new HelpPage       ()).forward(request, response, tableFactory);
+            (new HelpPage       ()).showHelp    (request, response, basePage, tableFactory);
         } else if (view.equals("license")
                 || view.equals("manifest")
                 || view.equals("notice")
                 ) {
-            (new MetaInfPage    ()).forward(request, response);
+            (new MetaInfPage    ()).showMetaInf (request, response, basePage, view);
         } else if (view.equals("more")) {
-            (new MorePage       ()).forward(request, response, tableFactory);
+            (new MorePage       ()).showMore    (request, response, basePage, tableFactory);
         } else if (view.equals("validate")) {
-            (new ValidatePage   ()).forward(request, response);
-        } else {
-            // unknown view
+            (new MorePage       ()).showValidate(request, response, basePage);
+        } else { // unknown view
+            session.setAttribute("messno", "405"); // unknown request parameter &view=
+            session.setAttribute("parm"  , "view");
+            session.setAttribute("par2"  , view);
+            basePage.writeMessage(request, response);
         }
     } // generateResponse
 

@@ -59,7 +59,6 @@
  */
 package org.teherba.dbat;
 import  org.teherba.dbat.Configuration;
-import  org.teherba.dbat.Messages;
 import  org.teherba.dbat.SQLAction;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
@@ -68,6 +67,7 @@ import  org.teherba.dbat.format.EchoSQL;
 import  org.teherba.dbat.format.GenerateSQLJ;
 import  org.teherba.dbat.format.HTMLTable;
 import  org.teherba.dbat.format.ProbeSQL;
+import  org.teherba.dbat.web.Messages;
 import  org.teherba.xtrans.BaseTransformer;
 import  java.io.IOException;
 import  java.io.PrintWriter;

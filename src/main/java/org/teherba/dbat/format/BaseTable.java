@@ -1,5 +1,6 @@
 /*  Base class for file format representing table descriptions or results sets
     @(#) $Id$
+    2016-08-26: getISOTimestamp()
     2016-05-08: close(); end of WW2 + 71 years
     2014-03-04: ignore pseudo columns
     2012-11-27: writeCommit
@@ -44,7 +45,9 @@ import  java.io.OutputStream;
 import  java.io.PrintWriter;
 import  java.sql.DatabaseMetaData;
 import  java.sql.Types;
+import  java.text.SimpleDateFormat;
 import  java.util.ArrayList; // for 'columns'
+import  java.util.Date;
 import  java.util.HashMap;
 import  java.util.Map;
 import  java.util.Iterator;
@@ -102,6 +105,14 @@ public abstract class BaseTable {
     protected int tableRowNo;
     /** the string which indicates a placeholder for a host variable in an SQL statement to be prepared */
     public static final String PARAMETER_MARKER = " ? ";
+    /** ISO timestamp without milliseconds */
+    private static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
+    /** Get an ISO timestamp
+     *  @return String of the form "yyyy-MM-dd' 'HH:mm:ss"
+     */
+    public static String getISOTimestamp() {
+        return TIMESTAMP_FORMAT.format(new java.util.Date());
+    } // getISOTimestamp
 
     /** Indicates the type of a row to be output by {@link #writeGenericRow} */
     public static enum RowType
