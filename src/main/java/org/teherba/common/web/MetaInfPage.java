@@ -55,6 +55,7 @@ public class MetaInfPage {
      *  @param request request with header fields
      *  @param response response with writer
      *  @param basePage refers to common web methods and messages
+     *  @param language 2-letter code en, de etc.
      *  @param view denotes the particular subpage:
      *  <ul>
      *  <li>license </li>
@@ -66,12 +67,13 @@ public class MetaInfPage {
      */
     public void showMetaInf(HttpServletRequest request, HttpServletResponse response
             , BasePage basePage
+            , String language
             , String view
             ) {
         try {
-            PrintWriter out = basePage.writeHeader(request, response); // sets 'super.{session|out|language}''
+            PrintWriter out = basePage.writeHeader(request, response, language);
             
-            out.write("<title>Dbat MetaInf</title>\n");
+            out.write("<title>" + basePage.getAppName() + " MetaInf</title>\n");
             out.write("</head>\n<body>\n");
             String line     = null;
             String fileName = null;
@@ -111,7 +113,7 @@ public class MetaInfPage {
                 out.write("</pre>\n</tt>\n");
             } // not "package"
             
-            basePage.writeTrailer("back,quest");
+            basePage.writeTrailer(language, "back,quest");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }

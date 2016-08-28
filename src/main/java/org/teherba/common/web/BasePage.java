@@ -46,14 +46,10 @@ public class BasePage {
     /** log4j logger (category) */
     private Logger log;
 
-    /** the request session */
-    protected HttpSession session;
     /** the response writer */
     protected PrintWriter out;
     /** (short) application name, for example "Dbat" */
     public    String appName;
-    /** current language (2-letter code) */
-    public    String language;
     /** store the message patterns here */
     private   HashMap<String, String> hash;
     /** separator for message (hash) keys */
@@ -70,9 +66,7 @@ public class BasePage {
      */
     public BasePage(String applicationName) {
         log      = Logger.getLogger(BasePage.class.getName());
-        session  = null;
         out      = null;
-        language = "en"; // default
         hash     = new HashMap<String, String>(8);
         appName  = applicationName;
         BasePage basePage = this; // convenient for copy/paste
@@ -105,7 +99,7 @@ public class BasePage {
 
     /** Gets a session attribute or a default value
      *  @param session request session
-     *  @param attr name of the attribute
+     *  @param name name of the attribute
      *  @param defaultValue default value if the attribute is not present in the session
      *  @return a String value for the session attribute
      */
@@ -155,17 +149,17 @@ public class BasePage {
      *  up to and excluding the <em>title</em> element)
      *  @param request  request with header fields
      *  @param response response with writer
+     *  @param language 2-letter code en, de etc.
      *  @return the writer for the response
      */
-    public PrintWriter writeHeader(HttpServletRequest request, HttpServletResponse response) {
+    public PrintWriter writeHeader(HttpServletRequest request, HttpServletResponse response
+            , String language
+            ) {
         try {
-            session  = request .getSession();
-            out      = response.getWriter();
-            language = getSessionAttribute(session, "lang", "en");
-
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html; charset=UTF-8");
             response.setCharacterEncoding("UTF-8");
+            out      = response.getWriter(); // side effect
             out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             out.write("\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n");
             out.write("    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
@@ -182,12 +176,14 @@ public class BasePage {
 
     /** Prints the end of the HTML page
      *  @param features empty String or a string of codes concatenated by "," or " ":
+     *  @param language 2-letter code en, de etc.
      *  <ul>
      *  <li>back - link back to the application's main page</lI>
      *  <li>quest - questions, remarks ...</li>
      *  </ul>
+     *  Assumes that {@link #out} is set by a previous call to {@link #writeHeader}.
      */
-    public void writeTrailer(String features) {
+    public void writeTrailer(String language, String features) {
         try {
             if (features.indexOf("back") >= 0) {
                 out.write("<p>\n");
@@ -269,25 +265,37 @@ public class BasePage {
     /** Output an error message with parameters obtained from the http session
      *  @param request request with header fields
      *  @param response response with writer
+     *  @param language 2-letter code en, de etc.
+     *  @param parms parameters for the message:
+     *  <ul>
+     *  <li>[0] = messNo, 3 digits message number</li>
+     *  <li>[1] = replacement for {parm}</li>
+     *  <li>[2] = replacement for {par2}</li>
+     *  <li>[3] = replacement for {par3}</li>
+     +  </ul>
      */
-    public void writeMessage(HttpServletRequest request, HttpServletResponse response) {
+    public void writeMessage(HttpServletRequest request, HttpServletResponse response
+            , String language
+            , String[] parms
+            ) {
         try {
-            PrintWriter out = this.writeHeader(request, response); // sets 'super.session', 'super.out', 'super.language'
+            PrintWriter out = this.writeHeader(request, response, language);
 
-            String messNo   = getSessionAttribute(session, "messno", "505");
-            String parm     = getSessionAttribute(session, "parm"  , "");
-            String par2     = getSessionAttribute(session, "par2"  , "");
-            String par3     = getSessionAttribute(session, "par3"  , "");
+            String messNo   = parms[0];
             String text     = this.get(language, messNo);
             if (text == null) { // invalid messNo
-                parm = messNo;
+                String origMessNo = messNo;
                 messNo = "505";
-                text = this.get(language, messNo);
-            }
-            text = text.replaceAll(Pattern.quote("{parm}"), parm);
-            text = text.replaceAll(Pattern.quote("{par2}"), par2);
-            text = text.replaceAll(Pattern.quote("{par3}"), par3);
-
+                text = this.get(language, messNo).replaceAll(Pattern.quote("{parm}"), origMessNo);
+            } else { // text != null
+                int ipar = 1;
+                String qName = "{parm}";
+                while (ipar < parms.length) {
+                    text = text.replaceAll(Pattern.quote(qName), parms[ipar]);
+                    ipar ++;
+                    qName = "{par" + String.valueOf(ipar) + "}"; // par2, par3 ...
+                } // while ipar
+            } // text != null
             String messWord = null;
             if (false) {
             } else if (language.equals("de")) {
@@ -297,18 +305,14 @@ public class BasePage {
             }
             out.write("<title>" + this.getAppName() + messWord + " " + messNo + "</title>\n");
             if (messNo.equals("301")) {
-                String waitTime = getSessionAttribute(session, "wait", "3");
-                text = text.replaceAll(Pattern.quote("{par2}"), par2);
-                out.write("<meta http-equiv=\"refresh\" content=\"" + waitTime
-                        + "; URL=/dbat/servlet?spec=" + par2 + "\" />\n");
+                out.write("<meta http-equiv=\"refresh\" content=\"" + parms[3] + "; URL=" + parms[2] + "\" />\n");
             }
             out.write("</head>\n");
             out.write("<body>\n");
-            out.write("<!--lang=" + language + ", messno=" + messNo + ", text=" + text);
-            out.write(", parm=" + parm + ", par2=" + par2 + ", par3=" + par3 + "-->\n");
+            out.write("<!--lang=" + language + ", messno=" + messNo + ", text=" + text + "-->\n");
             out.write("<h3>" + this.get(language, "001") + messWord + " " + messNo + ": "+ text + "</h3>\n");
 
-            this.writeTrailer("quest");
+            this.writeTrailer(language, "quest");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }

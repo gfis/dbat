@@ -68,5 +68,5 @@ Implementierte Ausgabeformate (-m):
 </pre>
 <p><a href="servlet?view=more&lang=de">mehr ...</a></p>
 <p><span style="font-size:small">
-Questions, remarks: email to  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
+Fragen, Hinweise: EMail an  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
 </body></html>

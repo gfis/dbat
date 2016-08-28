@@ -11,8 +11,8 @@
 <meta http-equiv="refresh" content="3; URL=/dbat/servlet?spec=test/selec01" />
 </head>
 <body>
-<!--lang=de, messno=301, text=Die Spezifikationsdatei <em>test/redir3</em> wurde nach <em><a href="/dbat/servlet?spec=test/selec01">test/selec01</a></em> verschoben.<br />Bitte &auml;ndern Sie Ihre Favoriten/Lesezeichen.<br />Sie werden in 3 s auf die neue Seite umgelenkt., parm=test/redir3, par2=test/selec01, par3=3-->
-<h3><a href="index.html">Dbat</a>-Meldung 301: Die Spezifikationsdatei <em>test/redir3</em> wurde nach <em><a href="/dbat/servlet?spec=test/selec01">test/selec01</a></em> verschoben.<br />Bitte &auml;ndern Sie Ihre Favoriten/Lesezeichen.<br />Sie werden in 3 s auf die neue Seite umgelenkt.</h3>
+<!--lang=de, messno=301, text=Die Spezifikationsdatei <em>test/redir3</em> wurde nach <em><a href="/dbat/servlet?spec=test/selec01">/dbat/servlet?spec=test/selec01</a></em> verschoben.<br />Bitte &auml;ndern Sie Ihre Favoriten/Lesezeichen.<br />Sie werden in 3 s auf die neue Seite umgelenkt.-->
+<h3><a href="index.html">Dbat</a>-Meldung 301: Die Spezifikationsdatei <em>test/redir3</em> wurde nach <em><a href="/dbat/servlet?spec=test/selec01">/dbat/servlet?spec=test/selec01</a></em> verschoben.<br />Bitte &auml;ndern Sie Ihre Favoriten/Lesezeichen.<br />Sie werden in 3 s auf die neue Seite umgelenkt.</h3>
 <p><span style="font-size:small">
 Fragen, Hinweise: EMail an  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
 </body></html>

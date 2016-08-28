@@ -57,14 +57,16 @@ public class HelpPage {
      *  @param request request with header fields
      *  @param response response with writer
      *  @param basePage refers to common web methods and messages
+     *  @param language 2-letter code en, de etc.
      *  @param tableFactory factory for table serializers
      */
     public void showHelp(HttpServletRequest request, HttpServletResponse response
             , BasePage basePage
+            , String language
             , TableFactory tableFactory
             ) {
         try {
-            PrintWriter out = basePage.writeHeader(request, response); // sets 'super.{session|out|language}''
+            PrintWriter out = basePage.writeHeader(request, response, language);
 
             out.write("<title>Dbat help</title>\n");
             out.write("<script src=\"script.js\" type=\"text/javascript\">\n</script>\n");
@@ -77,7 +79,7 @@ public class HelpPage {
                     /*  0 */ { "Deutsch"
                     /*  1 */ , "English"
                     } ;
-            String language = BasePage.getInputField(request, "lang", "en");
+            // String language = BasePage.getInputField(request, "lang", "en");
        /*
             Map parameterMap = request.getParameterMap(); // do NOT! use <String, String[]>
             Iterator parmIter = parameterMap.keySet().iterator();
@@ -138,7 +140,7 @@ public class HelpPage {
                 out.write(":SessionAttributes -->\n");
             } // session attributes
     */
-            basePage.writeTrailer("quest");
+            basePage.writeTrailer(language, "quest");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }

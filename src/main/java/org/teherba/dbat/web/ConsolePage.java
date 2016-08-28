@@ -60,16 +60,18 @@ public class ConsolePage {
      *  @param request request with header fields
      *  @param response response with writer
      *  @param basePage refers to common web methods and messages
+     *  @param language 2-letter code en, de etc.
      *  @param tableFactory factory for table serializers
      *  @param dsMap maps connection identifiers (short database instance ids) to {@link DataSource Datasources}
      */
     public void showConsole(HttpServletRequest request, HttpServletResponse response
             , BasePage basePage
+            , String language
             , TableFactory tableFactory
             , LinkedHashMap<String, DataSource> dsMap
             ) {
         try {
-            PrintWriter out = basePage.writeHeader(request, response); // sets 'super.{session|out|language}''
+            PrintWriter out = basePage.writeHeader(request, response, language);
 
             String connectionId  = null;
             if (dsMap != null && ! dsMap.isEmpty()) {
@@ -82,39 +84,11 @@ public class ConsolePage {
             } // valid dsMap
             String encoding     = BasePage.getInputField(request, "enc"   , "ISO-8859-1");
             String mode         = BasePage.getInputField(request, "mode"  , "html"      );
-            String language     = BasePage.getInputField(request, "lang"  , "en"        );
+            // String language     = BasePage.getInputField(request, "lang"  , "en"        );
             connectionId        = BasePage.getInputField(request, "conn"  , "mysql"     );
             String intext       = BasePage.getInputField(request, "intext", ""          );
             int    fetchLimit   = BasePage.getInputField(request, "fetch" , 64          );
-    /*
-            Map parameterMap = request.getParameterMap(); // do NOT! use <String, String[]>
-            Iterator parmIter = parameterMap.keySet().iterator();
-            while (parmIter.hasNext()) {
-                String name = (String) parmIter.next();
-                String[] values = request.getParameterValues(name);
-                if (values.length <= 0) { // ignore empty value lists
-                } else if (name.equals("enc"        )) {
-                    encoding = values[0];
-                } else if (name.equals("mode"       )) {
-                    mode     = values[0];
-                } else if (name.equals("lang"       )) {
-                    language = values[0];
-                } else if (name.equals("view"       )) {
-                    // ignore
-                } else if (name.equals("conn"       )) {
-                    connectionId = values[0];
-                } else if (name.equals("intext"     )) {
-                    intext   = values[0].trim();
-                } else if (name.equals("fetch"      )) {
-                    try {
-                        fetchLimit = Integer.parseInt(values[0].trim());
-                    } catch (Exception exc) {
-                        fetchLimit = 64;
-                    }
-                } else { // unknown parameter name - ignore
-                } // unknown
-            } // while parmIter
-    */
+
             String consoleWord = null;
             if (false) {
             } else if (language.startsWith("de")) {
@@ -291,7 +265,7 @@ public class ConsolePage {
             if (intext.trim().length() > 0) {
                 out.write(intext);
             }
-            basePage.writeTrailer("");
+            basePage.writeTrailer(language, "");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         } finally {

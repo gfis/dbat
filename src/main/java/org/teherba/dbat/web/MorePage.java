@@ -36,7 +36,7 @@ import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;
 import  org.apache.log4j.Logger;
 
-/** This class prints a detailled form which contains all parameters
+/** This class prints a detailed form which contains all parameters
  *  and options for table output, together with links to 
  *  overview, API, notices and other documentation.
  *  <p>
@@ -66,12 +66,13 @@ public class MorePage {
      */
     public void showMore(HttpServletRequest request, HttpServletResponse response
             , BasePage basePage
+            , String language
             , TableFactory tableFactory
             ) {
         try {
-            PrintWriter out = basePage.writeHeader(request, response); // sets 'super.{session|out|language}''
+            PrintWriter out = basePage.writeHeader(request, response, language);
 
-            out.write("<title>Database Administration Tool</title>\n");
+            out.write("<title>Dbat more</title>\n");
             out.write("<style>\ntd,th\n{vertical-align:top;margin:0px;padding-top:0px;padding-bottom:0px;padding-left:10px;padding-right:10px;border:none;}\n</style>\n");
             out.write("<script src=\"script.js\" type=\"text/javascript\">\n</script>\n</head>\n");
             String[] optEnc    = new String []
@@ -92,10 +93,9 @@ public class MorePage {
                     } ;
             String encoding     = "ISO-8859-1";
             String mode         = "html";
-            String language     = "en";
             String specName     = "?";
 
-            // unknown inpuFIeldNames - cannot use BasePage.getInputField
+            // unknown inputFieldNames - cannot use BasePage.getInputField
             Map parameterMap = request.getParameterMap(); // do NOT! use <String, String[]>
             Iterator parmIter = parameterMap.keySet().iterator();
             StringBuffer inputFields = new StringBuffer(256);
@@ -337,7 +337,7 @@ public class MorePage {
             //----------------------------------------
             out.write("</td></tr>\n</table>\n</form>\n");
             
-            basePage.writeTrailer("quest");
+            basePage.writeTrailer(language, "quest");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
@@ -350,33 +350,14 @@ public class MorePage {
      */
     public void showValidate(HttpServletRequest request, HttpServletResponse response
             , BasePage basePage
+            , String language
             ) {
         try {
-            PrintWriter out = basePage.writeHeader(request, response); // sets 'super.{session|out|language}''
+            PrintWriter out = basePage.writeHeader(request, response, language);
 
             String value        = BasePage.getInputField(request, "value" , "M"         );
             String regex        = BasePage.getInputField(request, "regex" , ".+"        );
-            String language     = BasePage.getInputField(request, "lang"  , "en"        );
             String fieldName    = BasePage.getInputField(request, "name"  , ""          );
-        /*
-            Map parameterMap = request.getParameterMap(); // do NOT! use <String, String[]>
-            Iterator parmIter = parameterMap.keySet().iterator();
-            StringBuffer inputFields = new StringBuffer(256);
-            while (parmIter.hasNext()) {
-                String name = (String) parmIter.next();
-                String[] values = request.getParameterValues(name);
-                if (values.length <= 0) { // ignore empty value lists
-                } else if (name.equals("lang"       )) {
-                    language    = values[0];
-                } else if (name.equals("name"       )) {
-                    fieldName   = values[0];
-                } else if (name.equals("regex"      )) {
-                    regex       = values[0];
-                } else if (name.equals("value"      )) {
-                    value       = values[0];
-                }
-            } // while parmIter
-        */
             int index = 0;
             out.write("<title>Dbat");
             if (false) {
@@ -462,7 +443,7 @@ public class MorePage {
                         + "<a href=\"index.html\">Dbat</a> specifications.\n");
             }
             
-            basePage.writeTrailer("quest");
+            basePage.writeTrailer(language, "quest");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }

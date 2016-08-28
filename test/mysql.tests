@@ -169,6 +169,10 @@ HTTP view=license
 
 TEST MR6 notice web
 HTTP view=notice
+
+TEST MR7 validate web page
+HTTP view=validate
+
 #-------------------
 TEST I01 insert statements
 DATA -- fill table

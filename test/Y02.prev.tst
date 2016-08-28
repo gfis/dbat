@@ -10,7 +10,7 @@
 <title>Dbat-Meldung 404</title>
 </head>
 <body>
-<!--lang=de, messno=404, text=Eine Spezifikationsdatei <em>test/wrong_spec_file</em> wurde nicht gefunden.<br />Bitte rufen Sie die <a href="index.html">Dbat</a>-Startseite auf., parm=test/wrong_spec_file, par2=, par3=-->
+<!--lang=de, messno=404, text=Eine Spezifikationsdatei <em>test/wrong_spec_file</em> wurde nicht gefunden.<br />Bitte rufen Sie die <a href="index.html">Dbat</a>-Startseite auf.-->
 <h3><a href="index.html">Dbat</a>-Meldung 404: Eine Spezifikationsdatei <em>test/wrong_spec_file</em> wurde nicht gefunden.<br />Bitte rufen Sie die <a href="index.html">Dbat</a>-Startseite auf.</h3>
 <p><span style="font-size:small">
 Fragen, Hinweise: EMail an  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>

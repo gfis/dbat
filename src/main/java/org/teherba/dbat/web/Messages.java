@@ -68,10 +68,10 @@ public class Messages implements Serializable {
         basePage.add("en", "001", appLink);
         basePage.add("de", "001", appLink);
         //--------
-        basePage.add("en", "301", "Specification file <em>{parm}</em> was moved to <em><a href=\"/dbat/servlet?spec={par2}\">{par2}</a></em>."
+        basePage.add("en", "301", "Specification file <em>{parm}</em> was moved to <em><a href=\"{par2}\">{par2}</a></em>."
                 + "<br />Please update your bookmarks."
                 + "<br />You will be redirected to the new page in {par3} s.");
-        basePage.add("de", "301", "Die Spezifikationsdatei <em>{parm}</em> wurde nach <em><a href=\"/dbat/servlet?spec={par2}\">{par2}</a>"
+        basePage.add("de", "301", "Die Spezifikationsdatei <em>{parm}</em> wurde nach <em><a href=\"{par2}\">{par2}</a>"
                 + "</em> verschoben."
                 + "<br />Bitte &auml;ndern Sie Ihre Favoriten/Lesezeichen."
                 + "<br />Sie werden in {par3} s auf die neue Seite umgelenkt.");
