@@ -82,18 +82,18 @@ Sprache</span>
 </select><p />&nbsp;
 </td>
 <td>
-<a href="index.html">Dbat-Startseite</a><br />
-<a href="servlet?spec=index">Liste</a> der abrufbaren Spezifikationen<br />
-<a href="servlet?view=con">SQL-Konsole<br />
-<a href="servlet?view=validate&value=M&regex=\w">Regex-Validierung</a><br />
-<a href="servlet?spec=describe">describe</a> - DDL einer Tabelle oder View
-<br />
-<a href="servlet?view=help&lang=de">Hilfe</a> - Kommandozeilen-Optionen<br />
-<a href="http://www.teherba.org/dbat" target="_new">Wiki</a>, <a href="https://github.com/gfis/dbat" target="_new">Git Repository</a> auf github.com<br />
-<a href="docs/api/index.html">API-Dokumentation</a> (Javadoc)
-<br />
-<a href="servlet?view=manifest">Manifest</a>, <a href="servlet?view=license">Lizenz</a>, <a href="servlet?view=notice"  >Referenzen</a><br />
-<input type="submit" value="Absenden" />
+<a title="main"        href="index.html">Dbat</a>-Startseite<br />
+<a title="index"       href="servlet?spec=index">Liste</a> der abrufbaren Spezifikationen<br />
+<a title="con"         href="servlet?view=con">SQL-Konsole</a><br />
+<a title="describe"    href="servlet?spec=describe">describe </a> - DLL einer Tabelle oder View<br />
+<a title="help"        href="servlet?view=help&lang=en">Hilfe</a> - Kommandozeilen-Optionen<br />
+<a title="wiki"        href="http://www.teherba.org/dbat" target="_new">Wiki</a>-Dokumentation<br />
+<a title="github"      href="https://github.com/gfis/dbat" target="_new">Git Repository</a><br />
+<a title="api"         href="docs/api/index.html">Java API</a>-Dokumentation<br />
+<a title="manifest"    href="servlet?view=manifest">Manifest</a><br />
+<a title="license"     href="servlet?view=license">Lizenz</a><br />
+<a title="notice"      href="servlet?view=notice">Referenzen</a><br />
+<br /><input type="submit" value="Absenden" />
 </td></tr>
 </table>
 </form>

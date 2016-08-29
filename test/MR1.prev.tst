@@ -82,18 +82,18 @@ Language</span>
 </select><p />&nbsp;
 </td>
 <td>
-<a href="index.html">Dbat Home</a><br />
-<a href="servlet?spec=index">List</a> of available specifications<br />
-<a href="servlet?view=con">SQL Console<br />
-<a href="servlet?view=validate&value=M&regex=\w">Regex Validation</a><br />
-<a href="servlet?spec=describe">describe</a> - DDL of a table or view
-<br />
-<a href="servlet?view=help&lang=en">Help</a> - Commandline Options<br />
-<a href="http://www.teherba.org/dbat" target="_new">Wiki</a>, <a href="https://github.com/gfis/dbat" target="_new">Git Repository</a> on github.com<br />
-<a href="docs/api/index.html">API Documentation</a> (Javadoc)
-<br />
-<a href="servlet?view=manifest">Manifest</a>, <a href="servlet?view=license">License</a>, <a href="servlet?view=notice"  >References</a><br />
-<input type="submit" value="Submit" />
+<a title="main"        href="index.html">Dbat</a> Home<br />
+<a title="index"       href="servlet?spec=index">List</a> of available specifications<br />
+<a title="con"         href="servlet?view=con">SQL Console</a><br />
+<a title="describe"    href="servlet?spec=describe">describe DDL</a> of a Table or View<br />
+<a title="help"        href="servlet?view=help&lang=en">Help</a> - Commandline Options<br />
+<a title="wiki"        href="http://www.teherba.org/dbat" target="_new">Wiki</a> Documentation<br />
+<a title="github"      href="https://github.com/gfis/dbat" target="_new">Git Repository</a><br />
+<a title="api"         href="docs/api/index.html">Java API</a> Documentation<br />
+<a title="manifest"    href="servlet?view=manifest">Manifest</a><br />
+<a title="license"     href="servlet?view=license">License</a><br />
+<a title="notice"      href="servlet?view=notice">References</a><br />
+<br /><input type="submit" value="Submit" />
 </td></tr>
 </table>
 </form>

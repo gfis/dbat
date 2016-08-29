@@ -1,5 +1,6 @@
 /*  MorePage.java - replacement for more.jsp: input form with all parameters
  *  @(#) $Id$
+ *  2016-08-29: many code moved to Messages.addErrorMessageTexts for basePage.writeAuxiliaryLinks
  *  2016-08-26: param BasePage
  *  2016-08-09: Wiki => www.teherba.org/dbat
  *  2016-07-30: <form method="post"> for accented field values
@@ -58,7 +59,7 @@ public class MorePage {
         log = Logger.getLogger(MorePage.class.getName());
     } // Constructor()
     
-    /** Shows the detailled input form for the activation of a Dbat specification
+    /** Shows the detailed input form for the activation of a Dbat specification
      *  @param request request with header fields
      *  @param response response with writer
      *  @param basePage refers to common web methods and messages
@@ -234,108 +235,16 @@ public class MorePage {
             out.write("</select><p />&nbsp;\n</td>\n");
             //----------------------------------------
             out.write("<td>\n");
-            //----------------------------------------
-            out.write("<a href=\"index.html\">");
-            if (false) {
-            } else if (language.startsWith("de")) {
-                out.write("Dbat-Startseite");
-            } else {
-                out.write("Dbat Home");
-            }
-            out.write("</a><br />\n");
-            //----------------------------------------
-            out.write("<a href=\"servlet?spec=index\">");
-            if (false) {
-            } else if (language.startsWith("de")) {
-                out.write("Liste</a> der abrufbaren Spezifikationen");
-            } else {
-                out.write("List</a> of available specifications");
-            }
-            out.write("<br />\n");
-            //----------------------------------------
-            out.write("<a href=\"servlet?view=con\">");
-            if (false) {
-            } else if (language.startsWith("de")) {
-                out.write("SQL-Konsole");
-            } else {
-                out.write("SQL Console");
-            }
-            out.write("<br />\n");
-            //----------------------------------------
-            out.write("<a href=\"servlet?view=validate&value=M&regex=\\w\">");
-            if (false) {
-            } else if (language.startsWith("de")) {
-                out.write("Regex-Validierung</a>");
-            } else {
-                out.write("Regex Validation</a>");
-            }
-            out.write("<br />\n");
-            //----------------------------------------
-            out.write("<a href=\"servlet?spec=describe\">describe</a> - ");
-            if (false) {
-            } else if (language.startsWith("de")) {
-                out.write("DDL einer Tabelle oder View");
-            } else {
-                out.write("DDL of a table or view");
-            }
-            out.write("\n<br />\n");
-            //----------------------------------------
-            out.write("<a href=\"servlet?view=help&lang=");
-            out.write(language);
-            if (false) {
-            } else if (language.startsWith("de")) {
-                out.write("\">Hilfe</a> - Kommandozeilen-Optionen");
-            } else {
-                out.write("\">Help</a> - Commandline Options");
-            }
-            out.write("<br />\n");
-            //----------------------------------------
-            out.write("<a href=\"http://www.teherba.org/dbat\" target=\"_new\">Wiki</a>");
-            out.write(", <a href=\"https://github.com/gfis/dbat\" target=\"_new\">Git Repository</a>");
-            if (false) {
-            } else if (language.startsWith("de")) {
-                out.write(" auf");
-            } else {
-                out.write(" on");
-            }
-            out.write(" github.com<br />\n");
-            //----------------------------------------
-            out.write("<a href=\"docs/api/index.html\">");
-            if (false) {
-            } else if (language.startsWith("de")) {
-                out.write("API-Dokumentation</a>");
-            } else {
-                out.write("API Documentation</a>");
-            }
-            out.write(" (Javadoc)\n<br />\n");
-            //----------------------------------------
-            out.write("<a href=\"servlet?view=manifest\">Manifest</a>");
-            out.write(", <a href=\"servlet?view=license\">");
-            if (false) {
-            } else if (language.startsWith("de")) {
-                out.write("Lizenz</a>");
-            } else {
-                out.write("License</a>");
-            }
-            out.write(", <a href=\"servlet?view=notice\"  >");
-            if (false) {
-            } else if (language.startsWith("de")) {
-                out.write("Referenzen</a>");
-            } else {
-                out.write("References</a>");
-            }
-            out.write("<br />\n");
-            //----------------------------------------
-            out.write("<input type=\"submit\" value=\"");
+            basePage.writeAuxiliaryLinks(language, "more");
+            out.write("<br /><input type=\"submit\" value=\"");
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("Absenden");
             } else {
                 out.write("Submit");
             }
-            out.write("\" />\n");
+            out.write("\" />\n</td></tr>\n</table>\n</form>\n");
             //----------------------------------------
-            out.write("</td></tr>\n</table>\n</form>\n");
             
             basePage.writeTrailer(language, "quest");
         } catch (Exception exc) {

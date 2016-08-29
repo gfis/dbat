@@ -1,5 +1,6 @@
 /*  BasePage.java - common code for web pages
  *  @(#) $Id$
+ *  2016-08-29: writeAuxiliaryLinks
  *  2016-08-25, Georg Fischer
  */
 /*
@@ -174,9 +175,44 @@ public class BasePage {
         return out;
     } // writeHeader
 
-    /** Prints the end of the HTML page
-     *  @param features empty String or a string of codes concatenated by "," or " ":
+    /** Pseudo language code for a language-independant link to some auxiliary page */
+    public static final String LANG_AUX = "<>";
+    /** Start of message numbers for links to auxiliary pages */
+    public static final int   START_AUX = 21;
+
+    /** Prints a list of links to auxiliary information pages for the application
      *  @param language 2-letter code en, de etc.
+     *  @param view <em>view</em> parameter in the Http request calling this method.
+     *  <p>
+     *  Assumes that {@link #out} is set by a previous call to {@link #writeHeader}.
+     */
+    public void writeAuxiliaryLinks(String language, String view) {
+        try {
+            int imess = START_AUX; // Link messages start here
+            boolean busy = true;
+            while (busy) {
+                String link = this.get(LANG_AUX, String.format("%03d", imess));
+                if (link == null) { // no more auxiliary pages
+                    busy = false; // break loop
+                } else {
+                    if (link.indexOf("title=\"" + view + "\"") < 0) { // could skip over entry for calling page
+                        String text = this.get(language, String.format("%03d", imess));
+                        if (text != null) {
+                            text = text.replaceAll(Pattern.quote("{parm}"), link);
+                            out.write(text + "<br />\n");
+                        } // text != null
+                    } // not skipping
+                } // != null
+                imess ++;
+            } // while imess
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+    } // writeAuxiliaryLinks
+
+    /** Prints the end of the HTML page
+     *  @param language 2-letter code en, de etc.
+     *  @param features empty String or a string of codes concatenated by "," or " ":
      *  <ul>
      *  <li>back - link back to the application's main page</lI>
      *  <li>quest - questions, remarks ...</li>

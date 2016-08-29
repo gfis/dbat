@@ -125,7 +125,7 @@ public class DbatServlet extends HttpServlet {
         ServletContext context = getServletContext();
         config = new Configuration();
         basePage = new BasePage(APP_NAME);
-        Messages.addErrorMessageTexts(basePage);
+        Messages.addMessageTexts(basePage);
         
         try {
             envContext = (Context) new InitialContext().lookup("java:comp/env"); // get the environment naming context

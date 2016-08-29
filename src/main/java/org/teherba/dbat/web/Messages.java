@@ -58,15 +58,63 @@ public class Messages implements Serializable {
      */
     public Messages() {
     } // Constructor
-    
+
     /** Sets the application-specific error message texts
      *  @param basePage reference to the hash for message texts
      */
-    public static void addErrorMessageTexts(BasePage basePage) {
+    public static void addMessageTexts(BasePage basePage) {
         String appLink = "<a href=\"index.html\">" + basePage.getAppName() + "</a>";
         //--------
         basePage.add("en", "001", appLink);
         basePage.add("de", "001", appLink);
+        //--------
+        String laux = basePage.LANG_AUX;  // pseudo language code for links to auxiliary information
+        int imess   = basePage.START_AUX; // start of messages    for links to auxiliary information
+        String
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"main\"        href=\"index.html\">");
+        basePage.add("en", smess, "{parm}Dbat</a> Home");
+        basePage.add("de", smess, "{parm}Dbat</a>-Startseite");
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"index\"       href=\"servlet?spec=index\">");
+        basePage.add("en", smess, "{parm}List</a> of available specifications");
+        basePage.add("de", smess, "{parm}Liste</a> der abrufbaren Spezifikationen");
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"con\"         href=\"servlet?view=con\">");
+        basePage.add("en", smess, "{parm}SQL Console</a>");
+        basePage.add("de", smess, "{parm}SQL-Konsole</a>");
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"describe\"    href=\"servlet?spec=describe\">");
+        basePage.add("en", smess, "{parm}describe DDL</a> of a Table or View");
+        basePage.add("de", smess, "{parm}describe </a> - DLL einer Tabelle oder View");
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"help\"        href=\"servlet?view=help&lang=en\">");
+        basePage.add("en", smess, "{parm}Help</a> - Commandline Options");
+        basePage.add("de", smess, "{parm}Hilfe</a> - Kommandozeilen-Optionen");
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"wiki\"        href=\"http://www.teherba.org/dbat\" target=\"_new\">");
+        basePage.add("en", smess, "{parm}Wiki</a> Documentation");
+        basePage.add("de", smess, "{parm}Wiki</a>-Dokumentation");
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"github\"      href=\"https://github.com/gfis/dbat\" target=\"_new\">");
+        basePage.add("en", smess, "{parm}Git Repository</a>");
+        basePage.add("de", smess, "{parm}Git Repository</a>");
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"api\"         href=\"docs/api/index.html\">");
+        basePage.add("en", smess, "{parm}Java API</a> Documentation");
+        basePage.add("de", smess, "{parm}Java API</a>-Dokumentation");
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"manifest\"    href=\"servlet?view=manifest\">");
+        basePage.add("en", smess, "{parm}Manifest</a>");
+        basePage.add("de", smess, "{parm}Manifest</a>");
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"license\"     href=\"servlet?view=license\">");
+        basePage.add("en", smess, "{parm}License</a>");
+        basePage.add("de", smess, "{parm}Lizenz</a>");
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"notice\"      href=\"servlet?view=notice\">");
+        basePage.add("en", smess, "{parm}References</a>");
+        basePage.add("de", smess, "{parm}Referenzen</a>");
         //--------
         basePage.add("en", "301", "Specification file <em>{parm}</em> was moved to <em><a href=\"{par2}\">{par2}</a></em>."
                 + "<br />Please update your bookmarks."
@@ -81,7 +129,7 @@ public class Messages implements Serializable {
         basePage.add("de", "404", "Eine Spezifikationsdatei <em>{parm}</em> wurde nicht gefunden."
                 + "<br />Bitte rufen Sie die " + appLink + "-Startseite auf.");
         //--------
-    } // addErrorMessageTexts
+    } // addMessageTexts
 
     /** Gets the default word particles for the count of rows below a result table
      *  @param language ISO country code: "de", "en"
@@ -97,7 +145,7 @@ public class Messages implements Serializable {
         }
         return result;
     } // getDefaultCounterDesc
-    
+
     /** Gets the message text for a notice about form field validation errors
      *  @param language ISO country code: "de", "en"
      *  @return language specific message text
@@ -291,7 +339,7 @@ public class Messages implements Serializable {
      *  @return link or ampty string
      */
     public static String getViewSourceLink(HttpServletRequest request) {
-    	String result = "";
+        String result = "";
         String userAgent = request.getHeader("User-Agent");
         if (userAgent != null
                 &&  (   userAgent.indexOf("Firefox/") >= 0
@@ -372,7 +420,7 @@ public class Messages implements Serializable {
                 result.append(specUrl);
                 result.append("\"");
                 result.append(" type=\"text/plain\""); // neither text/xml, application/xhtml+xml nor application/xml did work
-                result.append(">"); 
+                result.append(">");
             }
             result.append(specName);
             if (withLink) {
