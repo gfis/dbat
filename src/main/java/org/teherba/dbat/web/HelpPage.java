@@ -79,20 +79,6 @@ public class HelpPage {
                     /*  0 */ { "Deutsch"
                     /*  1 */ , "English"
                     } ;
-            // String language = BasePage.getInputField(request, "lang", "en");
-       /*
-            Map parameterMap = request.getParameterMap(); // do NOT! use <String, String[]>
-            Iterator parmIter = parameterMap.keySet().iterator();
-            StringBuffer inputFields = new StringBuffer(256);
-            while (parmIter.hasNext()) {
-                String name = (String) parmIter.next();
-                String[] values = request.getParameterValues(name);
-                if (values.length <= 0) { // ignore empty value lists
-                } else if (name.equals("lang"       )) {
-                    language = values[0];
-                }
-            } // while parmIter
-       */     
             out.write("<body>\n");
             out.write("<!--lang=\"" + language + "\"-->\n");
             out.write("<h3><a href=\"index.html\">Dbat</a>");

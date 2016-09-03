@@ -90,9 +90,7 @@ Sprache</span>
 <a title="wiki"        href="http://www.teherba.org/dbat" target="_new">Wiki</a>-Dokumentation<br />
 <a title="github"      href="https://github.com/gfis/dbat" target="_new">Git Repository</a><br />
 <a title="api"         href="docs/api/index.html">Java API</a>-Dokumentation<br />
-<a title="manifest"    href="servlet?view=manifest">Manifest</a><br />
-<a title="license"     href="servlet?view=license">Lizenz</a><br />
-<a title="notice"      href="servlet?view=notice">Referenzen</a><br />
+<a title="manifest"    href="servlet?view=manifest">Manifest</a>, <a title="license"     href="servlet?view=license">Lizenz</a>, <a title="notice"      href="servlet?view=notice">Referenzen</a><br />
 <br /><input type="submit" value="Absenden" />
 </td></tr>
 </table>

@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
+    ant-buildfile for commandline, web application and web service
+    @(#) $Id$
+    2016-09-02: core.jar
+    2014-11-11: tomcat.base|home extracted from build-import.xml
+    2014-11-08: app.version=9
+    2011-04-05: copy xtrans/XMLTransformer and associated classes
+    2008-04-09: targets run.* renamed to test.*
+    2007-02-16: use ant file build-import.xml
+    2005-11-15: copied from checkdig
+-->
+<!--
  * Copyright 2006 Dr. Georg Fischer <punctum at punctum dot kom>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,17 +25,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<!--
-    ant-buildfile for commandline, web application and web service
-    @(#) $Id$
-    2014-11-11: tomcat.base|home extracted from build-import.xml
-    2014-11-08: app.version=9
-    2011-04-05: copy xtrans/XMLTransformer and associated classes
-    2008-04-09: targets run.* renamed to test.*
-    2007-02-16: use ant file build-import.xml
-    2005-11-15: copied from checkdig
--->
-
 <project name="dbat" default="dist" basedir=".">
     <!-- the 5 needed for build-import.xml -->
     <property name="app.name"           value="Dbat" />
@@ -58,6 +58,16 @@
             </fileset>
         </copy>
     -->
+    </target>
+
+    <target name="core.jar">
+        <!-- without libraries, without web files -->
+        <jar jarfile="${dist.home}/${ant.project.name}-core.jar"
+                basedir="${build.classes}"
+                manifest="${build.classes}/META-INF/MANIFEST.MF"
+                excludes="web/** **/web/*.class **/format/*.class **/*Servlet.class"
+                >
+        </jar>
     </target>
 
     <target name="not_yet_generate">

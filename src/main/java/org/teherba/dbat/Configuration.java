@@ -566,7 +566,7 @@ public class Configuration implements Serializable {
             log.error(exc.getMessage(), exc);
         }
         versionString = result;
-    } // getVersionString
+    } // setVersionString
 
     /** Gets the program's version.
      *  The value returned is reasonable only if this source file was changed and git committed before the build!

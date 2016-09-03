@@ -2,6 +2,7 @@
 <!--
     ant-buildfile for commandline, web application and web service
     @(#) $Id$
+    2016-08-29: 'clean' does no longer delete in openlib (check manually if necessary)
     2016-07-31: 'clean' target checks that Tomcat is stopped
     2016-07-30: merge dbat/expand into dbat.jar and use c:/var/lib/tomcat/openlib/*.jar with slim dbat.war
     2016-04-16: MANIFEST.MF back in etc/META-INF, with CVS Id
@@ -133,6 +134,10 @@
 
     <target name="clean" depends="empty">
         <!-- only when Tomcat is stopped -->
+    <!-- 
+        Normally the libraries are overwritten.
+        Caution, if the name (it's version number) is changed, the library must be removed manually.
+        
         <delete failonerror="false" verbose="true" >
             <fileset dir="${tomcat.base}/openlib">
                 <include name="**/*.jar" />
@@ -140,6 +145,7 @@
         </delete>
         <available file="${tomcat.base}/openlib/activation.jar" property="not.deleted" />
         <fail message="Tomcat must be stopped for clean" if="${not.deleted}"  />
+    -->
         <copy todir="${tomcat.base}/openlib" verbose="true">
             <fileset dir="${lib.home}">
                 <include name="*.jar" />
@@ -252,13 +258,17 @@
 
     <!-- ============= dist ==============================================
         create the binary distributions: jar and war
+        target core.jar must be defined somehow (maybe empty) in build.xml
     -->
-    <target name="dist"     depends="prepare,compile,manifest">
-        <jar    jarfile="${dist.home}/${ant.project.name}.jar"
+    <target name="dist"     depends="prepare,compile,manifest,core.jar">
+        <!-- with libraries, with web files -->
+        <jar jarfile="${dist.home}/${ant.project.name}.jar"
                 basedir="${build.classes}"
-                manifest="${build.classes}/META-INF/MANIFEST.MF">
+                manifest="${build.classes}/META-INF/MANIFEST.MF"
+                >
             <fileset dir="${build.expand}" />
         </jar>
+        <!-- without libraries, with web files -->
         <war destfile="${dist.home}/${ant.project.name}.war"
                 basedir="${build.home}"
                 manifest="${build.classes}/META-INF/MANIFEST.MF"

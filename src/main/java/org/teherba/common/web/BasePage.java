@@ -1,5 +1,6 @@
 /*  BasePage.java - common code for web pages
  *  @(#) $Id$
+ *  2016-09-02: auxiliary links on same line when ending with space
  *  2016-08-29: writeAuxiliaryLinks
  *  2016-08-25, Georg Fischer
  */
@@ -198,8 +199,11 @@ public class BasePage {
                     if (link.indexOf("title=\"" + view + "\"") < 0) { // could skip over entry for calling page
                         String text = this.get(language, String.format("%03d", imess));
                         if (text != null) {
-                            text = text.replaceAll(Pattern.quote("{parm}"), link);
-                            out.write(text + "<br />\n");
+                            text = text.replaceAll(Pattern.quote("{parm}"), link);                           
+                            out.write(text);
+                            if (! text.endsWith(" ")) {
+                                out.write("<br />\n");
+                            }
                         } // text != null
                     } // not skipping
                 } // != null

@@ -105,12 +105,12 @@ public class Messages implements Serializable {
         basePage.add("de", smess, "{parm}Java API</a>-Dokumentation");
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"manifest\"    href=\"servlet?view=manifest\">");
-        basePage.add("en", smess, "{parm}Manifest</a>");
-        basePage.add("de", smess, "{parm}Manifest</a>");
+        basePage.add("en", smess, "{parm}Manifest</a>, ");
+        basePage.add("de", smess, "{parm}Manifest</a>, ");
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"license\"     href=\"servlet?view=license\">");
-        basePage.add("en", smess, "{parm}License</a>");
-        basePage.add("de", smess, "{parm}Lizenz</a>");
+        basePage.add("en", smess, "{parm}License</a>, ");
+        basePage.add("de", smess, "{parm}Lizenz</a>, ");
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"notice\"      href=\"servlet?view=notice\">");
         basePage.add("en", smess, "{parm}References</a>");

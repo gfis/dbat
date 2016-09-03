@@ -709,7 +709,7 @@ public class Dbat implements Serializable {
 
     /** Executes a {@link Dbat} command line as if it were passed by the shell,
      *  and prints the resulting rows in the specified format.
-     *  This method is used by the deprecated {@link DbatService}.
+     *  This method is used by the deprecated <em>DbatService</em>.
      *  @param writer PrintWriter for result output
      *  @param commandLine command line with options, SQL, file- and/or tablenames
      */

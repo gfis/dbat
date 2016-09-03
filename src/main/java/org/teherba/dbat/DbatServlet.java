@@ -69,7 +69,6 @@ import  java.util.LinkedHashMap;
 import  java.util.Map;
 import  javax.naming.Context;
 import  javax.naming.InitialContext;
-import  javax.servlet.RequestDispatcher;
 import  javax.servlet.ServletContext;
 import  javax.servlet.ServletException;
 import  javax.servlet.http.HttpServlet;
@@ -480,7 +479,7 @@ public class DbatServlet extends HttpServlet {
                 || view.equals("manifest")
                 || view.equals("notice")
                 ) {
-            (new MetaInfPage    ()).showMetaInf (request, response, basePage, language, view);
+            (new MetaInfPage    ()).showMetaInf (request, response, basePage, language, view, this);
         } else if (view.equals("more")) {
             (new MorePage       ()).showMore    (request, response, basePage, language, tableFactory);
         } else if (view.equals("validate")) {
