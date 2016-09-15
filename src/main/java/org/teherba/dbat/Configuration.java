@@ -1,5 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$ 2016-04-16 14:43:35
+ *  2016-09-12: getDataSourceMap (from DbatServlet.init)
  *  2016-05-24: getConnection -> getOpenConnection
  *  2016-05-17: decimalSeparator
  *  2016-04-16: read versionString from classloader's META-INF/MANFEST.MF, scan through all resources
@@ -40,6 +41,8 @@ import  java.io.File;
 import  java.io.FileInputStream;
 import  java.io.InputStreamReader;
 import  java.io.Serializable;
+import  javax.naming.Context;
+import  javax.naming.InitialContext;
 import  java.net.URL;
 import  java.sql.Connection;
 import  java.sql.DriverManager;
@@ -693,6 +696,53 @@ public class Configuration implements Serializable {
         this.dsMap = dsMap;
     } // configure(callType, dsMap)
 
+    /** Determine the mapping from connectionIds to {@link DataSource}s 
+     *  from the environment variable set in <em>dbat/etc/META-INF/context.xml</em>
+     */
+    public LinkedHashMap<String, DataSource> getDataSourceMap() {
+        LinkedHashMap<String, DataSource> dsMap = new LinkedHashMap<String, DataSource>(4);
+        try {
+            Context envContext = (Context) new InitialContext().lookup("java:comp/env"); // get the environment naming context
+            String dsList = ((String) envContext.lookup("dataSources")).replaceAll("\\s+", "");
+            log.info("DbatServlet: dsList=\"" + dsList + "\"");
+
+            String[] pairs = dsList.split("\\,");
+            int ipair = 0;
+            while (ipair < pairs.length) {
+                String[] parts = pairs[ipair].split("\\:");
+                String connectionId = "mysql";
+                String dsName       = connectionId;
+                if (false) {
+                } else if (parts.length == 0) {
+                    // ignore
+                } else if (parts.length == 1) { // direct connectionId, e.g. "worddb"
+                    connectionId = parts[0];
+                    dsName       = connectionId;
+                    if (dsName.length() > 6) { // unusual, external DS names - use heuristics
+                        if (false) {
+                        } else if (dsName.indexOf("COSM") >= 0) {
+                            connectionId = "cosm";
+                        } else if (dsName.indexOf("DB2T") >= 0) {
+                            connectionId = "db2t";
+                        } else if (dsName.indexOf("DB2")  >= 0) {
+                            connectionId = "db2a";
+                        }
+                    } // if heuristics
+                } else if (parts.length == 2) { // explicit renaming of connectionId, e.g. "worddb:DBAT_Word_DataSource
+                    connectionId = parts[0];
+                    dsName       = parts[1];
+                } else { // more than one ":"
+                    // ignore
+                }
+                log.info("DbatServlet: connectionId=\"" + connectionId + "\" mapped to \"" + dsName + "\"");
+                dsMap.put(connectionId, (DataSource) envContext.lookup("jdbc/" + dsName));
+                ipair ++;
+            } // while ipair
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+        return dsMap;
+    } // getDataSourceMap
     //========================
     // Auxiliary methods
     //========================

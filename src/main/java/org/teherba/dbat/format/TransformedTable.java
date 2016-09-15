@@ -1,10 +1,11 @@
 /*  Generator for an XML table which is transformed by an XSLT stylesheet
-    @(#) $Id$
-    2014-11-10: s|getHrefValue -> s|getWrappedValue
-    2014-03-04: ignore pseudo columns
-    2011-09-11: working with generator.fireEndDocument() after long trials
-    2011-08-24: writeGenericRow
-    2011-04-06: copied from XMLTable
+ *  @(#) $Id$
+ *  2016-09-15: BasicFactory replaced by XtransFactory again
+ *  2014-11-10: s|getHrefValue -> s|getWrappedValue
+ *  2014-03-04: ignore pseudo columns
+ *  2011-09-11: working with generator.fireEndDocument() after long trials
+ *  2011-08-24: writeGenericRow
+ *  2011-04-06: copied from XMLTable
 */
 /*
  * Copyright 2011 Dr. Georg Fischer <punctum at punctum dot kom>
@@ -28,7 +29,6 @@ import  org.teherba.dbat.SpecificationHandler; // for ROOT_TAG
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.xtrans.BaseTransformer;
-import  org.teherba.xtrans.BasicFactory;
 import  org.teherba.xtrans.XtransFactory;
 import  java.io.IOException;
 import  java.sql.DatabaseMetaData;
@@ -120,7 +120,7 @@ public class TransformedTable extends BaseTable {
                 }
             } // while iparam
 
-            xtransFactory = new BasicFactory(); // knows XML only
+            xtransFactory = new XtransFactory(); // knows XML only
             // xtransFactory.setRealPath(params[iparm ++]);
             String[] pipeLine = new String[]
                     { "-xml", "-"       // STDIN (not used)

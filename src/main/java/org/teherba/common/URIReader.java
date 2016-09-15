@@ -1,5 +1,6 @@
 /*  Reader for a URL or data URI source
     @(#) $Id$
+    2016-09-15: file upload with mutlipart/form-data POST request (c.f. prev/URIMultiPart)
     2016-08-09: isOpen
     2016-05-10: with URLConnection, make User-Agent header settable
     2016-04-28: allow for Windows drive letter "protocol" (-> file:)
@@ -27,18 +28,25 @@ package org.teherba.common;
 import  java.io.BufferedReader;
 import  java.io.ByteArrayInputStream;
 import  java.io.ByteArrayOutputStream;
+import  java.io.File;
 import  java.io.FileInputStream;
 import  java.io.FileNotFoundException;
 import  java.io.InputStream;
 import  java.io.InputStreamReader;
 import  java.io.IOException;
+import  java.io.OutputStream;
+import  java.io.OutputStreamWriter;
+import  java.io.PrintWriter;
 import  java.io.StringReader;
 import  java.lang.IllegalArgumentException;
 import  java.net.URI;
 import  java.net.URL;
 import  java.net.URLConnection;
+import  java.net.HttpURLConnection;
 import  java.nio.channels.Channels;
 import  java.nio.channels.ReadableByteChannel;
+import  java.nio.file.Files;
+import  java.util.Arrays;
 import  java.util.Date;
 import  java.util.Iterator;
 import  java.util.Map;
@@ -52,7 +60,6 @@ import  org.apache.log4j.Logger;
  *      <ul>
  *      <li>file: - local file access</li>
  *      <li>ftp: - File transfer protocol</li>
- *      <li>gopher: - predecessor of http (only with system property -Djdk.net.registerGopherProtocol=true)</li>
  *      <li>http: - Hypertext transfer protocol</li>
  *      <li>https: - secure Hypertext transfer protocol</li>
  *      <li>jar: - access to files in a zipped Java archive</li>
@@ -72,17 +79,10 @@ import  org.apache.log4j.Logger;
  *  <code>BufferedReader</code> and <code>InputStream</code> are both implemented,
  *  but care must be taken to call the appropriate overloaded method name.
  *  <p>
- *  Caution, the gopher protocol is disabled by default in OpenJDK 6.
- *  From http://ads.freecode.com/articles/red-hat-security-update-for-openjdk-6:
- *  This update disables Gopher protocol support in the java.net package by
- *  default. Gopher support can be enabled by setting the newly introduced
- *  property, "jdk.net.registerGopherProtocol", to true. (CVE-2012-5085)
-
  *  @author Dr. Georg Fischer
  */
 public class URIReader {
     public final static String CVSID = "@(#) $Id$";
-
     /** log4j logger (category) */
     private Logger log;
 
@@ -147,9 +147,6 @@ public class URIReader {
     /** whether the writer should pipe the output through <em>unzip</em> */
     private boolean doUnzip;
 
-    /** underlying URLConnection */
-    private URLConnection urlConn;
-
     /** generalized local input stream */
     private InputStream byteStream;
     /** Gets the byte input stream for this URI
@@ -171,7 +168,7 @@ public class URIReader {
     //======================
     // Construction
     //======================
-    /** No-args Constructor
+    /** No-args Constructor - not really usable
      */
     public URIReader() {
         log = Logger.getLogger(URIReader.class.getName());
@@ -179,34 +176,55 @@ public class URIReader {
     } // Constructor
 
     /** Construct from an URI (character oriented)
-     *  @param unresid the Uniform Resource Identifier to be used: URL or <em>data:</em> URI
+     *  with default encoding UTF-8.
+     *  @param parmURI the Uniform Resource Identifier to be used: URL or <em>data:</em> URI
      */
-    public URIReader(String unresid) {
-        this(unresid, "UTF-8", null);
+    public URIReader(String parmURI) {
+        this(parmURI, "UTF-8", null, null);
     } // Constructor(1)
 
-    /** Construct from a URI and specifiy character set encoding (if character oriented),
-     *  or <code>null</code> (if byte oriented reading should be performed).
-     *  @param unresid the Uniform Resource Identifier to be used: URL or <em>data:</em> URI
+    /** Construct from a URI and specifiy character set encoding
+     *  @param parmURI the Uniform Resource Identifier to be used: URL or <em>data:</em> URI
      *  @param enc character set to be used to read from bytes (character oriented),
-     *  or <code>null</code> (byte oriented)
+     *  or <code>null</code> (byte oriented).
+     *  A pseudo encoding of "zip" pipes the binary input through an unzip operation.
      */
-    public URIReader(String unresid, String enc) {
-        this(unresid, enc, null);
+    public URIReader(String parmURI, String enc) {
+        this(parmURI, enc, null, null);
     } // Constructor(2)
 
-    /** Construct from a URI and specifiy character set encoding (if character oriented),
-     *  or <code>null</code> (if byte oriented reading should be performed).
-     *  A pseudo encoding of "zip" pipes the binary input through an unzip operation.
-     *  @param unresid the Uniform Resource Identifier to be used: URL or <em>data:</em> URI
+    /** Construct from a URI and specifiy character set encoding
+     *  and additional request headers.
+     *  @param parmURI the Uniform Resource Identifier to be used: URL or <em>data:</em> URI
      *  @param enc character set to be used to read from bytes (character oriented),
-     *  or <code>null</code> (byte oriented)
+     *  or <code>null</code> (byte oriented).
+     *  A pseudo encoding of "zip" pipes the binary input through an unzip operation.
      *  @param propMap optional map for request properties,
      *  or null if no properties should be associated
      */
-    public URIReader(String unresid, String enc, Map<String,String> propMap) {
-    	isOpened = true;
+    public URIReader(String parmURI, String enc, Map<String,String> propMap) {
+        this(parmURI, enc, propMap, null);
+    } // Constructor(3)
+
+    /** Construct from a URI and specifiy character set encoding
+     *  and additional request headers
+     *  and an array of String arguments for request parameters.
+     *  @param parmURI the Uniform Resource Identifier to be used: URL or <em>data:</em> URI
+     *  @param enc character set to be used to read from bytes (character oriented),
+     *  or <em>null</em>
+     *  or <code>binary</code>, <code>byte</code>  (byte oriented).
+     *  A pseudo encoding of "zip" pipes the binary input through an unzip operation.
+     *  @param propMap optional map for request properties,
+     *  or null if no properties should be associated
+     *  @param args String array with <em>key=value</em> pairs,
+     *  possibly also in <em>curl</em> syntax for file uploads.
+     */
+    public URIReader(String parmURI, String enc, Map<String,String> propMap, String[] args) {
+        isOpened = true;
         log = Logger.getLogger(URIReader.class.getName());
+        if (enc != null && (enc.equals("binary") || enc.equals("byte"))) {
+            enc = null;
+        }
         this.encoding = enc;
         doUnzip = false;
         isEncoded = enc != null;
@@ -217,65 +235,81 @@ public class URIReader {
         }
         charReader  = null; // the protocol is unreadable so far
         byteStream  = null; // the protocol is unreadable so far
-        urlConn     = null;
+        URLConnection     gurlCon = null; // for general URLs
+        boolean multipart = false;
+        int iarg = 0;
+        if (args != null) { // look for an isolated argument "-F" or "--form"
+            while (! multipart && iarg < args.length) {
+                if (args[iarg].equals("-F") || args[iarg].equals("--form")) {
+                    multipart = true;
+                }
+                iarg ++;
+            } // while iarg
+        } // -F or --form
         try {
             ReadableByteChannel channel = null;
             if (false) {
-            } else if (unresid == null || unresid.equals("-")) { // read from STDIN
+            } else if (parmURI == null || parmURI.equals("-")) { // read from STDIN
                 channel = Channels.newChannel(System.in);
                 if (isEncoded) {
                     charReader = new BufferedReader(Channels.newReader(channel, this.encoding));
                 } else {
                     byteStream = System.in;
                 }
-            } else if (unresid.startsWith("data:"))            { // data:
-                inputURI = new URI(unresid);
+            } else if (parmURI.startsWith("data:"))            { // data:
+                inputURI = new URI(parmURI);
                 String content = inputURI.getSchemeSpecificPart().replaceAll("\\+", " "); // rather primitive, no BASE64
                 if (isEncoded) {
                     charReader = new BufferedReader(new StringReader(content));
                 } else {
                     byteStream = new ByteArrayInputStream(content.getBytes(this.encoding)); // or US_ASCII ?
                 }
-            } else if (unresid.startsWith("mailto:")) {
+            } else if (parmURI.startsWith("mailto:")) {
                 // ??? - ignore, read empty file
-            } else if (unresid.matches("\\w+\\:.*"))           { // http: file: ftp: etc.
-                if (unresid.matches("\\w\\:.*")) { // Windows drive letter
-                    unresid = "file:///" + unresid.substring(0, 1) + "|" + unresid.substring(2);
-                } // Windows
+            } else if (parmURI.matches("\\w+\\:.*"))           { // http: file: ftp: etc.
                 // the JVM has handlers in rt.jar!/sun/net/www/protocol/* for
                 //   file: ftp: gopher: http: https: jar: mailto: netdoc:
-                int colonPos = unresid.indexOf(':');
-                int sharpPos = unresid.indexOf('#');
-                if (sharpPos < 0) {
-                    sharpPos = unresid.length(); // behind the end
+                if (parmURI.matches("\\w\\:.*")) { // Windows drive letter
+                    parmURI = "file:///" + parmURI.substring(0, 1) + "|" + parmURI.substring(2);
+                } // Windows
+                int colonPos = parmURI.indexOf(':');
+                int queryEnd = parmURI.indexOf('#'); // before the fragment
+                if (queryEnd < 0) {
+                    queryEnd = parmURI.length(); // behind the end
                 }
-                inputURI = new URI(unresid.substring(0, colonPos)
-                        , unresid.substring(colonPos + 1, sharpPos)
-                        , (sharpPos >= unresid.length() ? null : unresid.substring(sharpPos + 1))
+                inputURI = new URI(parmURI.substring(0, colonPos) // schema
+                        , parmURI.substring(colonPos + 1, queryEnd) // query string
+                        , (queryEnd >= parmURI.length() ? null : parmURI.substring(queryEnd + 1)) // the fragment
                         );
-                URL url = new URL(inputURI.toASCIIString());
-                urlConn = url.openConnection();
-
+                URL asciiURL = new URL(inputURI.toASCIIString()); // for GET request
+                gurlCon = asciiURL.openConnection();
                 if (propMap != null) { // set connection properties
                     Iterator<String> piter = propMap.keySet().iterator();
                     while (piter.hasNext()) {
                         String key = piter.next();
                         String value = propMap.get(key);
-                        urlConn.setRequestProperty(key, value);
+                        gurlCon.setRequestProperty(key, value);
                     } // while piter
                 } // propMap was set
 
-                if (isEncoded) {
-                    charReader = new BufferedReader(new InputStreamReader(urlConn.getInputStream(), this.encoding));
+                if (multipart) { // POST request -body for multipart/form-data
+                    writeMultiPartFormData(gurlCon, args);
+                    // multipart
                 } else {
-                    byteStream = urlConn.getInputStream();
+                    // no multipart - GET
+                }
+
+                if (isEncoded) {
+                    charReader = new BufferedReader(new InputStreamReader(gurlCon.getInputStream(), this.encoding));
+                } else {
+                    byteStream = gurlCon.getInputStream();
                 }
             } else { // this will (probably) be an absolute or relative file URL
                 if (isEncoded) {
-                    channel = (new FileInputStream (unresid)).getChannel();
+                    channel = (new FileInputStream (parmURI)).getChannel();
                     charReader = new BufferedReader(Channels.newReader(channel, this.encoding));
                 } else {
-                    byteStream = new FileInputStream(unresid);
+                    byteStream = new FileInputStream(parmURI);
                 }
             }
 
@@ -284,12 +318,137 @@ public class URIReader {
                 isEncoded = true;
             } // doUnzip
         } catch (FileNotFoundException fnf) {
-        	isOpened = false; // no message
-        } catch (Exception exc) { 
-        	isOpened = false; // for any problem
-            log.error(exc.getMessage() + ", unresid=\"" + unresid + "\"", exc);
+            isOpened = false; // no message
+        } catch (Exception exc) {
+            isOpened = false; // for any problem
+            log.error(exc.getMessage() + ", parmURI=\"" + parmURI + "\"", exc);
         }
-    } // Constructor(3)
+    } // Constructor(4)
+
+    /** Writes a mutlipart/form-data body to an open (Http) URL connection
+     *  @param gurlCon open (Http) URLConnection
+     *  @param args mixture of argument Strings, maybe enclosed in quotes:
+     *  <ul>
+     *  <li><em>key=value</em> for ordinary form input fields </li>
+     *  <li><em>-F</em> or <em>--form</em> which introduces a file upload parameter tuple
+     *      with the following curl-like syntax:
+     *      <em><ul>
+     *      <li>field-name=@local-file-name</li>
+     *      <li>[;charset=UTF-8|ISO-8859-1|...]</li>
+     *      <li>[;type=mime-type]</li>
+     *      <li>[;filename=file-name]</li>
+     *      <li>[;binary[=true]]/li>
+     *      </ul></em>
+     *  </li>
+     *  </ul>
+     *  Part of this code is adopted from
+     *  <a href="http://stackoverflow.com/questions/2793150/using-java-net-urlconnection-to-fire-and-handle-http-requests?rq=1">stackoverflow.com/questions/2793150</a>.
+     */
+    public void writeMultiPartFormData(URLConnection gurlCon, String[] args) {
+        String boundary = "---------------------------29061947"
+                + Long.toHexString(System.currentTimeMillis()); // a unique random value
+        String CRLF = "\r\n"; // CR+LF Line separator required by multipart/form-data.
+        String mmBoundaryCRLF     = "--" + boundary + CRLF;
+        String charset            = "UTF-8";
+        HttpURLConnection httpCon = null;
+        OutputStream  output      = null;
+        // "http://localhost:8080/gramword/servlet";
+        File   textFile = new File("dummy.txt");
+        // File binaryFile = new File("/path/to/file.bin");
+
+        try {
+            httpCon = (HttpURLConnection) gurlCon;
+            httpCon.setDoOutput(true);
+            httpCon.setRequestMethod("POST");
+            httpCon.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+            output = httpCon.getOutputStream();
+            PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, charset), true);
+            String[] keyValue = null;
+            int ipair = 0;
+            int iarg  = 0;
+            while (iarg < args.length) {
+                if (false) {
+                } else if (args[iarg].equals("-F") || args[iarg].equals("--form")) { // curl spec for file upload
+                    iarg ++; // the next may be complicated: split it on ";"
+                    String[] pairs = args[iarg].split("\\;");
+                    ipair = 0;
+                    keyValue = pairs[ipair ++].split("=");
+                    String fileFieldName = keyValue[0];
+                    String localFileName = keyValue[1]
+                            .replaceAll("\\@", "")
+                            .replaceAll("\\\\", "/") // Windows
+                            ;
+                    boolean binary  = false; // default
+                    String mimeType = null; // will be guessed from localFileName by default
+                    String fileName = null; // part behind last "/" of localFileName  by default
+                    String charSet  = "UTF-8"; // default
+                    while (ipair < pairs.length) {
+                        keyValue = pairs[ipair ++].split("=");
+                        if (false) {
+                        } else if (keyValue[0].equals("type")) {
+                            mimeType = keyValue[1];
+                        } else if (keyValue[0].equals("binary")) {
+                            if (keyValue.length == 1 || keyValue[1].equals("true")) {
+                                binary = true;
+                            }
+                        } else if (keyValue[0].equals("filename")) {
+                            fileName = keyValue[1];
+                        } else {
+                            // invalid key ??
+                        }
+                        ipair ++;
+                    } // while ipair
+                    File file = new File(localFileName);
+                    if (fileName == null) {
+                        fileName = file.getName();
+                    }
+                    if (mimeType == null) {
+                        mimeType = URLConnection.guessContentTypeFromName(localFileName);
+                    }
+
+                    writer.append(mmBoundaryCRLF);
+                    writer.append("Content-Disposition: form-data; name=\""
+                            + fileFieldName + "\"; filename=\"" + fileName + "\"" + CRLF);
+                    writer.append("Content-Type: " + mimeType + "; charset=" + charSet + CRLF);
+                            // Text file itself must have been saved in this charset
+                    if (binary) {
+                        writer.append("Content-Transfer-Encoding: binary" + CRLF);
+                    }
+                    writer.append(CRLF).flush(); // empty line
+                    Files.copy(file.toPath(), output);
+                    output.flush(); // Important before continuing with writer!
+                    writer.append(CRLF).flush(); // CRLF is important! It indicates end of boundary.
+                    // file upload
+                } else { // normal form field=value
+                    keyValue = args[iarg].split("=");
+                    writer.append(mmBoundaryCRLF);
+                    writer.append("Content-Disposition: form-data; name=\"" + keyValue[0] + "\"" +  CRLF);
+                    writer.append(CRLF); // empty line
+                    writer.append((keyValue.length <= 1 ? "true" : keyValue[1]) + CRLF).flush();
+                    // normal form field
+                }
+                iarg ++;
+            } // while iarg
+
+        /*
+            // Send binary file.
+            writer.append(mmBoundaryCRLF);
+            writer.append("Content-Disposition: form-data; name=\"binaryFile\"; filename=\"" + binaryFile.getName() + "\"").append(CRLF);
+            writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(binaryFile.getName())).append(CRLF);
+            writer.append("Content-Transfer-Encoding: binary").append(CRLF);
+            writer.append(CRLF).flush();
+            Files.copy(binaryFile.toPath(), output);
+            output.flush(); // Important before continuing with writer!
+            writer.append(CRLF).flush(); // CRLF is important! It indicates end of boundary.
+        */
+
+            // End of multipart/form-data.
+            writer.append("--" + boundary + "--").append(CRLF);
+            writer.flush();
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+    } // writeMultiPartFormData
 
     /** Unzips a stream of bytes and returns
      *  a character reader for the concatenated contents of all entry files.
@@ -340,21 +499,6 @@ public class URIReader {
         }
         return result;
     } // unzipStream
-    
-    /** Sets a property of the URLConnection.
-     *  If the conneciton is not set, the call is silently ignored.
-     *  @param key   the name of the property to be set, for example "User-Agent"
-     *  @param value the value to be set for the property
-     */
-    public void setRequestProperty(String key, String value) {
-        try {
-            if (urlConn != null) {
-                urlConn.setRequestProperty(key, value);
-            }
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-        }
-    } // setRequestProperty
 
     //==========================
     // BufferedReader Interface
@@ -591,18 +735,21 @@ public class URIReader {
         return result;
     } // skip
 
-    //======================news://news.netcologne.de/alt.free.newsservers
+    //======================
     // Main method (test)
     //======================
 
     /** Test method: read from an URI.
-     *  @param args command line arguments: options, strings, table- or filenames
+     *  @param args command line arguments
      *  <pre>
-     *  java -cp dist/dbat.jar org.teherba.dbat.common.URIReader [uri]
+     *  java -cp dist/common.jar org.teherba.common.URIReader [uri [enc [args]]]
      *  </pre>
      *  Without any argument, the program tries a set of URI schemas/protocols, and
      *  shows whether the JVM has a handler for them.
      *  With an URI argument, the program reads from the URI and prints the content to STDOUT.
+     *  An optional 2nd argument defines the encoding of that content.
+     *  If there are 3 or more arguments, a multipart/form-data body is built
+     *  from the arguments starting with the 3rd, and that body is POSTed to the url in the first argument.
      */
     public static void main(String[] args) {
         System.setProperty("jdk.net.registerGopherProtocol", "true"); // does not work, not soon enough?
@@ -627,7 +774,7 @@ public class URIReader {
                 while (iprot < protocols.length) {
                     try {
                         System.out.print("URL " + protocols[iprot]);
-                        URL url = new URL(protocols[iprot]);
+                        URL testURL = new URL(protocols[iprot]); // tests whether protocol is known
                         System.out.println(" ok");
                     } catch (Exception exc) {
                         System.out.println(" failed");
@@ -640,7 +787,12 @@ public class URIReader {
                 if (iarg < args.length) {
                     enc = args[iarg ++];
                 }
-                URIReader ureader = new URIReader(uri, enc);
+                URIReader ureader = null;
+                if (iarg < args.length) { // 3 or more
+                    ureader = new URIReader(uri, enc, null, Arrays.copyOfRange(args, 3, args.length));
+                } else { // 1, 2
+                    ureader = new URIReader(uri, enc);
+                }
                 if (ureader.isBinary()) { // binary
                     byte[] bbuf = new byte[4096];
                     int len = bbuf.length;

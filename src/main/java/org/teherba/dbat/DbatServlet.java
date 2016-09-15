@@ -1,5 +1,7 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2016-09-15: BasicFactory replaced by XtransFactory again
+ *  2016-09-12: getDataSourceMap moved from init() to Configuration
  *  2016-08-25: message texts here; new message 405: unknown request parameter &view=...
  *  2016-08-09: pass "conn" in writeStart; mode=spec|view -> *.xml
  *  2016-05-11: read Configuration in init(); Kim = 15
@@ -51,7 +53,6 @@ import  org.teherba.dbat.web.MorePage;
 import  org.teherba.common.web.BasePage;
 import  org.teherba.common.web.MetaInfPage;
 import  org.teherba.xtrans.BaseTransformer;
-import  org.teherba.xtrans.BasicFactory;
 import  org.teherba.xtrans.XMLTransformer;
 import  org.teherba.xtrans.XtransFactory;
 import  java.io.BufferedReader;
@@ -67,8 +68,6 @@ import  java.util.Iterator;
 import  java.util.HashMap;
 import  java.util.LinkedHashMap;
 import  java.util.Map;
-import  javax.naming.Context;
-import  javax.naming.InitialContext;
 import  javax.servlet.ServletContext;
 import  javax.servlet.ServletException;
 import  javax.servlet.http.HttpServlet;
@@ -103,8 +102,6 @@ public class DbatServlet extends HttpServlet {
     private String realPath;
     /** Maps connection identifiers (short database instance ids) to {@link DataSource Datasources} */
     private LinkedHashMap<String, DataSource> dsMap;
-    /** Environment naming context obtained from <em>lookup("java:comp/env")</em> */
-    private Context envContext;
     /** Whether the response is binary */
     private boolean binary;
     /** Dbat's configuration data */
@@ -121,53 +118,13 @@ public class DbatServlet extends HttpServlet {
     @SuppressWarnings(value="unchecked")
     public void init() throws ServletException {
         log = Logger.getLogger(DbatServlet.class.getName());
-        ServletContext context = getServletContext();
-        config = new Configuration();
         basePage = new BasePage(APP_NAME);
         Messages.addMessageTexts(basePage);
-        
-        try {
-            envContext = (Context) new InitialContext().lookup("java:comp/env"); // get the environment naming context
-            dsMap = new LinkedHashMap<String, DataSource>(4);
-            String dsList = ((String) envContext.lookup("dataSources")).replaceAll("\\s+", "");
-            log.info("DbatServlet: dsList=\"" + dsList + "\"");
 
-            String[] pairs = dsList.split("\\,");
-            int ipair = 0;
-            while (ipair < pairs.length) {
-                String[] parts = pairs[ipair].split("\\:");
-                String connectionId = "mysql";
-                String dsName       = connectionId;
-                if (false) {
-                } else if (parts.length == 0) {
-                    // ignore
-                } else if (parts.length == 1) { // direct connectionId, e.g. "worddb"
-                    connectionId = parts[0];
-                    dsName       = connectionId;
-                    if (dsName.length() > 6) { // unusual, external DS names - use heuristics
-                        if (false) {
-                        } else if (dsName.indexOf("COSM") >= 0) {
-                            connectionId = "cosm";
-                        } else if (dsName.indexOf("DB2T") >= 0) {
-                            connectionId = "db2t";
-                        } else if (dsName.indexOf("DB2")  >= 0) {
-                            connectionId = "db2a";
-                        }
-                    } // if heuristics
-                } else if (parts.length == 2) { // explicit renaming of connectionId, e.g. "worddb:DBAT_Word_DataSource
-                    connectionId = parts[0];
-                    dsName       = parts[1];
-                } else { // more than one ":"
-                    // ignore
-                }
-                log.info("DbatServlet: connectionId=\"" + connectionId + "\" mapped to \"" + dsName + "\"");
-                dsMap.put(connectionId, (DataSource) envContext.lookup("jdbc/" + dsName));
-                ipair ++;
-            } // while ipair
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-        }
+        config = new Configuration();
+        dsMap = config.getDataSourceMap();        
 
+        ServletContext context = getServletContext();
         realPath = context.getInitParameter("specPath");
         if (realPath == null) {
             realPath = context.getRealPath("/").replaceAll("\\\\", "/");
@@ -394,7 +351,7 @@ public class DbatServlet extends HttpServlet {
                                 // assume all spec files in UTF-8 XML
                         (new Dbat()).parseXML(charReader, handler, tbSerializer);
                     } else { // Dbiv XML syntax for interactive views
-                        XtransFactory xtransFactory = new BasicFactory(); // knows XML only
+                        XtransFactory xtransFactory = new XtransFactory(); // knows XML only
                         BaseTransformer generator  = xtransFactory.getTransformer("xml");
                         BaseTransformer serializer = handler;
                         TransformerHandler styler = xtransFactory.getXSLHandler(realPath + "../xslt/dbiv_dbat.xsl");

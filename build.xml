@@ -2,6 +2,7 @@
 <!--
     ant-buildfile for commandline, web application and web service
     @(#) $Id$
+    2016-09-10: fill.lib
     2016-09-02: core.jar
     2014-11-11: tomcat.base|home extracted from build-import.xml
     2014-11-08: app.version=9
@@ -37,27 +38,6 @@
     <property name="test"               value="%" />
 
     <target name="generate">
-    <!--
-        <copy todir="${src.home}/org/teherba/xtrans">
-            <fileset dir="../xtrans/src/main/java/org/teherba/xtrans">
-                <include name="BaseTransformer.java"/>
-                <include name="BaseRecord.java"/>
-                <include name="BasicFactory.java"/>
-                <include name="ByteRecord.java"/>
-                <include name="CharRecord.java"/>
-                <include name="CharTransformer.java"/>
-                <include name="Field.java"/>
-                <include name="pseudo/LevelFilter.java"/>
-                <include name="XMLTransformer.java"/>
-                <include name="XtransFactory.java"/>
-            </fileset>
-        </copy>
-        <copy todir="${src.home}/org/teherba/xtrans/general">
-            <fileset dir="../xtrans/src/main/java/org/teherba/xtrans/general">
-                <include name="PYXTransformer.java"/>
-            </fileset>
-        </copy>
-    -->
     </target>
 
     <target name="core.jar">
@@ -65,9 +45,28 @@
         <jar jarfile="${dist.home}/${ant.project.name}-core.jar"
                 basedir="${build.classes}"
                 manifest="${build.classes}/META-INF/MANIFEST.MF"
-                excludes="web/** **/web/*.class **/format/*.class **/*Servlet.class"
+                excludes="web/** **/web/*.class **/format/*.class **/*Servlet.class **/xtrans/**"
                 >
         </jar>
+    </target>
+
+    <target name="fill.lib">
+        <copy todir="${lib.home}">
+            <fileset dir="${tomcat.base}/openlib">
+                <include name="activation.jar" />
+                <include name="common-core.jar" />
+                <include name="commons-codec-1.10.jar" />
+                <include name="commons-logging-1.2.jar" />
+                <include name="log4j-1.2.17.jar" />
+                <include name="mysql-connector-java-5.1.11-bin.jar" />
+                <include name="poi-3.14-20160307.jar" />
+                <include name="poi-ooxml-3.14-20160307.jar" />
+                <include name="poi-ooxml-schemas-3.14-20160307.jar" />
+                <include name="serializer.jar" />
+                <include name="tomcat-dbcp.jar" />
+                <include name="xmlbeans-2.6.0.jar" />
+            </fileset>
+        </copy>
     </target>
 
     <target name="not_yet_generate">

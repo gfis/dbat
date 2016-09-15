@@ -27,7 +27,8 @@
  *      {@link org.teherba.dbat.format.SQLUpdateTable}
  *  </li>
  *  <li>Pseudo formats which do not show the results of a query: 
- *      {@link org.teherba.dbat.format.DefaultSpecTable},
+ *      {@link org.teherba.dbat.format.SpecDescription},
+ *      {@link org.teherba.dbat.format.ViewDescription},
  *      {@link org.teherba.dbat.format.EchoSQL},
  *      {@link org.teherba.dbat.format.GenerateSQLJ},
  *      {@link org.teherba.dbat.format.ProbeSQL}

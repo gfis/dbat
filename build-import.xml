@@ -2,6 +2,7 @@
 <!--
     ant-buildfile for commandline, web application and web service
     @(#) $Id$
+    2016-09-12: fill.lib depends on clean
     2016-08-29: 'clean' does no longer delete in openlib (check manually if necessary)
     2016-07-31: 'clean' target checks that Tomcat is stopped
     2016-07-30: merge dbat/expand into dbat.jar and use c:/var/lib/tomcat/openlib/*.jar with slim dbat.war
@@ -132,12 +133,12 @@
         <mkdir dir="${tomcat.base}/openlib" />
     </target>
 
-    <target name="clean" depends="empty">
+    <target name="clean" depends="empty,fill.lib">
         <!-- only when Tomcat is stopped -->
-    <!-- 
+    <!--
         Normally the libraries are overwritten.
         Caution, if the name (it's version number) is changed, the library must be removed manually.
-        
+
         <delete failonerror="false" verbose="true" >
             <fileset dir="${tomcat.base}/openlib">
                 <include name="**/*.jar" />

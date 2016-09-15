@@ -60,6 +60,21 @@ import  java.util.regex.Matcher;
 import  java.util.regex.Pattern;
 import  java.text.SimpleDateFormat;
 import  org.apache.log4j.Logger;
+/*
+HttpEntity entity = MultipartEntityBuilder
+    .create()
+    .addTextBody("number", "5555555555")
+    .addTextBody("clip", "rickroll")
+    .addBinaryBody("upload_file", new File(filePath), ContentType.create("application/octet-stream"), "filename")
+    .addTextBody("tos", "agree")
+    .build();
+
+HttpPost httpPost = new HttpPost("http://some-web-site");
+httpPost.setEntity(entity);
+HttpResponse response = httpClient.execute(httpPost);
+HttpEntity result = response.getEntity();
+*/
+
 
 /** Processes a file with test cases and either generates the test output reference
  *  files (*.prev.tst) or generates new output files (*.this.tst) and compares them

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Edit the database parameters below, especially users and passwords,
+    and copy the file to etc/META-INF/context.xml !
+    =============================================
+    Configuration of context /dbat 
+    @(#) $Id$
+    2016-09-11: Georg Fischer: new sample
+-->
+<!--
+ * Copyright 2016 Dr. Georg Fischer <punctum at punctum dot kom>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<Context
+        path="/dbat" docBase="dbat" 
+        debug="5"
+        reloadable="true" 
+        crossContext="true"
+        >
+    <!-- all JDBC resources below must be listed in the value of this environment string -->
+    <Environment name="dataSources" value="mysql,worddb:worddb,wiki:wiki" type="java.lang.String" override="false" />
+
+    <Resource name="jdbc/worddb" 
+            auth="Container" type="javax.sql.DataSource" 
+            factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory"
+            removeAbandoned="true" removeAbandonedTimeout="30" logAbandoned="true"
+            maxActive="16" maxIdle="1" maxWait="10000" 
+            username="????" password="????"
+            driverClassName="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/worddb"
+            />
+    <Resource name="jdbc/mysql" 
+            auth="Container" type="javax.sql.DataSource" 
+            factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory"
+            removeAbandoned="true" removeAbandonedTimeout="30" logAbandoned="true"
+            maxActive="16" maxIdle="1" maxWait="10000" 
+            username="????" password="????"
+            driverClassName="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/worddb"
+            />
+    <Resource name="jdbc/wiki" 
+            auth="Container" type="javax.sql.DataSource" 
+            factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory"
+            removeAbandoned="true" removeAbandonedTimeout="30" logAbandoned="true"
+            maxActive="4" maxIdle="1" maxWait="10000" 
+            username="????" password="????"
+            driverClassName="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/wikidb"
+            />
+<!-- would need write privilege
+    <Resource name="jdbc/sqlite3" 
+            auth="Container" type="javax.sql.DataSource" 
+            removeAbandoned="true" removeAbandonedTimeout="30" 
+            maxActive="8" maxIdle="8" maxWait="10000" 
+            username="" password=""
+            driverClassName="org.sqlite.JDBC" url="jdbc:sqlite:sqlite3.db"
+            />
+-->
+</Context>

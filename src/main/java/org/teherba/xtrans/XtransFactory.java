@@ -1,5 +1,6 @@
 /*  Selects the applicable transformer, and creates transformation pipelines
     @(#) $Id$
+    2016-09-14: dynamic ArrayList of transformers; MutiFormatFactory removed
     2014-11-07: private TransformerHandlers -> public
     2010-12-07: -sqlpretty
     2010-07-28: config
@@ -44,9 +45,10 @@
 package org.teherba.xtrans;
 import  org.teherba.xtrans.BaseTransformer;
 import  org.teherba.xtrans.XMLTransformer;
-import  java.io.IOException; // thrown in createPipeline
+import  java.io.File;
+import  java.io.PrintWriter;
 import  java.util.ArrayList;
-import  java.util.Arrays; // asList
+import  java.util.HashMap;
 import  java.util.Iterator;
 import  java.util.Properties;
 import  java.util.StringTokenizer;
@@ -81,10 +83,26 @@ public class XtransFactory {
     private static SAXTransformerFactory saxFactory;
     /** real path to web context */
     private String realPath;
+    /** ArrayList of transformers for different formats */
+    protected ArrayList<BaseTransformer> transformers;
 
-    /** Set of transformers for different file formats
+    /** Attempts to instantiate the class for some transformer = format
+     *  @param transformerName name of the class for the transformer,
+     *  without the prefix "org.teherba.xtrans.".
      */
-    protected BaseTransformer[] allTransformers;
+    private void addClass(String transformerName) {
+        try {
+            BaseTransformer transformer = (BaseTransformer) Class.forName("org.teherba.xtrans."
+                    + transformerName).newInstance();
+            if (transformer != null) {
+                // transformer.initialize();
+                transformers.add(transformer);
+            } // != null
+        } catch (Exception exc) {
+            log.debug(exc.getMessage(), exc);
+            // ignore any error silently - this format will not be known
+        }
+    } // addClass
 
     /** No-args Constructor. Used for generation and serialization.
      *  Constructs all enabled transformers. Their constructors should
@@ -92,33 +110,126 @@ public class XtransFactory {
      *  all instantiated here, even if only two of them are really used.
      */
     public XtransFactory() {
-        log = Logger.getLogger(XtransFactory.class.getName());
-        saxFactory      = getSAXFactory();
-        allTransformers = new BaseTransformer[] { null // since this allows for "," on next source line
-                // the order here defines the order in documentation.jsp,
-                // should be: "... group by package order by package, name"
-                , new XMLTransformer            () // serializer for XML
-                };
-        realPath = "";
+        log        = Logger.getLogger(XtransFactory.class.getName());
+        realPath   = "";
+        saxFactory = getSAXFactory();
+        try {
+            transformers = new ArrayList<BaseTransformer>(64);
+            transformers.add(new XMLTransformer());
+            // the order here defines the order in documentation.jsp,
+            // should be: "... group by package order by package, name"
+        //  this.addClass("XMLTransformer");
+            this.addClass("config.IniTransformer");
+            this.addClass("config.MakefileTransformer");
+            this.addClass("config.ManifestTransformer");
+            this.addClass("config.PropertiesTransformer");
+            this.addClass("database.DatabaseTransformer");
+            this.addClass("edi.EdifactTransformer");
+            this.addClass("edi.X12Transformer");
+            this.addClass("finance.AEB43Transformer");
+            this.addClass("finance.DATEVTransformer");
+            this.addClass("finance.DTATransformer");
+            this.addClass("finance.DTA2Transformer");
+            this.addClass("finance.MT103Transformer");
+            this.addClass("finance.MT940Transformer");
+            this.addClass("finance.SWIFTTransformer");
+            this.addClass("general.Col1Transformer");
+            this.addClass("general.ColumnTransformer");
+            this.addClass("general.HexDumpTransformer");
+            this.addClass("general.JSONTransformer");
+            this.addClass("general.LineTransformer");
+            this.addClass("general.PYXTransformer");
+            this.addClass("general.SeparatedTransformer");
+            this.addClass("general.SiXMLTransformer"); // not yet
+            this.addClass("geo.NMEATransformer");
+            this.addClass("grammar.ExtraTransformer");
+            this.addClass("grammar.YACCTransformer");
+            this.addClass("image.raster.ExifGenerator");
+            this.addClass("image.vector.WMFTransformer");
+            this.addClass("misc.GEDCOMTransformer");
+            this.addClass("misc.MorseCodeTransformer");
+            this.addClass("net.Base64Transformer");
+            this.addClass("net.LDIFTransformer");
+            this.addClass("net.QuotedPrintableTransformer");
+            this.addClass("net.URITransformer");
+            this.addClass("office.data.DBaseTransformer");
+            this.addClass("office.data.DIFTransformer");
+            this.addClass("office.text.HitTransformer");
+            this.addClass("office.text.RichTextTransformer");
+            this.addClass("office.text.TeXTransformer");
+            this.addClass("organizer.ICalendarTransformer");
+            this.addClass("organizer.VCardTransformer");
+            this.addClass("parse.ParseFilter");
+            this.addClass("proglang.CTransformer");
+            this.addClass("proglang.CobolTransformer");
+            this.addClass("proglang.CppTransformer");
+            this.addClass("proglang.CSSTransformer");
+            this.addClass("proglang.FortranTransformer");
+            this.addClass("proglang.JavaTransformer");
+            this.addClass("proglang.JavaScriptTransformer");
+            this.addClass("proglang.JCLTransformer");
+            this.addClass("proglang.PascalTransformer");
+            this.addClass("proglang.PL1Transformer");
+            this.addClass("proglang.PostScriptTransformer");
+            this.addClass("proglang.ProgramSerializer");
+            this.addClass("proglang.REXXTransformer");
+            this.addClass("proglang.RubyTransformer");
+            this.addClass("proglang.SQLTransformer");
+            this.addClass("proglang.SQLPrettyFilter");
+            this.addClass("proglang.TokenTransformer");
+            this.addClass("proglang.VisualBasicTransformer");
+            this.addClass("pseudo.CountingSerializer");
+            this.addClass("pseudo.FileTreeGenerator");
+            this.addClass("pseudo.LevelFilter");
+        //  this.addClass("pseudo.MailSerializer");
+            this.addClass("pseudo.SequenceGenerator");
+            this.addClass("pseudo.SystemGenerator");
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
     } // Constructor
 
-    /** Array of transformers for different formats */
-    private ArrayList<BaseTransformer> transformers;
-
-    /** Attempts to instantiate the transformer for some format
-     *  @param transformerName name of the class for the transformer,
-     *  without the domain name
+    /** Determines whether the format code denotes this
+     *  transformer class.
+     *  @param transformer the transformer to be tested
+     *  @param format code for the desired format
      */
-    private void addTransformer(String transformerName) {
-        try {
-            BaseTransformer transformer = (BaseTransformer) Class.forName("org.teherba.xtrans." + transformerName).newInstance();
-            transformers.add(transformer);
-        } catch (Exception exc) {
-        	// ignore any error silently - this format will not be known
-        }
-    } // addTransformer
+    private boolean isApplicable(BaseTransformer transformer, String format) {
+        boolean result = false;
+        // log.debug("tokenizer:" + transformer.getFormatCodes());
+        StringTokenizer tokenizer = new StringTokenizer(transformer.getFormatCodes(), ",");
+        while (! result && tokenizer.hasMoreTokens()) { // try all tokens
+            if (format.equals(tokenizer.nextToken())) {
+                result = true;
+            }
+        } // while all tokens
+        return result;
+    } // isApplicable
 
-    /** Gets a SAX transformer factory
+    /** Gets the applicable transformer for a specified format code.
+     *  @param format abbreviation for the format according to ISO 639
+     *  @return the transformer for that format, or <em>null</em> if the
+     *  format was not found
+     */
+    public BaseTransformer getTransformer(String format) {
+        BaseTransformer transformer = null;
+        Iterator<BaseTransformer> titer = getIterator();
+        boolean busy = true;
+        while (busy && titer.hasNext()) {
+            transformer = titer.next();
+            if (isApplicable(transformer, format)) { // found this format
+                transformer.initialize();
+                busy = false; // break loop
+                log.info("getTransformer(\"" + format + "\") = " + transformer);
+                // found this format
+            } else {
+                transformer = null;
+            }
+        } // while busy
+        return transformer;
+    } // getTransformer
+
+  /** Gets a SAX transformer factory
      *  @return properly configured SAXTransformerFactory
      */
     private SAXTransformerFactory getSAXFactory() {
@@ -157,7 +268,8 @@ public class XtransFactory {
         TransformerHandler handler = null;
         try {
             // log.debug("filter-name=" + format);
-            handler = (new BasicFactory      ()).getTransformer(format); // an XtransFactory instance always returns the same object
+            handler = (new XtransFactory      ()).getTransformer(format); 
+                 // an XtransFactory instance always returns the same object
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
             throw exc;
@@ -271,7 +383,7 @@ public class XtransFactory {
                         bases[ibase ++] = base;
                     } else { // must be an option
                         if (iarg >= args.length) {
-                            log.error("option " + arg + " must be followed by a value");
+                            log.error("option \"" + arg + "\" must be followed by a value");
                             return;
                         }
                         options += arg + " " + args[iarg ++] + " ";
@@ -366,64 +478,130 @@ public class XtransFactory {
      *  (either with a stylesheet or a translet) and an XML serializer.
      */
     public void process() {
-        openFiles();
+        openFiles ();
         generator .generate(); // call all piped processors
         closeFiles();
     } // process
 
-    /** Gets an iterator over all implemented transformers.
-     *  @return list iterator over <em>allTransformers</em>
+    /** Gets an Iterator over all implemented transformers.
+     *  @return list iterator over {@link #transformers}
      */
-    public Iterator getIterator() {
-        Iterator result = (Arrays.asList(allTransformers)).iterator();
-        result.next(); // skip initial null element
-        return result;
+    public Iterator<BaseTransformer> getIterator() {
+        return transformers.iterator();
     } // getIterator
 
     /** Gets the number of available transformers
      *  @return number of formats which can be spelled
      */
-    public int getCount() {
-        return allTransformers.length - 1; // minus [0] (== null)
-    } // getCount
+    public int size() {
+        return transformers.size();
+    } // size
 
-    /** Determines whether the format code denotes this
-     *  transformer class.
-     *  @param transformer the transformer to be tested
-     *  @param format code for the desired format
+    /** Returns a list of available transformers
      */
-    private boolean isApplicable(BaseTransformer transformer, String format) {
-        boolean result = false;
-        // log.debug("tokenizer:" + transformer.getFormatCodes());
-        StringTokenizer tokenizer = new StringTokenizer(transformer.getFormatCodes(), ",");
-        while (! result && tokenizer.hasMoreTokens()) {
-            // try all tokens
-            if (format.equals(tokenizer.nextToken())) {
-                result = true;
+    public String toString() {
+        StringBuffer result = new StringBuffer(1024);
+        Iterator<BaseTransformer> iter = this.getIterator();
+        while (iter.hasNext()) {
+            BaseTransformer trans = iter.next();  
+            String name = trans.getClass().getName(); 
+            result.append(name);
+            result.append(' ');
+            result.append(trans.getFormatCodes());
+            result.append("\n");
+        } // while hasNext
+        return result.toString();
+    } // toString
+    
+    /** Maps subpackage names to their descriptions */
+    private static HashMap/*<1.5*/<String, String>/*1.5>*/ descMap;
+
+    /** Stores the descriptions of all subpackages.
+     */
+    private static void storeSubPackages() {
+        descMap = new HashMap/*<1.5*/<String, String>/*1.5>*/();
+        descMap.put("config"        , "configuration file formats");
+        descMap.put("edi"           , "electronic data interchange (business) formats");
+        descMap.put("finance"       , "financial data formats (SWIFT et al.)");
+        descMap.put("general"       , "general purpose file formats");
+        descMap.put("geo"           , "geopositioning data formats");
+        descMap.put("grammar"       , "grammar/syntax description languages");
+        descMap.put("image"         , "graphics and image file formats");
+        descMap.put("image.raster"  , "raster image file formats");
+        descMap.put("image.vector"  , "vector image file formats");
+        descMap.put("misc"          , "miscellaneous file formats");
+        descMap.put("net"           , "Internet standard (RFC) file formats");
+        descMap.put("office"        , "file formats for office applications");
+        descMap.put("office.data"   , "office table and spreadsheet applications");
+        descMap.put("office.text"   , "office text processing applications");
+        descMap.put("organizer"     , "organizer (PIM) file formats");
+        descMap.put("parse"         , "transforming parser");
+        descMap.put("proglang"      , "programming languages");
+        descMap.put("pseudo"        , "pseudo files and filters");
+    } // storeSubPackages
+
+    /** Main program, writes package descriptions for all subpackages.
+     *  The code is taken from <em>web/documentation.jsp</em>.
+     *  @param args commandline arguments (none)
+     */
+    public static void main(String args[]) {
+        XtransFactory factory = new XtransFactory();
+        Iterator iter = factory.getIterator();
+        String appName = "xtrans";
+        String oldPackage = "";
+        String packageName = "";
+        try {
+            storeSubPackages();
+            PrintWriter out = null;
+            iter.next(); // skip over element [0] which is null
+            while (iter.hasNext()) {
+                BaseTransformer trans = (BaseTransformer) iter.next();
+                String name = trans.getClass().getName();
+                int pos = name.indexOf(appName + ".");
+                name = name.substring(pos + appName.length() + 1);
+                pos = name.lastIndexOf(".");
+                packageName = name.substring(0, pos);
+                name = name.substring(pos + 1);
+                String superName = trans.getClass().getSuperclass().getName();
+                pos = superName.indexOf(appName + ".");
+                superName = superName.substring(pos + appName.length() + 1, pos + appName.length() + 1 + 4);
+                if (! packageName.equals(oldPackage)) {
+                    if (out != null) {
+                        out.println("</table></blockquote></body>");
+                        out.println("</html>");
+                        out.close();
+                    }
+                    out = new PrintWriter(new File("src/main/java/org/teherba/"
+                            + appName + "/"
+                            + packageName.replaceAll("\\.", "/")
+                            + "/package.html"));
+                    oldPackage = packageName;
+                    String desc = descMap.get(packageName);
+                    if (desc == null) {
+                        desc = "different " + packageName + " file formats";
+                    }
+                    out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+                    out.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"");
+                    out.println("  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+                    out.println("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
+                    out.println("<head><!-- generated by XtransFormatFactory.main --></head><body>");
+                    out.println("<p>Converters between XML and " + desc + ".\n");
+                    out.println("<blockquote><table cellspacing=\"1\" cellpadding=\"0\" summary=\"Description of the various formats\">");
+                } // new packageName
+                out.print("<tr><td><strong>-" + trans.getFirstFormatCode() + "</strong></td><td>");
+                out.print(trans.getDescription());
+                out.println("</td></tr>");
+            } // while iter.hasNext()
+            if (out != null) {
+                out.println("</table></blockquote></body>");
+                out.println("</html>");
+                out.close();
             }
-        } // while all tokens
-        return result;
-    } // isApplicable
-
-    /** Gets the applicable transformer for a specified format code.
-     *  @param format abbreviation for the format according to ISO 639
-     *  @return the transformer for that format, or <em>null</em> if the
-     *  format was not found
-     */
-    public BaseTransformer getTransformer(String format) {
-        BaseTransformer transformer = null;
-        // determine the applicable transformer for 'format'
-        int itrans = 1;
-        while (itrans < allTransformers.length) {
-            if (isApplicable(allTransformers[itrans], format)) { // found
-                transformer = allTransformers[itrans];
-                transformer.initialize();
-                itrans = allTransformers.length; // break loop
-            } // found
-            itrans ++;
-        } // while itrans
-        // log.info("getTransformer(\"" + format + "\") = " + transformer);
-        return transformer;
-    } // getTransformer
+        } catch (Exception exc) {
+            System.err.println("package name " + packageName);
+            System.err.println(exc.getMessage());
+            exc.printStackTrace();
+        } // try
+    } // main
 
 } // XtransFactory
