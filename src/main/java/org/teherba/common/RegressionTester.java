@@ -1,5 +1,6 @@
-/*  Reader for text file, returns a string without any whitespace
+/*  Run many test cases through a regression test with result file comparision 
  *  @(#) $Id$
+ *  2016-09-15: curl syntax for URIReader's file upload constructor
  *  2016-08-10: check for non-empty result file with thisStream.size()
  *  2016-07-11: make -s; implicit macro CASE
  *  2016-05-14: HTTPZ and CALLZ
@@ -75,12 +76,12 @@ HttpResponse response = httpClient.execute(httpPost);
 HttpEntity result = response.getEntity();
 */
 
-
-/** Processes a file with test cases and either generates the test output reference
+/** Runs many test cases through a regression test and compares the results.
+ *  Processes a file with test cases and either generates the test output reference
  *  files (*.prev.tst) or generates new output files (*.this.tst) and compares them
  *  to the reference files. A typical activation is:
  *  <pre>
- *  java -cp dist/dbat.jar org.teherba.common.RegressionTester test/mysql.tests "*" 2>&1 | tee test/regression_mysql.log
+ *  java -cp common-core.jar org.teherba.common.RegressionTester test/mysql.tests "*" 2>&1 | tee test/regression_mysql.log
  *  </pre>
  *  In order to avoid differences which depend on the date/time, for example,
  *  the program reads a file <em>regression.properties</em>

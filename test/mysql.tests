@@ -281,7 +281,7 @@ TEST DE8E decimal table as Excel-2007
 CALLZ Dbat -m xlsx   -200 de1
 
 TEST WE9E decimal table as Excel-2007
-HTTPZ test/selecde1 mode=xlsx
+HTTPZ spec=test/selecde1 mode=xlsx
 
 TEST DF1 raw input of decimal and date/time formats
 DATA #
@@ -455,11 +455,11 @@ HTTP spec=test/select01 lang=de
 TEST Y05 spec file with dot
 HTTP spec=test.selec01
 
-TEST Y06 XML syntax error, CLI
-CALL Dbat -m html  -f web/spec/test/badxml.xml 2> nul
+TEST Y06 rewriting with JavaScript - otherwise
+HTTP spec=test.rewrite DBSYS=ORA0
 
-TEST Y07 XML syntax error, web
-HTTP spec=test.badxml
+TEST Y07 rewriting with JavaScript - when
+HTTP spec=test.rewrite DBSYS=ORA1
 
 TEST Y08 redirected spec file, wait time 0 s
 HTTP spec=test.redir0
@@ -467,11 +467,15 @@ HTTP spec=test.redir0
 TEST Y09 redirected spec file, wait time 3 s, German
 HTTP spec=test.redir3
 
-TEST Y10 rewriting with JavaScript - otherwise
-HTTP spec=test.rewrite DBSYS=ORA0
+TEST Y10en XML syntax error, CLI - en
+CALL Dbat -m html -p lang=en -f web/spec/test/badxml.xml  2> nul
+TEST Y10de XML syntax error, CLI - de
+CALL Dbat -m html -p lang=de -f web/spec/test/badxml.xml  2> nul
 
-TEST Y11 rewriting with JavaScript - when
-HTTP spec=test.rewrite DBSYS=ORA1
+TEST Y11en XML syntax error, web - en
+HTTP spec=test.badxml lang=en
+TEST Y11de XML syntax error, web - de
+HTTP spec=test.badxml lang=de
 #-------------------
 # console page
 TEST SC1 show SQL console page
@@ -992,8 +996,8 @@ HTTP spec=test/xslt_brackets mode=jdbc
 TEST PR1 probe correct SQL
 CALL Dbat -m probe -f web/spec/test/selec02.xml
 
-TEST PR2 probe wrong SQL (WITH for MySQL)
-CALL Dbat -m probe -f web/spec/test/with_cte.xml
+# TEST PR2 probe wrong SQL (WITH for MySQL - would not work)
+# CALL Dbat -m probe -f web/spec/test/with_cte.xml
 #-------------------
 # Test different User-Agents for "view-source:" link feature in trailer
 

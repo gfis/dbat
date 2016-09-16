@@ -1,5 +1,6 @@
 /*  Messages.java - Static help texts and other language specific messages for Dbat.
  *  @(#) $Id$
+ *  2016-09-16: getVersionString was from Configuration, now from MetaInfPage
  *  2016-08-26: package org.teherba.dbat.web
  *  2016-05-12: getViewSourceLink
  *  2012-12-10: getSortTitle
@@ -27,10 +28,10 @@
  * limitations under the License.
  */
 package org.teherba.dbat.web;
-import  org.teherba.dbat.Configuration;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.TableFactory;
 import  org.teherba.common.web.BasePage;
+import  org.teherba.common.web.MetaInfPage;
 import  java.io.Serializable;
 import  java.sql.Driver;
 import  java.sql.DriverManager;
@@ -250,7 +251,7 @@ public class Messages implements Serializable {
     public static String getHelpText(String language, TableFactory tableFactory) {
         StringBuffer help = new StringBuffer(2048);
         final String SPACE2 = "  ";
-        help.append(Configuration.getVersionString() + " - DataBase Application Tool" + "\n");
+        help.append("Dbat " + (new MetaInfPage()).getVersionString("dbat") + " - DataBase Application Tool\n");
         if (false) {
         } else if (language.startsWith("de")) {
             help.append(deHelpText);

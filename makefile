@@ -16,6 +16,7 @@
 # 2011-04-27: & < > in INSERT values
 # 2010-03-17, Georg Fischer
 
+APPL=dbat
 DBAW=java -cp dist/dbat.jar org.teherba.dbat.Dbat  -c worddb.properties  -e UTF-8
 DIFF=diff -y --suppress-common-lines --width=160
 DIFF=diff -w -rs -C0
@@ -42,7 +43,7 @@ copy:
 #	java -Djdk.net.registerGopherProtocol=true -cp dist/dbat.jar
 regression: regression_mysql
 regression_mysql:
-	java -cp dist/dbat.jar \
+	java -cp dist/$(APPL).jar \
 			org.teherba.common.RegressionTester $(TESTDIR)/mysql.tests $(TEST) 2>&1 \
 	| tee $(TESTDIR)/regression_mysql.log
 	grep FAILED $(TESTDIR)/regression_mysql.log
@@ -71,6 +72,11 @@ javadoc:
 wikidoc:
 	cd target/docs ; wget -E -H -k -K -p -nd -nc http://localhost/wiki/index.php/Dbat	             || true
 	cd target/docs ; wget -E -H -k -K -p -nd -nc http://localhost/wiki/index.php/Dbat-Spezifikation  || true
+#---------------------------------------------------
+# show manifests of appl.jar and appl-core.jar
+manifests:
+	unzip -p dist/$(APPL)-core.jar META-INF/MANIFEST.MF
+	unzip -p dist/$(APPL).jar      META-INF/MANIFEST.MF
 #---------------------------------------------------
 # insert the last git hash and the compilation date into Dbat's version string
 identify:

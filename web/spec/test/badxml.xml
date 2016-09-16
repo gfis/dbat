@@ -2,12 +2,12 @@
 <!--
     Dbat specification - CRUD1
     @(#) $Id$
+    2016-09-16: lang is set outside
     2008-02-11: Dr. Georg Fischer
 -->
 <dbat	xmlns   ="http://www.teherba.org/2007/dbat"
 		xmlns:ht="http://www.w3.org/1999/xhtml"
 		encoding="UTF-8"
-		lang="en" 
 		conn="worddb" 
 		title="crud01"
 		>

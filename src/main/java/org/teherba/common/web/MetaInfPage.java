@@ -1,5 +1,6 @@
 /*  MetaInfPage.java - show meta data
  *  @(#) $Id$
+ *  2016-09-16: dbat.Configuration.setVersionString ->MetaInfPage.getVersionString; getMyResourceURL
  *  2016-09-03: pass servlet via session
  *  2016-08-26: package independant; param BasePage
  *  2012-07-01: subpackage view
@@ -54,8 +55,8 @@ public class MetaInfPage {
     public MetaInfPage() {
         log = Logger.getLogger(MetaInfPage.class.getName());
     } // Constructor()
-    
-    /** Shows meta information for the application. 
+
+    /** Shows meta information for the application.
      *  The manifest and other files are read from the JAR file.
      *  @param request request with header fields
      *  @param response response with writer
@@ -69,7 +70,7 @@ public class MetaInfPage {
      *  <li>package (not used)</li>
      *  <li>root    (not used)</li>
      *  </ul>
-     *  @param callingServlet the HttpServlet instance calling this method, 
+     *  @param callingServlet the HttpServlet instance calling this method,
      *  for the determination of the proper ClassLoader
      */
     public void showMetaInf(HttpServletRequest request, HttpServletResponse response
@@ -80,11 +81,10 @@ public class MetaInfPage {
             ) {
         try {
             PrintWriter out = basePage.writeHeader(request, response, language);
-            
+
             out.write("<title>" + basePage.getAppName() + " MetaInf</title>\n");
             out.write("</head>\n<body>\n");
-            String line     = null;
-            String fileName = null;
+            String resourceName = null;
             if (view == null) {
                 view = "manifest";
             }
@@ -100,51 +100,130 @@ public class MetaInfPage {
                 if (false) {
                 } else if (view.equals("license")) {
                     out.write("<a name=\"license\" />\n<h3>License</h3>\n");
-                    fileName = "LICENSE.txt";
+                    resourceName = "LICENSE.txt";
                 } else if (view.equals("notice")) {
                     out.write("<a name=\"notice\" />\n<h3>Included Software Packages</h3>\n");
-                    fileName = "NOTICE.txt";
+                    resourceName = "NOTICE.txt";
                 } else if (view.equals("root")) {
                     out.write("<a name=\"Root Directory\" />\n<h3>License</h3>\n");
-                    fileName = ".";
+                    resourceName = ".";
                 } else { // if (view.equals("manifest")) {
                     out.write("<a name=\"manifest\" />\n<h3>JAR Manifest</h3>\n");
-                    fileName = "META-INF/MANIFEST.MF";
+                    resourceName = "META-INF/MANIFEST.MF";
                 }
-                out.write("\n<tt>\n<pre>\n");
-                BufferedReader reader = new BufferedReader(new InputStreamReader
-                        (callingServlet.getClass().getClassLoader().getResourceAsStream(fileName))
-                        );
-                while ((line = reader.readLine()) != null) {
-                    out.println(line);
-                } // while
-                out.write("</pre>\n</tt>\n");
 
-                if (false) { // shows the URL of the classloader
-                    out.write("<h3>Enumeration from ClassLoader</h3>\n");
-                    // from http://stackoverflow.com/questions/5193786/how-to-use-classloader-getresources-correctly
-                    Enumeration<URL> en = callingServlet.getClass().getClassLoader().getResources(fileName);
-                    if (en.hasMoreElements()) {
-                        URL metaInf = en.nextElement();
-                        out.write("<tt>" + metaInf.toString() + "</tt><br />\n");
-                    /*
-                        File fileMetaInf = new File(metaInf.toURI());
-                        File[] files = fileMetaInf.listFiles();
-                        //or 
-                        String[] filenames = fileMetaInf.list();
-                        int iname = 0;
-                        while (iname < filenames.length) {
-                            iname ++;
-                        } // while iname
-                   */
-                    } // hasMoreElements
-                } // enumeration from ClassLoader 
+                out.write("\n<pre>\n");
+                URL url = getMyResourceURL(basePage.getAppName(), resourceName);
+                if (url != null) { // resource found
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                    String line = null;
+                    while ((line = reader.readLine()) != null) {
+                        out.println(line);
+                    } // while
+                } // url != null
+                out.write("</pre>\n");
             } // not "package"
-            
+
             basePage.writeTrailer(language, "back,quest");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
     } // showMetaInf
+
+    /** Gets the URL of the proper resource for this application from the ClassLoader,
+     *  This is tricky because the resource may occur several times with the same name,
+     *  therefore all URLs in the Enumeration
+     *  obtained by ClassLoader.getResources must be examined.
+     *  See <a href="http://stackoverflow.com/questions/5193786/how-to-use-classloader-getresources-correctly">stackoverflow.com</a>.
+     *  @param appName the applications base name (all lowercase, for example "common", "dbat" ...)
+     *  @param resourceName name of the resource file in the container JAR/WAR,
+     *  for example <em>"META-INF/MANIFEST.MF"</em>
+     *  @return URL if the application was found, or <em>null</em> otherwise
+     */
+    private URL getMyResourceURL(String appName, String resourceName) {
+        URL result = null;
+        appName = appName.toLowerCase();
+        try {
+            ClassLoader cloader = this.getClass().getClassLoader();
+            Enumeration<URL> resEnum = cloader.getResources(resourceName);
+            boolean busy = true;
+            while (busy && resEnum.hasMoreElements()) {
+                URL url = resEnum.nextElement();
+                String urlst = url.toString();
+                if (    urlst.indexOf(appName + ".jar!/")            >= 0 ||
+                        urlst.indexOf(appName + "/WEB-INF/classes/") >= 0) {
+                    busy = false;
+                    result = url;
+                } else { // ignore appl-core.jar
+                }
+                // log.info("urlst=" + urlst + " ? \"" + appName + "\" = " + String.valueOf(! busy));
+            } // while resEnum
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+        return result;
+    } // getMyResourceURL
+
+    /** Gets the program's version.
+     *  The version string is built up from fields read out of the META-INF/MANAFEST.JAR resource
+     *  in the JAR or WAR file which contains <em>this</em> class.
+     *  @param appName the applications base name (all lowercase, for example "common", "dbat" ...)
+     *  @return a String of the form "Vm.hhhh/yyyy-mm-dd",
+     *  where m is the major version,
+     *  and hhhh is the build number padded with zeroes or truncated to 4 digits
+     */
+    public String getVersionString(String appName) {
+        String result = "V";
+        try {
+            /* unzip -p dist/dbat.jar      META-INF/MANIFEST.MF shows:
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.9.6
+Created-By: 1.8.0_91-8u91-b14-3ubuntu1~16.04.1-b14 (Oracle Corporation
+ )
+Built-By: gfis
+Main-Class: org.teherba.dbat.Dbat
+
+Name: dbat
+Specification-Title: dbat
+Specification-Version: 10 for JDK 1.6
+Specification-Vendor: Dr. Georg Fischer, D-79341 Kenzingen, Germany
+Implementation-Title: teherba.org/dbat
+Implementation-Version: 24 2016-09-16 13.51.24
+Implementation-Vendor: www.teherba.org
+           */
+            URL url = getMyResourceURL(appName, "META-INF/MANIFEST.MF");
+            if (url != null) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split("\\s+");
+                    if (false) {
+                    } else if (line.startsWith("Specification-Version:" )) {
+                        if (parts.length >= 2) {
+                            result += parts[1];
+                        } else {
+                            result += "10";
+                        }
+                    } else if (line.startsWith("Implementation-Version:")) {
+                        if (parts.length >= 4) {
+                            String buildNo = parts[1].replaceAll("\\.", "");
+                            if (false) { // force buildNo to 4 digits
+                            } else if (buildNo.length() > 4) {
+                                buildNo = buildNo.substring(buildNo.length() - 4);
+                            } else if (buildNo.length() < 4) {
+                                buildNo = ("0000".substring(buildNo.length())) + buildNo;
+                            }
+                            result += "." + buildNo + "/" + parts[2];
+                        } // >= 4 parts
+                    } // Implementation-Version
+                } // while reading lines from MANIFEST.MF
+            } else { // did not find my resource
+                result = "V00.0000/0000-00-00"; // indicates failure
+            } // while resEnum
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+        return result;
+    } // getVersionString
 
 } // MetaInfPage

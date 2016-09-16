@@ -1,5 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$ 2016-04-16 14:43:35
+ *  2016-09-16: log.info() without caller's name; Locale.setDefault; better versionString
  *  2016-09-12: getDataSourceMap (from DbatServlet.init)
  *  2016-05-24: getConnection -> getOpenConnection
  *  2016-05-17: decimalSeparator
@@ -50,6 +51,7 @@ import  java.util.Enumeration;
 import  java.util.HashMap;
 import  java.util.Iterator;
 import  java.util.LinkedHashMap;
+import  java.util.Locale;
 import  java.util.Map;
 import  java.util.Properties;
 import  javax.sql.DataSource;
@@ -238,7 +240,7 @@ public class Configuration implements Serializable {
     } // setFormatMode
     //--------
     /** generator for SAX events */
-    protected BaseTransformer generator;
+    private BaseTransformer generator;
     /** Gets the generator
      *  @return applicable Xtrans transformer
      */
@@ -288,6 +290,7 @@ public class Configuration implements Serializable {
      */
     public void setLanguage(String iso2) {
         language = iso2;
+        Locale.setDefault(new Locale(iso2));
     } // setLanguage
     //--------
     /** when processing SQL by JDBC */
@@ -512,76 +515,6 @@ public class Configuration implements Serializable {
         return this.verbose;
     } // getVerbose
     //--------
-    /** Version String to be used in Messages */
-    private static String versionString;
-
-    /** Sets the program's version, which is a String of the form "Dbat Vm.hhhh/isodate",
-     *  where m is the major version,
-     *  and hhhh are the build number as 4 digits (zero padded)
-     */
-    public void setVersionString() {
-        String result = "Dbat V";
-        try {
-            /*
-            Name: dbat
-            Specification-Title: Dbat
-            Specification-Version: 10 for JDK 1.6
-            Specification-Vendor: Dr. Georg Fischer
-            Implementation-Title: Dbat
-            Implementation-Version: Dbat 730 2016-04-16 19:56:58
-            Implementation-Vendor: Dr. Georg Fischer
-            Implementation-Vendor-Id: @(#) $Id$
-            */
-            ClassLoader cloader = this.getClass().getClassLoader();
-            Enumeration<URL> resources = cloader.getResources("META-INF/MANIFEST.MF");
-            boolean busy = true;
-            while (busy && resources.hasMoreElements()) {
-                URL url = resources.nextElement();
-                // System.out.println("Configuration.0: url=" + url.toString());
-                if (url.toString().indexOf("/dbat") >= 0) { // our MANIFEST.MF
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-                    String line = null;
-                    while ((line = reader.readLine()) != null) {
-                        String[] parts = line.split("\\s+");
-                        if (false) {
-                        } else if (line.startsWith("Specification-Version:" )) {
-                            if (parts.length >= 2) {
-                                result += parts[1];
-                            } else {
-                                result += "10";
-                            }
-                        } else if (line.startsWith("Implementation-Version:")) {
-                            if (parts.length >= 4) {
-                                String buildNo = parts[2].replaceAll("\\.", "");
-                                if (false) { // force buildNo to 4 digits
-                                } else if (buildNo.length() > 4) {
-                                    buildNo = buildNo.substring(buildNo.length() - 4);
-                                } else if (buildNo.length() < 4) {
-                                    buildNo = ("0000".substring(buildNo.length())) + buildNo;
-                                }
-                                result += "." + buildNo + "/" + parts[3];
-                            } // >= 4 parts
-                        } // Implementation-Version
-                    } // our MANIFEST.MF
-                } // while reading lines from MANIFEST.MF
-            } // while resources
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-        }
-        versionString = result;
-    } // setVersionString
-
-    /** Gets the program's version.
-     *  The value returned is reasonable only if this source file was changed and git committed before the build!
-     *  Target <em>identify</em> in <em>dbat/makefile</em> should be run before!
-     *  @return a string of the form "Dbat Vm.hhhh/isodate",
-     *  where m is the major version,
-     *  and hhhh are the build number as 4 digits (zero padded)
-     */
-    public static String getVersionString() {
-        return versionString;
-    } // getVersionString
-    //--------
     /** whether to print header and trailer */
     private boolean withHeaders;
     /** Tells whether to output table header rows
@@ -640,7 +573,6 @@ public class Configuration implements Serializable {
      */
     public Configuration() {
         log = Logger.getLogger(Configuration.class.getName());
-        setVersionString();
     } // Constructor
 
     /** Initializes the class for the 1st (or 2nd, 3rd etc) call.
@@ -704,7 +636,7 @@ public class Configuration implements Serializable {
         try {
             Context envContext = (Context) new InitialContext().lookup("java:comp/env"); // get the environment naming context
             String dsList = ((String) envContext.lookup("dataSources")).replaceAll("\\s+", "");
-            log.info("DbatServlet: dsList=\"" + dsList + "\"");
+            log.info(" dsList=\"" + dsList + "\"");
 
             String[] pairs = dsList.split("\\,");
             int ipair = 0;
@@ -734,7 +666,7 @@ public class Configuration implements Serializable {
                 } else { // more than one ":"
                     // ignore
                 }
-                log.info("DbatServlet: connectionId=\"" + connectionId + "\" mapped to \"" + dsName + "\"");
+                log.info("connectionId=\"" + connectionId + "\" mapped to \"" + dsName + "\"");
                 dsMap.put(connectionId, (DataSource) envContext.lookup("jdbc/" + dsName));
                 ipair ++;
             } // while ipair

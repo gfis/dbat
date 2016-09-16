@@ -13,53 +13,47 @@
 <a name="notice" />
 <h3>Included Software Packages</h3>
 
-<tt>
 <pre>
    =========================================================================
    ==  NOTICE file corresponding to the section 4 d of                    ==
    ==  the Apache License, Version 2.0,                                   ==
-   ==  in this case for the Java Sample Applications at teherba.org       ==
+   ==  in this case for the Applications at www.teherba.org/Dbat          ==
    =========================================================================
+   Last edit: 2016-09-16, Dr. Georg Fischer
 
    This product includes software developed by:
-   
+
    * The Apache Software Foundation (http://www.apache.org/), especially
      activation.jar
-	 log4j-1.2.17.jar
-	 serializer.jar
-	 tomcat-dbcp.jar
-  
-   * MySQL AB, especially the  Connector/J (JDBC driver)
-   	 mysql-connector-java-5.1.11-bin.jar
-	 
+     commons-codec-1.*.jar
+     commons-logging-1.*.jar
+     log4j-1.2.*.jar
+     poi-3.*.jar
+     poi-ooxml-3.*.jar
+     poi-ooxml-schemas-3.*.jar
+     serializer.jar
+     tomcat-dbcp.jar
+     xmlbeans-2.*.jar
+
+   * MySQL AB resp. Oracle, especially the  Connector/J (JDBC driver)
+     mysql-connector-java-5.*.jar
+
    * http://www.sqlite.org/
    * http://www.xerial.org/trac/Xerial/wiki/SQLiteJDBC
-	 sqlite-jdbc-3.6.20.1.jar
+     sqlite-jdbc-3.6.*.jar
    * http://www.zentus.com/
-   
-   * SortTable.js from Stuart Langridge, 
+
+   * SortTable.js from Stuart Langridge,
      http://www.kryogenix.org/code/browser/sorttable/
-     
-   * Various JARs from the Apache POI project (c.f. below)
 
    Please read the different LICENSE files present in the root directory of
    this distribution.
-   
-   The lib directory should contain the following JARs:
-01.02.2015  23:44            55.147 activation.jar
-11.05.2016  14:41           284.184 commons-codec-1.10.jar
-11.05.2016  14:41            61.829 commons-logging-1.2.jar
-01.03.2016  02:43           489.884 log4j-1.2.17.jar
-01.02.2015  23:44           732.657 mysql-connector-java-5.1.11-bin.jar
-11.05.2016  14:42         2.528.204 poi-3.14-20160307.jar
-02.03.2016  01:45         1.286.511 poi-ooxml-3.14-20160307.jar
-02.03.2016  01:46         5.919.795 poi-ooxml-schemas-3.14-20160307.jar
-01.02.2015  23:44               829 README.txt
-01.02.2015  23:44           192.629 serializer.jar
-01.02.2015  23:44           163.006 tomcat-dbcp.jar
-01.03.2016  02:44         2.730.866 xmlbeans-2.6.0.jar
+
+   The lib directory should contain the following JARs as mentioned
+   in target fill.lib of the ant file build.xml.
+
+   == End of NOTICE.txt ====================================================
 </pre>
-</tt>
 <p>
 Back to the <a href="index.html">Dbat</a> main page</p>
 <p><span style="font-size:small">

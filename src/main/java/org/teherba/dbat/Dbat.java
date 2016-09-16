@@ -1,5 +1,6 @@
 /*  Dbat.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2016-09-16: -p lang=de sets Locale for SAX messages
  *  2016-08-09: pass "conn" in writeStart
  *  2013-01-05: fit for RegressionTester
  *  2012-08-04: outputFormat -> formatMode, becomes variable for -r
@@ -401,10 +402,20 @@ public class Dbat implements Serializable {
                         if (iarg < args.length) {
                             pair = args[iarg ++];
                             eqPos = pair.indexOf('=');
+                            String pkey = null;
+                            String pval = null;
                             if (eqPos >= 0) {
-                                config.getParameterMap().put(pair.substring(0, eqPos), new String[]{pair.substring(eqPos + 1)});
+                                pkey = pair.substring(0, eqPos);
+                                pval = pair.substring(eqPos + 1);
                             } else {
-                                config.getParameterMap().put(pair, new String[]{"true"});
+                                pkey = pair;
+                                pval = "true";
+                            }
+                            config.getParameterMap().put(pkey, new String[] { pval } );
+                            if (false) {
+                            } else if (pkey.startsWith("lang")) {
+                                config.setLanguage(pval);
+                            } else if (false) { // ... more settings?
                             }
                         } else {
                             log.error("Option -p and no following parameter");

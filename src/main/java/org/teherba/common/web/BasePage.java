@@ -1,5 +1,7 @@
 /*  BasePage.java - common code for web pages
  *  @(#) $Id$
+ *  2016-09-15: getFormFieldCount, getFormIterator
+ *  2016-09-12: saveViewParameters
  *  2016-09-02: auxiliary links on same line when ending with space
  *  2016-08-29: writeAuxiliaryLinks
  *  2016-08-25, Georg Fischer
@@ -21,12 +23,20 @@
  */
 package org.teherba.common.web;
 import  java.io.PrintWriter;
-import  java.util.HashMap;
+import  java.util.Arrays;
+import  java.util.ArrayList;
+import  java.util.TreeMap;
+import  java.util.Iterator;
+import  java.util.List;
 import  java.util.regex.Pattern;
 import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;
 import  javax.servlet.http.HttpSession;
 import  org.apache.log4j.Logger;
+import  org.apache.commons.fileupload.FileItem;
+import  org.apache.commons.fileupload.FileItemFactory;
+import  org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import  org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /** This class contains common code for classes which output web pages.
  *  It stores the language-specific message texts,
@@ -52,9 +62,13 @@ public class BasePage {
     protected PrintWriter out;
     /** (short) application name, for example "Dbat" */
     public    String appName;
-    /** store the message patterns here */
-    private   HashMap<String, String> hash;
-    /** separator for message (hash) keys */
+    /** Stores the message patterns */
+    private   TreeMap<String, String> textMap;
+    /** Stores the view parameters */
+    private   TreeMap<String, String> formMap;
+    /** Stores the file items of an Http multipart request */
+    private   FileItem[] fileItems;
+    /** separator for message (textMap) keys */
     private static final String SEP = ".";
 
     /** No-argument constructor
@@ -67,16 +81,17 @@ public class BasePage {
      *  @param applicationName name of the application
      */
     public BasePage(String applicationName) {
-        log      = Logger.getLogger(BasePage.class.getName());
-        out      = null;
-        hash     = new HashMap<String, String>(8);
-        appName  = applicationName;
+        log       = Logger.getLogger(BasePage.class.getName());
+        out       = null;
+        textMap   = new TreeMap<String, String>();
+        formMap   = new TreeMap<String, String>();
+        fileItems = new FileItem[] {};
+        appName   = applicationName;
         BasePage basePage = this; // convenient for copy/paste
         //--------
         basePage.add("en", "405", "Unknown request parameter &amp;{parm}=\"{par2}\"");
         basePage.add("de", "405", "Unbekannter Request-Parameter &amp;{parm}=\"{par2}\"");
         //--------
-        //
         basePage.add("en", "505", "System error: invalid message number <em>{parm}</em>");
         basePage.add("de", "505", "Systemfehler: Ung&uuml;ltige Meldungsnummer <em>{parm}</em>");
         //--------
@@ -146,6 +161,111 @@ public class BasePage {
         return result;
     } // getInputField(,,int)
 
+    /** Saves the request parameters in the internal map {@link #formMap}.
+     *  The values are taken from Http GET/POST request fields,
+     *  or from the {@link FileItem}s of a multipart request.
+     *  As side effects, the String fields are stored in {@link #formMap}, and
+     *  the file items are stored in {@link #fileItems}.
+     *  @param request request with header fields
+     *  @param pairs pairs of Strings for expected request parameter fields: (field name, default value)
+     *  @return the value of any "view" field, or <em>null</em> if there is none
+     */
+    public String getFilesAndFields(HttpServletRequest request, String[] pairs) {
+        formMap = new TreeMap<String, String>();
+        ArrayList<FileItem> fitemArray = new ArrayList<FileItem>(4);
+        int ipair = 0;
+        String name  = null;
+        String value = null;
+        while (ipair < pairs.length) {
+            formMap.put(pairs[ipair], pairs[ipair + 1]);
+            ipair += 2;
+        } // while ipair
+        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+        if (! isMultipart) {
+            ipair = 0;
+            while (ipair < pairs.length) {
+                name  = pairs[ipair ++];
+                value = pairs[ipair ++]; // default
+                String formValue = request.getParameter(name);
+                if (formValue != null) { // replace default
+                    value = formValue;
+                }
+                formMap.put(name, value);
+            } // while ipair
+        } else { // multipart
+            ipair = 0;
+            while (ipair < pairs.length) { // save all default values
+                formMap.put(pairs[ipair], pairs[ipair + 1]);
+                ipair += 2;
+            } // while ipair
+            try {
+                FileItemFactory fuFactory = new DiskFileItemFactory(); // Create a factory for disk-based file items
+                ServletFileUpload upload  = new ServletFileUpload(fuFactory); // Create a new file upload handler
+                List<FileItem> formItems = upload.parseRequest(request); // Parse the request
+                Iterator<FileItem> fiter = formItems.iterator();
+                boolean busy = true; // as long as there is no error
+                while (busy && fiter.hasNext()) { // Process the uploaded items
+                    FileItem fitem = fiter.next();
+                    if (fitem.isFormField()) {
+                        name  = fitem.getFieldName();
+                        value = fitem.getString();
+                        String viewDefault = formMap.get(name);
+                        if (false && viewDefault == null) { // this name is not an expected form field name
+                            busy = false;
+                            formMap.put("view",   "error");
+                            formMap.put("messno", "405");
+                            formMap.put("parm",   name);
+                            formMap.put("par2",   value);
+                        } else { // expected field
+                            formMap.put(name, value);
+                        }
+                    } else { // no formField - uploaded fileItem
+                        fitemArray.add(fitem);
+                        // uploaded file contents
+                    }
+                } // while uploaded items
+            } catch (Exception exc) {
+                log.error(exc.getMessage(), exc);
+            }
+        } // multipart
+        fileItems = fitemArray.toArray(new FileItem[] {});
+        return formMap.get("view");
+    } // getFilesAndFields
+
+    /** Gets the String value of a form field obtained by a previous call of 
+     *  {@link #getFilesAndFields}.
+     *  @param name name of the desired field
+     *  @return String value of the field
+     */
+    public String getFormField(String name) {
+        return formMap.get(name);
+    } // getFormField
+
+    /** Gets a {@link FileItem} obtained by a previous call of 
+     *  {@link #getFilesAndFields}.
+     *  @param fileNo sequential number of the file in the form, starting at 0
+     *  @return FileItem for the file if there was one in the request, or null otherwise
+     */
+    public FileItem getFormFile(int fileNo) {
+    	return fileNo >= 0 && fileNo < fileItems.length ? fileItems[fileNo] : null;
+    } // getFormFile
+
+    /** Gets the number of files obtained by a previous call of 
+     *  {@link #getFilesAndFields}.
+     *  @return the number of {@link FileItem}s, maybe 0
+     */
+    public int getFormFileCount() {
+    	return fileItems.length;
+    } // getFormFileCount
+
+    /** Gets an Iterator over the names of the form's fields obtained by a previous call of 
+     *  {@link #getFilesAndFields}.
+     *  @return an Iterator over {@link formMap}
+     */
+    public Iterator<String> getFormIterator() {
+    	return formMap.keySet().iterator();
+    } // getFormIterator
+
     /** Prints the start of the HTML page
      *  (XML declaration and beginning of <em>head</em> element,
      *  up to and excluding the <em>title</em> element)
@@ -199,7 +319,7 @@ public class BasePage {
                     if (link.indexOf("title=\"" + view + "\"") < 0) { // could skip over entry for calling page
                         String text = this.get(language, String.format("%03d", imess));
                         if (text != null) {
-                            text = text.replaceAll(Pattern.quote("{parm}"), link);                           
+                            text = text.replaceAll(Pattern.quote("{parm}"), link);
                             out.write(text);
                             if (! text.endsWith(" ")) {
                                 out.write("<br />\n");
@@ -269,7 +389,7 @@ public class BasePage {
      *  replaced by the values of the corresponding session attributes
      */
     public void add(String lang, String messNo, String text) {
-        hash.put(lang + SEP + messNo, text);
+        textMap.put(lang + SEP + messNo, text);
     } // add(3)
 
     /** Adds a message text under some key
@@ -280,7 +400,7 @@ public class BasePage {
      *  replaced by the values of the corresponding session attributes
      */
     public void add(String key, String text) {
-        hash.put(key, text);
+        textMap.put(key, text);
     } // add(2)
 
     /** Gets a message text for some key
@@ -290,7 +410,7 @@ public class BasePage {
      *  replaced by the values of the corresponding session attributes
      */
     public String get(String lang, String messNo) {
-        return hash.get(lang + SEP + messNo);
+        return textMap.get(lang + SEP + messNo);
     } // get(2)
 
     /** Gets a message text for some key
@@ -299,7 +419,7 @@ public class BasePage {
      *  replaced by the values of the corresponding session attributes
      */
     public String get(String key) {
-        return hash.get(key);
+        return textMap.get(key);
     } // get(1)
 
     /** Output an error message with parameters obtained from the http session

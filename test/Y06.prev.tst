@@ -6,18 +6,21 @@
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
-<title>crud01</title>
-<link rel="stylesheet" type="text/css" href="./web/spec/test/stylesheet.css" />
+<title>rewrite</title>
+<link rel="stylesheet" type="text/css" href="spec/test/stylesheet.css" />
 </head><body>
 
-	<!--Show entries for editing-->
-	<!--Anzeige der editierbaren Einträge-->
-	
-    <h3>Specification with XML Syntax Error</h3>
-    <form method="get" action="servlet?spec=web/spec/test/badxml.xml"><input name="spec" type="hidden" value="web/spec/test/badxml.xml" />
+    <!--Rewriting of Parameters-->
+    <!--Parameter umschreiben-->
 
-        Name: <input name="name" maxsize="20" size="10" init="%" value="%"></input>
-        <input type="submit" value="Show"></input>  
-        <a href="servlet?spec=test.ins1">Neuer Eintrag</a>
-    </form>
-    <h3 class="error">XML SAX parsing error: Der Content von Elementen muss aus ordnungsgemäß formatierten Zeichendaten oder Markups bestehen. in Dbat specification, line 29, column 10, cause: null</h3></body></html>
+    <h3>Rewriting of Parameters</h3>
+    <script language="javascript" type="text/javascript">
+        window.location.href=
+        "http://localhost:8080/dbat/servlet?spec=test.selec01&name=R%&DBSYS=ORA0";
+    </script>
+
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/rewrite.xml" type="text/plain">test/rewrite</a>,
+<a target="_blank" href="servlet?&amp;mode=xls&amp;DBSYS=ORA0&amp;spec=test.rewrite&amp;lang=en">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;DBSYS=ORA0&amp;spec=test.rewrite&amp;lang=en">more</a>
+
+</body></html>

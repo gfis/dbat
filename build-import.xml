@@ -2,6 +2,7 @@
 <!--
     ant-buildfile for commandline, web application and web service
     @(#) $Id$
+    2016-09-16: manifest("-core"), core.jar, manifest("") for dbat.Configuration.versionString
     2016-09-12: fill.lib depends on clean
     2016-08-29: 'clean' does no longer delete in openlib (check manually if necessary)
     2016-07-31: 'clean' target checks that Tomcat is stopped
@@ -240,13 +241,18 @@
         <manifest file="${etc.home}/META-INF/MANIFEST.MF">
             <attribute name="Built-By" value="${user.name}"/>
             <attribute name="Main-Class" value="${app.main-class}"/>
+            <!--Caution, the following are read by ../web/MetaInfPage.getVersionString, 
+                be careful with changing!
+                for appl-core.jar, the property ${core} must be set to "-core"
+                for appl.jar     , the property ${core} must be set to ""      
+            -->
             <section name="${ant.project.name}">
-                <attribute name="Specification-Title"       value="${ant.project.name}"/>
+                <attribute name="Specification-Title"       value="${ant.project.name}${core}"/>
                 <attribute name="Specification-Version"     value="${app.version} ${build.jdk}"/>
-                <attribute name="Specification-Vendor"      value="${build.git}"/>
-                <attribute name="Implementation-Title"      value="${ant.project.name}"/>
-                <attribute name="Implementation-Version"    value="${ant.project.name} ${build.number} ${build.date}"/>
-                <attribute name="Implementation-Vendor"     value="Dr. Georg Fischer, Kenzingen"/>
+                <attribute name="Specification-Vendor"      value="Dr. Georg Fischer, D-79341 Kenzingen, Germany"/>
+                <attribute name="Implementation-Title"      value="teherba.org/${ant.project.name}${core}"/>
+                <attribute name="Implementation-Version"    value="${build.number} ${build.date}"/>
+                <attribute name="Implementation-Vendor"     value="www.teherba.org"/>
             </section>
         </manifest>
         <copy todir="${build.classes}/META-INF">
@@ -261,7 +267,14 @@
         create the binary distributions: jar and war
         target core.jar must be defined somehow (maybe empty) in build.xml
     -->
-    <target name="dist"     depends="prepare,compile,manifest,core.jar">
+    <target name="dist"     depends="prepare,compile"><!-- ,manifest,core.jar" -->
+        <antcall target="manifest">
+            <param name="core" value="-core"  />
+        </antcall>
+        <antcall target="core.jar" />
+        <antcall target="manifest">
+            <param name="core" value=""  />
+        </antcall>
         <!-- with libraries, with web files -->
         <jar jarfile="${dist.home}/${ant.project.name}.jar"
                 basedir="${build.classes}"

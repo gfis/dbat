@@ -13,7 +13,6 @@
 <a name="license" />
 <h3>License</h3>
 
-<tt>
 <pre>
 /*
  *                                 Apache License
@@ -219,7 +218,6 @@
  *   limitations under the License.
  */
 </pre>
-</tt>
 <p>
 Back to the <a href="index.html">Dbat</a> main page</p>
 <p><span style="font-size:small">

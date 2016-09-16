@@ -1,6 +1,6 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
- *  2016-09-15: BasicFactory replaced by XtransFactory again
+ *  2016-09-15: BasicFactory replaced by XtransFactory again; init() not unchecked
  *  2016-09-12: getDataSourceMap moved from init() to Configuration
  *  2016-08-25: message texts here; new message 405: unknown request parameter &view=...
  *  2016-08-09: pass "conn" in writeStart; mode=spec|view -> *.xml
@@ -115,7 +115,6 @@ public class DbatServlet extends HttpServlet {
      *  that the servlet is being placed into service.
      *  @throws ServletException
      */
-    @SuppressWarnings(value="unchecked")
     public void init() throws ServletException {
         log = Logger.getLogger(DbatServlet.class.getName());
         basePage = new BasePage(APP_NAME);
