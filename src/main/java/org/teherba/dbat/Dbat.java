@@ -9,7 +9,7 @@
  *  2011-09-13: prepareSeparator with \n, \t replacement
  *  2011-08-24: -m fix implies -s ""
  *  2011-08-02: -sp is procedure statement separator
- *  2011-07-19: "-s" will no longer imply "-m csv" because of "-m taylor" 
+ *  2011-07-19: "-s" will no longer imply "-m csv" because of "-m taylor"
  *  2011-05-31: formalized tests with test/batch_test.pl
  *  2011-04-07: remove schema/catalog comment output
  *  2011-03-29: set/getWithHeaders
@@ -38,7 +38,7 @@
  *
  *  to do:
  *  Manifest implementation version from SVN revision number, and not from build.number
- *  batch insert 
+ *  batch insert
  */
 /*
  * Copyright 2006 Dr. Georg Fischer <punctum at punctum dot kom>
@@ -97,7 +97,7 @@ public class Dbat implements Serializable {
     private Logger log;
     /** Debugging switch */
     private int debug = 0;
-    
+
     /** No-args Constructor
      */
     public Dbat() {
@@ -128,7 +128,7 @@ public class Dbat implements Serializable {
     private void setSourceName(String name) {
         srcFileName = name;
     } // setSourceName
-    
+
     /** Code for main action to be performed */
     private char    mainAction;
     /** SQL on the commandline to be executed */
@@ -151,7 +151,7 @@ public class Dbat implements Serializable {
     public Configuration getConfiguration() {
         return config;
     } // getConfiguration
-    
+
     /** Initializes the class for the 1st (or 2nd, 3rd etc) call of {@link #processArguments} et al.
      *  @param callType whether the class is activated by CLI, WEB or SOAP
      */
@@ -167,7 +167,7 @@ public class Dbat implements Serializable {
 
     /** Initializes the class for the 1st (or 2nd, 3rd etc) call of {@link #processArguments} et al.
      *  @param callType whether the class is activated by CLI, WEB or SOAP
-     *  @param dsMap maps connection ids to pre-initialized DataSources, 
+     *  @param dsMap maps connection ids to pre-initialized DataSources,
      *  see {@link DbatServlet}.
      */
     public void initialize(int callType, LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap) {
@@ -175,18 +175,18 @@ public class Dbat implements Serializable {
         config                  = new Configuration();
         config.configure        (callType, dsMap);
     } // initialize(2)
-    
-    /** Terminates the processing of SQL statements, 
+
+    /** Terminates the processing of SQL statements,
      *  clean-up for the next invocation
      */
     public void terminate() {
         config.closeConnection();
     } // terminate
-    
+
     //========================
-    // Auxiliary methods 
+    // Auxiliary methods
     //========================
-    
+
     /** Removes optional quotes around a string
      *  @param quoted string with optional single or double quotes
      *  @return string content (without surrounding quotes)
@@ -206,18 +206,18 @@ public class Dbat implements Serializable {
                 .replaceAll("\\\\\\\\", "\\")
                 ;
     } // prepareSeparator
-      
+
     //====================================================================
     // The following 2 methods correspond to the Web interface
     //====================================================================
-    
+
     /** Parses an XML with a character reader and a SAX handler, and
      *  executes the generated SQL against the database
      *  @param charReader reader for input, already opened
      *  @param handler SAX handler for Dbat specifications, must be already configured
      *  @param tbSerializer serializer for output format
      */
-    public void parseXML(Reader charReader, SpecificationHandler handler, BaseTable tbSerializer) 
+    public void parseXML(Reader charReader, SpecificationHandler handler, BaseTable tbSerializer)
             throws Exception {
         try {
             SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
@@ -229,8 +229,8 @@ public class Dbat implements Serializable {
             try { // protect against XML errors
                 saxParser.parse(new InputSource(charReader), handler);
             } catch (SAXParseException exc) { // XML errors
-                tbSerializer.writeMarkup("<h3 class=\"error\">XML SAX parsing error: " 
-                        + exc.getMessage() 
+                tbSerializer.writeMarkup("<h3 class=\"error\">XML SAX parsing error: "
+                        + exc.getMessage()
                         + " in Dbat specification, line " + exc.getLineNumber()
                         + ", column " + exc.getColumnNumber()
                         + ", cause: " + exc.getCause()
@@ -239,8 +239,8 @@ public class Dbat implements Serializable {
                 tbSerializer.writeEnd();
                 throw exc;
             } catch (Exception exc) { // XML errors
-                tbSerializer.writeMarkup("<h3 class=\"error\">XML processing error: " 
-                        + exc.getMessage() 
+                tbSerializer.writeMarkup("<h3 class=\"error\">XML processing error: "
+                        + exc.getMessage()
                 //      + " in Dbat specification, line " + exc.getLineNumber()
                 //      + ", column " + exc.getColumnNumber()
                         + ", cause: " + exc.getCause()
@@ -255,7 +255,7 @@ public class Dbat implements Serializable {
         }
     } // parseXML
 
-    /** Parses an XML specification (-f name.xml) with {@link SpecificationHandler} and 
+    /** Parses an XML specification (-f name.xml) with {@link SpecificationHandler} and
      *  executes the generated SQL against the database
      *  @param specFileName filename of the XML specification
      *  @param formatMode output format, for example "html", "tsv"
@@ -278,7 +278,7 @@ public class Dbat implements Serializable {
     //==============================================================
     // Methods dealing with the commandline arguments
     //==============================================================
-     
+
     /** Configures the class from commandline arguments
      *  @param args command line arguments: options, strings, table- or filenames
      *  @param config configuration properties to be set for this session
@@ -304,7 +304,7 @@ public class Dbat implements Serializable {
                 if (opt.startsWith("-") && opt.length() >= 2) { // it is an option string
                     opt = opt.substring(1).toLowerCase();
                     // test for modifiers first, several of them may be present
- 
+
                     if (opt.startsWith("a")) { // aggregate column name
                         if (iarg < args.length) {
                             tbMetaData.setAggregationName(args[iarg ++]);
@@ -312,7 +312,7 @@ public class Dbat implements Serializable {
                             log.error("Option -a and no following column name for aggregation");
                         }
                     }
-                    
+
                     if (opt.startsWith("call")) { // call of stored procedure, all remaining arguments are special
                         mainAction = 'c';
                         karg = iarg;
@@ -333,7 +333,7 @@ public class Dbat implements Serializable {
                         }
                         defaultSchema = config.getDefaultSchema();
                     } // c
-                    
+
                     if (opt.startsWith("e")) { // character encoding for input or output
                         if (iarg < args.length) {
                             config.setEncoding(ienc ++, args[iarg ++]);
@@ -344,7 +344,7 @@ public class Dbat implements Serializable {
                             log.error("Option -e and no following encoding");
                         }
                     } // e
-                    
+
                     if (opt.startsWith("g")) { // list of column names for group change
                         if (iarg < args.length) {
                             tbMetaData.setGroupColumns(args[iarg ++]);
@@ -352,11 +352,11 @@ public class Dbat implements Serializable {
                             log.error("Option -g and no following column name(s) for grouping");
                         }
                     }
-                    
+
                     if (opt.startsWith("h")) { // help - show usage
                         mainAction = 'h';
                     } // h
-                    
+
                     if (opt.startsWith("l")) { // column lengths
                         if (iarg < args.length) {
                             tbMetaData.fillColumnWidths(args[iarg ++]);
@@ -364,7 +364,7 @@ public class Dbat implements Serializable {
                             log.error("Option -l and no following column lengths");
                         }
                     } // l
-                    
+
                     if (opt.startsWith("m")) { // input/output mode
                         if (iarg < args.length) {
                             formatMode = args[iarg ++].toLowerCase();
@@ -373,7 +373,7 @@ public class Dbat implements Serializable {
                             log.error("Option -m and no following output mode");
                         }
                     } // m
-                    
+
                     if (opt.startsWith("nsp")) { // namespace prefix
                         if (iarg < args.length) {
                             config.setNamespacePrefix(args[iarg ++].toLowerCase());
@@ -381,9 +381,9 @@ public class Dbat implements Serializable {
                             log.error("Option -nsp and no following namespace prefix");
                         }
                     } // m
-                    
+
                     if (opt.startsWith("o")) {
-                        // property setting: "-o name=value" 
+                        // property setting: "-o name=value"
                         if (iarg < args.length) {
                             pair = args[iarg ++];
                             eqPos = pair.indexOf('=');
@@ -396,7 +396,7 @@ public class Dbat implements Serializable {
                             log.error("Option -o and no following property assignment");
                         }
                     } // p
-                    
+
                     if (opt.startsWith("p")) {
                         // parameter setting: "-p name=value" or "-p name" (implies "name=true")
                         if (iarg < args.length) {
@@ -421,7 +421,7 @@ public class Dbat implements Serializable {
                             log.error("Option -p and no following parameter");
                         }
                     } // p
-                    
+
                     if (opt.startsWith("sa")) { // separator string for aggregation
                         if (iarg < args.length) {
                             tbMetaData.setAggregationSeparator(prepareSeparator(args[iarg ++]));
@@ -430,14 +430,14 @@ public class Dbat implements Serializable {
                         }
                         // sa
                     } else
-                    if (opt.startsWith("sp")) { // stored procedure text separator string 
+                    if (opt.startsWith("sp")) { // stored procedure text separator string
                         if (iarg < args.length) {
                             config.setProcSeparator(prepareSeparator(args[iarg ++]));
                         } else {
                             log.error("Option -sp and no following separator");
                         }
                         // sp
-                    } else // important, and -sa, -sp must be checked first  
+                    } else // important, and -sa, -sp must be checked first
                     if (opt.startsWith("s")) { // separator string
                         if (iarg < args.length) {
                             config.setSeparator(prepareSeparator(args[iarg ++]));
@@ -445,7 +445,7 @@ public class Dbat implements Serializable {
                             log.error("Option -s and no following separator");
                         }
                     } // s
-                    
+
                     if (opt.startsWith("v")) { // verbose remarks
                         verbose = 1;
                         config.setVerbose(verbose);
@@ -454,7 +454,7 @@ public class Dbat implements Serializable {
                     if (opt.startsWith("x")) { // no headers
                         config.setWithHeaders(false);
                     } // x
- 
+
                     /*------------------------------------------------
                         now the codes which result in database actions
                     */
@@ -523,7 +523,7 @@ public class Dbat implements Serializable {
                     }
                     if (opt.startsWith("u")) { // URL for additional input file
                         if (iarg < args.length) {
-                            config.setInputURI(args[iarg ++]); 
+                            config.setInputURI(args[iarg ++]);
                         } else {
                             log.error("Option -u and no following URL");
                         }
@@ -540,7 +540,7 @@ public class Dbat implements Serializable {
                         setSourceName("-");
                     }
                     // end of options with leading hyphen
-                    
+
                 } else if (opt.indexOf(' ') >= 0) { // contains space => is an SQL statement
                     argsSql = opt;
                     while (iarg < args.length) { // append (concatenate) all remaining arguments
@@ -556,7 +556,7 @@ public class Dbat implements Serializable {
                     tbMetaData.setTableName(defaultSchema, opt);
                 } // end of case for arguments
             } // while args[]
- 
+
             if (formatMode.equals("def")) {
                 if (false) {
                 } else if (mainAction == 'd') {
@@ -567,14 +567,14 @@ public class Dbat implements Serializable {
                     formatMode = "tsv";
                 }
             } // default
- 
+
             config.evaluateProperties();
         /*
             if (! config.getSeparator().equals("\t") && ! formatMode.equals("csv")) {  // -s was present
                 formatMode = "csv";
             }
         */
-            if (formatMode.equals("fix")) { 
+            if (formatMode.equals("fix")) {
                 config.setWithHeaders(false);
                 config.setSeparator("");
             }
@@ -587,7 +587,7 @@ public class Dbat implements Serializable {
         } // at least 1 argument
         return karg;
     } // evaluateOptions
-    
+
     /** Performs the main action on a configured instance of sqlAction.
      *  @param writer PrintWriter for result output
      *  @param karg index of procedure name in <em>args</em> behind <em>-call</em>, or 0
@@ -601,7 +601,7 @@ public class Dbat implements Serializable {
         boolean binary = tbSerializer.isBinaryFormat();
         PrintWriter  charWriter; // Internal writer for character output
         OutputStream byteWriter; // Internal writer for binary    output
-        try {  
+        try {
             if (writer == null) { // write to System.out
                 if (binary) {
                     byteWriter = new BufferedOutputStream(System.out);
@@ -620,12 +620,12 @@ public class Dbat implements Serializable {
                     tbSerializer.setCharWriter(charWriter);
                 }
             } // writer from caller
-            
+
             tbSerializer.setGenerator(config.getGenerator());
             config.setTableSerializer(tbSerializer);
             sqlAction  = new SQLAction(config);
             long startTime = System.nanoTime();
-            if (writer == null 
+            if (writer == null
                     && ! (tbSerializer instanceof TableGenerator)
                     && ! (mainAction == 'f' && isSourceType(".xml"))) {
                 tbSerializer.setParameterMap(config.getParameterMap());
@@ -635,9 +635,9 @@ public class Dbat implements Serializable {
                     language    = ((String[]) obj)[0]; // override it from the HttpRequest
                 }
                 config.setLanguage(language);
-                tbSerializer.writeStart(new String[] 
+                tbSerializer.writeStart(new String[]
                         { "encoding"    , config.getEncoding(1)
-                        , "contenttype" , config.getHtmlMimeType() 
+                        , "contenttype" , config.getHtmlMimeType()
                         , "nsp"         , config.getNamespacePrefix()
                         , "lang"        , language
                         , "conn"        , config.getConnectionId()
@@ -704,7 +704,7 @@ public class Dbat implements Serializable {
                         , config.getDriverURL())
                         );
             }
-            if (writer == null 
+            if (writer == null
                     && ! (tbSerializer instanceof TableGenerator)
                     && ! (mainAction == 'f' && isSourceType(".xml"))) { // channel from System.out - flush it
                 tbSerializer.writeEnd();
@@ -738,7 +738,7 @@ public class Dbat implements Serializable {
         processArguments(writer, new String [] { stmtSql });
     } // processStatement
 */
-    /** Processes all command line arguments, executes the SQL, 
+    /** Processes all command line arguments, executes the SQL,
      *  and prints the resulting rows in the specified format.
      *  Only one main action (SQL instruction) will be executed if no
      *  SQL or XML file is specified.
@@ -751,11 +751,11 @@ public class Dbat implements Serializable {
         // System.err.println("main action=" + mainAction + ", argsSql=" + argsSql);
         process(writer, karg, args, config, tbMetaData);
     } // processArguments
-    
+
     //======================
     // Main method
     //======================
-    
+
     /** Database Administration Tool -
      *  call it with -h to display possible options and arguments.
      *  The result is printed to STDOUT.

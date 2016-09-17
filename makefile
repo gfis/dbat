@@ -103,7 +103,9 @@ same_iv1:
 	diff -w test/$(V0).prev.tst x.tmp
 #---------------------------------------------------
 jfind:
-	find src -iname "*.java" | xargs -l grep -H $(JF)
+	find src -iname "*.java" | xargs -l grep -H "$(JF)"
+rmbak:
+	find src -iname "*.java.bak" | xargs -l rm -v
 #---------------------------------------------------
 exit1:
 	java -jar dist/dbat.jar -c wi17 -n user_groups

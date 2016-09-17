@@ -1,6 +1,6 @@
 /*  Selects the applicable transformer, and creates transformation pipelines
     @(#) $Id$
-    2016-09-14: dynamic ArrayList of transformers; MutiFormatFactory removed
+    2016-09-17: dynamic ArrayList of transformers; MutiFormatFactory removed
     2014-11-07: private TransformerHandlers -> public
     2010-12-07: -sqlpretty
     2010-07-28: config
@@ -220,7 +220,7 @@ public class XtransFactory {
             if (isApplicable(transformer, format)) { // found this format
                 transformer.initialize();
                 busy = false; // break loop
-                log.info("getTransformer(\"" + format + "\") = " + transformer);
+                // log.info("getTransformer(\"" + format + "\") = " + transformer);
                 // found this format
             } else {
                 transformer = null;

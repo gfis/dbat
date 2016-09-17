@@ -633,6 +633,7 @@ public class ByteRecord extends BaseRecord {
        StringBuffer value = new StringBuffer(2 * len); // result to be returned
        value.setLength(2 * len);
        int  istr = value.length(); // index of rightmost digit
+       int  opos = currentPos; // start of field
        currentPos += len; // behind field
        int  start = currentPos - 1; // last position in field (maybe behind end of buffer)
        int  toggle = 0; // 0 = right nibble, 1 = left

@@ -5,15 +5,15 @@
     2016-09-16: lang is set outside
     2008-02-11: Dr. Georg Fischer
 -->
-<dbat	xmlns   ="http://www.teherba.org/2007/dbat"
-		xmlns:ht="http://www.w3.org/1999/xhtml"
-		encoding="UTF-8"
-		conn="worddb" 
-		title="crud01"
-		>
-	<comment lang="en">Show entries for editing</comment>
-	<comment lang="de">Anzeige der editierbaren Eintr&#xe4;ge</comment>
-	
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        conn="worddb" 
+        title="crud01"
+        >
+    <comment lang="en">Show entries for editing</comment>
+    <comment lang="de">Anzeige der editierbaren Eintr&#xe4;ge</comment>
+    
     <ht:h3>Specification with XML Syntax Error</ht:h3>
     <ht:form method="get">
         <ht:input label="Name" name="name" maxsize="20" size="10" init="%" />
@@ -21,7 +21,7 @@
         <ht:a href="servlet?spec=test.ins1">Neuer Eintrag</ht:a>
     </ht:form>
     <select limit="2048">
-        <col label="Name"    	>name</col>
+        <col label="Name"       >name</col>
         <col label="University" >univ</col>
         <from>c01</from>
         <where>name like '<parm name="name" />%'

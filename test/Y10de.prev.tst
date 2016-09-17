@@ -10,9 +10,9 @@
 <link rel="stylesheet" type="text/css" href="./web/spec/test/stylesheet.css" />
 </head><body>
 
-	<!--Show entries for editing-->
-	<!--Anzeige der editierbaren Einträge-->
-	
+    <!--Show entries for editing-->
+    <!--Anzeige der editierbaren Einträge-->
+    
     <h3>Specification with XML Syntax Error</h3>
     <form method="get" action="servlet?spec=web/spec/test/badxml.xml"><input name="spec" type="hidden" value="web/spec/test/badxml.xml" />
 
