@@ -1,5 +1,6 @@
 /*  Messages.java - Static help texts and other language specific messages for Dbat.
  *  @(#) $Id$
+ *  2016-09-20: getVersionString with parameter localObject
  *  2016-09-16: getVersionString was from Configuration, now from MetaInfPage
  *  2016-08-26: package org.teherba.dbat.web
  *  2016-05-12: getViewSourceLink
@@ -251,7 +252,8 @@ public class Messages implements Serializable {
     public static String getHelpText(String language, TableFactory tableFactory) {
         StringBuffer help = new StringBuffer(2048);
         final String SPACE2 = "  ";
-        help.append("Dbat " + (new MetaInfPage()).getVersionString("dbat") + " - DataBase Application Tool\n");
+        help.append("Dbat " + (new MetaInfPage()).getVersionString(tableFactory, "dbat") 
+                + " - DataBase Application Tool\n");
         if (false) {
         } else if (language.startsWith("de")) {
             help.append(deHelpText);

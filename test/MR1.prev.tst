@@ -95,6 +95,7 @@ Language</span>
 </td></tr>
 </table>
 </form>
+<!-- language="en", features="quest" -->
 <p><span style="font-size:small">
 Questions, remarks: email to  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
 </body></html>

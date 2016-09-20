@@ -13,6 +13,7 @@
 <body>
 <!--lang=de, messno=301, text=Die Spezifikationsdatei <em>test/select01</em> wurde nach <em><a href="/dbat/servlet?spec=test/selec01">/dbat/servlet?spec=test/selec01</a></em> verschoben.<br />Bitte &auml;ndern Sie Ihre Favoriten/Lesezeichen.<br />Sie werden in 3 s auf die neue Seite umgelenkt.-->
 <h3><a href="index.html">Dbat</a>-Meldung 301: Die Spezifikationsdatei <em>test/select01</em> wurde nach <em><a href="/dbat/servlet?spec=test/selec01">/dbat/servlet?spec=test/selec01</a></em> verschoben.<br />Bitte &auml;ndern Sie Ihre Favoriten/Lesezeichen.<br />Sie werden in 3 s auf die neue Seite umgelenkt.</h3>
+<!-- language="de", features="quest" -->
 <p><span style="font-size:small">
 Fragen, Hinweise: EMail an  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
 </body></html>

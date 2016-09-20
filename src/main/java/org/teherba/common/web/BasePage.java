@@ -260,7 +260,7 @@ public class BasePage {
 
     /** Gets an Iterator over the names of the form's fields obtained by a previous call of 
      *  {@link #getFilesAndFields}.
-     *  @return an Iterator over {@link formMap}
+     *  @return an Iterator over {@link #formMap}
      */
     public Iterator<String> getFormIterator() {
     	return formMap.keySet().iterator();
@@ -345,6 +345,7 @@ public class BasePage {
      */
     public void writeTrailer(String language, String features) {
         try {
+            out.write("<!-- language=\"" + language + "\", features=\"" + features + "\" -->\n");
             if (features.indexOf("back") >= 0) {
                 out.write("<p>\n");
                 if (false) {

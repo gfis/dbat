@@ -1,5 +1,6 @@
-/*  MetaInfPage.java - show meta data
+/*  MetaInfPage.java - show meta data from META-INF/MANIFEST.MF, version String, License and NOTICE file
  *  @(#) $Id$
+ *  2016-09-20: need any local object of the application to get the proper classloader containing the MANIFEST.MF
  *  2016-09-16: dbat.Configuration.setVersionString ->MetaInfPage.getVersionString; getMyResourceURL
  *  2016-09-03: pass servlet via session
  *  2016-08-26: package independant; param BasePage
@@ -40,7 +41,9 @@ import  org.apache.log4j.Logger;
  *  <li>JAR Manifest</li>
  *  <li>Notices for included software packages</li>
  *  </ul>
- *  The relevant information is read from the JAR file.
+ *  The relevant information is read from the JAR or WAR file.
+ *  From the MANIFEST, a ersion String may be extracted if that
+ *  file follows the conventions of teherba.org's build-import.xml for ant.
  *  @author Dr. Georg Fischer
  */
 public class MetaInfPage {
@@ -81,9 +84,9 @@ public class MetaInfPage {
             ) {
         try {
             PrintWriter out = basePage.writeHeader(request, response, language);
-
             out.write("<title>" + basePage.getAppName() + " MetaInf</title>\n");
             out.write("</head>\n<body>\n");
+            out.write("<!-- language=\"" + language + "\", view=\"" + view + "\" -->\n");
             String resourceName = null;
             if (view == null) {
                 view = "manifest";
@@ -111,9 +114,9 @@ public class MetaInfPage {
                     out.write("<a name=\"manifest\" />\n<h3>JAR Manifest</h3>\n");
                     resourceName = "META-INF/MANIFEST.MF";
                 }
-
-                out.write("\n<pre>\n");
-                URL url = getMyResourceURL(basePage.getAppName(), resourceName);
+                out.write("<!-- appName=\"" + basePage.getAppName() + "\", resource=\"" + resourceName + "\" -->\n");
+                URL url = getMyResourceURL(callingServlet, basePage.getAppName(), resourceName);
+                out.write("<pre>\n");
                 if (url != null) { // resource found
                     BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
                     String line = null;
@@ -135,21 +138,23 @@ public class MetaInfPage {
      *  therefore all URLs in the Enumeration
      *  obtained by ClassLoader.getResources must be examined.
      *  See <a href="http://stackoverflow.com/questions/5193786/how-to-use-classloader-getresources-correctly">stackoverflow.com</a>.
+     *  @param localObject any object which is loaded with the relevant MANIFEST.MF
      *  @param appName the applications base name (all lowercase, for example "common", "dbat" ...)
      *  @param resourceName name of the resource file in the container JAR/WAR,
      *  for example <em>"META-INF/MANIFEST.MF"</em>
      *  @return URL if the application was found, or <em>null</em> otherwise
      */
-    private URL getMyResourceURL(String appName, String resourceName) {
+    private URL getMyResourceURL(Object localObject, String appName, String resourceName) {
         URL result = null;
         appName = appName.toLowerCase();
         try {
-            ClassLoader cloader = this.getClass().getClassLoader();
+            ClassLoader cloader = localObject.getClass().getClassLoader();
             Enumeration<URL> resEnum = cloader.getResources(resourceName);
             boolean busy = true;
             while (busy && resEnum.hasMoreElements()) {
                 URL url = resEnum.nextElement();
                 String urlst = url.toString();
+                // log.info(urlst);
                 if (    urlst.indexOf(appName + ".jar!/")            >= 0 ||
                         urlst.indexOf(appName + "/WEB-INF/classes/") >= 0) {
                     busy = false;
@@ -165,14 +170,15 @@ public class MetaInfPage {
     } // getMyResourceURL
 
     /** Gets the program's version.
-     *  The version string is built up from fields read out of the META-INF/MANAFEST.JAR resource
+     *  The version string is built up from fields read out of the META-INF/MANAFEST.MF resource
      *  in the JAR or WAR file which contains <em>this</em> class.
+     *  @param localObject any object which is loaded with the relevant MANIFEST.MF
      *  @param appName the applications base name (all lowercase, for example "common", "dbat" ...)
      *  @return a String of the form "Vm.hhhh/yyyy-mm-dd",
      *  where m is the major version,
      *  and hhhh is the build number padded with zeroes or truncated to 4 digits
      */
-    public String getVersionString(String appName) {
+    public String getVersionString(Object localObject, String appName) {
         String result = "V";
         try {
             /* unzip -p dist/dbat.jar      META-INF/MANIFEST.MF shows:
@@ -191,7 +197,7 @@ Implementation-Title: teherba.org/dbat
 Implementation-Version: 24 2016-09-16 13.51.24
 Implementation-Vendor: www.teherba.org
            */
-            URL url = getMyResourceURL(appName, "META-INF/MANIFEST.MF");
+            URL url = getMyResourceURL(localObject, appName, "META-INF/MANIFEST.MF");
             if (url != null) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
                 String line = null;

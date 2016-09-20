@@ -1,5 +1,6 @@
 /*  Selects the applicable table generator
     @(#) $Id$
+    2016-09-17: size()
     2016-08-09: former name DefaultSpecTable -> SpecDescription, + ViewDescription; reordered
     2016-05-12: ExcelStream with Apache POI replaces ExcelTable
     2013-01-18: dynamic, with Class.forName
@@ -49,9 +50,6 @@ public class TableFactory {
 
     /** log4j logger (category) */
     private Logger log;
-
-    /** Set of Tables for different file formats */
-    private BaseTable[] allTables;
 
     /** Array of serializers for different output formats */
     private ArrayList<BaseTable> serializers;
@@ -104,19 +102,27 @@ public class TableFactory {
         }
     } // Constructor(0)
 
-    /** Gets an iterator over all implemented Tables.
-     *  @return list iterator over <em>allTables</em>
+    /** Gets an Iterator over all implemented Tables.
+     *  @return list iterator over {@link #serializers}
      */
-    public Iterator /*<1.5*/<BaseTable>/*1.5>*/ getIterator() {
+    public Iterator<BaseTable> getIterator() {
         return serializers.iterator();
     } // getIterator
 
-    /** Gets the number of available Tables (for example for HTML listboxes)
-     *  @return number of formats which can be spelled
+    /** Gets the number of available {@link BaseTable Tables} (for example for HTML listboxes)
+     *  This is deprecated: use {@link #size} instead.
+     *  @return number of formats which can be serialized
      */
     public int getCount() {
         return serializers.size(); // omit element [0] (= null)
     } // getCount
+
+    /** Gets the number of available Tables (for example for HTML listboxes)
+     *  @return number of formats which can be serialized
+     */
+    public int size() {
+        return serializers.size(); // omit element [0] (= null)
+    } // size
 
     /** Determines whether the format code denotes this
      *  Table class.

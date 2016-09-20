@@ -10,9 +10,10 @@
 <title>Dbat MetaInf</title>
 </head>
 <body>
+<!-- language="en", view="license" -->
 <a name="license" />
 <h3>License</h3>
-
+<!-- appName="Dbat", resource="LICENSE.txt" -->
 <pre>
 /*
  *                                 Apache License
@@ -218,6 +219,7 @@
  *   limitations under the License.
  */
 </pre>
+<!-- language="en", features="back,quest" -->
 <p>
 Back to the <a href="index.html">Dbat</a> main page</p>
 <p><span style="font-size:small">

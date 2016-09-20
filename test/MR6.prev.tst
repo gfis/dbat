@@ -10,9 +10,10 @@
 <title>Dbat MetaInf</title>
 </head>
 <body>
+<!-- language="en", view="notice" -->
 <a name="notice" />
 <h3>Included Software Packages</h3>
-
+<!-- appName="Dbat", resource="NOTICE.txt" -->
 <pre>
    =========================================================================
    ==  NOTICE file corresponding to the section 4 d of                    ==
@@ -54,6 +55,7 @@
 
    == End of NOTICE.txt ====================================================
 </pre>
+<!-- language="en", features="back,quest" -->
 <p>
 Back to the <a href="index.html">Dbat</a> main page</p>
 <p><span style="font-size:small">

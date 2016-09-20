@@ -46,6 +46,7 @@ Special characters and functions are escaped with a <em>single</em> backslash, l
 	This representation is needed for the <tt>valid="..."</tt> attribute
 of the XML elements <tt>&lt;input&gt;, &lt;select&gt;</tt> and <tt>&lt;textarea&gt;</tt> in
 <a href="index.html">Dbat</a> specifications.
+<!-- language="en", features="quest" -->
 <p><span style="font-size:small">
 Questions, remarks: email to  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
 </body></html>
