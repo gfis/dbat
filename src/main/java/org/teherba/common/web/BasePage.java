@@ -1,5 +1,6 @@
 /*  BasePage.java - common code for web pages
  *  @(#) $Id$
+ *  2016-09-21: stylesheet.css with title="common" attribute for gramword css switching
  *  2016-09-15: getFormFieldCount, getFormIterator
  *  2016-09-12: saveViewParameters
  *  2016-09-02: auxiliary links on same line when ending with space
@@ -289,7 +290,7 @@ public class BasePage {
             out.write("<head>\n");
             out.write("<meta http-equiv=\"Content-Type\" content=\"application/xhtml+xml;charset=UTF-8\" />\n");
             out.write("<meta name=\"robots\" content=\"noindex, nofollow\" />\n");
-            out.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"stylesheet.css\" />\n");
+            out.write("<link rel=\"stylesheet\" title=\"common\" type=\"text/css\" href=\"stylesheet.css\" />\n");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
