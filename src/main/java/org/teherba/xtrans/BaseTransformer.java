@@ -95,8 +95,8 @@ import  org.apache.log4j.Logger;
  *  </ul> 
  *  <p>
  *  Some of the transformers implement general formats for all types of SAX events,
- *  among them the {@link XMLTransformer} and the {@link org.teherba.xtrans.general.PYXTransformer PYXTransformer}.
- *  For the programming language formats, the {@link org.teherba.xtrans.proglang.TokenTransformer TokenTransformer} 
+ *  among them the {@link XMLTransformer} and the PYXTransformer.
+ *  For the programming language formats, the TokenTransformer
  *  implements a common, tabular representation.
  *  <p>
  *  Except for some members of the <em>org.teherba.xtrans.pseudo</em> subpackage, the transformers will

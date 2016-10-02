@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
-<link rel="stylesheet" type="text/css" href="stylesheet.css" />
+<link rel="stylesheet" title="common" type="text/css" href="stylesheet.css" />
 <title>Dbat Message 404</title>
 </head>
 <body>

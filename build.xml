@@ -55,7 +55,9 @@
         <copy todir="${lib.home}">
             <fileset dir="${tomcat.base}/openlib">
                 <include name="activation.jar"                      />
+            <!--
                 <include name="common-core.jar"                     />
+            -->
                 <include name="commons-codec-1.10.jar"              />
                 <include name="commons-fileupload-1.3.2.jar"        />
                 <include name="commons-io-2.5.jar"                  />
@@ -70,6 +72,7 @@
                 <include name="xmlbeans-2.6.0.jar"                  />
             </fileset>
         </copy>
+        <delete failonerror="false" file="${lib.home}/common-core.jar" />
     </target>
 
     <target name="not_yet_generate">
