@@ -102,8 +102,6 @@ public class DbatServlet extends HttpServlet {
     private String realPath;
     /** Maps connection identifiers (short database instance ids) to {@link DataSource Datasources} */
     private LinkedHashMap<String, DataSource> dsMap;
-    /** Whether the response is binary */
-    private boolean binary;
     /** Dbat's configuration data */
     private Configuration config;
     /** common code and messages for auxiliary web pages */
@@ -236,7 +234,7 @@ public class DbatServlet extends HttpServlet {
      *  @throws IOException
      */
     public void generateResponse(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        binary = false; // assume legible character response output
+        boolean binary = false; // assume legible character response output
         config.configure(config.WEB_CALL, dsMap);
         TableFactory tableFactory = new TableFactory();
         request.setCharacterEncoding("UTF-8");

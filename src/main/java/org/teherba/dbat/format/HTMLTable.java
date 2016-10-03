@@ -1,5 +1,6 @@
 /*  Generator for an HTML table
     @(#) $Id$
+    2016-10-03: style could have been null
     2016-05-19: repair style on rows (table id)
     2015-04-22: repair title="..." attribute for SQL REPLACE with embedded HTML (highlighting)
     2014-11-10: s|getHrefValue -> s|getWrappedValue
@@ -95,7 +96,7 @@ public class HTMLTable extends XMLTable {
      *  The possible attribute names are described in {@link BaseTable#writeStart}.
      *  @param parameterMap map of request parameters to values
      */
-    public void writeStart(String[] attributes,  HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
+    public void writeStart(String[] attributes,  HashMap<String, String[]> parameterMap) {
         String contenttype  = getMimeType();
         String encoding     = getTargetEncoding();
         String javascript   = null;
@@ -142,8 +143,8 @@ public class HTMLTable extends XMLTable {
             charWriter.println("<meta http-equiv=\"Content-Type\" content=\"" + contenttype + "\" />");
             charWriter.println("<meta name=\"robots\" content=\"noindex, nofollow\" />");
             charWriter.println("<title>" + title + "</title>");
-            String[] stylesheets = stylesheet.split("\\s+");
             if (stylesheet != null) { // always
+                String[] stylesheets = stylesheet.split("\\s+");
                 int icss = 0;
                 while (icss < stylesheets.length) {
                     charWriter.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + stylesheets[icss] + "\" />");
@@ -372,9 +373,6 @@ public class HTMLTable extends XMLTable {
     public void writeProcessingInstruction(String instruction) {
     } // writeProcessingInstruction
 
-    /** Tunnels the image for pseudo attribute "image" */
-    private String imageElement;
-
     /** Gets the string content of a header or data cell.
      *  The strings obtained by this method can be aggregated
      *  (with some separator) in order to form the contents of an aggregated column.
@@ -497,7 +495,7 @@ public class HTMLTable extends XMLTable {
      *  @param tbMetaData meta data for the table
      *  @param columnList contains the row to be written
      */
-    public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList/*<1.5*/<TableColumn>/*1.5>*/ columnList) {
+    public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList<TableColumn> columnList) {
         nextStyle  = null;
         nextLobURL = null;
         TableColumn column = null;
@@ -584,7 +582,7 @@ public class HTMLTable extends XMLTable {
                         }
                         nextStyle = null;
                         result.append('>');
-                        if (! style.endsWith(INVISIBLE)) {
+                        if (style != null && ! style.endsWith(INVISIBLE)) {
                             result.append(column.getValue());
                         }
                         result.append("</td>");

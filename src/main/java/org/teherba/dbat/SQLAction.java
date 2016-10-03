@@ -443,7 +443,7 @@ public class SQLAction implements Serializable {
      *  @param sqle SQLException to be processed
      */
     public void printSQLError(Exception sqle) {
-    	System.err.println(sqle.getMessage());
+        System.err.println(sqle.getMessage());
     /*
         while (sqle != null && (sqle instanceof SQLException)) { // Check whether there are more SQLExceptions to process
             if (sqle instanceof DB2Diagnosable) { // Check if DB2-only information exists
@@ -1433,7 +1433,7 @@ public class SQLAction implements Serializable {
      *  @param pstmt statement which contains placeholders (parameter markers, "?")
      *  @param variables array of string pairs (typeName, value)
      */
-    private void setPlaceholders(PreparedStatement pstmt, ArrayList/*<1.5*/<String>/*1.5>*/ variables) {
+    private void setPlaceholders(PreparedStatement pstmt, ArrayList<String> variables) {
         int parameterIndex = 1;
         int ivar = 0;
         int vlen = variables.size();
@@ -1451,9 +1451,9 @@ public class SQLAction implements Serializable {
      *  @param parameterMap map containing HTTP request or CLI parameter settings
      */
     public void execSQLStatement(TableMetaData tbMetaData, String sqlInstruction
-            , HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
+            , HashMap<String, String[]> parameterMap) {
         execSQLStatement(tbMetaData, sqlInstruction
-                , new ArrayList/*<1.5*/<String>/*1.5>*/ () // empty variables' list
+                , new ArrayList<String> () // empty variables' list
                 , parameterMap);
     } // execSQLStatement(3)
 
@@ -1466,8 +1466,8 @@ public class SQLAction implements Serializable {
      *  @param parameterMap map containing HTTP request or CLI parameter settings
      */
     public void execSQLStatement(TableMetaData tbMetaData, String sqlInstruction
-            , ArrayList/*<1.5*/<String>/*1.5>*/ variables
-            , HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
+            , ArrayList<String> variables
+            , HashMap<String, String[]> parameterMap) {
         Connection con          = config.getOpenConnection();
         BaseTable  tbSerializer = config.getTableSerializer();
         int result = 0;
@@ -1531,7 +1531,7 @@ public class SQLAction implements Serializable {
             tbSerializer.writeMarkup("<h3 class=\"error\">SQL Error in SQLAction.execSQLStatement: "
                     + exc.getSQLState() + " "
                     + exc.getMessage() + "</h3><pre class=\"error\">");
-            tbSerializer.writeMarkup(sqlInstruction.toString());
+            tbSerializer.writeMarkup(sqlInstruction);
             tbSerializer.writeMarkup("</pre>");
             try {
                 if (statement != null) {
@@ -1600,7 +1600,7 @@ public class SQLAction implements Serializable {
      *  @param parameterMap map containing HTTP request or CLI parameter settings
      */
     public void execSQLfromURI(TableMetaData tbMetaData, String uri
-            , HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
+            , HashMap<String, String[]> parameterMap) {
         String stmtSeparator = config.getProcSeparator();
         if (stmtSeparator == null) {
             stmtSeparator = ";";

@@ -1,5 +1,6 @@
 /*  Generator for UPDATE statements against an SQL table
     @(#) $Id$
+    2016-10-03: rowCount had masked superclass field
     2014-03-04: column names instead of labels, ignore pseudo columns
     2011-08-24: writeGenericRow
     2011-06-01: mode="update" instead of mode="sqlupdate"
@@ -33,9 +34,6 @@ import  java.util.ArrayList;
  */
 public class SQLUpdateTable extends SQLTable {
     public final static String CVSID = "@(#) $Id$";
-
-    /** local counter of rows, for insertion of COMMIT statements */
-    protected int rowCount;
 
     /** No-args Constructor
      */
