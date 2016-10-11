@@ -1,5 +1,6 @@
 /*  Messages.java - Static help texts and other language specific messages for Dbat.
  *  @(#) $Id$
+ *  2016-10-11: IOException
  *  2016-09-20: getVersionString with parameter localObject
  *  2016-09-16: getVersionString was from Configuration, now from MetaInfPage
  *  2016-08-26: package org.teherba.dbat.web
@@ -33,6 +34,7 @@ import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.TableFactory;
 import  org.teherba.common.web.BasePage;
 import  org.teherba.common.web.MetaInfPage;
+import  java.io.IOException;
 import  java.io.Serializable;
 import  java.sql.Driver;
 import  java.sql.DriverManager;
@@ -249,7 +251,7 @@ public class Messages implements Serializable {
      *  @param tableFactory factory for table serializers
      *  @return a block of plain text
      */
-    public static String getHelpText(String language, TableFactory tableFactory) {
+    public static String getHelpText(String language, TableFactory tableFactory) throws IOException {
         StringBuffer help = new StringBuffer(2048);
         final String SPACE2 = "  ";
         help.append("Dbat " + (new MetaInfPage()).getVersionString(tableFactory, "dbat") 
@@ -517,26 +519,5 @@ public class Messages implements Serializable {
         attrs2.addAttribute("", "title", "title", "CDATA", title  + escapedPattern + "&quot;");
         return result;
     } // validateFormField
-
-    /** Display help: commandline options and arguments
-     *  @param language language to be used for text output
-     */
-
-    //================
-    // Main method
-    //================
-
-    /** Test driver - shows the Dbat help text.
-     *  The result is printed to STDOUT.
-     *  @param args language code: "en", "de"
-     */
-    public static void main(String[] args) {
-        Messages help = new Messages();
-        String language = "en"; // default: English
-        if (args.length > 0) {
-            language = args[0];
-        }
-        System.out.println(Messages.getHelpText(language, new TableFactory()));
-    } // main
 
 } // Messages

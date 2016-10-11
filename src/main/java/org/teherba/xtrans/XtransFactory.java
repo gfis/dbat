@@ -514,12 +514,12 @@ public class XtransFactory {
     } // toString
     
     /** Maps subpackage names to their descriptions */
-    private static HashMap/*<1.5*/<String, String>/*1.5>*/ descMap;
+    private static HashMap<String, String> descMap;
 
     /** Stores the descriptions of all subpackages.
      */
     private static void storeSubPackages() {
-        descMap = new HashMap/*<1.5*/<String, String>/*1.5>*/();
+        descMap = new HashMap<String, String>();
         descMap.put("config"        , "configuration file formats");
         descMap.put("edi"           , "electronic data interchange (business) formats");
         descMap.put("finance"       , "financial data formats (SWIFT et al.)");

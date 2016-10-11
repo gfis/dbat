@@ -23,6 +23,7 @@
  * limitations under the License.
  */
 package org.teherba.common.web;
+import  java.io.IOException;
 import  java.io.PrintWriter;
 import  java.util.Arrays;
 import  java.util.ArrayList;
@@ -171,7 +172,7 @@ public class BasePage {
      *  @param pairs pairs of Strings for expected request parameter fields: (field name, default value)
      *  @return the value of any "view" field, or <em>null</em> if there is none
      */
-    public String getFilesAndFields(HttpServletRequest request, String[] pairs) {
+    public String getFilesAndFields(HttpServletRequest request, String[] pairs) throws IOException {
         formMap = new TreeMap<String, String>();
         ArrayList<FileItem> fitemArray = new ArrayList<FileItem>(4);
         int ipair = 0;
@@ -227,13 +228,14 @@ public class BasePage {
                 } // while uploaded items
             } catch (Exception exc) {
                 log.error(exc.getMessage(), exc);
+                throw new IOException(exc.getMessage());
             }
         } // multipart
         fileItems = fitemArray.toArray(new FileItem[] {});
         return formMap.get("view");
     } // getFilesAndFields
 
-    /** Gets the String value of a form field obtained by a previous call of 
+    /** Gets the String value of a form field obtained by a previous call of
      *  {@link #getFilesAndFields}.
      *  @param name name of the desired field
      *  @return String value of the field
@@ -242,29 +244,29 @@ public class BasePage {
         return formMap.get(name);
     } // getFormField
 
-    /** Gets a {@link FileItem} obtained by a previous call of 
+    /** Gets a {@link FileItem} obtained by a previous call of
      *  {@link #getFilesAndFields}.
      *  @param fileNo sequential number of the file in the form, starting at 0
      *  @return FileItem for the file if there was one in the request, or null otherwise
      */
     public FileItem getFormFile(int fileNo) {
-    	return fileNo >= 0 && fileNo < fileItems.length ? fileItems[fileNo] : null;
+        return fileNo >= 0 && fileNo < fileItems.length ? fileItems[fileNo] : null;
     } // getFormFile
 
-    /** Gets the number of files obtained by a previous call of 
+    /** Gets the number of files obtained by a previous call of
      *  {@link #getFilesAndFields}.
      *  @return the number of {@link FileItem}s, maybe 0
      */
     public int getFormFileCount() {
-    	return fileItems.length;
+        return fileItems.length;
     } // getFormFileCount
 
-    /** Gets an Iterator over the names of the form's fields obtained by a previous call of 
+    /** Gets an Iterator over the names of the form's fields obtained by a previous call of
      *  {@link #getFilesAndFields}.
      *  @return an Iterator over {@link #formMap}
      */
     public Iterator<String> getFormIterator() {
-    	return formMap.keySet().iterator();
+        return formMap.keySet().iterator();
     } // getFormIterator
 
     /** Prints the start of the HTML page
@@ -277,8 +279,8 @@ public class BasePage {
      */
     public PrintWriter writeHeader(HttpServletRequest request, HttpServletResponse response
             , String language
-            ) {
-        try {
+            ) throws IOException {
+        if (true) { // try {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html; charset=UTF-8");
             response.setCharacterEncoding("UTF-8");
@@ -291,8 +293,10 @@ public class BasePage {
             out.write("<meta http-equiv=\"Content-Type\" content=\"application/xhtml+xml;charset=UTF-8\" />\n");
             out.write("<meta name=\"robots\" content=\"noindex, nofollow\" />\n");
             out.write("<link rel=\"stylesheet\" title=\"common\" type=\"text/css\" href=\"stylesheet.css\" />\n");
+    /*
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
+    */
         }
         return out;
     } // writeHeader
@@ -308,8 +312,8 @@ public class BasePage {
      *  <p>
      *  Assumes that {@link #out} is set by a previous call to {@link #writeHeader}.
      */
-    public void writeAuxiliaryLinks(String language, String view) {
-        try {
+    public void writeAuxiliaryLinks(String language, String view) throws IOException {
+        if (true) { // try {
             int imess = START_AUX; // Link messages start here
             boolean busy = true;
             while (busy) {
@@ -330,8 +334,10 @@ public class BasePage {
                 } // != null
                 imess ++;
             } // while imess
+    /*
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
+    */
         }
     } // writeAuxiliaryLinks
 
@@ -344,8 +350,8 @@ public class BasePage {
      *  </ul>
      *  Assumes that {@link #out} is set by a previous call to {@link #writeHeader}.
      */
-    public void writeTrailer(String language, String features) {
-        try {
+    public void writeTrailer(String language, String features) throws IOException {
+        if (true) { // try {
             out.write("<!-- language=\"" + language + "\", features=\"" + features + "\" -->\n");
             if (features.indexOf("back") >= 0) {
                 out.write("<p>\n");
@@ -378,8 +384,10 @@ public class BasePage {
 
             // close the HTML document in any case
             out.write("</body></html>\n");
+    /*
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
+    */
         }
     } // writeTrailer
 
@@ -439,8 +447,8 @@ public class BasePage {
     public void writeMessage(HttpServletRequest request, HttpServletResponse response
             , String language
             , String[] parms
-            ) {
-        try {
+            ) throws IOException {
+        if (true) { // try {
             PrintWriter out = this.writeHeader(request, response, language);
 
             String messNo   = parms[0];
@@ -475,8 +483,10 @@ public class BasePage {
             out.write("<h3>" + this.get(language, "001") + messWord + " " + messNo + ": "+ text + "</h3>\n");
 
             this.writeTrailer(language, "quest");
+    /*
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
+    */
         }
     } // writeMessage
 

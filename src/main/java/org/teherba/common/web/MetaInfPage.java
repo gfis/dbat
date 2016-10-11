@@ -1,5 +1,6 @@
 /*  MetaInfPage.java - show meta data from META-INF/MANIFEST.MF, version String, License and NOTICE file
  *  @(#) $Id$
+ *  2016-10-10: throws IOException
  *  2016-09-20: need any local object of the application to get the proper classloader containing the MANIFEST.MF
  *  2016-09-16: dbat.Configuration.setVersionString ->MetaInfPage.getVersionString; getMyResourceURL
  *  2016-09-03: pass servlet via session
@@ -26,6 +27,7 @@ package org.teherba.common.web;
 import  org.teherba.common.web.BasePage;
 import  java.io.BufferedReader;
 import  java.io.File;
+import  java.io.IOException;
 import  java.io.InputStreamReader;
 import  java.io.PrintWriter;
 import  java.net.URL;
@@ -81,8 +83,8 @@ public class MetaInfPage {
             , String      language
             , String      view
             , HttpServlet callingServlet
-            ) {
-        try {
+            ) throws IOException {
+        if (true) { // try {
             PrintWriter out = basePage.writeHeader(request, response, language);
             out.write("<title>" + basePage.getAppName() + " MetaInf</title>\n");
             out.write("</head>\n<body>\n");
@@ -128,8 +130,10 @@ public class MetaInfPage {
             } // not "package"
 
             basePage.writeTrailer(language, "back,quest");
+    /*
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
+    */
         }
     } // showMetaInf
 
@@ -144,10 +148,10 @@ public class MetaInfPage {
      *  for example <em>"META-INF/MANIFEST.MF"</em>
      *  @return URL if the application was found, or <em>null</em> otherwise
      */
-    private URL getMyResourceURL(Object localObject, String appName, String resourceName) {
+    private URL getMyResourceURL(Object localObject, String appName, String resourceName) throws IOException {
         URL result = null;
         appName = appName.toLowerCase();
-        try {
+        if (true) { // try {
             ClassLoader cloader = localObject.getClass().getClassLoader();
             Enumeration<URL> resEnum = cloader.getResources(resourceName);
             boolean busy = true;
@@ -163,8 +167,10 @@ public class MetaInfPage {
                 }
                 // log.info("urlst=" + urlst + " ? \"" + appName + "\" = " + String.valueOf(! busy));
             } // while resEnum
+     /*
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
+     */
         }
         return result;
     } // getMyResourceURL
@@ -178,9 +184,9 @@ public class MetaInfPage {
      *  where m is the major version,
      *  and hhhh is the build number padded with zeroes or truncated to 4 digits
      */
-    public String getVersionString(Object localObject, String appName) {
+    public String getVersionString(Object localObject, String appName) throws IOException {
         String result = "V";
-        try {
+        if (true) { // try {
             /* unzip -p dist/dbat.jar      META-INF/MANIFEST.MF shows:
 Manifest-Version: 1.0
 Ant-Version: Apache Ant 1.9.6
@@ -226,8 +232,10 @@ Implementation-Vendor: www.teherba.org
             } else { // did not find my resource
                 result = "V00.0000/0000-00-00"; // indicates failure
             } // while resEnum
+    /*
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
+    */
         }
         return result;
     } // getVersionString

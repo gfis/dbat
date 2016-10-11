@@ -1,5 +1,6 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2016-10-11: package dbat.web; no try...catch; pass exceptions to common.ErrorServlet
  *  2016-09-15: BasicFactory replaced by XtransFactory again; init() not unchecked
  *  2016-09-12: getDataSourceMap moved from init() to Configuration
  *  2016-08-25: message texts here; new message 405: unknown request parameter &view=...
@@ -40,10 +41,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.teherba.dbat;
+package org.teherba.dbat.web;
 import  org.teherba.dbat.Dbat;
 import  org.teherba.dbat.Configuration;
 import  org.teherba.dbat.SpecificationHandler;
+import  org.teherba.dbat.SQLAction;
+import  org.teherba.dbat.TableMetaData;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.TableFactory;
 import  org.teherba.dbat.web.ConsolePage;
@@ -179,7 +182,7 @@ public class DbatServlet extends HttpServlet {
         boolean result = false; // assume legible character response output
         String targetFileName = specName.replaceAll("/", ".");
         String mimeType = "";
-        try {
+        if (true) { // try {
             if (false) {
             } else if (mode.startsWith("html")) {
                 targetFileName +=     ".html";
@@ -213,8 +216,10 @@ public class DbatServlet extends HttpServlet {
             response.setContentType(mimeType + ";charset=" + encoding);
             response.setHeader("Content-Disposition", "inline; filename=\"" + targetFileName + "\"");
             response.setCharacterEncoding(encoding);
+     /*  
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
+     */
         }
         return result;
     } // setResponseHeaders
@@ -370,6 +375,7 @@ public class DbatServlet extends HttpServlet {
                 } // found
             } catch (Exception exc) {
                 log.error(exc.getMessage(), exc);
+                throw new IOException(exc.getMessage());
             } finally {
             }
             // if (view == null || view.length() == 0 || view.matches("del|del2|dat|ins|ins2|upd|upd2|sear"))
@@ -378,7 +384,7 @@ public class DbatServlet extends HttpServlet {
             (new ConsolePage    ()).showConsole(request, response, basePage, language, tableFactory, dsMap);
 
         } else if (view.equals("con2")) { // View "con2" is for the result of the SQL console
-            try {
+            if (true) { // try {
                 String intext   = BasePage.getInputField(request, "intext"   , ";"       );
                 fetchLimit      = BasePage.getInputField(request, "fetch"    , 64        );
                 // response.setContentType(config.getHtmlMimeType()); // default
@@ -421,8 +427,10 @@ public class DbatServlet extends HttpServlet {
                 sqlAction.terminate();
                 tbSerializer.writeEnd();
                 tbSerializer.close();
+        /*
             } catch (Exception exc) {
                 log.error(exc.getMessage(), exc);
+        */
             }
             // view "con2"
 

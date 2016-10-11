@@ -25,6 +25,7 @@ package org.teherba.dbat.web;
 import  org.teherba.dbat.web.Messages;
 import  org.teherba.dbat.format.TableFactory;
 import  org.teherba.common.web.BasePage;
+import  java.io.IOException;
 import  java.io.PrintWriter;
 import  java.util.Enumeration;
 import  java.util.Iterator;
@@ -64,8 +65,8 @@ public class HelpPage {
             , BasePage basePage
             , String language
             , TableFactory tableFactory
-            ) {
-        try {
+            ) throws IOException {
+        if (true) { // try {
             PrintWriter out = basePage.writeHeader(request, response, language);
 
             out.write("<title>Dbat help</title>\n");
@@ -127,8 +128,10 @@ public class HelpPage {
             } // session attributes
     */
             basePage.writeTrailer(language, "quest");
+    /*
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
+    */
         }
     } // showHelp
 

@@ -1,5 +1,6 @@
 /*  MorePage.java - replacement for more.jsp: input form with all parameters
  *  @(#) $Id$
+ *  2016-10-11: IOException
  *  2016-08-29: many code moved to Messages.addErrorMessageTexts for basePage.writeAuxiliaryLinks
  *  2016-08-26: param BasePage
  *  2016-08-09: Wiki => www.teherba.org/dbat
@@ -29,6 +30,7 @@ import  org.teherba.dbat.web.Messages;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.TableFactory;
 import  org.teherba.common.web.BasePage;
+import  java.io.IOException;
 import  java.io.PrintWriter;
 import  java.util.Iterator;
 import  java.util.Map;
@@ -69,8 +71,8 @@ public class MorePage {
             , BasePage basePage
             , String language
             , TableFactory tableFactory
-            ) {
-        try {
+            ) throws IOException {
+        if (true) { // try {
             PrintWriter out = basePage.writeHeader(request, response, language);
 
             out.write("<title>Dbat more</title>\n");
@@ -247,8 +249,10 @@ public class MorePage {
             //----------------------------------------
             
             basePage.writeTrailer(language, "quest");
+    /*
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
+    */
         }
     } // showMore
 

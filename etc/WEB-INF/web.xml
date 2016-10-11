@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5" 
-		xmlns="http://java.sun.com/xml/ns/javaee" 
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-		xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 <!--
     @(#) $Id$
+    2016-10-11: Servlet 3.0 for Tomcat >= V7; ErrorServlet; DbatServlet now in package dbat.web
     2012-07-04: comments rearranged
     2012-03-16: without listener
-	2012-02-06: DTD for 2.4 because Winstone dislikes the 2.5 XSD
+    2012-02-06: DTD for 2.4 because Winstone dislikes the 2.5 XSD
     2011-05-20: Dbat2Servlet replaces DbatServlet
-	2011-05-09: servlet2
-	2010-09-24: 2.5 xsd; DataSource and ServletContextListener
+    2011-05-09: servlet2
+    2010-09-24: 2.5 xsd; DataSource and ServletContextListener
     2010-03-11: context-parm>s commented out
     2009-10-11: with <context-parm>s
     2005-11-25: copied from checkdig
 -->
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+        version="3.0">
 <!--
  * Copyright 2006 Dr. Georg Fischer <punctum at punctum dot kom>
  *
@@ -40,46 +41,52 @@
         <param-value>DB Administration Tool</param-value>
     </context-param>
 
-<!--What is the base directory for "http://.../dbat/servlet?spec=". 
-	If this parameter is omitted, the specifications are found in the 
-	web application context: http://.../dbat/spec/*.xml
-	
+<!--What is the base directory for "http://.../dbat/servlet?spec=".
+    If this parameter is omitted, the specifications are found in the
+    web application context: http://.../dbat/spec/*.xml
+
     <context-param>
         <param-name>specPath</param-name>
         <param-value>/home/gfis/work/gits/dbat/web/spec</param-value>
     </context-param>
 -->
 
-	<env-entry>
-		<env-entry-name>dataSources</env-entry-name>
-		<env-entry-type>java.lang.String</env-entry-type>
-		<env-entry-value>worddb,wiki</env-entry-value>
-	</env-entry>
+    <env-entry>
+        <env-entry-name>dataSources</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>worddb,wiki</env-entry-value>
+    </env-entry>
 
     <resource-ref>
         <res-ref-name>jdbc/worddb</res-ref-name>
-	    <res-type>javax.sql.DataSource</res-type>
-    	<res-auth>Container</res-auth>
-    	<res-sharing-scope>Shareable</res-sharing-scope>
-  	</resource-ref>
-<!-- 
-    <resource-ref>
-        <res-ref-name>dataSources</res-ref-name>
-        <res-type>javax.lang.String</res-type>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>
--->
 
     <!-- Servlets and their mappings to URLs-->
-    <servlet> 
+    <servlet>
         <servlet-name>DbatServlet</servlet-name>
-        <servlet-class>org.teherba.dbat.DbatServlet</servlet-class>
+        <servlet-class>org.teherba.dbat.web.DbatServlet</servlet-class>
     </servlet>
-
-    <servlet-mapping> 
+    <servlet-mapping>
         <servlet-name>DbatServlet</servlet-name>
         <url-pattern>/servlet</url-pattern>
     </servlet-mapping>
-    
+
+    <servlet>
+        <servlet-name>ErrorServlet</servlet-name>
+        <servlet-class>org.teherba.common.web.ErrorServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ErrorServlet</servlet-name>
+        <url-pattern>/ErrorServlet</url-pattern>
+    </servlet-mapping>
+
+    <error-page>
+        <location>/ErrorServlet</location>
+    </error-page>
+
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
         <welcome-file>index.htm</welcome-file>

@@ -1,5 +1,6 @@
 /*  Reader for a URL or data URI source
     @(#) $Id$
+    2016-10-11: charReader with 500 error message
     2016-09-15: file upload with mutlipart/form-data POST request (c.f. prev/URIMultiPart)
     2016-08-09: isOpen
     2016-05-10: with URLConnection, make User-Agent header settable
@@ -322,6 +323,7 @@ public class URIReader {
         } catch (Exception exc) {
             isOpened = false; // for any problem
             log.error(exc.getMessage() + ", parmURI=\"" + parmURI + "\"", exc);
+            charReader = new BufferedReader(new StringReader(exc.getMessage()));
         }
     } // Constructor(4)
 

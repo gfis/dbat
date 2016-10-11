@@ -22,6 +22,7 @@ package org.teherba.dbat.web;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.TableFactory;
 import  org.teherba.common.web.BasePage;
+import  java.io.IOException;
 import  java.io.PrintWriter;
 import  java.util.Iterator;
 import  java.util.LinkedHashMap;
@@ -69,8 +70,8 @@ public class ConsolePage {
             , String language
             , TableFactory tableFactory
             , LinkedHashMap<String, DataSource> dsMap
-            ) {
-        try {
+            ) throws IOException {
+        if (true) { // try {
             PrintWriter out = basePage.writeHeader(request, response, language);
 
             String connectionId  = null;
@@ -266,9 +267,10 @@ public class ConsolePage {
                 out.write(intext);
             }
             basePage.writeTrailer(language, "");
+    /*
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
-        } finally {
+    */
         }
     } // showConsole
 
