@@ -438,6 +438,9 @@ HTTP spec=test/multijs
 
 TEST MU2 multiple Stylesheets
 HTTP spec=test/multicss
+
+TEST MU3 Web path test - stylesheets, javascript, xslt
+HTTP spec=test/pathstyle
 #-------------------
 # error handling tests
 TEST Y01 error message: spec file not found

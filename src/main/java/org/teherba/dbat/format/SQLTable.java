@@ -1,5 +1,6 @@
 /*  Generator for an SQL table (DDL or INSERT statements)
     @(#) $Id$
+    2016-10-13: less imports
     2016-08-26: with getISOTimestamp()
     2016-07-29: describeProcdureCOlumns: IS (NOT) NULL not recognized by MySQL
     2016-05-11: describe width of DATE/TIME/TIMESTAMP columns as comment
@@ -43,7 +44,6 @@ import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  java.sql.DatabaseMetaData;
 import  java.sql.Types;
-import  java.text.SimpleDateFormat;
 import  java.util.ArrayList;
 import  java.util.HashMap;
 import  java.util.Iterator;
@@ -240,9 +240,9 @@ public class SQLTable extends BaseTable {
                 }
                 cellBuffer.append(")");
             } else if (dataType == Types.DATE
-            		|| dataType == Types.TIME
-            		|| dataType == Types.TIMESTAMP
-            		) {
+                    || dataType == Types.TIME
+                    || dataType == Types.TIMESTAMP
+                    ) {
                 cellBuffer.append(" -- (" + width + ")");
             }
             if (column.isNullable()) {

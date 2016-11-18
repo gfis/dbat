@@ -1,25 +1,26 @@
 /*  Base class for file format representing table descriptions or results sets
-    @(#) $Id$
-    2016-08-26: getISOTimestamp()
-    2016-05-08: close(); end of WW2 + 71 years
-    2014-03-04: ignore pseudo columns
-    2012-11-27: writeCommit
-    2012-05-14: appendToParameters should not apply links
-    2012-02-17: exception handling if stylesheet could not be compiled
-    2011-12-13: ROW1
-    2011-11-11: writeComment(line, verbose)
-    2011-08-24: 3rd generation - writeGenericRow
-    2011-08-12: remove old methods write*
-    2011-06-10: isLetter -> isLetterOrDigit
-    2011-03-29: writeProcessingInstruction
-    2011-01-21: private targetEncoding, separator
-    2010-11-26: writeTrailer (previously in endDocument)
-    2010-02-25: charWriter.write -> .print
-    2008-08-02: without result in decribeColumn; M+K->Berlin
-    2008-02-08: completeColumn and describeColumn separated
-    2006-11-17: adapted from xtrans.BaseTransformer
-    2006-09-19: copied from numword.BaseSpeller
-*/
+ *  @(#) $Id$
+ *  2016-10-13: less imports
+ *  2016-08-26: getISOTimestamp()
+ *  2016-05-08: close(); end of WW2 + 71 years
+ *  2014-03-04: ignore pseudo columns
+ *  2012-11-27: writeCommit
+ *  2012-05-14: appendToParameters should not apply links
+ *  2012-02-17: exception handling if stylesheet could not be compiled
+ *  2011-12-13: ROW1
+ *  2011-11-11: writeComment(line, verbose)
+ *  2011-08-24: 3rd generation - writeGenericRow
+ *  2011-08-12: remove old methods write*
+ *  2011-06-10: isLetter -> isLetterOrDigit
+ *  2011-03-29: writeProcessingInstruction
+ *  2011-01-21: private targetEncoding, separator
+ *  2010-11-26: writeTrailer (previously in endDocument)
+ *  2010-02-25: charWriter.write -> .print
+ *  2008-08-02: without result in decribeColumn; M+K->Berlin
+ *  2008-02-08: completeColumn and describeColumn separated
+ *  2006-11-17: adapted from xtrans.BaseTransformer
+ *  2006-09-19: copied from numword.BaseSpeller
+ */
 /*
  * Copyright 2006 Dr. Georg Fischer <punctum at punctum dot kom>
  *
@@ -40,7 +41,6 @@ package org.teherba.dbat.format;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.xtrans.BaseTransformer;
-import  java.io.IOException;
 import  java.io.OutputStream;
 import  java.io.PrintWriter;
 import  java.sql.DatabaseMetaData;
@@ -626,7 +626,7 @@ public abstract class BaseTable {
      *-------------------------------------------------------*/
 
     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
-     *  @param attributes array of 0 or more pairs of strings (name1, value1, name2, value2 and so on) 
+     *  @param attributes array of 0 or more pairs of strings (name1, value1, name2, value2 and so on)
      *  which specify features in the header of the file to be generated.
      *  @param parameterMap map of request parameters to values
      *  The following "attribute" names are interpreted:

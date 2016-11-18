@@ -1,7 +1,8 @@
 /*  Generator for an Excel 2003 XML table
-    @(#) $Id$
-    2016-05-17: formatting of header line
-    2016-05-08: copied from ExcelTable
+ *  @(#) $Id$
+ *  2016-10-13: less imports
+ *  2016-05-17: formatting of header line
+ *  2016-05-08: copied from ExcelTable
 */
 /*
  * Copyright 2006 Dr. Georg Fischer <punctum at punctum dot kom>
@@ -35,7 +36,6 @@ import  org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import  org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import  java.io.BufferedOutputStream;
 import  java.sql.Types;
-import  java.text.SimpleDateFormat;
 import  java.util.ArrayList;
 import  java.util.HashMap;
 

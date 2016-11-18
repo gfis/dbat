@@ -1,7 +1,8 @@
 /*  Generator for an XML table
-    @(#) $Id$
-    2014-03-04: ignore pseudo columns
-    2012-05-22, Georg Fischer: copied from XMLTable
+ *  @(#) $Id$
+ *  2016-10-13: less imports
+ *  2014-03-04: ignore pseudo columns
+ *  2012-05-22, Georg Fischer: copied from XMLTable
 */
 /*
  * Copyright 2012 Dr. Georg Fischer <punctum at punctum dot kom>
@@ -21,15 +22,11 @@
 
 package org.teherba.dbat.format;
 import  org.teherba.dbat.format.BaseTable;
-import  org.teherba.dbat.Configuration;         // for DBAT_URI
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
-import  java.sql.DatabaseMetaData;
 import  java.sql.Types;
 import  java.util.ArrayList;
 import  java.util.HashMap;
-import  java.util.Iterator;
-import  java.util.TreeMap;
 
 /** Generator for a JavaScript Object Notation (JSON) table.
  *  The main structure of the output object is an array of tables
@@ -95,7 +92,7 @@ public class JSONTable extends BaseTable {
      *  @param params - array of 0 or more (name, value) strings which specify features in the file header.
      *  @param parameterMap map of request parameters to values
      */
-    public void writeStart(String[] params,  HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
+    public void writeStart(String[] params,  HashMap<String, String[]> parameterMap) {
         try {
             charWriter.println("{ \"tables\": ");
         } catch (Exception exc) {
@@ -179,7 +176,7 @@ public class JSONTable extends BaseTable {
      *  @param tbMetaData meta data for the table
      *  @param columnList contains the row to be written
      */
-    public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList/*<1.5*/<TableColumn>/*1.5>*/ columnList) {
+    public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList<TableColumn> columnList) {
         TableColumn column = null;
         String pseudo = null;
         int ncol = columnList.size();

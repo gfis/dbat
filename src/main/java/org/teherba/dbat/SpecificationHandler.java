@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+    2016-10-13: less imports
     2016-08-09: pass "conn" in writeStart; DBIV_TAG; log.info in resolveEntity
     2016-07-27: correction in size= attribute of listbox
     2016-07-15: <db:select multiple="yes" />
@@ -10,7 +11,7 @@
     2014-03-05: use (ordered) TreeSet for parameterMap, for better reproducibility of web tests
     2012-10-19: use Messages.getDefaultCounterDesc
     2012-09-17: if <dbat stylesheet="..."> attribute is present, it is taken as is
-    2012-08-04: pass urlPath to HTML stylesheet declaration
+    2012-08-04: pass specUrl to HTML stylesheet declaration
     2012-06-27: Windows drive letter in relative file entity declaration
     2012-06-19: parameter not found in <listbox> => select 1st <option>; <choose> not for static formats
     2012-06-13: <var> for prepared statements in addition to <parm>
@@ -70,12 +71,9 @@ import  org.teherba.dbat.format.ProbeSQL;
 import  org.teherba.dbat.web.Messages;
 import  org.teherba.xtrans.BaseTransformer;
 import  java.io.IOException;
-import  java.io.PrintWriter;
 import  java.net.URLEncoder;
 import  java.sql.Types;
-import  java.text.SimpleDateFormat;
 import  java.util.ArrayList;
-import  java.util.HashMap;
 import  java.util.Iterator;
 import  java.util.LinkedHashMap;
 import  java.util.Map;
@@ -272,24 +270,24 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     } // setResponse
 
     /** Real (filesytem) path to the specification directory, for example "/.../tomcat/webapps/dbat/spec/" */
-    private String realPath;
+    private String specPath;
     /** Path to the specification subdirectory for URLs, for example "http://.../dbat/spec/" */
-    private String urlPath;
+    private String specUrl;
     /** Name of the specification file, with optional subdirectory, without extension ".xml|.xsl|.css|.js",
      *  for example "test/xslt_brackets"
      */
     private String specName;
 
     /** Sets the pathes to the specification file, and its base name
-     *  @param realPath Real (filesytem) path to the specification directory, for example "/.../tomcat/webapps/dbat/spec/"
-     *  @param urlPath  URL of the specification subdirectory, for example  "http://.../dbat/spec/";
-     *  this equals to <em>realPath</em> if not called from the servlet
+     *  @param specPath Real (filesytem) path to the specification directory, for example "/.../tomcat/webapps/dbat/spec/"
+     *  @param specUrl  URL of the specification subdirectory, for example  "http://.../dbat/spec/";
+     *  this equals to <em>specPath</em> if not called from the servlet
      *  @param name Name of the specification file, with optional subdirectory, without extension ".xml|.xsl|.css|.js",
      *  for example "test/xslt_brackets"
      */
-    public void setSpecPaths(String realPath, String urlPath, String name) {
-        this.realPath   = realPath;
-        this.urlPath    = urlPath;
+    public void setSpecPaths(String specPath, String specUrl, String name) {
+        this.specPath   = specPath;
+        this.specUrl    = specUrl;
         this.specName   = name;
     } // setSpecPaths
 
@@ -335,8 +333,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     private SpecificationHandler() {
         log = Logger.getLogger(SpecificationHandler.class.getName());
         zeroAndNotEcho  = 0; // normal output serializer
-        realPath        = "/not_found";
-        urlPath         = "spec/";
+        specPath        = "/not_found";
+        specUrl         = "spec/";
         specName        = "index";
         errorCode       = 0;
         errorAsterisk   = "";
@@ -381,19 +379,19 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             if (! (tbSerializer instanceof HTMLTable)) {
                 trailerSelect += " plain";
             }
-            String specPath = "";
+            String sourceUrl = "";
             int callType = config.getCallType();
             if (trailerSelect.contains(" script")) {
                 if (callType == Configuration.WEB_CALL) { // test for possible link with "view-source:" schema
-                    specPath = Messages.getViewSourceLink(request);
+                    sourceUrl = Messages.getViewSourceLink(request);
                 } // WEB_CALL
             } // "script" was present
-            String specUrl  = specPath + urlPath + specName + (callType == Configuration.CLI_CALL ? "" : ".xml");
+            sourceUrl      += specUrl + specName + (callType == Configuration.CLI_CALL ? "" : ".xml");
             String xlsUrl   = "servlet?&amp;mode=xls"
                             + repeatURLParameters();
             String moreUrl  = "servlet?&amp;view=more&amp;mode=" + tbSerializer.getOutputFormat()
                             + repeatURLParameters();
-            result = Messages.getTrailerText(trailerSelect, language, specUrl, specName, xlsUrl, moreUrl);
+            result = Messages.getTrailerText(trailerSelect, language, sourceUrl, specName, xlsUrl, moreUrl);
         } // not suppressed
         return result;
     } // getTrailer
@@ -604,7 +602,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     /** Gets a space separated list of filenames with proper pathes and extensions
      *  from a list of subdirectory-relative filenames
      *  @param attributeValue of the attribute containing the file specifications
-     *  @param subDirectory application relative path to the specification XML, for example "spec/test"
+     *  @param subDirectory application relative path to the specification XML, for example "spec/test/"
      *  @param extension file extension if it was omitted
      *  @return space separated list of filenames with proper pathes and extensions
      */
@@ -612,7 +610,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         String result = null;
         StringBuffer buffer = new StringBuffer(128);
         if (attributeValue != null) { // attribute was set
-            String[] names = attributeValue.split("\\s");
+            String[] names = attributeValue.split("\\s+");
             int iname = 0;
             while (iname < names.length) {
                 if (iname >= 1) {
@@ -620,10 +618,14 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 }
                 if (! names[iname].matches("([a-zA-Z]\\:)?(\\/|\\\\).*")) {
                     if (extension.equals("xsl")) { // for XSLT always turn relative path into absolute path
-                        buffer.append(realPath.replaceAll("spec\\/?\\Z", ""));
+                        buffer.append(specPath.replaceAll("spec\\/?\\Z", ""));
                     } // make absolute
                     buffer.append(subDirectory);
-                }
+                } else { // has "absolute" path
+                    if (config.getCallType() == Configuration.WEB_CALL) { // make it relative to "spec/"
+                        names[iname] = names[iname].replaceAll("\\A\\/", specUrl);
+                    }
+                } // has "absolute" path
                 buffer.append(names[iname]);
                 if (! names[iname].endsWith(extension)) {
                     buffer.append('.');
@@ -957,7 +959,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     private static final String READ_TAG    = "read"    ; //
     /** SELECT element tag */
     private static final String SELECT_TAG  = "select"  ; // db:select or ht:select
-        // for Dbat: distinct=, limit=, name=, headers=, aggregate=, with=, group=, id= 
+        // for Dbat: distinct=, limit=, name=, headers=, aggregate=, with=, group=, id=
         // subordinate elements: <col>..., <from>, <where>, <group>, <order>
     /** UPDATE element tag */
     private static final String UPDATE_TAG  = "update"  ; // ... <where>
@@ -1182,7 +1184,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 saveConnectionAttribute(attrs, "conn");
                 //--------
                 int lastSlashPos = specName.lastIndexOf("/");
-                String subDirectory = urlPath + (lastSlashPos < 0 ? "" : specName.substring(0, lastSlashPos + 1));
+                String subDirectory = specUrl + (lastSlashPos < 0 ? "" : specName.substring(0, lastSlashPos + 1));
+                    // up to and including trailing "/"
                 //--------
                 String javascript   = getFilesFromAttribute(attrs.getValue("javascript"), subDirectory, "js" );
                 String stylesheet   = getFilesFromAttribute(attrs.getValue("stylesheet"), subDirectory, "css");
@@ -1190,7 +1193,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 //--------
                 String inputURI     = attrs.getValue("uri"); // for mode="taylor" only
                 if (inputURI != null && inputURI.length() > 0 && config.getInputURI() == null) { // can be overwritten by request parameter
-                    config.setInputURI(realPath + inputURI);
+                    config.setInputURI(specPath + inputURI);
                     if (inputURI.endsWith(".html") && response!= null) { // adopt the ContentType of the inputURI file
                         response.setContentType("text/html; charset=UTF-8");
                     }
@@ -1202,7 +1205,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                             { "encoding"                                    , config.getEncoding(1)
                             , "contenttype"                                 , contentType
                             , "specname"                                    , specName
-                            , "urlpath"                                     , urlPath
+                            , "specurl"                                     , specUrl
                             , "title"                                       , title
                             , "lang"                                        , language
                             , "conn"                                        , config.getConnectionId()
@@ -1840,8 +1843,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     tbSerializer.writeMarkup(Messages.getErrorNotice(config.getLanguage()));
                 } // with errors
                 if (debug >= 1 && config.getCallType() == Configuration.WEB_CALL) {
-                   tbSerializer.writeComment("SpecificationHandler: realPath=\"" + realPath
-                            + "\", urlPath=\"" + urlPath
+                   tbSerializer.writeComment("SpecificationHandler: specPath=\"" + specPath
+                            + "\", specUrl=\"" + specUrl
                             + "\", specName=\"" + specName
                             + "\", requestURL=\"" + request.getRequestURL().toString()
                             + "\", User-Agent=\"" + request.getHeader("User-Agent")
@@ -2151,9 +2154,9 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             } else if (systemId.startsWith("http://")) {
             } else if (systemId.startsWith("file://")) {
             } else if (systemId.startsWith("ftp://" )) {
-            } else { // if no URL schema, assume URL to be relative to realPath
-                if (realPath.matches("\\w\\:.*")) { // Windows drive letter
-                    realPath = "/" + realPath.substring(0, 1) +  "|/" + realPath.substring(2);
+            } else { // if no URL schema, assume URL to be relative to specPath
+                if (specPath.matches("\\w\\:.*")) { // Windows drive letter
+                    specPath = "/" + specPath.substring(0, 1) +  "|/" + specPath.substring(2);
                     // file://e:/webapps... => file:///e|/webapps... - this is understood by MS InternetExplorer also
                 } // Windows
                 String specDir = "";
@@ -2161,7 +2164,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 if (lastSlashPos >= 0) {
                     specDir = specName.substring(0, lastSlashPos + 1);
                 }
-                url = "file://" + (realPath + specDir + systemId).replaceAll("//", "/");
+                url = "file://" + (specPath + specDir + systemId).replaceAll("//", "/");
                 result = new InputSource(url);
             }
             // log.info("resolveEntity(\"" + publicId + "\", \"" + systemId + "\") -> " + url);

@@ -1,5 +1,6 @@
 /*  Run many test cases through a regression test with result file comparision 
  *  @(#) $Id$
+ *  2016-10-13: less imports
  *  2016-09-15: curl syntax for URIReader's file upload constructor
  *  2016-08-10: check for non-empty result file with thisStream.size()
  *  2016-07-11: make -s; implicit macro CASE
@@ -39,7 +40,6 @@ package org.teherba.common;
 import  org.teherba.common.CommandTokenizer;
 import  org.teherba.common.ReplacingPrintStream;
 import  org.teherba.common.URIReader;
-import  java.io.BufferedOutputStream;
 import  java.io.BufferedReader;
 import  java.io.File;
 import  java.io.FileInputStream;
@@ -51,7 +51,6 @@ import  java.io.StringWriter;
 import  java.lang.Process;
 import  java.lang.Runtime;
 import  java.lang.reflect.Method;
-import  java.net.URLEncoder;
 import  java.nio.channels.Channels;
 import  java.nio.channels.ReadableByteChannel;
 import  java.util.ArrayList;

@@ -1,5 +1,6 @@
 /*  HelpPage.java - show the language specific commandline help text
  *  @(#) $Id$
+ *  2016-10-13: less imports
  *  2016-08-26: param BasePage
  *  2016-04-11: link to index.html was not relative
  *  2012-11-22: disable comment output for environment and session attributes
@@ -27,14 +28,8 @@ import  org.teherba.dbat.format.TableFactory;
 import  org.teherba.common.web.BasePage;
 import  java.io.IOException;
 import  java.io.PrintWriter;
-import  java.util.Enumeration;
-import  java.util.Iterator;
-import  java.util.Map;
-import  java.util.Properties;
-import  java.util.TreeSet;
 import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;
-import  javax.servlet.http.HttpSession;
 import  org.apache.log4j.Logger;
 
 /** This class prints the language-specific commandline help text.
@@ -53,7 +48,7 @@ public class HelpPage {
     public HelpPage() {
         log = Logger.getLogger(HelpPage.class.getName());
     } // Constructor()
-    
+
     /** Shows usage information for the commandline utility
      *  @param request request with header fields
      *  @param response response with writer
@@ -93,7 +88,7 @@ public class HelpPage {
             out.write("<pre>\n");
             out.write(Messages.getHelpText(language, tableFactory));
             out.write("\n</pre>\n");
-            
+
             out.write("<p><a href=\"servlet?view=more&lang=" + language + "\">");
             if (false) {
             } else if (language.startsWith("de")) {
@@ -102,31 +97,6 @@ public class HelpPage {
                 out.write("more ...");
             }
             out.write("</a></p>\n");
-    /*            
-            if (false) { // environment
-                out.write("<!-- Environment:\n");
-                Map<String, String> env = System.getenv();
-                TreeSet<String> keys = new TreeSet<String>(env.keySet());
-                Iterator<String> iter = keys.iterator();
-                while (iter.hasNext()) {
-                    String key   = (String) iter.next();
-                    String value = (String) env.get(key);
-                    out.write(key + "=" + value + "\n");
-                } // while iter
-                out.write(":Environment -->\n");
-            } // environment
-
-            if (false) { // Http session attributes
-                out.write("<!-- SessionAttributes:\n");
-                HttpSession session = request.getSession();
-                Enumeration attrs = session.getAttributeNames();                 
-                while (attrs.hasMoreElements()) {
-                    String  attr = (String) attrs.nextElement();
-                    out.write(attr + "=" + session.getAttribute(attr) + "\n");
-                } // while attrs
-                out.write(":SessionAttributes -->\n");
-            } // session attributes
-    */
             basePage.writeTrailer(language, "quest");
     /*
         } catch (Exception exc) {

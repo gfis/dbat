@@ -1,5 +1,6 @@
 /*  SQLAction.java - Properties and methods specific for one elementary sequence of SQL instructions
     @(#) $Id$
+    2016-10-13: less imports
     2014-11-10: separateURLFromValue moved to TableColumn.separateWrappedValue
     2014-03-10: insertFromURI, no Date/Time/Timestamp escape sequences
     2012-11-27: COMMIT if max_commit % 250 = 0
@@ -37,8 +38,6 @@ package org.teherba.dbat;
 import  org.teherba.common.CommandTokenizer;
 import  org.teherba.common.URIReader;
 import  org.teherba.dbat.Configuration;
-import  org.teherba.dbat.Placeholder;
-import  org.teherba.dbat.PlaceholderList;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.dbat.format.BaseTable;
@@ -56,10 +55,13 @@ import  java.sql.CallableStatement;
 import  java.sql.Clob;
 import  java.sql.Connection;
 import  java.sql.DatabaseMetaData;
+import  java.sql.Date;
 import  java.sql.PreparedStatement;
 import  java.sql.ResultSet;
 import  java.sql.SQLException;
 import  java.sql.Statement;
+import  java.sql.Time;
+import  java.sql.Timestamp;
 import  java.sql.Types;
 import  java.text.SimpleDateFormat;
 import  java.util.ArrayList;

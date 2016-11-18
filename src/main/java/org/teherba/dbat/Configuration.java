@@ -1,5 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$ 2016-04-16 14:43:35
+ *  2016-10-13: less imports
  *  2016-09-16: log.info() without caller's name; Locale.setDefault; better versionString
  *  2016-09-12: getDataSourceMap (from DbatServlet.init)
  *  2016-05-24: getConnection -> getOpenConnection
@@ -37,17 +38,14 @@ package org.teherba.dbat;
 import  org.teherba.common.CommandTokenizer;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.xtrans.BaseTransformer;
-import  java.io.BufferedReader;
 import  java.io.File;
 import  java.io.FileInputStream;
-import  java.io.InputStreamReader;
 import  java.io.Serializable;
 import  javax.naming.Context;
 import  javax.naming.InitialContext;
 import  java.net.URL;
 import  java.sql.Connection;
 import  java.sql.DriverManager;
-import  java.util.Enumeration;
 import  java.util.HashMap;
 import  java.util.Iterator;
 import  java.util.LinkedHashMap;
@@ -621,7 +619,7 @@ public class Configuration implements Serializable {
     /** Initializes the class for the 1st (or 2nd, 3rd etc) call.
      *  @param callType whether the class is activated by CLI, WEB or SOAP
      *  @param dsMap maps connection ids to pre-initialized DataSources,
-     *  see {@link DbatServlet}.
+     *  see <em>DbatServlet</em>.
      */
     public void configure(int callType, LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap) {
         configure(callType);

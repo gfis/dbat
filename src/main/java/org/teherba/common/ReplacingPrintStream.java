@@ -1,5 +1,6 @@
 /*  PrintStream which replaces some patterns (ISO timestamps) by constant strings for RegressionTester
  *  @(#) $Id$
+ *  2016-10-13: less imports
  *  2016-08-10: size()
  *  2016-05-14: renamed from TimestampFilterStream; cleaned
  *  2014-11-16: pattern for milliseconds
@@ -23,7 +24,6 @@
  * limitations under the License.
  */
 package org.teherba.common;
-import  java.io.File;
 import  java.io.PrintStream;
 import  java.io.FileNotFoundException;
 import  java.io.UnsupportedEncodingException;

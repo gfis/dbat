@@ -1,5 +1,6 @@
 /*  BasePage.java - common code for web pages
  *  @(#) $Id$
+ *  2016-10-13: less imports
  *  2016-09-21: stylesheet.css with title="common" attribute for gramword css switching
  *  2016-09-15: getFormFieldCount, getFormIterator
  *  2016-09-12: saveViewParameters
@@ -25,7 +26,6 @@
 package org.teherba.common.web;
 import  java.io.IOException;
 import  java.io.PrintWriter;
-import  java.util.Arrays;
 import  java.util.ArrayList;
 import  java.util.TreeMap;
 import  java.util.Iterator;

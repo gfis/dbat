@@ -1,14 +1,15 @@
 /*  Reader for a URL or data URI source
-    @(#) $Id$
-    2016-10-11: charReader with 500 error message
-    2016-09-15: file upload with mutlipart/form-data POST request (c.f. prev/URIMultiPart)
-    2016-08-09: isOpen
-    2016-05-10: with URLConnection, make User-Agent header settable
-    2016-04-28: allow for Windows drive letter "protocol" (-> file:)
-    2013-08-14: URL encoding by URI(3 parameter) constructor
-    2013-01-04: gopher repaired
-    2011-08-06: extended to InputStream interface
-    2011-07-15, Dr. Georg Fischer: copied from SeparatedTable
+ *  @(#) $Id$
+ *  2016-10-13: less imports
+ *  2016-10-11: charReader with 500 error message
+ *  2016-09-15: file upload with mutlipart/form-data POST request (c.f. prev/URIMultiPart)
+ *  2016-08-09: isOpen
+ *  2016-05-10: with URLConnection, make User-Agent header settable
+ *  2016-04-28: allow for Windows drive letter "protocol" (-> file:)
+ *  2013-08-14: URL encoding by URI(3 parameter) constructor
+ *  2013-01-04: gopher repaired
+ *  2011-08-06: extended to InputStream interface
+ *  2011-07-15, Dr. Georg Fischer: copied from SeparatedTable
 */
 /*
  * Copyright 2011 Dr. Georg Fischer <punctum at punctum dot kom>
@@ -48,7 +49,6 @@ import  java.nio.channels.Channels;
 import  java.nio.channels.ReadableByteChannel;
 import  java.nio.file.Files;
 import  java.util.Arrays;
-import  java.util.Date;
 import  java.util.Iterator;
 import  java.util.Map;
 import  java.util.zip.ZipEntry;

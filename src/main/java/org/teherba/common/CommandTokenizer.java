@@ -1,5 +1,6 @@
 /*  CommandTokenizer.java - some strange conversion (we don't comment it)
  *  @(#) $Id$
+ *  2016-10-13: less imports
  *  2013-01-05: split()
  *  2012-11-24: handling of '.' and '/'
  *  2012-11-09: remove superfluous code
@@ -27,7 +28,6 @@
 package org.teherba.common;
 import  org.teherba.common.URIReader;
 import  java.io.Serializable;
-import  java.io.PrintWriter;
 import  java.io.StreamTokenizer;
 import  java.io.StringReader;
 import  java.util.ArrayList;

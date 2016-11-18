@@ -1,5 +1,6 @@
 /*  Messages.java - Static help texts and other language specific messages for Dbat.
  *  @(#) $Id$
+ *  2016-11-15: sourceUrl was specUrl
  *  2016-10-11: IOException
  *  2016-09-20: getVersionString with parameter localObject
  *  2016-09-16: getVersionString was from Configuration, now from MetaInfPage
@@ -366,7 +367,7 @@ public class Messages implements Serializable {
      *  @param trailerSelect a space separated list of keywords, with a leading space, in any order:
      *  " none plain out time dbat script xls more"
      *  @param language ISO country code: "de", "en"
-     *  @param specUrl  link to the specification source
+     *  @param sourceUrl  link to the specification source
      *  @param specName base name (with subdirectory, without ".xml") of the Dbat specification file
      *  @param xlsUrl   link to Excel display of the query results
      *  @param moreUrl  link to "more" page
@@ -376,7 +377,7 @@ public class Messages implements Serializable {
         Output on 2011-08-05 21:03:40 by Dbat script test/align01, Excel, more
      *  </pre>
      */
-    public static String getTrailerText(String trailerSelect, String language, String specUrl, String specName, String xlsUrl, String moreUrl) {
+    public static String getTrailerText(String trailerSelect, String language, String sourceUrl, String specName, String xlsUrl, String moreUrl) {
         StringBuffer result = new StringBuffer
                 (128);
                 // ("<!-- " + trailerSelect + "-->");
@@ -422,7 +423,7 @@ public class Messages implements Serializable {
             if (withLink) {
                 result.append("<a target=\"_blank\" href=\"");
             //  result.append("view-source:"); // View-source is applied in SpecificationHandler
-                result.append(specUrl);
+                result.append(sourceUrl);
                 result.append("\"");
                 result.append(" type=\"text/plain\""); // neither text/xml, application/xhtml+xml nor application/xml did work
                 result.append(">");

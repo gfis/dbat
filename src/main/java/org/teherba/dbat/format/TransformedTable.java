@@ -1,5 +1,6 @@
 /*  Generator for an XML table which is transformed by an XSLT stylesheet
  *  @(#) $Id$
+ *  2016-10-13: less imports
  *  2016-09-15: BasicFactory replaced by XtransFactory again
  *  2014-11-10: s|getHrefValue -> s|getWrappedValue
  *  2014-03-04: ignore pseudo columns
@@ -30,7 +31,6 @@ import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.xtrans.BaseTransformer;
 import  org.teherba.xtrans.XtransFactory;
-import  java.io.IOException;
 import  java.sql.DatabaseMetaData;
 import  java.sql.Types;
 import  java.util.ArrayList;

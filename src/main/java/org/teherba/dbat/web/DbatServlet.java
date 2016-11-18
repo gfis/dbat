@@ -56,7 +56,6 @@ import  org.teherba.dbat.web.MorePage;
 import  org.teherba.common.web.BasePage;
 import  org.teherba.common.web.MetaInfPage;
 import  org.teherba.xtrans.BaseTransformer;
-import  org.teherba.xtrans.XMLTransformer;
 import  org.teherba.xtrans.XtransFactory;
 import  java.io.BufferedReader;
 import  java.io.Reader;
@@ -66,7 +65,6 @@ import  java.io.IOException;
 import  java.nio.channels.Channels;
 import  java.nio.channels.ReadableByteChannel;
 import  java.util.ArrayList;
-import  java.util.Enumeration;
 import  java.util.Iterator;
 import  java.util.HashMap;
 import  java.util.LinkedHashMap;
@@ -76,7 +74,6 @@ import  javax.servlet.ServletException;
 import  javax.servlet.http.HttpServlet;
 import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;
-import  javax.servlet.http.HttpSession;
 import  javax.sql.DataSource;
 import  javax.xml.transform.sax.SAXResult;
 import  javax.xml.transform.sax.TransformerHandler;
@@ -101,8 +98,8 @@ public class DbatServlet extends HttpServlet {
 
     /** log4j logger (category) */
     private Logger log;
-    /** URL path to this application */
-    private String realPath;
+    /** URL path to this application, e.g. /var/lib/tomcat8/webapps/dbat[/spec/] */
+    private String specPath;
     /** Maps connection identifiers (short database instance ids) to {@link DataSource Datasources} */
     private LinkedHashMap<String, DataSource> dsMap;
     /** Dbat's configuration data */
@@ -125,18 +122,17 @@ public class DbatServlet extends HttpServlet {
         dsMap = config.getDataSourceMap();        
 
         ServletContext context = getServletContext();
-        realPath = context.getInitParameter("specPath");
-        if (realPath == null) {
-            realPath = context.getRealPath("/").replaceAll("\\\\", "/");
-            if (! realPath.endsWith("/")) {
-                realPath += "/"; // "/" before "spec" for WAS
+        specPath = context.getInitParameter("specPath");
+        if (specPath == null) {
+            specPath = context.getRealPath("/").replaceAll("\\\\", "/");  // e.g. /var/lib/tomcat8/webapps/dbat
+            if (! specPath.endsWith("/")) {
+                specPath += "/"; // "/" before "spec" for WAS
             }
-            realPath += "spec/";
+            specPath += "spec/";
+        } else if (! specPath.endsWith("/")) {
+            specPath += "/";
         }
-        if (! realPath.endsWith("/")) {
-            realPath += "/";
-        }
-        log.info("realPath=" + realPath);
+        log.info("specPath=" + specPath); // e.g.  specPath=/var/lib/tomcat8/webapps/dbat/spec/
 
         if (true) { // debugging
             Iterator<String> miter = dsMap.keySet().iterator();
@@ -224,15 +220,6 @@ public class DbatServlet extends HttpServlet {
         return result;
     } // setResponseHeaders
 
-    /** Sets the parameter map for the SAX handler
-     *  @param handler instance of the SAX handler where to store the parameter map
-     *  @param request take the parameter map from this request
-     */
-    @SuppressWarnings(value="unchecked")
-    private void uncheckedSetParameterMap(SpecificationHandler handler, HttpServletRequest request) {
-        handler.setParameterMap((Map<String, String[]>) request.getParameterMap());
-    } // uncheckedSetParameterMap
-
     /** Generates the response (HTML page) for an HTTP request
      *  @param request request with header fields
      *  @param response response with writer
@@ -276,13 +263,13 @@ public class DbatServlet extends HttpServlet {
                 binary = setResponseHeaders(response, mode, specName, encoding);
 
                 ReadableByteChannel channel = null;
-                String sourceFileName = realPath + specName + ".xml";
+                String sourceFileName = specPath + specName + ".xml";
                 File specFile = new File(sourceFileName);
                 boolean found = specFile.exists();
                 if (! found) { // spec file not found
                     // session.setAttribute("lang", language);
                     // session.setAttribute("parm", specName);
-                    specFile = new File(realPath + specName + ".redir"); // try same name with ".redir"
+                    specFile = new File(specPath + specName + ".redir"); // try same name with ".redir"
                     if (specFile.exists()) { // 304 - redirection found
                         channel = (new FileInputStream (specFile)).getChannel();
                         BufferedReader charReader = new BufferedReader(Channels.newReader(channel, "UTF-8"));
@@ -307,7 +294,7 @@ public class DbatServlet extends HttpServlet {
                                     language        = parts[1];
                                     break;
                             } // switch parts
-                            sourceFileName = realPath + targetName + ".xml";
+                            sourceFileName = specPath + targetName + ".xml";
                             specFile = new File(sourceFileName);
                             basePage.writeMessage(request, response, language, new String[] 
                                     { "301", specName, "/dbat/servlet?spec=" + targetName, waitTime });
@@ -337,14 +324,15 @@ public class DbatServlet extends HttpServlet {
                     handler.setEncoding(response.getCharacterEncoding());
                     handler.setRequest (request );
                     handler.setResponse(response);
-                    uncheckedSetParameterMap(handler, request);
+                    handler.setParameterMap((Map<String, String[]>) request.getParameterMap());
+                    // uncheckedSetParameterMap(handler, request);
                     tbSerializer.setMimeType(response.getContentType());
                     tbSerializer.setSeparator(separator);
                     handler.setSerializer(tbSerializer);
                     config.setTableSerializer(tbSerializer);
-                    handler.setSpecPaths(realPath, "spec/", specName);
+                    handler.setSpecPaths(specPath, "spec/", specName);
                     if (inputURI != null) {
-                        config.setInputURI(realPath + inputURI);
+                        config.setInputURI(specPath + inputURI);
                     }
 
                     if (! isDbiv) { // conventional Dbat XML syntax
@@ -356,11 +344,11 @@ public class DbatServlet extends HttpServlet {
                         XtransFactory xtransFactory = new XtransFactory(); // knows XML only
                         BaseTransformer generator  = xtransFactory.getTransformer("xml");
                         BaseTransformer serializer = handler;
-                        TransformerHandler styler = xtransFactory.getXSLHandler(realPath + "../xslt/dbiv_dbat.xsl");
+                        TransformerHandler styler = xtransFactory.getXSLHandler(specPath + "../xslt/dbiv_dbat.xsl");
                         generator.setContentHandler(styler);
                         generator.setProperty("http://xml.org/sax/properties/lexical-handler", styler);
                         styler.setResult(new SAXResult(serializer));
-                        generator.openFile(0, realPath + specName + ".xml");
+                        generator.openFile(0, specPath + specName + ".xml");
                         generator.generate();
                         generator.closeAll();
                     } // isDbiv

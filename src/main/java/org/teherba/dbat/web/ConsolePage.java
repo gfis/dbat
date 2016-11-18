@@ -1,5 +1,6 @@
 /*  ConsolePage.java - run a query or SQL instruction from a web form
  *  @(#) $Id$
+ *  2016-10-13: less imports
  *  2016-08-26: param BasePage
  *  2012-07-01, Georg Fischer: copied from MorePage.java
  */
@@ -26,7 +27,6 @@ import  java.io.IOException;
 import  java.io.PrintWriter;
 import  java.util.Iterator;
 import  java.util.LinkedHashMap;
-import  java.util.Map;
 import  javax.sql.DataSource;
 import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;

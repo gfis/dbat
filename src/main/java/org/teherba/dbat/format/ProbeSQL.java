@@ -1,5 +1,6 @@
 /*  Pseudo format which only tests the SQL statement for the row select  
     @(#) $Id$
+    2016-10-13: less imports
     2011-12-03: copied from ProbeSQL
 */
 /*
@@ -18,14 +19,13 @@
  * limitations under the License.
  */
 package org.teherba.dbat.format;
+import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
-import  org.teherba.dbat.SpecificationHandler;
-import  org.teherba.dbat.format.BaseTable;
 import  java.util.ArrayList;
 
 /** This class is only a tiny implementation of {@link org.teherba.dbat.format.BaseTable};
- *  it supports the additional subselect construction inserted by {@link SpecificationHandler}.
+ *  it supports the additional subselect construction inserted by <em>SpecificationHandler</em>.
  *  Normally, the <em>probe</em> output format retrieves no rows, but emits an error
  *  message for SQL syntax errors, missing tables or columns.
  *  @author Dr. Georg Fischer

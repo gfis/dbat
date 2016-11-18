@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     @(#) $Id$
+    2016-11-14: /home/gfis in comment replaced
     2016-10-11: Servlet 3.0 for Tomcat >= V7; ErrorServlet; DbatServlet now in package dbat.web
     2012-07-04: comments rearranged
     2012-03-16: without listener
@@ -12,10 +13,6 @@
     2009-10-11: with <context-parm>s
     2005-11-25: copied from checkdig
 -->
-<web-app xmlns="http://java.sun.com/xml/ns/javaee"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-        version="3.0">
 <!--
  * Copyright 2006 Dr. Georg Fischer <punctum at punctum dot kom>
  *
@@ -31,6 +28,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+        version="3.0">
     <display-name>Dbat</display-name>
     <description>
         DataBase Administration Tool
@@ -47,7 +48,7 @@
 
     <context-param>
         <param-name>specPath</param-name>
-        <param-value>/home/gfis/work/gits/dbat/web/spec</param-value>
+        <param-value>/var/lib/tomcat/dbat/web/spec</param-value>
     </context-param>
 -->
 
@@ -82,7 +83,6 @@
         <servlet-name>ErrorServlet</servlet-name>
         <url-pattern>/ErrorServlet</url-pattern>
     </servlet-mapping>
-
     <error-page>
         <location>/ErrorServlet</location>
     </error-page>

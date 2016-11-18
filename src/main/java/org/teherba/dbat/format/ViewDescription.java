@@ -1,5 +1,6 @@
 /*  Generator for a default Dbiv XML specification file
     @(#) $Id$
+    2016-10-13: less imports
     2016-08-26: with getISOTimestamp()
     2016-08-09, Georg Fischer: copied from SpecDescription.java
 */
@@ -25,8 +26,6 @@ import  org.teherba.dbat.SpecificationHandler;  // for DBIV_TAG
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.SpecDescription;
-import  java.sql.DatabaseMetaData;
-import  java.sql.Types;
 import  java.util.HashMap;
 import  java.util.Iterator;
 import  java.util.TreeMap;

@@ -1,5 +1,6 @@
 /*  Generator for a default Dbat XML specification file
     @(#) $Id$
+    2016-10-13: import added
     2016-08-26: with getISOTimestamp()
     2016-08-09: repaired with FROM, no constraint; Vroni = 35
     2010-05-21: with HTML namespace prefix
@@ -23,6 +24,7 @@
  */
 
 package org.teherba.dbat.format;
+import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.Configuration;         // for DBAT_URI, HTML_URI
 import  org.teherba.dbat.SpecificationHandler;  // for ROOT_TAG
 import  org.teherba.dbat.TableColumn;

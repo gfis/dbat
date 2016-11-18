@@ -104,7 +104,6 @@ public class HTMLTable extends XMLTable {
         String stylesheet   = "stylesheet.css";
         String target       = null;
         String title        = "dbat";
-        String urlPath      = "spec/";
         String xslt         = null;
         tableSeqNo = 0;
         try {
