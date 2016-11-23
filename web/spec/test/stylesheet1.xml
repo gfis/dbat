@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
     @(#) $Id$
+    2016-11-23: absolute path starts at /dbat/spec/
     2014-11-10: was /dbat/stylesheet.css, now in /dbat/spec
     2012-09-17, Dr. Georg Fischer: copied from selec01.xml
 -->
@@ -10,12 +11,13 @@
         lang="en"
         conn="worddb"
         title="stylesheet1"
-        stylesheet="/dbat/spec/stylesheet.css"
+        stylesheet="/stylesheet.css"
         >
-    <comment lang="en">Explicit Stylesheet "/dbat/spec/stylesheet.css"</comment>
-    <comment lang="de">Explizite Stylesheet-Angabe "/dbat/spec/stylesheet.css"</comment>
+    <comment lang="en">Explicit Stylesheet "/stylesheet.css"</comment>
+    <comment lang="de">Explizite Stylesheet-Angabe "/stylesheet.css"</comment>
 
-    <ht:h3><ht:a href="servlet?spec=test/index">Test</ht:a>: Explicit Stylesheet "/dbat/spec/stylesheet.css"</ht:h3>
+    <ht:h3><ht:a href="servlet?spec=test/index">Test</ht:a>: 
+        Explicit Stylesheet "/stylesheet.css"</ht:h3>
     <ht:form method="get">
         <ht:input label="Name" name="name" maxsize="20" size="10" init="%r" />
         <ht:input type="submit" value="Submit" />

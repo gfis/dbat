@@ -7,13 +7,14 @@
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
 <title>stylesheet1</title>
-<link rel="stylesheet" type="text/css" href="/dbat/spec/stylesheet.css" />
+<link rel="stylesheet" type="text/css" href="spec/stylesheet.css" />
 </head><body>
 
-    <!--Explicit Stylesheet "/dbat/spec/stylesheet.css"-->
-    <!--Explizite Stylesheet-Angabe "/dbat/spec/stylesheet.css"-->
+    <!--Explicit Stylesheet "/stylesheet.css"-->
+    <!--Explizite Stylesheet-Angabe "/stylesheet.css"-->
 
-    <h3><a href="servlet?spec=test/index">Test</a>: Explicit Stylesheet "/dbat/spec/stylesheet.css"</h3>
+    <h3><a href="servlet?spec=test/index">Test</a>: 
+        Explicit Stylesheet "/stylesheet.css"</h3>
     <form method="get" action="servlet?spec=test/stylesheet1"><input name="spec" type="hidden" value="test/stylesheet1" />
 
         Name: <input name="name" maxsize="20" size="10" init="%r" value="%r"></input>
