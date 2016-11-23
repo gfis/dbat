@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2016-11-13, Dr. Georg Fischer
+-->
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang="en"
+        conn="worddb"
+        title="pathstyle"
+        javascript="/javascript.js  javascript.js  test/javascript.js  ../javascript.js"
+        stylesheet="/stylesheet.css stylesheet.css test/stylesheet.css ../stylesheet.css"
+        xslt=      "/formed.xsl     formed.xsl     test/formed.xsl     ../formed.xsl"
+        >
+    <comment lang="en">Test of the paths for stylesheet, javascript and xslt attributes</comment>
+    <comment lang="de">Test der Pfade f&#xfc;r die stylesheet-, javascript und xslt-Attribute</comment>
+
+    <ht:h3>Path Tests</ht:h3>
+    view source
+</dbat>
