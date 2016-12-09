@@ -1,5 +1,6 @@
 /*  Generator for an HTML table
     @(#) $Id$
+    2016-12-09: avoid empty Javascrpt function calls
     2016-10-03: style could have been null
     2016-05-19: repair style on rows (table id)
     2015-04-22: repair title="..." attribute for SQL REPLACE with embedded HTML (highlighting)
@@ -389,7 +390,7 @@ public class HTMLTable extends XMLTable {
         if (false) {
         } else if (wrap != null) {
             if (false) {
-            } else if (wrap.startsWith("javascript:")) {
+            } else if (wrap.startsWith("javascript:") && wrappedValue != null) {
                 result.append("<script type=\"text/javascript\">");
                 result.append(wrappedValue);
                 result.append("</script>");

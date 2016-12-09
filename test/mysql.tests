@@ -411,6 +411,9 @@ HTTP spec=test.image01
 
 TEST IM2 page break after each image
 HTTP spec=test.image02
+
+TEST IM3 email address sometimes per Javascript
+HTTP spec=test.selec06
 #-------------------
 # list box fields
 TEST L01 List Box and List Parameters - init values
