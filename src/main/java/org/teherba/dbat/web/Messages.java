@@ -1,5 +1,7 @@
-/*  Messages.java - Static help texts and other language specific messages for Dbat.
- *  @(#) $Id$
+/*  Messages.java - Static help texts and other language specific messages for Dbat. äöüÄÖÜ
+ *  @(#) $Id$ 
+ *  2016-12-09: add fr messages
+ *  2016-12-09: view-source: not for Chrome
  *  2016-11-15: sourceUrl was specUrl
  *  2016-10-11: IOException
  *  2016-09-20: getVersionString with parameter localObject
@@ -80,46 +82,57 @@ public class Messages implements Serializable {
         basePage.add(laux, smess, "<a title=\"main\"        href=\"index.html\">");
         basePage.add("en", smess, "{parm}Dbat</a> Home");
         basePage.add("de", smess, "{parm}Dbat</a>-Startseite");
+        basePage.add("fr", smess, "{parm}Dbat</a> page d'accueil");
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"index\"       href=\"servlet?spec=index\">");
         basePage.add("en", smess, "{parm}List</a> of available specifications");
         basePage.add("de", smess, "{parm}Liste</a> der abrufbaren Spezifikationen");
+        basePage.add("fr", smess, "{parm}Liste</a> des spécifications disponibles");
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"con\"         href=\"servlet?view=con\">");
         basePage.add("en", smess, "{parm}SQL Console</a>");
         basePage.add("de", smess, "{parm}SQL-Konsole</a>");
+        basePage.add("fr", smess, "{parm}Console SQL</a>");
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"describe\"    href=\"servlet?spec=describe\">");
         basePage.add("en", smess, "{parm}describe DDL</a> of a Table or View");
         basePage.add("de", smess, "{parm}describe </a> - DLL einer Tabelle oder View");
+        basePage.add("fr", smess, "{parm}décris LDD</a> d'une table (virtuelle)");
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"help\"        href=\"servlet?view=help&lang=en\">");
         basePage.add("en", smess, "{parm}Help</a> - Commandline Options");
         basePage.add("de", smess, "{parm}Hilfe</a> - Kommandozeilen-Optionen");
+        basePage.add("fr", smess, "{parm}Aide</a> - options de l'interface en ligne de commande");
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"wiki\"        href=\"http://www.teherba.org/dbat\" target=\"_new\">");
         basePage.add("en", smess, "{parm}Wiki</a> Documentation");
         basePage.add("de", smess, "{parm}Wiki</a>-Dokumentation");
+        basePage.add("fr", smess, "{parm}Wiki</a> Documentation");
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"github\"      href=\"https://github.com/gfis/dbat\" target=\"_new\">");
         basePage.add("en", smess, "{parm}Git Repository</a>");
         basePage.add("de", smess, "{parm}Git Repository</a>");
+        basePage.add("fr", smess, "{parm}Dépôt Git</a>");
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"api\"         href=\"docs/api/index.html\">");
         basePage.add("en", smess, "{parm}Java API</a> Documentation");
         basePage.add("de", smess, "{parm}Java API</a>-Dokumentation");
+        basePage.add("fr", smess, "{parm}Java API</a> Documentation");
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"manifest\"    href=\"servlet?view=manifest\">");
         basePage.add("en", smess, "{parm}Manifest</a>, ");
         basePage.add("de", smess, "{parm}Manifest</a>, ");
+        basePage.add("fr", smess, "{parm}Manifest</a>, ");
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"license\"     href=\"servlet?view=license\">");
         basePage.add("en", smess, "{parm}License</a>, ");
         basePage.add("de", smess, "{parm}Lizenz</a>, ");
+        basePage.add("fr", smess, "{parm}Licence</a>, ");
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"notice\"      href=\"servlet?view=notice\">");
         basePage.add("en", smess, "{parm}References</a>");
         basePage.add("de", smess, "{parm}Referenzen</a>");
+        basePage.add("fr", smess, "{parm}Références</a>");
         //--------
         basePage.add("en", "301", "Specification file <em>{parm}</em> was moved to <em><a href=\"{par2}\">{par2}</a></em>."
                 + "<br />Please update your bookmarks."
@@ -128,11 +141,16 @@ public class Messages implements Serializable {
                 + "</em> verschoben."
                 + "<br />Bitte &auml;ndern Sie Ihre Favoriten/Lesezeichen."
                 + "<br />Sie werden in {par3} s auf die neue Seite umgelenkt.");
+        basePage.add("fr", "301", "Le fichier de spécification <em>{parm}</em> a été déplacé vers <em><a href=\"{par2}\">{par2}</a></em>."
+                + "<br />Veuillez mettre à jour vos signets."
+                + "<br />Vous serez redirigé vers la nouvelle page dans {par3} s.");
         //--------
         basePage.add("en", "404", "A specification file <em>{parm}</em> was not found."
                 + "<br />Please check the "    + appLink + " home page.");
         basePage.add("de", "404", "Eine Spezifikationsdatei <em>{parm}</em> wurde nicht gefunden."
                 + "<br />Bitte rufen Sie die " + appLink + "-Startseite auf.");
+        basePage.add("fr", "404", "Un fichier de spécification <em>{parm}</em> n'a pas été trouvé. "
+                + "<br />Veuillez vérifier la page d'accueil" + appLink + ".");
         //--------
     } // addMessageTexts
 
@@ -145,6 +163,8 @@ public class Messages implements Serializable {
         if (false) {
         } else if (language.equals("de")) {
             result = "Zeile,n";
+        } else if (language.equals("fr")) {
+            result = "Rangée,s";
         } else { // default: en
             result = "row,s";
         }
@@ -164,6 +184,12 @@ public class Messages implements Serializable {
                     + "Bitte setzen Sie den Mauszeiger auf das Feld oder klicken Sie auf den Stern, um die "
                     + "<a href=\"servlet?view=validate&amp;lang=" + language + "&amp;regex=\" target=\"_blank\">Validierungsregel</a>"
                     + " anzuzeigen.";
+        } else if (language.equals("fr")) {
+            result += ""
+                    +"Pour l'entrée rouge des champs une erreur de validation a eu lieu. <br />"
+                    + "S'il vous plaît mettez le curseur sur le champ ou cliquez sur l'étoile pour afficher la "
+                    + "<a href=\"servlet?view=validate&amp;lang=" + language + "&amp;regex=\" target=\"_blank\">règle de validation</a>."
+                    ;
         } else { // default: en
             result += ""
                     + "There was a validation problem with the input field(s) highlighted in red.<br /> "
@@ -246,6 +272,41 @@ public class Messages implements Serializable {
                 + "Eingebundene JDBC-Treiber:\n"
                 ;
 
+    /** French help text */
+    private static final String frHelpText = ""
+                + "Utilisation:\n"
+                + "  java -jar dbat.jar [-acdfghlnrstvx] (table | \"sql\"| file | - | parameter ...)\n"
+                + "  java org.teherba.dbat.Dbat \"SELECT entry, morph FROM words\"\n"
+                + "  -29 tableau     SELECT * FROM tableau FETCH FIRST 29 ROWS ONLY\n"
+                + "  -a colonne      aggreate (concatène) les valeurs de cette colonne\n"
+             // + "  -b              utilise INSERT de lot\n"
+                + "  -c propfile     fichier de propriétés avec les paramètres de connexion etc.\n"
+                + "  -d tableau      affiche la description LDD (DROP / CREATE TABLE) pour le tableau\n"
+                + "  -e codage       ISO-8859-1 (par défaut), UTF-8 etc. (deux fois pour l'entrée / sortie)\n"
+                + "  -f fichier      processus des instructions SQL à partir de ce fichier\n"
+                + "  -f spec.xml     teste un fichier de spécification web (avec les paramètres -p)\n"
+             // + "  -g col          SELECT col, count (col) FROM table GROUP BY col\n"
+                + "  -g colonnes     liste de colonnes séparées par des virgules qui provoquent un changement de groupe (nouveaux en-têtes)\n"
+                + "  -h              imprime ce texte d'aide d'utilisation\n"
+                + "  -i tableau      imprimer les instructions INSERT pour \"SELECT * FROM tableau\"\n"
+                + "  -l l1, l2, ...  définissent les largeurs des colonnes de sortie (pour -m fix)\n"
+                + "  -m mode         mode de sortie: tsv (valeurs séparées par TAB, par défaut),\n"
+                +         "\t\t\tcsv (c.f. -s), echo, fix (c.f. -l), htm(l), jdbc, json, probe, spec, sql, sqlj, taylor, trans, xls, xml\n"
+                + "  -n tableau      SELECT count (*) FROM tableau\n"
+                + "  -p name=val     réglage optionnel des paramètres (répétable)\n"
+                + "  -r tableau      Insérer les valeurs brutes ([espace] séparées) de STDIN dans le tableau\n"
+                + "  -s sep          séparateur pour mode csv\n"
+                + "  -sa sep         séparateur pour -une agrégation\n"
+                + "  -sp sep         séparateur pour CREATE PROCEDURE\n"
+                + "  -t tableau      nom de tableau (pour -g)\n"
+                + "  -v              verbose: imprimer les instructions SQL et le temps d'exécution\n"
+                + "  -x              imprime aucune rubrique / résumé\n"
+             // + "  -z fichier      Fichier ZIP qui fournit ou reçoit des valeurs de colonnes (B)LOB\n"
+                + "Les options et les actions sont évaluées de gauche à droite.\n"
+                + "Les instructions SQL doivent contenir un espace, et doivent être insérées entre guillemets doubles.\n"
+                + "Les noms de fichiers ne doivent pas contenir d'espaces. '-' est STDIN.\n"
+                + "Pilotes JDBC inclus:\n"
+                ;
     /** Get the tools version, the explanation of the options and
      *  the available JDBC drivers.
      *  @param language one of "en", "de"
@@ -260,6 +321,8 @@ public class Messages implements Serializable {
         if (false) {
         } else if (language.startsWith("de")) {
             help.append(deHelpText);
+        } else if (language.startsWith("fr")) {
+            help.append(frHelpText);
         } else {
             help.append(enHelpText);
         }
@@ -289,6 +352,8 @@ public class Messages implements Serializable {
         if (false) {
         } else if (language.startsWith("de")) {
             help.append("Implementierte Ausgabeformate (-m):\n");
+        } else if (language.startsWith("fr")) {
+            help.append("Formats de sortie inclus (-m):\n");
         } else {
             help.append("Implemented output formats (-m):\n");
         }
@@ -313,6 +378,12 @@ public class Messages implements Serializable {
                 //  + " mit " + config.getDriverURL()
                     + ", " + manipulatedSum + " betroffene Zeile"            + (manipulatedSum != 1 ? "n" : "")
                     + " in " + Long.toString((System.nanoTime() - startTime) / 1000000L) + " ms");
+        } else if (language.equals("fr")) {
+            result = (""
+                    + " traité " +  instructionSum + " instruction"  +   (instructionSum != 1 ? "s" : "") + " SQL"
+                //  + " avec " + config.getDriverURL()
+                    + ", " + manipulatedSum + (manipulatedSum != 1 ? " rangées concernées" : " rangée concernée")
+                    + " en " + Long.toString((System.nanoTime() - startTime) / 1000000L) + " ms");
         } else { // default: en
             result = (""
                     + " executed " +  instructionSum + " SQL statement"  + (instructionSum != 1 ? "s" : "")
@@ -330,10 +401,12 @@ public class Messages implements Serializable {
     public static String getSortTitle(String language) {
         StringBuffer result = new StringBuffer(64);
         if (false) {
-        } else if (language.equals("en")) {
-            result.append("Click =&gt; Sort");
-        } else {
+        } else if (language.equals("de")) {
             result.append("Klick =&gt; Sort");
+        } else if (language.equals("fr")) {
+            result.append("Clic =&gt; tri");
+        } else {
+            result.append("Click =&gt; Sort");
         }
         return result.toString();
     } // getSortTitle
@@ -349,7 +422,7 @@ public class Messages implements Serializable {
         String userAgent = request.getHeader("User-Agent");
         if (userAgent != null
                 &&  (   userAgent.indexOf("Firefox/") >= 0
-                    ||  userAgent.indexOf("Chrome/" ) >= 0
+           //       ||  userAgent.indexOf("Chrome/" ) >= 0
                     ||  userAgent.indexOf("OPR/"    ) >= 0 // Opera now V37; >= V17
                     )
                 &&  (   userAgent.indexOf("Edge/"   ) <  0 // and all Internet Explorer versions do not know view-source:
@@ -374,7 +447,7 @@ public class Messages implements Serializable {
      *  @return language specific trailer markup text,
      *  for example:
      *  <pre>
-        Output on 2011-08-05 21:03:40 by Dbat script test/align01, Excel, more
+     *  Output on 2011-08-05 21:03:40 by Dbat script test/align01, Excel, more
      *  </pre>
      */
     public static String getTrailerText(String trailerSelect, String language, String sourceUrl, String specName, String xlsUrl, String moreUrl) {
@@ -397,6 +470,13 @@ public class Messages implements Serializable {
                 scriptPart  = "-Skript ";
                 xlsPart     = "Excel";
                 morePart    = "mehr";
+        } else if (language.startsWith("fr")) {
+                outPart     = "Sorties";
+                timePart    = " au ";
+                dbatPart    = " par ";
+                scriptPart  = " script ";
+                xlsPart     = "Excel";
+                morePart    = "plus";
         } else { // default: en
         }
         if (trailerSelect.contains(" out")) {
@@ -474,7 +554,7 @@ public class Messages implements Serializable {
 
     /** Sets the attributes of an input form field depending on the outcome
      *  of a validation check
-     *  @param language ISO country code: "de", "en"
+     *  @param language ISO country code: "de", "en", "fr"
      *  @param attrs2 attributes to be modified
      *  @param value input value from the field
      *  @param pattern validation pattern
@@ -506,6 +586,8 @@ public class Messages implements Serializable {
             if (false) {
             } else if (language.equals("de")) {
                 title = "Fehler bei der Feld-Validierung gegen Muster &quot;";
+            } else if (language.equals("fr")) {
+                title = "Erreur pendant la validation de champ avec pattern &quot;";
             } else { // default: en
                 title = "Error in field validation with pattern &quot;";
             }
@@ -513,6 +595,8 @@ public class Messages implements Serializable {
             if (false) {
             } else if (language.equals("de")) {
                 title = "Feld-Validierung gegen Muster &quot;";
+            } else if (language.equals("fr")) {
+                title = "Valididation de champ avec pattern &quot;";
             } else { // default: en
                 title = "Field validation with pattern &quot;";
             }

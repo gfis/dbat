@@ -1,5 +1,6 @@
 /*  Base class for file format representing table descriptions or results sets
  *  @(#) $Id$
+ *  2016-12-09: getDescription with fallback to "en"
  *  2016-10-13: less imports
  *  2016-08-26: getISOTimestamp()
  *  2016-05-08: close(); end of WW2 + 71 years
@@ -133,7 +134,11 @@ public abstract class BaseTable {
      *  @return text describing the format of this table
      */
     public String getDescription(String language) {
-        return descriptionMap.get(language);
+        String result = descriptionMap.get(language);
+        if (result == null) {
+            result = descriptionMap.get("en");
+        }
+        return result;
     } // getDescription
 
     /** Sets the human readable description of the format.

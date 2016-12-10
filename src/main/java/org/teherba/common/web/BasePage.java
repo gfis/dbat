@@ -1,5 +1,6 @@
-/*  BasePage.java - common code for web pages
+/*  BasePage.java - common code for web pages äöüÄÖÜ
  *  @(#) $Id$
+ *  2016-12-10: french message texts
  *  2016-10-13: less imports
  *  2016-09-21: stylesheet.css with title="common" attribute for gramword css switching
  *  2016-09-15: getFormFieldCount, getFormIterator
@@ -93,9 +94,11 @@ public class BasePage {
         //--------
         basePage.add("en", "405", "Unknown request parameter &amp;{parm}=\"{par2}\"");
         basePage.add("de", "405", "Unbekannter Request-Parameter &amp;{parm}=\"{par2}\"");
+        basePage.add("fr", "405", "Paramètre du request inconnu &amp;{parm}=\"{par2}\"");
         //--------
         basePage.add("en", "505", "System error: invalid message number <em>{parm}</em>");
         basePage.add("de", "505", "Systemfehler: Ung&uuml;ltige Meldungsnummer <em>{parm}</em>");
+        basePage.add("fr", "505", "Erreur système: numéro de message non valide <em>{parm}</em>");
         //--------
     } // Constructor(1)
 
@@ -114,6 +117,7 @@ public class BasePage {
         //--------
         basePage.add("en", "001", link);
         basePage.add("de", "001", link);
+        basePage.add("fr", "001", link);
     } // setAppLink
 
     /** Gets a session attribute or a default value
@@ -360,6 +364,9 @@ public class BasePage {
                     out.write("Zur&uuml;ck zur ");
                     out.write(this.get(language, "001")); // appLink
                     out.write("-Startseite");
+                } else if (language.startsWith("fr")) {
+                    out.write("Retour à la page d'acceuil de ");
+                    out.write(this.get(language, "001")); // appLink
                 } else {
                     out.write("Back to the ");
                     out.write(this.get(language, "001")); // appLink
@@ -373,6 +380,8 @@ public class BasePage {
                 if (false) {
                 } else if (language.startsWith("de")) {
                     out.write("Fragen, Hinweise: EMail an ");
+                } else if (language.startsWith("fr")) {
+                    out.write("Questions, remarques: e-mail à ");
                 } else {
                     out.write("Questions, remarks: email to ");
                 }
@@ -453,6 +462,10 @@ public class BasePage {
 
             String messNo   = parms[0];
             String text     = this.get(language, messNo);
+            if (text == null && ! language.equals("en")) { // may not in this language?
+                language = "en"; // try with English
+                text     = this.get(language, messNo);
+            }
             if (text == null) { // invalid messNo
                 String origMessNo = messNo;
                 messNo = "505";
@@ -470,6 +483,8 @@ public class BasePage {
             if (false) {
             } else if (language.equals("de")) {
                 messWord = "-Meldung";
+            } else if (language.equals("fr")) {
+                messWord = " Message";
             } else {
                 messWord = " Message";
             }

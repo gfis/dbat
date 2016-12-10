@@ -1,5 +1,6 @@
-/*  MorePage.java - replacement for more.jsp: input form with all parameters
+/*  MorePage.java - replacement for more.jsp: input form with all parameters äöüÄÖÜ
  *  @(#) $Id$
+ *  2016-12-09: no script.js
  *  2016-10-11: IOException
  *  2016-08-29: many code moved to Messages.addErrorMessageTexts for basePage.writeAuxiliaryLinks
  *  2016-08-26: param BasePage
@@ -77,7 +78,8 @@ public class MorePage {
 
             out.write("<title>Dbat more</title>\n");
             out.write("<style>\ntd,th\n{vertical-align:top;margin:0px;padding-top:0px;padding-bottom:0px;padding-left:10px;padding-right:10px;border:none;}\n</style>\n");
-            out.write("<script src=\"script.js\" type=\"text/javascript\">\n</script>\n</head>\n");
+        //  out.write("<script src=\"script.js\" type=\"text/javascript\">\n</script>\n");
+            out.write("</head>\n");
             String[] optEnc    = new String []
                     /*  0 */ { "ISO-8859-1"
                     /*  1 */ , "UTF-8"
@@ -89,10 +91,12 @@ public class MorePage {
             String[] optLang = new String []
                     /*  0 */ { "de"
                     /*  1 */ , "en"
+                    /*  2 */ , "fr"
                     } ;
             String[] enLang = new String []
                     /*  0 */ { "Deutsch"
                     /*  1 */ , "English"
+                    /*  2 */ , "Français"
                     } ;
             String encoding     = "ISO-8859-1";
             String mode         = "html";
@@ -136,6 +140,8 @@ public class MorePage {
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("-Spezifikation ");
+            } else if (language.startsWith("fr")) {
+                out.write(" Spécification ");
             } else {
                 out.write(" Specification ");
             }
@@ -152,6 +158,8 @@ public class MorePage {
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("Parametername");
+            } else if (language.startsWith("fr")) {
+                out.write("Nom du paramètre");
             } else {
                 out.write("Parameter Name");
             }
@@ -159,6 +167,8 @@ public class MorePage {
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("Wert");
+            } else if (language.startsWith("fr")) {
+                out.write("Valeur");
             } else {
                 out.write("Value");
             }
@@ -167,10 +177,22 @@ public class MorePage {
             out.write("\n");
             out.write("<tr><td>&nbsp;</td>\n<td>&nbsp;</td>\n<td>&nbsp;</td>\n</tr>\n");
             //----------------------------------------
-            out.write("<tr><td class=\"bold\">Encoding</td>\n<td class=\"bold\">\n");
+            out.write("<tr><td class=\"bold\">");
+            if (false) {
+            } else if (language.startsWith("de")) {
+                out.write("Kodierung");
+            } else if (language.startsWith("fr")) {
+                out.write("Codage");
+            } else {
+                out.write("Encoding");
+            }
+            out.write("</td>\n<td class=\"bold\">\n");
+            //----------------------------------------
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("Ausgabeformat");
+            } else if (language.startsWith("fr")) {
+                out.write("Format de sortie");
             } else {
                 out.write("Output Format");
             }
@@ -194,6 +216,8 @@ public class MorePage {
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("Sprache");
+            } else if (language.startsWith("fr")) {
+                out.write("Langue");
             } else {
                 out.write("Language");
             }
@@ -242,6 +266,8 @@ public class MorePage {
             if (false) {
             } else if (language.startsWith("de")) {
                 out.write("Absenden");
+            } else if (language.startsWith("fr")) {
+                out.write("Envoyer");
             } else {
                 out.write("Submit");
             }
@@ -276,6 +302,8 @@ public class MorePage {
             if (false) {
             } else if (language.equals("de")) {
                 out.write("-Validierungsregel-Test");
+            } else if (language.equals("fr")) {
+                out.write(" Test d'une règle de validation");
             } else {
                 out.write(" Test of Validation Rules");
             }
@@ -290,6 +318,8 @@ public class MorePage {
             if (false) {
             } else if (language.equals("de")) {
                 out.write("Validierungsregel-Test");
+            } else if (language.equals("fr")) {
+                out.write(" Test d'une règle de validation");
             } else {
                 out.write("Test of Validation Rules");
             }
@@ -298,6 +328,9 @@ public class MorePage {
             } else if (language.equals("de")) {
                 out.write("In den Feldern unten k&#xf6;nnen Sie den eingegeben Wert ver&#xe4;ndern und &#xfc;berpr&#xfc;fen,\n"
                         + "ob er dem angegebenen regul&#xe4;ren Ausdruck entspricht.\n");
+            } else if (language.equals("fr")) {
+                out.write("Dans les champs suivants vous pouvez modifier et vérifier une valeur\n"
+                        + "si elle correspond à une éxpression régulière.\n");
             } else {
                 out.write("In the fields below you may modify the entered value, and you may check whether it conforms\n"
                         + "to the specified regular expression.\n");
@@ -310,6 +343,8 @@ public class MorePage {
             if (false) {
             } else if (language.equals("de")) {
                 out.write("Regul&#xe4;r Ausdruck:");
+            } else if (language.equals("fr")) {
+                out.write("Éxpression régulière:");
             } else {
                 out.write("Regular Expression:");
             }
@@ -319,6 +354,8 @@ public class MorePage {
             if (false) {
             } else if (language.equals("de")) {
                 out.write("Eingabewert:");
+            } else if (language.equals("fr")) {
+                out.write("Valeur entrée:");
             } else {
                 out.write("Input Value:");
             }
@@ -328,6 +365,8 @@ public class MorePage {
             if (false) {
             } else if (language.equals("de")) {
                 out.write("Pr&#xfc;fen");
+            } else if (language.equals("fr")) {
+                out.write("Vérifier");
             } else {
                 out.write("Match");
             }
@@ -337,6 +376,8 @@ public class MorePage {
             if (false) {
             } else if (language.equals("de")) {
                 out.write("Der Aufbau von regul&#xe4;ren Ausdr&#xfc;cken ist in der Java-API-Dokumentation beschrieben: Klasse");
+            } else if (language.equals("fr")) {
+                out.write("La construction d'expressions régulières est décrite dans la documentation de l'API Java: Classe");
             } else {
                 out.write("Regular Expressions are described in the Java API documentation: class");
             }
@@ -349,7 +390,12 @@ public class MorePage {
                         + "<br />Diese Darstellung wird f&#xfc;r das Attribut <tt>valid=\"...\"</tt>\n"
                         + "der XML-Elemente <tt>&lt;input&gt;, &lt;select&gt;</tt> und <tt>&lt;textarea&gt;</tt> in den\n"
                         + "<a href=\"index.html\">Dbat</a>-Spezifikationen verwendet.\n");
-            } else {
+            } else if (language.equals("fr")) {
+                out.write ( "Caractères spéciaux et des fonctions spéciales sont annulés avec un <em>single</ em> backslash"
+                        + "- comme en Perl.\n"
+                        + "<br /> Cette représentation est nécessaire pour l'attribut <tt>valid=\"...\"</tt>\n"
+                        + "des éléments XML <tt>&lt;input&gt;, &lt;select&gt;</tt> and <tt>&lt;textarea&gt;</tt> dans les \n"
+                        + "spécifications de <a href=\"index.html\">Dbat</a>.\n");
                 out.write("Special characters and functions are escaped with a <em>single</em> backslash, like in Perl.\n"
                         + "<br />\n\tThis representation is needed for the <tt>valid=\"...\"</tt> attribute\n"
                         + "of the XML elements <tt>&lt;input&gt;, &lt;select&gt;</tt> and <tt>&lt;textarea&gt;</tt> in\n"

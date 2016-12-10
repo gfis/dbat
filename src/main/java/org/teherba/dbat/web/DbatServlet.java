@@ -1,5 +1,6 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2016-12-09: Content-disposition filename with parameter values
  *  2016-10-11: package dbat.web; no try...catch; pass exceptions to common.ErrorServlet
  *  2016-09-15: BasicFactory replaced by XtransFactory again; init() not unchecked
  *  2016-09-12: getDataSourceMap moved from init() to Configuration
@@ -169,14 +170,39 @@ public class DbatServlet extends HttpServlet {
 
     /** Sets the content-disposition with target filename and the content-type
      *  of the response depending on the output format (mode)
+     *  @param request  the Http request (with parameters)
      *  @param response response of the Http request (headers are set therein)
-     *  @param mode output format (default: set to "html" if it was not set)
+     *  @param mode     output format (default: set to "html" if it was not set)
      *  @param specName name of the specification file
      *  @param encoding target/response encoding
      */
-    private boolean setResponseHeaders(HttpServletResponse response, String mode, String specName, String encoding) {
+    private boolean setResponseHeaders(HttpServletRequest request, HttpServletResponse response, 
+            String mode, String specName, String encoding) {
         boolean result = false; // assume legible character response output
         String targetFileName = specName.replaceAll("/", ".");
+
+        if (true) { // append parameter values
+            Map parameterMap = request.getParameterMap(); // do NOT! use <String, String[]>
+            Iterator parmIter = parameterMap.keySet().iterator();
+            StringBuffer buffer = new StringBuffer(256);
+            while (parmIter.hasNext()) {
+                String name = (String) parmIter.next();
+                String[] values = request.getParameterValues(name);
+                if (values.length <= 0) { // ignore empty value lists
+                } else if (name.equals("enc"        )) {
+                } else if (name.equals("mode"       )) {
+            //  } else if (name.equals("lang"       )) {
+                } else if (name.equals("spec"       )) {
+            //  } else if (name.equals("view"       )) {
+                    // ignore
+                } else if (values[0].length() > 0) { // unknown, filled parameter name - must be an input field
+                    buffer.append(".");
+                    buffer.append(values[0]);
+                } // unknown
+            } // while parmIter
+            targetFileName += buffer.toString().replaceAll("[^a-zA-Z0-9.\\-]", "_");
+        } // append parameter values
+
         String mimeType = "";
         if (true) { // try {
             if (false) {
@@ -210,7 +236,7 @@ public class DbatServlet extends HttpServlet {
                 mimeType =            "text/plain";
             }
             response.setContentType(mimeType + ";charset=" + encoding);
-            response.setHeader("Content-Disposition", "inline; filename=\"" + targetFileName + "\"");
+            response.setHeader("Content-Disposition", "inline;filename=\"" + targetFileName + "\""); // attachment would store immediately
             response.setCharacterEncoding(encoding);
      /*  
         } catch (Exception exc) {
@@ -260,7 +286,7 @@ public class DbatServlet extends HttpServlet {
         if (view == null || view.length() == 0 || view.matches("del|del2|dat|ins|ins2|upd|upd2|sear")) {
             try {
                 // response.setContentType(config.getHtmlMimeType()); // default
-                binary = setResponseHeaders(response, mode, specName, encoding);
+                binary = setResponseHeaders(request, response, mode, specName, encoding);
 
                 ReadableByteChannel channel = null;
                 String sourceFileName = specPath + specName + ".xml";
@@ -376,7 +402,7 @@ public class DbatServlet extends HttpServlet {
                 String intext   = BasePage.getInputField(request, "intext"   , ";"       );
                 fetchLimit      = BasePage.getInputField(request, "fetch"    , 64        );
                 // response.setContentType(config.getHtmlMimeType()); // default
-                setResponseHeaders(response, mode, specName, encoding);
+                setResponseHeaders(request, response, mode, specName, encoding);
                 BaseTable tbSerializer = tableFactory.getTableSerializer(mode);
                 tbSerializer.setMimeType(response.getContentType());
                 tbSerializer.setSeparator(separator);

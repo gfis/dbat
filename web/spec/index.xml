@@ -25,7 +25,7 @@
                 subdir || '.index' || '=' || subdir
             </col>
             <col label="Spezifikation" href="servlet?&amp;spec=">subdir || '.' || name</col>
-            <col label="Beschreibung">'<ht:strong>' || title || '</ht:strong> &amp;mdash; ' || comment</col>
+            <col label="Beschreibung" remark="title - comment">'<ht:strong>' || title || '</ht:strong> &amp;mdash; ' || comment</col>
             <col label="Parameter mit Initialwerten">params</col>
             <from>spec_index
             </from>
