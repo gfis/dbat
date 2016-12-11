@@ -1,4 +1,4 @@
-/*  BasePage.java - common code for web pages äöüÄÖÜ
+/*  BasePage.java - common code for web pages äöüÄÖÜß
  *  @(#) $Id$
  *  2016-12-10: french message texts
  *  2016-10-13: less imports
@@ -42,15 +42,18 @@ import  org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import  org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /** This class contains common code for classes which output web pages.
- *  It stores the language-specific message texts,
+ *  It stores the language-specific (message) text fragments,
  *  and prints the text for some numbered message.
- *  The message texts may contain up to 3 parameters.
+ *  The message texts may contain up to 9 parameters.
  *  The following message numbers have a hard-coded interpretation:
  *  <ul>
  *  <li>001 - link to the application's main page</li>
+ *  <li>021 ... - links for auxiliary pages</li>
  *  <li>301 - page redirection</li>
+ *  <li>401 - invalid value</li>
  *  <li>405 - unknown request parameter</li>
  *  <li>505 - invalid message number</li>
+ *  <li>901 ... - internationalized text fragments for web interface</li>
  *  </ul>
  *  @author Dr. Georg Fischer
  */
@@ -64,7 +67,7 @@ public class BasePage {
     /** the response writer */
     protected PrintWriter out;
     /** (short) application name, for example "Dbat" */
-    public    String appName;
+    private   String appName;
     /** Stores the message patterns */
     private   TreeMap<String, String> textMap;
     /** Stores the view parameters */
@@ -73,6 +76,12 @@ public class BasePage {
     private   FileItem[] fileItems;
     /** separator for message (textMap) keys */
     private static final String SEP = ".";
+    /** Pseudo language code for a language-independant link to some auxiliary page */
+    public static final String LANG_AUX  = "<>";
+    /** Start of message numbers for links to auxiliary pages */
+    public static final int    START_AUX = 21;
+    /** End   of message numbers for links to auxiliary pages */
+    public static final int    END_AUX   = 99;
 
     /** No-argument constructor
      */
@@ -92,33 +101,225 @@ public class BasePage {
         appName   = applicationName;
         BasePage basePage = this; // convenient for copy/paste
         //--------
+        basePage.add("en", "401", "{parm}: invalid value <em>{par2}</em>");
+        basePage.add("de", "401", "{parm}: Wert <em>{par2}</em> ist ungültig");
+        basePage.add("fr", "401", "{parm}: valeur <em>{par2}</em> est invalide");
+        //--------
         basePage.add("en", "405", "Unknown request parameter &amp;{parm}=\"{par2}\"");
         basePage.add("de", "405", "Unbekannter Request-Parameter &amp;{parm}=\"{par2}\"");
-        basePage.add("fr", "405", "Paramètre du request inconnu &amp;{parm}=\"{par2}\"");
+        basePage.add("fr", "405", "Paramètre de request inconnu &amp;{parm}=\"{par2}\"");
         //--------
         basePage.add("en", "505", "System error: invalid message number <em>{parm}</em>");
         basePage.add("de", "505", "Systemfehler: Ung&uuml;ltige Meldungsnummer <em>{parm}</em>");
-        basePage.add("fr", "505", "Erreur système: numéro de message non valide <em>{parm}</em>");
+        basePage.add("fr", "505", "Erreur de système: numéro de message non valide <em>{parm}</em>");
+        //--------
+        basePage.add("en", "901", " Message");
+        basePage.add("de", "901", "-Meldung");
+        basePage.add("fr", "901", " Message");
+        //--------
+        basePage.add("en", "902", "Back to the {parm} main page");
+        basePage.add("de", "902", "Zurück zur {parm}-Startseite");
+        basePage.add("fr", "902", "Retour à la page d'accueil de {parm}");
+        //--------
+        basePage.add("en", "903", "Questions, remarks: email to {parm}");
+        basePage.add("de", "903", "Fragen, Hinweise: EMail an {parm}");
+        basePage.add("fr", "903", "Questions, remarques: e-mail à {parm}");
         //--------
     } // Constructor(1)
 
-    /** Gets the application's (short) name
-     *  @return "Dbat" for example
+    /** Stores the standard links to auxiliary information pages for the application
+     *  @param imess starting message number
+     *  @return resulting new value of <em>imess</em>
      */
-    public String getAppName() {
-        return appName;
-    } // getAppName
-
-    /** Sets the link to the application's main page into the text for error message "001"
-     *  @param link HTML <em>a</em> element which point to the main page
-     */
-    public void setAppLink(String link) {
+    public int addStandardLinks(int imess) {
         BasePage basePage = this; // convenient for copy/paste
+        String appLink = basePage.get("en", "001");
+        String appLowerName = getAppName().toLowerCase();
+        String laux = basePage.LANG_AUX;  // pseudo language code for links to auxiliary information
+        String
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, appLink);
+        basePage.add("en", smess, appLink + " Home");
+        basePage.add("de", smess, appLink + "-Startseite");
+        basePage.add("fr", smess, "Page d'accueil de " + appLink);
+    /*
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"help\"        href=\"servlet?view=help&lang=en\">");
+        basePage.add("en", smess, "{parm}Help</a> - Commandline Options");
+        basePage.add("de", smess, "{parm}Hilfe</a> - Kommandozeilen-Optionen");
+        basePage.add("fr", smess, "{parm}Aide</a> - options de l'interface en ligne de commande");
+    */
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"wiki\"        href=\"http://www.teherba.org/index.php/" 
+                + getAppName() + "\" target=\"_new\">");
+        basePage.add("en", smess, "{parm}Wiki</a> Documentation");
+        basePage.add("de", smess, "{parm}Wiki</a>-Dokumentation");
+        basePage.add("fr", smess, "{parm}Wiki</a> Documentation");
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"github\"      href=\"https://github.com/gfis/"
+                + appLowerName + "\" target=\"_new\">");
+        basePage.add("en", smess, "{parm}Git Repository</a>");
+        basePage.add("de", smess, "{parm}Git Repository</a>");
+        basePage.add("fr", smess, "{parm}Dépot Git</a>");
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"api\"         href=\"docs/api/index.html\">");
+        basePage.add("en", smess, "{parm}Java API</a> Documentation");
+        basePage.add("de", smess, "{parm}Java API</a>-Dokumentation");
+        basePage.add("fr", smess, "{parm}Java API</a> Documentation");
+
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"manifest\"    href=\"servlet?view=manifest&lang={parm}\">");
+        basePage.add("en", smess, "{parm}Manifest</a>, ");
+        basePage.add("de", smess, "{parm}Manifest</a>, ");
+        basePage.add("fr", smess, "{parm}Manifest</a>, ");
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"license\"     href=\"servlet?view=license&lang={parm}\">");
+        basePage.add("en", smess, "{parm}License</a>, ");
+        basePage.add("de", smess, "{parm}Lizenz</a>, ");
+        basePage.add("fr", smess, "{parm}Licence</a>, ");
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"notice\"      href=\"servlet?view=notice&lang={parm}\">");
+        basePage.add("en", smess, "{parm}References</a>");
+        basePage.add("de", smess, "{parm}Referenzen</a>");
+        basePage.add("fr", smess, "{parm}Références</a>");
         //--------
-        basePage.add("en", "001", link);
-        basePage.add("de", "001", link);
-        basePage.add("fr", "001", link);
-    } // setAppLink
+        return imess;
+    } // addStandardLinks
+
+    /** Prints a list of links to auxiliary information pages for the application
+     *  @param language 2-letter code en, de etc.
+     *  @param view <em>view</em> parameter in the Http request calling this method.
+     *  <p>
+     *  Assumes that {@link #out} is set by a previous call to {@link #writeHeader}.
+     *  Deprecated, use <em>out.write(getOtherAuxiliaryLinks(language, view);</em> instead.
+     */
+    public void writeAuxiliaryLinks(String language, String view) throws IOException {
+        out.write(getOtherAuxiliaryLinks(language, view));
+    } // writeAuxiliaryLinks
+
+    /** Gets a list of links to auxiliary information pages for the application,
+     *  but exclude the one for <em>view</em> (or take only that one for <em>=view</em>).
+     *  @param language 2-letter code en, de etc.
+     *  @param view <em>view</em> parameter in the Http request calling this method.
+     */
+    public String getOtherAuxiliaryLinks(String language, String view) {
+        StringBuffer result = new StringBuffer(512);
+        boolean other = ! view.startsWith("="); // whether all other links should be concatenated
+        if (! other) {
+            view = view.substring(1); // remove leading "="
+        }
+        int imess = START_AUX; // Link messages start here
+        boolean busy = true;
+        while (busy && imess <= END_AUX) { // loopcheck
+            String link = getReplacedText(LANG_AUX, new String[]
+                    { String.format("%03d", imess), language });
+            if (link == null) { // no more auxiliary pages
+                busy = false; // break loop
+            } else {
+                if (link.indexOf("title=\"" + view + "\"") * (other ? 1 : -1) < 0) { 
+                    // other: < 0 if not found; 
+                    // not other: < 0 if found since there is always "<a " before
+                    String text = getReplacedText(language, new String[]
+                         { String.format("%03d", imess), link });
+                    if (text.endsWith(" ")) {
+                        if (! other) {
+                            text = text.replaceAll("\\,\\s+\\Z", "");
+                        }
+                    } else if (other) {
+                        text += "<br />\n";
+                    } 
+                    result.append(text);
+                } // not skipping
+            } // != null
+            imess ++;
+        } // while imess
+        return result.toString();
+    } // getOtherAuxiliaryLinks
+
+    /** Gets a specific link to an auxiliary information page for the application.
+     *  A trailing comma is removed. 
+     *  @param language 2-letter code en, de etc.
+     *  @param view <em>view</em> parameter in the Http request calling this method.
+     */
+    public String getAuxiliaryLink(String language, String view) {
+        return getOtherAuxiliaryLinks(language, "=" + view);
+    } // getAuxiliaryLink
+
+    /** Prints the end of the HTML page
+     *  @param language 2-letter code en, de etc.
+     *  @param features empty String or a string of codes concatenated by "," or " ":
+     *  <ul>
+     *  <li>back - link back to the application's main page</lI>
+     *  <li>quest - questions, remarks ...</li>
+     *  </ul>
+     *  Assumes that {@link #out} is set by a previous call to {@link #writeHeader}.
+     */
+    public void writeTrailer(String language, String features) throws IOException {
+        if (true) { // try {
+            out.write("<!-- language=\"" + language + "\", features=\"" + features + "\" -->\n");
+            if (features.indexOf("back") >= 0) {
+                out.write("<p>\n");
+                out.write(this.getReplacedText(language, new String[] 
+                        { "902"
+                        , getReplacedText(language, new String[] { "001", language }) 
+                        } ));
+                out.write("</p>\n");
+            } // back
+
+            if (features.indexOf("quest") >= 0) {
+                out.write("<p><span style=\"font-size:small\">\n");
+                out.write(this.getReplacedText(language, new String[] 
+                        { "903"
+                        , this.getReplacedText(language, new String[] { "002" }) // mailto: link
+                        } ));
+                out.write("</span></p>\n");
+            } // quest
+
+            // close the HTML document in any case
+            out.write("</body></html>\n");
+    /*
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+    */
+        }
+    } // writeTrailer
+
+    /** Output an error message with parameters obtained from the http session
+     *  @param request request with header fields
+     *  @param response response with writer
+     *  @param language 2-letter code en, de etc.
+     *  @param parms parameters for the message:
+     *  <ul>
+     *  <li>[0] = messNo, 3 digits message number</li>
+     *  <li>[1] = replacement for {parm}</li>
+     *  <li>[2] = replacement for {par2}</li>
+     *  <li>[3] = replacement for {par3}</li>
+     +  </ul>
+     */
+    public void writeMessage(HttpServletRequest request, HttpServletResponse response
+            , String language
+            , String[] parms
+            ) throws IOException {
+        if (true) { // try {
+            PrintWriter out = this.writeHeader(request, response, language);
+            String messNo   = parms[0];
+            String text     = this.getReplacedText(language, parms);
+            String messWord = this.getReplacedText(language, new String[] { "901" });
+            out.write("<title>" + this.getAppName() + messWord + " " + messNo + "</title>\n");
+            if (messNo.equals("301")) {
+                out.write("<meta http-equiv=\"refresh\" content=\"" + parms[3] + "; URL=" + parms[2] + "\" />\n");
+            }
+            out.write("</head>\n");
+            out.write("<body>\n");
+            out.write("<!--lang=" + language + ", messno=" + messNo + ", text=" + text + "-->\n");
+            out.write("<h3>" + this.get(language, "001") + messWord + " " + messNo + ": "+ text + "</h3>\n");
+            this.writeTrailer(language, "quest");
+    /*
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+    */
+        }
+    } // writeMessage
 
     /** Gets a session attribute or a default value
      *  @param session request session
@@ -288,7 +489,7 @@ public class BasePage {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html; charset=UTF-8");
             response.setCharacterEncoding("UTF-8");
-            out      = response.getWriter(); // side effect
+            out = response.getWriter(); // side effect
             out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             out.write("\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n");
             out.write("    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
@@ -305,100 +506,23 @@ public class BasePage {
         return out;
     } // writeHeader
 
-    /** Pseudo language code for a language-independant link to some auxiliary page */
-    public static final String LANG_AUX = "<>";
-    /** Start of message numbers for links to auxiliary pages */
-    public static final int   START_AUX = 21;
-
-    /** Prints a list of links to auxiliary information pages for the application
-     *  @param language 2-letter code en, de etc.
-     *  @param view <em>view</em> parameter in the Http request calling this method.
-     *  <p>
-     *  Assumes that {@link #out} is set by a previous call to {@link #writeHeader}.
+    /** Gets the application's (short) name
+     *  @return "Dbat" for example
      */
-    public void writeAuxiliaryLinks(String language, String view) throws IOException {
-        if (true) { // try {
-            int imess = START_AUX; // Link messages start here
-            boolean busy = true;
-            while (busy) {
-                String link = this.get(LANG_AUX, String.format("%03d", imess));
-                if (link == null) { // no more auxiliary pages
-                    busy = false; // break loop
-                } else {
-                    if (link.indexOf("title=\"" + view + "\"") < 0) { // could skip over entry for calling page
-                        String text = this.get(language, String.format("%03d", imess));
-                        if (text != null) {
-                            text = text.replaceAll(Pattern.quote("{parm}"), link);
-                            out.write(text);
-                            if (! text.endsWith(" ")) {
-                                out.write("<br />\n");
-                            }
-                        } // text != null
-                    } // not skipping
-                } // != null
-                imess ++;
-            } // while imess
-    /*
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-    */
-        }
-    } // writeAuxiliaryLinks
+    public String getAppName() {
+        return appName;
+    } // getAppName
 
-    /** Prints the end of the HTML page
-     *  @param language 2-letter code en, de etc.
-     *  @param features empty String or a string of codes concatenated by "," or " ":
-     *  <ul>
-     *  <li>back - link back to the application's main page</lI>
-     *  <li>quest - questions, remarks ...</li>
-     *  </ul>
-     *  Assumes that {@link #out} is set by a previous call to {@link #writeHeader}.
+    /** Sets the link to the application's main page into the text for error message "001"
+     *  @param link HTML <em>a</em> element which point to the main page
      */
-    public void writeTrailer(String language, String features) throws IOException {
-        if (true) { // try {
-            out.write("<!-- language=\"" + language + "\", features=\"" + features + "\" -->\n");
-            if (features.indexOf("back") >= 0) {
-                out.write("<p>\n");
-                if (false) {
-                } else if (language.startsWith("de")) {
-                    out.write("Zur&uuml;ck zur ");
-                    out.write(this.get(language, "001")); // appLink
-                    out.write("-Startseite");
-                } else if (language.startsWith("fr")) {
-                    out.write("Retour à la page d'acceuil de ");
-                    out.write(this.get(language, "001")); // appLink
-                } else {
-                    out.write("Back to the ");
-                    out.write(this.get(language, "001")); // appLink
-                    out.write(" main page");
-                }
-                out.write("</p>\n");
-            } // back
-
-            if (features.indexOf("quest") >= 0) {
-                out.write("<p><span style=\"font-size:small\">\n");
-                if (false) {
-                } else if (language.startsWith("de")) {
-                    out.write("Fragen, Hinweise: EMail an ");
-                } else if (language.startsWith("fr")) {
-                    out.write("Questions, remarques: e-mail à ");
-                } else {
-                    out.write("Questions, remarks: email to ");
-                }
-                out.write(" <a href=\"mailto:punctum@punctum.com"
-                        + "?&subject=" + this.getAppName()
-                        + "\">Dr. Georg Fischer</a>");
-                out.write("</span></p>\n");
-            } // quest
-
-            // close the HTML document in any case
-            out.write("</body></html>\n");
-    /*
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-    */
-        }
-    } // writeTrailer
+    public void setAppLink_99(String link) {
+        BasePage basePage = this; // convenient for copy/paste
+        //--------
+        basePage.add("en", "001", link);
+        basePage.add("de", "001", link);
+        basePage.add("fr", "001", link);
+    } // setAppLink_99
 
     /** Adds a message text under some key
      *  @param lang 2-letter language code, for example "en"
@@ -414,8 +538,8 @@ public class BasePage {
     /** Adds a message text under some key
      *  @param key String of the form ll.nnn
      *  with 2-letter language code ll and 3 digits message number nnn
-     *  @param text text of the message, may contain
-     *  patterns "{parm}", "{par2}" and "{par3}" which are
+     *  @param text text of the message, 
+     *  may contain patterns "{parm}", "{par2}" and "{par3}" which are
      *  replaced by the values of the corresponding session attributes
      */
     public void add(String key, String text) {
@@ -423,13 +547,18 @@ public class BasePage {
     } // add(2)
 
     /** Gets a message text for some key
-     *  @param lang 2-letter language code, for example "en"
+     *  @param lang 2-letter language code, for example "en" (fallback)
      *  @param messNo 3 digits message number
-     *  @return text of the message, may contain patterns "{parm}", "{par2}" and "{par3}" which are
+     *  @return text of the message, 
+     *  may contain patterns "{parm}", "{par2}" and "{par3}" which are
      *  replaced by the values of the corresponding session attributes
      */
     public String get(String lang, String messNo) {
-        return textMap.get(lang + SEP + messNo);
+        String result = textMap.get(lang + SEP + messNo);
+        if (result == null) {
+            result = textMap.get("en" + SEP + messNo);
+        }
+        return result;
     } // get(2)
 
     /** Gets a message text for some key
@@ -441,68 +570,34 @@ public class BasePage {
         return textMap.get(key);
     } // get(1)
 
-    /** Output an error message with parameters obtained from the http session
-     *  @param request request with header fields
-     *  @param response response with writer
-     *  @param language 2-letter code en, de etc.
-     *  @param parms parameters for the message:
+    /** Retrieves a (message) text and replaces the parameters
+     *  @param language 2-letter code "en", "de" etc.
+     *  @param parms message number and up to 9 parameters for the text:
      *  <ul>
-     *  <li>[0] = messNo, 3 digits message number</li>
+     *  <li>[0] = 3 digits message number</li>
      *  <li>[1] = replacement for {parm}</li>
      *  <li>[2] = replacement for {par2}</li>
-     *  <li>[3] = replacement for {par3}</li>
+     *  <li>...</li>
+     *  <li>[9] = replacement for {par9}</li>
      +  </ul>
      */
-    public void writeMessage(HttpServletRequest request, HttpServletResponse response
-            , String language
-            , String[] parms
-            ) throws IOException {
-        if (true) { // try {
-            PrintWriter out = this.writeHeader(request, response, language);
-
-            String messNo   = parms[0];
-            String text     = this.get(language, messNo);
-            if (text == null && ! language.equals("en")) { // may not in this language?
-                language = "en"; // try with English
-                text     = this.get(language, messNo);
-            }
-            if (text == null) { // invalid messNo
-                String origMessNo = messNo;
-                messNo = "505";
-                text = this.get(language, messNo).replaceAll(Pattern.quote("{parm}"), origMessNo);
-            } else { // text != null
-                int ipar = 1;
-                String qName = "{parm}";
-                while (ipar < parms.length) {
-                    text = text.replaceAll(Pattern.quote(qName), parms[ipar]);
-                    ipar ++;
-                    qName = "{par" + String.valueOf(ipar) + "}"; // par2, par3 ...
-                } // while ipar
-            } // text != null
-            String messWord = null;
-            if (false) {
-            } else if (language.equals("de")) {
-                messWord = "-Meldung";
-            } else if (language.equals("fr")) {
-                messWord = " Message";
-            } else {
-                messWord = " Message";
-            }
-            out.write("<title>" + this.getAppName() + messWord + " " + messNo + "</title>\n");
-            if (messNo.equals("301")) {
-                out.write("<meta http-equiv=\"refresh\" content=\"" + parms[3] + "; URL=" + parms[2] + "\" />\n");
-            }
-            out.write("</head>\n");
-            out.write("<body>\n");
-            out.write("<!--lang=" + language + ", messno=" + messNo + ", text=" + text + "-->\n");
-            out.write("<h3>" + this.get(language, "001") + messWord + " " + messNo + ": "+ text + "</h3>\n");
-
-            this.writeTrailer(language, "quest");
-    /*
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-    */
-        }
-    } // writeMessage
+    public String getReplacedText(String language, String[] parms) {
+        String messNo   = parms[0];
+        String result  = this.get(language, messNo);
+        if (result == null && ! language.equals(LANG_AUX)) { // invalid messNo or language
+            String origMessNo = messNo;
+            messNo = "505";
+            result = this.get(language, messNo).replaceAll(Pattern.quote("{parm}"), origMessNo);
+        } else if (result != null) { // result != null or LANG_AUX
+            int ipar = 1;
+            String qName = "{parm}";
+            while (ipar < parms.length && ipar <= 9) {
+                result = result.replaceAll(Pattern.quote(qName), parms[ipar]);
+                ipar ++;
+                qName = "{par" + String.valueOf(ipar) + "}"; // par2, par3 ...
+            } // while ipar
+        } //  result != null
+        return result;
+    } // getReplacedText
 
 } // BasePage

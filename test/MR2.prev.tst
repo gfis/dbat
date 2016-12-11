@@ -12,8 +12,6 @@
 td,th
 {vertical-align:top;margin:0px;padding-top:0px;padding-bottom:0px;padding-left:10px;padding-right:10px;border:none;}
 </style>
-<script src="script.js" type="text/javascript">
-</script>
 </head>
 <body>
 <!--
@@ -35,7 +33,7 @@ Wert</td>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
 </tr>
-<tr><td class="bold">Encoding</td>
+<tr><td class="bold">Kodierung</td>
 <td class="bold">
 Ausgabeformat</td>
 <td>&nbsp;</td>
@@ -51,9 +49,10 @@ Ausgabeformat</td>
 <span class="bold">
 Sprache</span>
 <br />
-<select name="lang" size="2">
+<select name="lang" size="3">
 <option value="de"  selected="1">Deutsch</option>
 <option value="en">English</option>
+<option value="fr">Français</option>
 </select>
 </td>
 <td>
@@ -82,15 +81,15 @@ Sprache</span>
 </select><p />&nbsp;
 </td>
 <td>
-<a title="main"        href="index.html">Dbat</a>-Startseite<br />
 <a title="index"       href="servlet?spec=index">Liste</a> der abrufbaren Spezifikationen<br />
 <a title="con"         href="servlet?view=con">SQL-Konsole</a><br />
 <a title="describe"    href="servlet?spec=describe">describe </a> - DLL einer Tabelle oder View<br />
 <a title="help"        href="servlet?view=help&lang=en">Hilfe</a> - Kommandozeilen-Optionen<br />
-<a title="wiki"        href="http://www.teherba.org/dbat" target="_new">Wiki</a>-Dokumentation<br />
+<a title="main" href="index.html">Dbat</a>-Startseite<br />
+<a title="wiki"        href="http://www.teherba.org/index.php/Dbat" target="_new">Wiki</a>-Dokumentation<br />
 <a title="github"      href="https://github.com/gfis/dbat" target="_new">Git Repository</a><br />
 <a title="api"         href="docs/api/index.html">Java API</a>-Dokumentation<br />
-<a title="manifest"    href="servlet?view=manifest">Manifest</a>, <a title="license"     href="servlet?view=license">Lizenz</a>, <a title="notice"      href="servlet?view=notice">Referenzen</a><br />
+<a title="manifest"    href="servlet?view=manifest&lang=de">Manifest</a>, <a title="license"     href="servlet?view=license&lang=de">Lizenz</a>, <a title="notice"      href="servlet?view=notice&lang=de">Referenzen</a><br />
 <br /><input type="submit" value="Absenden" />
 </td></tr>
 </table>

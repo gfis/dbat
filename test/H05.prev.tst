@@ -11,7 +11,7 @@
 </head>
 <body>
 <!--lang=en, messno=405, text=Unknown request parameter &amp;view="root"-->
-<h3><a href="index.html">Dbat</a> Message 405: Unknown request parameter &amp;view="root"</h3>
+<h3><a title="main" href="index.html">Dbat</a> Message 405: Unknown request parameter &amp;view="root"</h3>
 <!-- language="en", features="quest" -->
 <p><span style="font-size:small">
 Questions, remarks: email to  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>

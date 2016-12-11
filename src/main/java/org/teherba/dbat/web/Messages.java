@@ -70,19 +70,18 @@ public class Messages implements Serializable {
      *  @param basePage reference to the hash for message texts
      */
     public static void addMessageTexts(BasePage basePage) {
-        String appLink = "<a href=\"index.html\">" + basePage.getAppName() + "</a>";
+        String appLink = "<a title=\"main\" href=\"index.html\">" + basePage.getAppName() + "</a>";
         //--------
         basePage.add("en", "001", appLink);
-        basePage.add("de", "001", appLink);
+        basePage.add("en", "002"
+                , " <a href=\"mailto:punctum@punctum.com"
+                + "?&subject=" + basePage.getAppName()
+                + "\">Dr. Georg Fischer</a>"
+                );
         //--------
         String laux = basePage.LANG_AUX;  // pseudo language code for links to auxiliary information
         int imess   = basePage.START_AUX; // start of messages    for links to auxiliary information
         String
-        smess = String.format("%03d", imess ++);
-        basePage.add(laux, smess, "<a title=\"main\"        href=\"index.html\">");
-        basePage.add("en", smess, "{parm}Dbat</a> Home");
-        basePage.add("de", smess, "{parm}Dbat</a>-Startseite");
-        basePage.add("fr", smess, "{parm}Dbat</a> page d'accueil");
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"index\"       href=\"servlet?spec=index\">");
         basePage.add("en", smess, "{parm}List</a> of available specifications");
@@ -103,36 +102,7 @@ public class Messages implements Serializable {
         basePage.add("en", smess, "{parm}Help</a> - Commandline Options");
         basePage.add("de", smess, "{parm}Hilfe</a> - Kommandozeilen-Optionen");
         basePage.add("fr", smess, "{parm}Aide</a> - options de l'interface en ligne de commande");
-        smess = String.format("%03d", imess ++);
-        basePage.add(laux, smess, "<a title=\"wiki\"        href=\"http://www.teherba.org/dbat\" target=\"_new\">");
-        basePage.add("en", smess, "{parm}Wiki</a> Documentation");
-        basePage.add("de", smess, "{parm}Wiki</a>-Dokumentation");
-        basePage.add("fr", smess, "{parm}Wiki</a> Documentation");
-        smess = String.format("%03d", imess ++);
-        basePage.add(laux, smess, "<a title=\"github\"      href=\"https://github.com/gfis/dbat\" target=\"_new\">");
-        basePage.add("en", smess, "{parm}Git Repository</a>");
-        basePage.add("de", smess, "{parm}Git Repository</a>");
-        basePage.add("fr", smess, "{parm}Dépôt Git</a>");
-        smess = String.format("%03d", imess ++);
-        basePage.add(laux, smess, "<a title=\"api\"         href=\"docs/api/index.html\">");
-        basePage.add("en", smess, "{parm}Java API</a> Documentation");
-        basePage.add("de", smess, "{parm}Java API</a>-Dokumentation");
-        basePage.add("fr", smess, "{parm}Java API</a> Documentation");
-        smess = String.format("%03d", imess ++);
-        basePage.add(laux, smess, "<a title=\"manifest\"    href=\"servlet?view=manifest\">");
-        basePage.add("en", smess, "{parm}Manifest</a>, ");
-        basePage.add("de", smess, "{parm}Manifest</a>, ");
-        basePage.add("fr", smess, "{parm}Manifest</a>, ");
-        smess = String.format("%03d", imess ++);
-        basePage.add(laux, smess, "<a title=\"license\"     href=\"servlet?view=license\">");
-        basePage.add("en", smess, "{parm}License</a>, ");
-        basePage.add("de", smess, "{parm}Lizenz</a>, ");
-        basePage.add("fr", smess, "{parm}Licence</a>, ");
-        smess = String.format("%03d", imess ++);
-        basePage.add(laux, smess, "<a title=\"notice\"      href=\"servlet?view=notice\">");
-        basePage.add("en", smess, "{parm}References</a>");
-        basePage.add("de", smess, "{parm}Referenzen</a>");
-        basePage.add("fr", smess, "{parm}Références</a>");
+        imess = basePage.addStandardLinks(imess);
         //--------
         basePage.add("en", "301", "Specification file <em>{parm}</em> was moved to <em><a href=\"{par2}\">{par2}</a></em>."
                 + "<br />Please update your bookmarks."

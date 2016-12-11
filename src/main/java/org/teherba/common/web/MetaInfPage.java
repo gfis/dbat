@@ -1,5 +1,6 @@
 /*  MetaInfPage.java - show meta data from META-INF/MANIFEST.MF, version String, License and NOTICE file
  *  @(#) $Id$
+ *  2016-12-11: language specific heading
  *  2016-10-10: throws IOException
  *  2016-09-20: need any local object of the application to get the proper classloader containing the MANIFEST.MF
  *  2016-09-16: dbat.Configuration.setVersionString ->MetaInfPage.getVersionString; getMyResourceURL
@@ -31,10 +32,11 @@ import  java.io.InputStreamReader;
 import  java.io.PrintWriter;
 import  java.net.URL;
 import  java.util.Enumeration;
+import  java.util.Iterator;
+import  java.util.TreeSet;
 import  javax.servlet.http.HttpServlet;
 import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;
-import  org.apache.log4j.Logger;
 
 /** This class prints metadata for the application:
  *  <ul>
@@ -51,13 +53,9 @@ public class MetaInfPage {
     public final static String CVSID = "@(#) $Id$";
     public final static long serialVersionUID = 19470629;
 
-    /** log4j logger (category) */
-    private Logger log;
-
     /** No-argument constructor
      */
     public MetaInfPage() {
-        log = Logger.getLogger(MetaInfPage.class.getName());
     } // Constructor()
 
     /** Shows meta information for the application.
@@ -85,7 +83,7 @@ public class MetaInfPage {
             ) throws IOException {
         if (true) { // try {
             PrintWriter out = basePage.writeHeader(request, response, language);
-            out.write("<title>" + basePage.getAppName() + " MetaInf</title>\n");
+            out.write("<title>" + basePage.getAppName() + " " + view + "</title>\n");
             out.write("</head>\n<body>\n");
             out.write("<!-- language=\"" + language + "\", view=\"" + view + "\" -->\n");
             String resourceName = null;
@@ -94,25 +92,33 @@ public class MetaInfPage {
             }
             if (view.equals("package")) {
                 // Package [] packs = this.getClass().getClassLoader().getPackages();
+                out.write("<a name=\"package\" />\n<h3>Available Java Packages</h3>\n");
                 Package [] packs = Package.getPackages();
+                TreeSet<String> packNames = new TreeSet<String>();
+                int ipack = 0;
+                while (ipack < packs.length) {
+                    packNames.add(packs[ipack].getName());
+                    ipack ++;
+                } // while ipack
                 out.write("<tt>\n<pre>\n");
-                for (int ipack = 0; ipack < packs.length; ipack ++) {
-                    out.println(packs[ipack].getName());
-                } // for ipack
+                Iterator<String> piter = packNames.iterator();
+                while (piter.hasNext()) {
+                    String packName = piter.next();
+                    if (packName.startsWith("org.teherba.")) {
+                        out.println("<strong>" + packName + "</strong>");
+                    } else {
+                        out.println(packName);
+                    }
+                } // while piter
                 out.write("</pre>\n</tt>\n");
             } else { // read from a resource in the JAR file
+                out.write("<h3>" + basePage.getAuxiliaryLink(language, view) + "</h3>\n");
                 if (false) {
                 } else if (view.equals("license")) {
-                    out.write("<a name=\"license\" />\n<h3>License</h3>\n");
                     resourceName = "LICENSE.txt";
                 } else if (view.equals("notice")) {
-                    out.write("<a name=\"notice\" />\n<h3>Included Software Packages</h3>\n");
                     resourceName = "NOTICE.txt";
-                } else if (view.equals("root")) {
-                    out.write("<a name=\"Root Directory\" />\n<h3>License</h3>\n");
-                    resourceName = ".";
                 } else { // if (view.equals("manifest")) {
-                    out.write("<a name=\"manifest\" />\n<h3>JAR Manifest</h3>\n");
                     resourceName = "META-INF/MANIFEST.MF";
                 }
                 out.write("<!-- appName=\"" + basePage.getAppName() + "\", resource=\"" + resourceName + "\" -->\n");

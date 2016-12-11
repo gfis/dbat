@@ -17,7 +17,7 @@ td,th
 </head>
 <body>
 <!--enc="ISO-8859-1", mode="html", lang="en"-->
-<h3><a href="index.html">Dbat</a> SQL console</h3>
+<h3><a title="main" href="index.html">Dbat</a> SQL console</h3>
 <form action="servlet" method="get">
 <input type = "hidden" name="view" value="con2" />
 <table cellpadding="8">

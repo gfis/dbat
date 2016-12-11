@@ -7,12 +7,11 @@
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
 <link rel="stylesheet" title="common" type="text/css" href="stylesheet.css" />
-<title>Dbat MetaInf</title>
+<title>Dbat license</title>
 </head>
 <body>
 <!-- language="en", view="license" -->
-<a name="license" />
-<h3>License</h3>
+<h3><a title="license"     href="servlet?view=license&lang=en">License</a></h3>
 <!-- appName="Dbat", resource="LICENSE.txt" -->
 <pre>
 /*
@@ -221,7 +220,7 @@
 </pre>
 <!-- language="en", features="back,quest" -->
 <p>
-Back to the <a href="index.html">Dbat</a> main page</p>
+Back to the <a title="main" href="index.html">Dbat</a> main page</p>
 <p><span style="font-size:small">
 Questions, remarks: email to  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
 </body></html>
