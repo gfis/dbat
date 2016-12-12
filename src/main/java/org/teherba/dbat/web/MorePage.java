@@ -385,18 +385,20 @@ public class MorePage {
                     + ">java.util.regex.Pattern</a></tt>.\n</p>\n");
             if (false) {
             } else if (language.equals("de")) {
-                out.write("Sonderzeichen und Spezialfunktionen werden mit einem <em>einfachen</em> Backslash"
-                        + " - wie in Perl - entwertet.\n"
+                out.write("Sonderzeichen und Spezialfunktionen werden mit einem"
+                        + " <em>einfachen</em> Backslash - wie in Perl - entwertet.\n"
                         + "<br />Diese Darstellung wird f&#xfc;r das Attribut <tt>valid=\"...\"</tt>\n"
                         + "der XML-Elemente <tt>&lt;input&gt;, &lt;select&gt;</tt> und <tt>&lt;textarea&gt;</tt> in den\n"
                         + "<a href=\"index.html\">Dbat</a>-Spezifikationen verwendet.\n");
             } else if (language.equals("fr")) {
-                out.write ( "Caractères spéciaux et des fonctions spéciales sont annulés avec un <em>single</ em> backslash"
-                        + "- comme en Perl.\n"
-                        + "<br /> Cette représentation est nécessaire pour l'attribut <tt>valid=\"...\"</tt>\n"
+                out.write ( "Caractères spéciaux et des fonctions spéciales sont annulés avec un"
+                        + " <em>single</em> backslash - comme en Perl.\n"
+                        + "<br />Cette représentation est nécessaire pour l'attribut <tt>valid=\"...\"</tt>\n"
                         + "des éléments XML <tt>&lt;input&gt;, &lt;select&gt;</tt> and <tt>&lt;textarea&gt;</tt> dans les \n"
                         + "spécifications de <a href=\"index.html\">Dbat</a>.\n");
-                out.write("Special characters and functions are escaped with a <em>single</em> backslash, like in Perl.\n"
+            } else {
+                out.write("Special characters and functions are escaped with a"
+                        + " <em>single</em> backslash, like in Perl.\n"
                         + "<br />\n\tThis representation is needed for the <tt>valid=\"...\"</tt> attribute\n"
                         + "of the XML elements <tt>&lt;input&gt;, &lt;select&gt;</tt> and <tt>&lt;textarea&gt;</tt> in\n"
                         + "<a href=\"index.html\">Dbat</a> specifications.\n");

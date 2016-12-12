@@ -85,6 +85,7 @@ Language</span>
 <a title="con"         href="servlet?view=con">SQL Console</a><br />
 <a title="describe"    href="servlet?spec=describe">describe DDL</a> of a Table or View<br />
 <a title="help"        href="servlet?view=help&lang=en">Help</a> - Commandline Options<br />
+<a title="validate"    href="servlet?view=validate&lang=en">Validate</a> Regular Expressions<br />
 <a title="main" href="index.html">Dbat</a> Home<br />
 <a title="wiki"        href="http://www.teherba.org/index.php/Dbat" target="_new">Wiki</a> Documentation<br />
 <a title="github"      href="https://github.com/gfis/dbat" target="_new">Git Repository</a><br />

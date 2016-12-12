@@ -10,8 +10,8 @@
 <title>Dbat notice</title>
 </head>
 <body>
-<!-- language="en", view="notice" -->
-<h3><a title="notice"      href="servlet?view=notice&lang=en">References</a></h3>
+<!-- language="de", view="notice" -->
+<h3><a title="notice"      href="servlet?view=notice&lang=de">Referenzen</a></h3>
 <!-- appName="Dbat", resource="NOTICE.txt" -->
 <pre>
    =========================================================================
@@ -54,9 +54,9 @@
 
    == End of NOTICE.txt ====================================================
 </pre>
-<!-- language="en", features="back,quest" -->
+<!-- language="de", features="back,quest" -->
 <p>
-Back to the <a title="main" href="index.html">Dbat</a> main page</p>
+Zurück zur <a title="main" href="index.html">Dbat</a>-Startseite</p>
 <p><span style="font-size:small">
-Questions, remarks: email to  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
+Fragen, Hinweise: EMail an  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
 </body></html>

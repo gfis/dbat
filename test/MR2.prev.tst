@@ -85,6 +85,7 @@ Sprache</span>
 <a title="con"         href="servlet?view=con">SQL-Konsole</a><br />
 <a title="describe"    href="servlet?spec=describe">describe </a> - DLL einer Tabelle oder View<br />
 <a title="help"        href="servlet?view=help&lang=en">Hilfe</a> - Kommandozeilen-Optionen<br />
+<a title="validate"    href="servlet?view=validate&lang=en">Validierung</a> von regulären Ausdrücken<br />
 <a title="main" href="index.html">Dbat</a>-Startseite<br />
 <a title="wiki"        href="http://www.teherba.org/index.php/Dbat" target="_new">Wiki</a>-Dokumentation<br />
 <a title="github"      href="https://github.com/gfis/dbat" target="_new">Git Repository</a><br />

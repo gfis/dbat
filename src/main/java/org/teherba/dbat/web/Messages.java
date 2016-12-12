@@ -102,6 +102,11 @@ public class Messages implements Serializable {
         basePage.add("en", smess, "{parm}Help</a> - Commandline Options");
         basePage.add("de", smess, "{parm}Hilfe</a> - Kommandozeilen-Optionen");
         basePage.add("fr", smess, "{parm}Aide</a> - options de l'interface en ligne de commande");
+        smess = String.format("%03d", imess ++);
+        basePage.add(laux, smess, "<a title=\"validate\"    href=\"servlet?view=validate&lang=en\">");
+        basePage.add("en", smess, "{parm}Validate</a> Regular Expressions");
+        basePage.add("de", smess, "{parm}Validierung</a> von regulären Ausdrücken");
+        basePage.add("fr", smess, "{parm}Validation</a> des expressions régulières");
         imess = basePage.addStandardLinks(imess);
         //--------
         basePage.add("en", "301", "Specification file <em>{parm}</em> was moved to <em><a href=\"{par2}\">{par2}</a></em>."

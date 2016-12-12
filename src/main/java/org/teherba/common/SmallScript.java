@@ -18,11 +18,9 @@
  * limitations under the License.
  */
 package org.teherba.common;
-import  java.lang.StringBuffer;
 
-/** Class SmallScript implements methods for the 
- *  conversion of ordinary number strings to 
- *  superscripted and subscripted representations with Unicode characters.
+/** Class SmallScript implements methods for the conversion of ordinary number strings 
+ *  to superscripted and subscripted representations with Unicode characters.
  *  @author Dr. Georg Fischer
  */
 public class SmallScript {

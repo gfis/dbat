@@ -167,11 +167,14 @@ HTTP view=con lang=de
 TEST MR5 license web
 HTTP view=license
 
-TEST MR6 notice web
-HTTP view=notice
+TEST MR6 notice web de
+HTTP view=notice lang=de
 
-TEST MR7 validate web page
+TEST MR7 validate web page en
 HTTP view=validate
+
+TEST MR8 validate web page fr
+HTTP view=validate lang=fr
 
 #-------------------
 TEST I01 insert statements
