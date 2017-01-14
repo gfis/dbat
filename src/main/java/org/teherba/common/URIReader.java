@@ -327,7 +327,7 @@ public class URIReader {
         }
     } // Constructor(4)
 
-    /** Writes a mutlipart/form-data body to an open (Http) URL connection
+    /** Writes a multipart/form-data body to an open (Http) URL connection
      *  @param gurlCon open (Http) URLConnection
      *  @param args mixture of argument Strings, maybe enclosed in quotes:
      *  <ul>

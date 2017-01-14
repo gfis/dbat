@@ -1,5 +1,6 @@
 /*  SQLAction.java - Properties and methods specific for one elementary sequence of SQL instructions
     @(#) $Id$
+    2017-01-14: skip execSQLStatement for format.EchoSQL
     2016-10-13: less imports
     2014-11-10: separateURLFromValue moved to TableColumn.separateWrappedValue
     2014-03-10: insertFromURI, no Date/Time/Timestamp escape sequences
@@ -41,6 +42,7 @@ import  org.teherba.dbat.Configuration;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.dbat.format.BaseTable;
+import  org.teherba.dbat.format.EchoSQL;
 import  org.teherba.dbat.format.SQLTable;
 import  java.io.Serializable;
 import  java.io.ByteArrayOutputStream;
@@ -1490,21 +1492,25 @@ public class SQLAction implements Serializable {
                     } // set placeholders
                     // statement.setQueryTimeout(120); // not supported by DB2 JDBC driver
                     tbSerializer.writeSQLInstruction(tbMetaData, sqlInstruction, 0, config.getVerbose(), variables);
-                    ResultSet stResults = statement.executeQuery();
-                    serializeQueryResults(tbMetaData, sqlInstruction, stResults);
-                    stResults.close();
-                    if (! config.hasAutoCommit()) { // for DB2 on z
-                        con.commit();
-                    }
+                    if (! (tbSerializer instanceof EchoSQL)) {
+                        ResultSet stResults = statement.executeQuery();
+                        serializeQueryResults(tbMetaData, sqlInstruction, stResults);
+                        stResults.close();
+                        if (! config.hasAutoCommit()) { // for DB2 on z
+                             con.commit();
+                        }
+                    } // ! EchoSQL
                     statement.close();
                 } else if (verb.equals("CALL")) {
                     String[] args = CommandTokenizer.tokenize(sqlInstruction);
-                    updateCount = callStoredProcedure(con, tbMetaData, 1, args);
-                    if (parameterMap != null) {
-                        parameterMap.put(config.UPDATE_COUNT, new String[] { String.valueOf(updateCount) });
-                    }
-                    // log.info("callStoredProcedure with \"" + sqlInstruction + "\", updateCount=" + updateCount);
-                    result = updateCount;
+                    if (! (tbSerializer instanceof EchoSQL)) {
+                        updateCount = callStoredProcedure(con, tbMetaData, 1, args);
+                        if (parameterMap != null) {
+                             parameterMap.put(config.UPDATE_COUNT, new String[] { String.valueOf(updateCount) });
+                        }
+                        // log.info("callStoredProcedure with \"" + sqlInstruction + "\", updateCount=" + updateCount);
+                        result = updateCount;
+                    } // ! EchoSQL
                 } else if (verb.equals("COMMIT")) {
                     setCommitted(true); // avoid a final COMMIT
                     if (! config.hasAutoCommit()) { // for DB2 on z
@@ -1517,11 +1523,13 @@ public class SQLAction implements Serializable {
                         setPlaceholders(statement, variables); // set the values of all placeholders
                     } // set placeholders
                     tbSerializer.writeSQLInstruction(tbMetaData, sqlInstruction, 2, config.getVerbose(), variables);
-                    updateCount = statement.executeUpdate();
-                    if (parameterMap != null) {
-                        parameterMap.put(config.UPDATE_COUNT, new String[] { String.valueOf(updateCount) });
-                    }
-                    result = updateCount;
+                    if (! (tbSerializer instanceof EchoSQL)) {
+                        updateCount = statement.executeUpdate();
+                        if (parameterMap != null) {
+                            parameterMap.put(config.UPDATE_COUNT, new String[] { String.valueOf(updateCount) });
+                        }
+                        result = updateCount;
+                    } // ! EchoSQL
                     statement.close();
                 } // DDL or DML
                 instructionSum ++;

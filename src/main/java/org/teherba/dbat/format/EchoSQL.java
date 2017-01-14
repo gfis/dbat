@@ -1,5 +1,6 @@
 /*  Pseudo format which only echoes the SQL statement for the row select
     @(#) $Id$
+    2017-01-14: comments; is now skipped in SQLAction.execSQLStatement
     2016-08-26: with getISOTimestamp()
     2011-11-08: end comment better parseable
     2011-08-24: writeGenericRow
@@ -50,7 +51,7 @@ public class EchoSQL extends BaseTable {
         // setDescription("de", "nur SQL-Ausgabe");
     } // Constructor
 
-     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
+    /** Starts a file that may contain several table descriptions and/or a SELECT result sets
      *  @param params array of 0 or more (name, value) strings which specify features in the file header.
      *  @param parameterMap map of request parameters to values
      *  The following names are interpreted:
@@ -77,7 +78,7 @@ public class EchoSQL extends BaseTable {
         }
     } // writeEnd
 
-   /** Writes the pure SQL instruction, with any placeholders replaced by constant values again.
+    /** Writes the pure SQL instruction, with any placeholders replaced by constant values again.
      *  @param tbMetaData meta data for the table as far as they are already known
      *  @param sqlInstruction a SELECT, CALL, DELETE, INSERT or UPDATE statement
      *  @param action 0 = SELECT, 1 = CALL, 2 = DML instructions
@@ -93,7 +94,8 @@ public class EchoSQL extends BaseTable {
         String separator = ";";
         try {
             if (stmtNo >= 2) {
-                charWriter.println("--[" + String.valueOf(stmtNo + 1000).substring(2) + "]----------------------------");
+                charWriter.println("--[" + String.valueOf(stmtNo + 1000).substring(2) 
+                        + "]----------------------------");
             }
             int len = sqlInstruction.length();
             StringBuffer buffer = new StringBuffer(len);
@@ -157,7 +159,7 @@ public class EchoSQL extends BaseTable {
      *  @param tbMetaData meta data for the table
      *  @param columnList contains the row to be written
      */
-    public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList/*<1.5*/<TableColumn>/*1.5>*/ columnList) {
+    public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList<TableColumn> columnList) {
         switch (rowType) {
             case DATA:
                 break;
