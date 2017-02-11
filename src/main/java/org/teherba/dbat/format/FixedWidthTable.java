@@ -30,7 +30,8 @@ import  org.teherba.dbat.TableMetaData;
 import  java.util.ArrayList;
 
 /** Generator for a table with fixed width columns.
- *  For &lt;describe&gt;, this format generates an IBM DB2 LOAD specification,
+ *  For &lt;describe&gt;, this format should generate an IBM DB2 LOAD specification,
+ *  at some time in the future.
  *  Example (from http://www.clever-sys.de/fua8.htm):
  *  <pre>
 //DSNUPROC.SYSIN DD *
@@ -62,12 +63,60 @@ public class FixedWidthTable extends BaseTable {
         setDescription("de", "Spalten fester Breite");
     } // Constructor
 
+    /** Reads one row from an URI
+     *  @param tbMetaData the target table's metadata
+     *  @return an array of String values extracted from one input line or row, 
+     *  or null if there was no more row which could be read
+     */
+    public String[] inputNextRow(TableMetaData tbMetaData) {
+        String[] columnValues = null;
+        int columnCount = tbMetaData.getColumnCount();
+        try {
+            String line = uriReader.readLine();
+            if (line != null) {
+                columnValues = new String[columnCount];
+                int spos = 0; // starting position
+                int fixCount = 0;
+                while (fixCount < columnCount && spos < line.length()) {
+                    TableColumn column = tbMetaData.getColumn(fixCount);
+                    String pseudo = column.getPseudo();
+                    if (pseudo == null) {
+                        int epos = spos + column.getWidth();
+                        if (epos >= line.length()) {
+                            epos = line.length();
+                        }
+                        switch (trimSides) {
+                            case 0: // notrim
+                                columnValues[fixCount] = (      line.substring(spos, epos))                    ;
+                                break;
+                            case 1: // rtrim
+                                columnValues[fixCount] = ("x" + line.substring(spos, epos)).trim().substring(1);
+                                break;
+                            default:
+                            case 2:
+                                columnValues[fixCount] = (      line.substring(spos, epos)).trim()             ;
+                                break;
+                        } // switch trimSides
+                        spos = epos;
+                    } // not pseudo
+                    fixCount ++;
+                } // while fixCount
+                while (fixCount < columnCount) { // not filled
+                    columnValues[fixCount ++] = "";
+                } // while not filled
+            } // line != null
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+        return columnValues;
+    } // inputNextRow
+
     /** Writes a complete header, data or alternate data row with all tags and cell contents.
      *  @param rowType type of the generic row
      *  @param tbMetaData meta data for the table
      *  @param columnList contains the row to be written
      */
-    public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList/*<1.5*/<TableColumn>/*1.5>*/ columnList) {
+    public void writeGenericRow(RowType rowType, TableMetaData tbMetaData, ArrayList<TableColumn> columnList) {
         TableColumn column = null;
         String pseudo = null;
         int ncol = columnList.size();

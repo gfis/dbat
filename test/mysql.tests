@@ -905,6 +905,19 @@ CALL Dbat "select * from pivot where sp2 = 'csv' order by 1,2,3;"
 
 TEST R07 purge raw test data
 CALL Dbat -v "delete from pivot where sp1 = 'test'"
+
+TEST R08 raw fix input with different lengths
+DATA --
+ test    fix
+ test    fix     0002
+ test    fix     0003  xxxx
+ test    fix     0004
+CALL Dbat -v -l 8,8,4 -m fix -r pivot $(DATA)
+
+TEST R09 check fix input with different lengths
+CALL Dbat "select * from pivot where sp2 = 'fix' order by 1,2,3;"
+CALL Dbat -v "delete from pivot where sp1 = 'test'"
+
 #-------------------
 # Grouping tests (-g)
 TEST G01 CLI grouping test with TSV

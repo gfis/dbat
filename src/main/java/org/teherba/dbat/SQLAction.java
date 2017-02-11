@@ -1688,9 +1688,8 @@ public class SQLAction implements Serializable {
     public void insertFromURI(TableMetaData tbMetaData, String uri) {
         int icol = 0;
         String rawTable = tbMetaData.getTableName();
-        char formatCode = config.getFormatMode().charAt(0); // default: 't'sv resp. whitespace separated
-        String line = ""; // a line read from STDIN
         PreparedStatement insertStmt = null;
+        BaseTable tbGenerator = config.getTableSerializer(); // -m applies for input
         try {
             Connection con = config.getOpenConnection();
             DatabaseMetaData dbMetaData = con.getMetaData();
@@ -1708,56 +1707,18 @@ public class SQLAction implements Serializable {
             insertStmt = con.prepareStatement(sqlBuffer.toString());
             TableColumn column = null;
             int rowCount = 0; // number of rows, for COMMIT insertion
-            String columnValues[] = new String[columnCount]; // columns' values
-
-            URIReader lineReader = new URIReader(uri, config.getEncoding(0));
-            while ((line = lineReader.readLine()) != null) { // read and process lines
-                insertStmt.clearParameters();
-                int rawCount = 0; // number of values split from 'line'
-                switch (formatCode) {
-                    case 'f': // "fix", with fixed column widths
-                        columnValues = new String[columnCount];
-                        int spos = 0; // starting position
-                        while (rawCount < columnCount && spos < line.length()) {
-                            column = tbMetaData.getColumn(rawCount);
-                            String pseudo = column.getPseudo();
-                            if (pseudo == null) {
-                                int epos = spos + column.getWidth();
-                                if (epos >= line.length()) {
-                                    epos = line.length();
-                                }
-                                switch (trimSides) {
-                                    case 0: // notrim
-                                        columnValues[rawCount] = (      line.substring(spos, epos))                    ;
-                                        break;
-                                    case 1: // rtrim
-                                        columnValues[rawCount] = ("x" + line.substring(spos, epos)).trim().substring(1);
-                                        break;
-                                    default:
-                                    case 2:
-                                        columnValues[rawCount] = (      line.substring(spos, epos)).trim()             ;
-                                        break;
-                                } // switch trimSides
-                                spos = epos;
-                            } // not pseudo
-                            rawCount ++;
-                        } // while rawCount
-                        break;
-                    case 'c': // "csv" with separator
-                        columnValues = line.split(config.getSeparator());
-                        rawCount = columnValues.length;
-                        break;
-                    case 't':
-                    default: // "tsv" -> separated by whitespace
-                        columnValues = line.split("\\s+", -1);
-                        rawCount = columnValues.length;
-                        break;
-                } // switch formatCode
-
+            String columnValues[] = null; // columns' values
+            if (config.getFormatMode().equals("tsv")) {
+                config.setSeparator("\\s+");
+            }
+            tbGenerator.inputStart(config, uri);
+            while ((columnValues = tbGenerator.inputNextRow(tbMetaData)) != null) { // read and process row
+                int rawCount = columnValues.length;
                 if (debug >= 2) {
                     System.err.println("insertFromURI.rawCount=" + rawCount + ", columnCount=" + columnCount);
                 }
                 if (rawCount > 0) { // insert row only if line contained some field
+                    insertStmt.clearParameters();
                     icol = 0;
                     int scol = 1; // column number for SQL, starting at 1, not incremented for pseudo columns
                     while (icol < columnCount) {
@@ -1774,7 +1735,7 @@ public class SQLAction implements Serializable {
                                 System.err.println("insertFromURI, column " + icol + ", dataType " + dataType);
                             }
                             if (value != null) {
-                            switch (dataType) {
+                                switch (dataType) {
                         // special
                                 case Types.BOOLEAN:
                                     insertStmt.setBoolean
@@ -1819,7 +1780,7 @@ public class SQLAction implements Serializable {
                                     insertStmt.setObject
                                             (scol ++, value);
                                     break;
-                            } // switch getDataType
+                                } // switch getDataType
                             } else {
                         // null
                                     insertStmt.setNull(scol ++, dataType);
@@ -1836,11 +1797,11 @@ public class SQLAction implements Serializable {
                     }
                 } // rawCount > 0
             } // while notEof
-            lineReader.close();
+            tbGenerator.inputEnd(); // uriReader.close();
             this.execCommitStatement();
             insertStmt.close();
         } catch (Exception exc) {
-            System.err.println("** offending line: " + line);
+            System.err.println("** offending line: " + tbGenerator.getInputLine());
             log.error(exc.getMessage(), exc);
             this.setCommitted(true); // avoid a final COMMIT
             printSQLError(exc);

@@ -1,8 +1,8 @@
-/*  Generator for an Excel 2003 XML table
+/*  Generator for binary Excel 97 *.xls (BIFF) and Excel 2007 (Office Open XML, OOXML) tables
  *  @(#) $Id$
  *  2016-10-13: less imports
  *  2016-05-17: formatting of header line
- *  2016-05-08: copied from ExcelTable
+ *  2016-05-08: copied from ExcelTable; with Apache POI hssf/xssf
 */
 /*
  * Copyright 2006 Dr. Georg Fischer <punctum at punctum dot kom>

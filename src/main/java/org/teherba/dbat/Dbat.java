@@ -158,7 +158,7 @@ public class Dbat implements Serializable {
     public void initialize(int callType) {
         config                  = new Configuration();
         config.configure        (callType);
-        config.setFormatMode  ("def");        // -m, will be changed to tsv below
+        config.setFormatMode    ("def");        // -m, will be changed to tsv below
         config.setSeparator     ("\t");         // -s
         config.setDefaultSchema ("");
         verbose                 = 0;            // -v

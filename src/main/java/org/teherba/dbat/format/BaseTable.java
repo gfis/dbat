@@ -1,5 +1,6 @@
 /*  Base class for file format representing table descriptions or results sets
  *  @(#) $Id$
+ *  2017-02-11: input* methods for -r in SQLAction
  *  2016-12-09: getDescription with fallback to "en"
  *  2016-10-13: less imports
  *  2016-08-26: getISOTimestamp()
@@ -39,8 +40,10 @@
  */
 
 package org.teherba.dbat.format;
+import  org.teherba.dbat.Configuration;
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
+import  org.teherba.common.URIReader;
 import  org.teherba.xtrans.BaseTransformer;
 import  java.io.OutputStream;
 import  java.io.PrintWriter;
@@ -828,6 +831,72 @@ public abstract class BaseTable {
             , TreeMap<String, HashMap<String, String>> cstRows) {
         writeComment("BaseTable.describeProcedureColumns");
     } // describeProcedureColumns
+
+    //=======================================================
+    // -r action methods: read this format and create a table
+    //=======================================================
+    /** read character lines from this URI */
+    protected URIReader uriReader;
+    /** separator to be used for line splitting */
+    protected String inputSeparator;
+    /** how to trim values */
+    protected int trimSides;
+
+    /** input line read from URI */
+    protected String inputLine;
+    /** Returns the line read
+     *  @return inputLine
+     */
+    public String getInputLine() {
+    	return inputLine;
+    } // getInputLine
+    
+    /** Starts reading from an URI
+     *  @param config Dbat configuration parameters; here: encoding, trimSides and formatMode
+     *  @param uri URI of the input file to be read (maybe binary in case of Excel)
+     */
+    public void inputStart(Configuration config, String uri) {
+        try {
+            String enc = config.getEncoding(0); // source encoding
+            if (config.getFormatMode().startsWith("xls")) {
+                enc = null; // binary
+            }
+            uriReader      = new URIReader(uri, enc);
+            inputSeparator = config.getSeparator();
+            trimSides      = config.getTrimSides();
+            inputLine      = "";
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+    } // inputStart
+
+    /** Ends reading from an URI
+     */
+    public void inputEnd() {
+        try {
+            uriReader.close();
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+    } // inputEnd
+
+    /** Reads one row from an URI
+     *  @param tbMetaData the target table's metadata
+     *  @return an array of String values extracted from one input line or row, 
+     *  or null if there was no more row which could be read
+     */
+    public String[] inputNextRow(TableMetaData tbMetaData) {
+        String[] columnValues = null;
+        try {
+            inputLine = uriReader.readLine();
+            if (inputLine != null) {
+                columnValues = inputLine.split(inputSeparator, -1);
+             }
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+        return columnValues;
+    } // inputNextRow
 
     //==========================================
     // Table elements generated for a SELECT
