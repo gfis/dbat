@@ -1,1 +1,5 @@
- executed 0 SQL statements affecting 0 rows in ... ms
+sp1	sp2	sp3
+test	fix	0001
+test	fix	0002
+test	fix	0003
+test	fix	0004

@@ -2,6 +2,7 @@
 
 # Collection of Testcases for Dbat with MySQL driver
 # @(#) $Id: all.tca 955 2012-06-05 07:22:59Z gfis $
+# 2017-02-11: -r: load from Excel
 # 2016-05-24: + CC1
 # 2016-05-10: TL%, UA%
 # 2014-04-22: + TI1,2
@@ -122,17 +123,33 @@ CALL Dbat -m csv -s "\t" -1024 im1
 #-------------------
 TEST C01 create table
 DATA #
-  drop table if exists c01 ;
-  create table c01
-  ( name varchar(16) not null   COMMENT 'Name of the Relative'
-  , univ varchar(16)            COMMENT 'Town'
-  , year int                    COMMENT 'Decease Year'
-  , gender char(1)              COMMENT 'some escaped character'
-  , birth  date
-  , primary key (name)
+  DROP   TABLE IF EXISTS c01 ;
+  CREATE TABLE c01
+  ( name   VARCHAR(16) NOT NULL   COMMENT 'Name of the Relative'
+  , univ   VARCHAR(16)            COMMENT 'Town'
+  , year   INT                    COMMENT 'Decease Year'
+  , gender CHAR(1)                COMMENT 'some escaped character'
+  , birth  DATE
+  , PRIMARY KEY (name)
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
-  commit;
+  COMMIT;
   SELECT COUNT(*) FROM c01;
+CALL Dbat -f $(DATA)
+
+#-------------------
+TEST C11 create table
+DATA # same structure as c01
+  DROP   TABLE IF EXISTS c11 ;
+  CREATE TABLE c11
+  ( name   VARCHAR(16) NOT NULL
+  , univ   VARCHAR(16)
+  , year   INT
+  , gender CHAR(1)
+  , birth  DATE
+  , PRIMARY KEY (name)
+  ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
+  COMMIT;
+  SELECT COUNT(*) FROM c11;
 CALL Dbat -f $(DATA)
 #-------------------
 # help page
@@ -179,17 +196,17 @@ HTTP view=validate lang=fr
 #-------------------
 TEST I01 insert statements
 DATA -- fill table
-    delete from c01;
-    insert into c01 values('Martha'  , 'Freiburg'       , 1999, '&', '1909-11-17');
-    insert into c01 values('Johannes', 'Schramberg'     , 1992, '<', '1911-06-03');
-    insert into c01 values('Eberhard', 'Groß-Gerau'     , 1945, '>', '1912-11-17');
-    insert into c01 values('Fritz'   , 'Waldshut'       , 1995, '<', '1907-08-08');
-    insert into c01 values('Maria'   , 'Hermsdorf'      , 1999, '#', '1914-09-17');
-    insert into c01 values('Ilse'    , 'Lübars'         , 1983, '$', '1909-02-09');
-    insert into c01 values('Dorothea', 'Lübars'         , 1985, '$', '1910-02-07');
-    insert into c01 values('Lucie'   , 'Lübars'         , 1984, '''','1887-07-09');
-    commit;
-    select * from c01;
+    DELETE FROM c01;
+    INSERT INTO c01 VALUES('Martha'  , 'Freiburg'       , 1999, '&', '1909-11-17');
+    INSERT INTO c01 VALUES('Johannes', 'Schramberg'     , 1992, '<', '1911-06-03');
+    INSERT INTO c01 VALUES('Eberhard', 'Groß-Gerau'     , 1945, '>', '1912-11-17');
+    INSERT INTO c01 VALUES('Fritz'   , 'Waldshut'       , 1995, '<', '1907-08-08');
+    INSERT INTO c01 VALUES('Maria'   , 'Hermsdorf'      , 1999, '#', '1914-09-17');
+    INSERT INTO c01 VALUES('Ilse'    , 'Lübars'         , 1983, '$', '1909-02-09');
+    INSERT INTO c01 VALUES('Dorothea', 'Lübars'         , 1985, '$', '1910-02-07');
+    INSERT INTO c01 VALUES('Lucie'   , 'Lübars'         , 1984, '''','1887-07-09');
+    COMMIT;
+    SELECT * FROM c01;
 CALL Dbat -f $(DATA)
 
 TEST I02 include with system entities
@@ -229,7 +246,7 @@ HTTP spec=test/counter01 name=x
 TEST DE1 create table with DECIMALs
 DATA #
   DROP TABLE IF EXISTS de1;
-  create table de1
+  CREATE TABLE de1
   ( name0  VARCHAR  (16) not null
   , dec1   DECIMAL  (18)
   , dec2   DECIMAL  (18,3)
@@ -240,7 +257,7 @@ DATA #
   , ts5    TIMESTAMP
   , PRIMARY KEY (name0)
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
-  commit;
+  COMMIT;
   SELECT COUNT(*) FROM de1;
 CALL Dbat -f $(DATA)
 
@@ -770,25 +787,25 @@ CALL Dbat -n c01
 # enumerations, fetch into parameterMap
 TEST EN1 create table with enumerations
 DATA #
-  drop table if exists en1;
-  create table en1
+  DROP TABLE IF EXISTS en1;
+  CREATE TABLE en1
   ( seq     INT not null
   , code    VARCHAR(16)
   , lang    CHAR(3)
   , display VARCHAR(64)
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
-  commit;
+  COMMIT;
   SELECT COUNT(*) FROM en1;
 CALL Dbat -f $(DATA)
 
 TEST EN2 fill table with enumerations
 DATA #
-  insert into en1 values( 1, 'M', 'eng', 'male');
-  insert into en1 values( 2, 'F', 'eng', 'female');
-  insert into en1 values( 3, 'N', 'eng', 'neuter');
-  commit;
-  select * from en1;
-  commit;
+  INSERT INTO en1 values( 1, 'M', 'eng', 'male');
+  INSERT INTO en1 values( 2, 'F', 'eng', 'female');
+  INSERT INTO en1 values( 3, 'N', 'eng', 'neuter');
+  COMMIT;
+  SELECT * FROM en1;
+  COMMIT;
 CALL Dbat -f $(DATA)
 
 TEST EN3 enumerations into parameters
@@ -800,13 +817,13 @@ HTTP spec=test/enum02
 # aggregation, pivot and grouping
 TEST C02 create pivot table
 DATA #
-  drop table if exists pivot ;
-  create table pivot
-  ( sp1 varchar(8)
-  , sp2 varchar(8)
-  , sp3 varchar(8)
+  DROP TABLE IF EXISTS pivot ;
+  CREATE TABLE pivot
+  ( sp1 VARCHAR(8)
+  , sp2 VARCHAR(8)
+  , sp3 VARCHAR(8)
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
-  commit;
+  COMMIT;
   SELECT COUNT(*) FROM pivot;
 CALL Dbat -f $(DATA)
 
@@ -903,21 +920,28 @@ CALL Dbat -v -s ";" -m csv -r pivot $(DATA)
 TEST R06 check csv input
 CALL Dbat "select * from pivot where sp2 = 'csv' order by 1,2,3;"
 
-TEST R07 purge raw test data
-CALL Dbat -v "delete from pivot where sp1 = 'test'"
-
-TEST R08 raw fix input with different lengths
+TEST R07 raw fix input with different lengths
 DATA --
- test    fix
- test    fix     0002
- test    fix     0003  xxxx
- test    fix     0004
+ test    dix
+ test    dix     0002
+ test    dix     0003  xxxx
+ test    dix     0004
 CALL Dbat -v -l 8,8,4 -m fix -r pivot $(DATA)
 
-TEST R09 check fix input with different lengths
+TEST R08 check fix input with different lengths
 CALL Dbat "select * from pivot where sp2 = 'fix' order by 1,2,3;"
+
+TEST R09 purge raw test data
 CALL Dbat -v "delete from pivot where sp1 = 'test'"
 
+TEST R10 create duplicate table again
+CALL Dbat -v -f test/C11.data.tmp
+
+TEST R11 load table c11 from Excel
+CALL Dbat -v -m xlsx -r c11 test/selec01.xlsx
+
+TEST R12 check load table c11 from Excel
+CALL Dbat -e UTF-8 -m csv -s ";" -20 c11
 #-------------------
 # Grouping tests (-g)
 TEST G01 CLI grouping test with TSV
@@ -1279,7 +1303,7 @@ TEST V16 Show dbiv in SQL UPDATE format
 HTTP spec=test.crud03&search_family=&birth=&search_name=&display=female&decease=&code=F&place=&user=&search_gender=&enc=ISO-8859-1&lang=en&mode=update
 #-------------------
 # Umlaut in URL
-TEST UM1 Insert a record with umlaut key 
+TEST UM1 Insert a record with umlaut key
 DATA -- add record
     INSERT INTO relatives VALUES('Cäcilie'   , 'Fischer' , '1919-11-17', 'F' , 'Coburg'        , 1999, {ts'2012-06-28 19:47:06'}, 'testuser');
     COMMIT;
@@ -1294,10 +1318,10 @@ HTTP spec=test.uml01 view=sear search_name=C%C3%A4cilie
 
 TEST UM4 delete this record again
 DATA -- delete record
-    DELETE FROM relatives WHERE name LIKE '%cilie'; 
+    DELETE FROM relatives WHERE name LIKE '%cilie';
     COMMIT;
     SELECT COUNT(*) FROM relatives;
-CALL Dbat -f $(DATA) 
+CALL Dbat -f $(DATA)
 #-------------------
 # repeat the V0* tests by directly calling *.iv.xml specifications
 TEST VI2 initial data for DBIV tests

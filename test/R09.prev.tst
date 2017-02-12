@@ -1,5 +1,4 @@
-sp1	sp2	sp3
-test	fix	
-test	fix	0002
-test	fix	0003
-test	fix	0004
+SQL:
+delete from pivot where sp1 = 'test';
+:SQL
+ executed 1 SQL statement affecting 12 rows in ... ms

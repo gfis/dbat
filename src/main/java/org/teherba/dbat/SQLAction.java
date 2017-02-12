@@ -1,5 +1,6 @@
 /*  SQLAction.java - Properties and methods specific for one elementary sequence of SQL instructions
     @(#) $Id$
+    2017-02-11: loadFromURI, also for Excel
     2017-01-14: skip execSQLStatement for format.EchoSQL
     2016-10-13: less imports
     2014-11-10: separateURLFromValue moved to TableColumn.separateWrappedValue
@@ -1685,11 +1686,12 @@ public class SQLAction implements Serializable {
      *  @param tbMetaData meta data for the target DB table to be loaded, with its name
      *  @param uri URI for the external file data
      */
-    public void insertFromURI(TableMetaData tbMetaData, String uri) {
+    public void loadFromURI(TableMetaData tbMetaData, String uri) {
         int icol = 0;
+        String loadValues[] = null; // columns' values
         String rawTable = tbMetaData.getTableName();
         PreparedStatement insertStmt = null;
-        BaseTable tbGenerator = config.getTableSerializer(); // -m applies for input
+        BaseTable tbGenerator = config.getTableSerializer(); // -m is used to determine load input format
         try {
             Connection con = config.getOpenConnection();
             DatabaseMetaData dbMetaData = con.getMetaData();
@@ -1707,7 +1709,6 @@ public class SQLAction implements Serializable {
             insertStmt = con.prepareStatement(sqlBuffer.toString());
             TableColumn column = null;
             int rowCount = 0; // number of rows, for COMMIT insertion
-            String loadValues[] = null; // columns' values
             if (config.getFormatMode().equals("tsv")) {
                 config.setSeparator("\\s+");
             }
@@ -1715,7 +1716,7 @@ public class SQLAction implements Serializable {
             while ((loadValues = tbGenerator.loadNextRow(tbMetaData)) != null) { // read and process row
                 int rawCount = loadValues.length;
                 if (debug >= 2) {
-                    System.err.println("insertFromURI.rawCount=" + rawCount + ", columnCount=" + columnCount);
+                    System.err.println("loadFromURI.rawCount=" + rawCount + ", columnCount=" + columnCount);
                 }
                 if (rawCount > 0) { // insert row only if line contained some field
                     insertStmt.clearParameters();
@@ -1729,10 +1730,10 @@ public class SQLAction implements Serializable {
                                 : null;
                         column = tbMetaData.getColumn(icol);
                         String pseudo = column.getPseudo();
-                        if (pseudo == null) {
+                        if (true || pseudo == null) {
                             int dataType = column.getDataType();
                             if (debug >= 2) {
-                                System.err.println("insertFromURI, column " + icol + ", dataType " + dataType);
+                                System.err.println("loadFromURI, column " + icol + ", dataType " + dataType);
                             }
                             if (value != null) {
                                 switch (dataType) {
@@ -1766,7 +1767,7 @@ public class SQLAction implements Serializable {
                                 case Types.CLOB:
                                 case Types.LONGVARCHAR:
                                     if (debug >= 2) {
-                                        System.err.println("insertFromURI, uri " + value);
+                                        System.err.println("loadFromURI, uri " + value);
                                     }
                                     insertStmt.setClob // set CharacterStream
                                             (scol ++, (new URIReader(value)).getCharReader());
@@ -1789,8 +1790,9 @@ public class SQLAction implements Serializable {
                         icol ++;
                     } // while those from 'line'
 
-                    int inserted = insertStmt.executeUpdate();
-
+                    int updateCount = insertStmt.executeUpdate();
+                    instructionSum ++;
+                    manipulatedSum += updateCount;
                     rowCount ++;
                     if (rowCount % maxCommit == 0) {
                         this.execCommitStatement();
@@ -1801,8 +1803,16 @@ public class SQLAction implements Serializable {
             this.execCommitStatement();
             insertStmt.close();
         } catch (Exception exc) {
-            System.err.println("** offending line: " + tbGenerator.getLoadLine());
-            log.error(exc.getMessage(), exc);
+        	StringBuffer mess = new StringBuffer(512);
+            mess.append("** offending values:");
+            icol = 0;
+            while (icol < loadValues.length) {
+                mess.append(" \'" + loadValues[icol] + "\'");
+            	icol ++;
+            } // while icol
+            mess.append("\n");
+            mess.append(exc.getMessage());
+            log.error(mess.toString(), exc);
             this.setCommitted(true); // avoid a final COMMIT
             printSQLError(exc);
             try {
@@ -1816,7 +1826,7 @@ public class SQLAction implements Serializable {
         } finally {
             config.closeConnection();
         }
-    } // insertFromURI
+    } // loadFromURI
 
     //====================
     // Main method - Test

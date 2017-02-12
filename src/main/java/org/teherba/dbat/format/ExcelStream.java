@@ -1,5 +1,6 @@
 /*  Generator for binary Excel 97 *.xls (BIFF) and Excel 2007 (Office Open XML, OOXML) tables
  *  @(#) $Id$
+ *  2017-02-11: load from URI
  *  2016-10-13: less imports
  *  2016-05-17: formatting of header line
  *  2016-05-08: copied from ExcelTable; with Apache POI hssf/xssf
@@ -21,23 +22,28 @@
  */
 
 package org.teherba.dbat.format;
+import  org.teherba.dbat.Configuration; // isWithHeaders
 import  org.teherba.dbat.SQLAction; // DATE/TIME(STAMP)_FORMAT
 import  org.teherba.dbat.TableColumn;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.dbat.format.BaseTable;
+import  org.teherba.common.URIReader;
 import  org.apache.poi.ss.usermodel.Cell;
 import  org.apache.poi.ss.usermodel.CellStyle;
 import  org.apache.poi.ss.usermodel.DataFormat;
+import  org.apache.poi.ss.usermodel.DataFormatter;
 import  org.apache.poi.ss.usermodel.Font;
 import  org.apache.poi.ss.usermodel.Row;
 import  org.apache.poi.ss.usermodel.Sheet;
 import  org.apache.poi.ss.usermodel.Workbook;
+import  org.apache.poi.ss.usermodel.WorkbookFactory;
 import  org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import  org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import  java.io.BufferedOutputStream;
 import  java.sql.Types;
 import  java.util.ArrayList;
 import  java.util.HashMap;
+import  java.util.Iterator;
 
 /** Generator for binary Excel 97 *.xls (BIFF) and Excel 2007 (Office Open XML, OOXML) tables.
  *  The format is described in <a href="http://msdn.microsoft.com/en-us/library/aa140066%28office.10%29.aspx">http://msdn.microsoft.com/en-us/library/aa140066%28office.10%29.aspx</a>
@@ -65,6 +71,8 @@ public class ExcelStream extends BaseTable {
     private Workbook wbook;
     /** current {@link Sheet} to be filled with {@link Row}s and {@link Cell}s */
     private Sheet sheet;
+    /** current {@link Row} to be filled with {@link Cell}s */
+    private Row row;
     /** {@link DataFormat} for {@link #wbook} */
     private DataFormat wbDataFormat;
 
@@ -87,6 +95,116 @@ public class ExcelStream extends BaseTable {
         rowNo           = 0;
         wbDataFormat    = null;
     } // Constructor
+
+    /** Whether the first row is a header row, and will be skipped during load */
+    private boolean loadHasHeaders;
+    /** Iterator for loading rows */
+    private Iterator<Row> riter;
+    /** Formatter for Excel cells */
+    private DataFormatter loadFormatter;
+
+    /** Starts loading a table from an URI
+     *  @param config Dbat configuration parameters; here: encoding, trimSides and formatMode
+     *  @param uri URI of the input file to be read (maybe binary in case of Excel)
+     */
+    public void loadStart(Configuration config, String uri) {
+        try {
+            // not really used:
+            loadSeparator  = config.getSeparator();
+            loadTrimSides  = config.getTrimSides();
+            loadLine       = "";
+            
+            loadFormatter  = new DataFormatter();
+            loadHasHeaders = config.isWithHeaders();
+            loadReader     = new URIReader(uri, null); // binary
+            wbook          = WorkbookFactory.create(loadReader.getByteStream());
+                // from http://stackoverflow.com/questions/14522441/determine-ms-excel-file-type-with-apache-poi?noredirect=1&lq=1
+            sheet          = wbook.getSheetAt(0);
+            riter          = sheet.iterator();
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+    } // loadStart
+
+    /** Ends loading from an URI
+     */
+    public void loadEnd() {
+        try {
+            wbook.close();
+            loadReader.close();
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+    } // loadEnd
+
+    /** Reads one row from an URI.
+     *  Adapted from http://www.codejava.net/coding/how-to-read-excel-files-in-java-using-apache-poi.
+     *  @param tbMetaData the target table's metadata
+     *  @return an array of String values extracted from one input line or row, 
+     *  or null if there was no more row which could be read
+     */
+    public String[] loadNextRow(TableMetaData tbMetaData) {
+        String[] loadValues = null;
+        int columnCount = tbMetaData.getColumnCount();
+        try {
+            if(riter.hasNext()) {
+                row = riter.next();
+                if (loadHasHeaders) { // skip 1st row
+                    loadHasHeaders = false;
+                    loadValues = new String[] {}; // 0 cells
+                } else { // not skipped: load non-header row
+                    loadValues = new String[columnCount];
+                    Iterator<Cell> citer = row.cellIterator();
+                    int colNo = 0;
+                    while (colNo < columnCount && citer.hasNext()) {
+                        Cell cell = citer.next();
+                        loadValues[colNo] = loadFormatter.formatCellValue(cell);
+                    /*
+                        TableColumn column = tbMetaData.getColumn(colNo);
+                        int dataType = column.getDataType();
+                        switch (cell.getCellType()) {
+                            case Cell.CELL_TYPE_BLANK:
+                                loadValues[colNo] = "";
+                                break;
+                            case Cell.CELL_TYPE_BOOLEAN:
+                                loadValues[colNo] = String.valueOf(cell.getBooleanCellValue());
+                                break;
+                            case Cell.CELL_TYPE_ERROR:
+                                loadValues[colNo] = String.valueOf(cell.getErrorCellValue());
+                                break;
+                            case Cell.CELL_TYPE_NUMERIC:
+                                switch (dataType) {
+                                    case Types.DATE:
+                                    case Types.TIME:
+                                    case Types.TIMESTAMP:
+                                        loadValues[colNo] = cell.getDateCellValue().toString();
+                                        break;
+                                    default:
+                                        loadValues[colNo] = String.valueOf(cell.getNumericCellValue());
+                                        break;
+                                } // switch dataType    
+                                break;
+                            default:
+                            case Cell.CELL_TYPE_STRING:
+                                loadValues[colNo] = cell.getStringCellValue     ();
+                                break;
+                        } // switch cellType
+                    */
+                        colNo ++;
+                    } // while colNo
+                    while (colNo < columnCount) { // not filled
+                        loadValues[colNo ++] = "";
+                    } // while not filled
+                } // not skipped
+                // riter.hasNext()
+            } else {
+                loadValues = null; // no more rows, at end of sheet
+            }
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+        return loadValues;
+    } // loadNextRow
 
     /** decimal points should be converted to this String (a comma) if it is != null */
     private String decimalSeparator;

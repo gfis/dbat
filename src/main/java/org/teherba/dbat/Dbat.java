@@ -682,7 +682,7 @@ public class Dbat implements Serializable {
                     break;
                 case 'r':
                     // sqlAction.processRawData(tbMetaData);
-                    sqlAction.insertFromURI(tbMetaData, getSourceName());
+                    sqlAction.loadFromURI(tbMetaData, getSourceName());
                     break;
                 case 't':
                     sqlAction.execSQLStatement(tbMetaData
@@ -706,6 +706,7 @@ public class Dbat implements Serializable {
             }
             if (writer == null
                     && ! (tbSerializer instanceof TableGenerator)
+                    && ! (mainAction == 'r')
                     && ! (mainAction == 'f' && isSourceType(".xml"))) { // channel from System.out - flush it
                 tbSerializer.writeEnd();
             }

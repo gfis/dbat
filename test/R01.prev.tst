@@ -1,1 +1,1 @@
- executed 0 SQL statements affecting 0 rows in ... ms
+ executed 25 SQL statements affecting 25 rows in ... ms

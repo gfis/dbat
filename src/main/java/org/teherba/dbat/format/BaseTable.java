@@ -861,14 +861,14 @@ public abstract class BaseTable {
             if (config.getFormatMode().startsWith("xls")) {
                 enc = null; // binary
             }
-            loadReader    = new URIReader(uri, enc);
-            loadSeparator = config.getSeparator();
-            loadTrimSides = config.getTrimSides();
-            loadLine      = "";
+            loadReader     = new URIReader(uri, enc);
+            loadSeparator  = config.getSeparator();
+            loadTrimSides  = config.getTrimSides();
+            loadLine       = "";
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
-    } // laodStart
+    } // loadStart
 
     /** Ends loading from an URI
      */

@@ -63,10 +63,10 @@ public class FixedWidthTable extends BaseTable {
         setDescription("de", "Spalten fester Breite");
     } // Constructor
 
-    /** Reads one row from an URI
+    /** Reads one row from an URI.
      *  @param tbMetaData the target table's metadata
      *  @return an array of String values extracted from one input line or row, 
-     *  or null if there was no more row which could be read
+     *  or null if there was no more row which could be read.
      */
     public String[] loadNextRow(TableMetaData tbMetaData) {
         String[] loadValues = null;
@@ -76,35 +76,35 @@ public class FixedWidthTable extends BaseTable {
             if (line != null) {
                 loadValues = new String[columnCount];
                 int spos = 0; // starting position
-                int fixCount = 0;
-                while (fixCount < columnCount && spos < line.length()) {
-                    TableColumn column = tbMetaData.getColumn(fixCount);
-                    String pseudo = column.getPseudo();
-                    if (pseudo == null) {
-                        int epos = spos + column.getWidth();
-                        if (epos >= line.length()) {
-                            epos = line.length();
-                        }
-                        switch (loadTrimSides) {
-                            case 0: // notrim
-                                loadValues[fixCount] = (      line.substring(spos, epos))                    ;
-                                break;
-                            case 1: // rtrim
-                                loadValues[fixCount] = ("x" + line.substring(spos, epos)).trim().substring(1);
-                                break;
-                            default:
-                            case 2:
-                                loadValues[fixCount] = (      line.substring(spos, epos)).trim()             ;
-                                break;
-                        } // switch trimSides
-                        spos = epos;
-                    } // not pseudo
-                    fixCount ++;
-                } // while fixCount
-                while (fixCount < columnCount) { // not filled
-                    loadValues[fixCount ++] = "";
+                int colNo = 0;
+                while (colNo < columnCount && spos < line.length()) {
+                    TableColumn column = tbMetaData.getColumn(colNo);
+                    int epos = spos + column.getWidth();
+                    if (epos >= line.length()) {
+                        epos = line.length();
+                    }
+                    switch (loadTrimSides) {
+                        case 0: // notrim
+                            loadValues[colNo] = (      line.substring(spos, epos))                    ;
+                            break;
+                        case 1: // rtrim
+                            loadValues[colNo] = ("x" + line.substring(spos, epos)).trim().substring(1);
+                            break;
+                        default:
+                        case 2:
+                            loadValues[colNo] = (      line.substring(spos, epos)).trim()             ;
+                            break;
+                    } // switch trimSides
+                    spos = epos;
+                    colNo ++;
+                } // while colNo
+                while (colNo < columnCount) { // not filled
+                    loadValues[colNo ++] = "";
                 } // while not filled
-            } // line != null
+                // if line != null
+            } else {
+                loadValues = null; // EOF
+            }
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }

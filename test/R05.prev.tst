@@ -1,1 +1,1 @@
- executed 0 SQL statements affecting 0 rows in ... ms
+ executed 4 SQL statements affecting 4 rows in ... ms
