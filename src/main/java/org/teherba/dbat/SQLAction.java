@@ -1707,13 +1707,13 @@ public class SQLAction implements Serializable {
             insertStmt = con.prepareStatement(sqlBuffer.toString());
             TableColumn column = null;
             int rowCount = 0; // number of rows, for COMMIT insertion
-            String columnValues[] = null; // columns' values
+            String loadValues[] = null; // columns' values
             if (config.getFormatMode().equals("tsv")) {
                 config.setSeparator("\\s+");
             }
-            tbGenerator.inputStart(config, uri);
-            while ((columnValues = tbGenerator.inputNextRow(tbMetaData)) != null) { // read and process row
-                int rawCount = columnValues.length;
+            tbGenerator.loadStart(config, uri);
+            while ((loadValues = tbGenerator.loadNextRow(tbMetaData)) != null) { // read and process row
+                int rawCount = loadValues.length;
                 if (debug >= 2) {
                     System.err.println("insertFromURI.rawCount=" + rawCount + ", columnCount=" + columnCount);
                 }
@@ -1725,7 +1725,7 @@ public class SQLAction implements Serializable {
                         // we count from 0, but JDBC counts from 1 (c.f. "icol + 1" below)
                         // process those from the 'line' (at most 'columnCount')
                         String value = icol < rawCount
-                                ? escapeSQLValue(columnValues[icol])
+                                ? escapeSQLValue(loadValues[icol])
                                 : null;
                         column = tbMetaData.getColumn(icol);
                         String pseudo = column.getPseudo();
@@ -1797,15 +1797,16 @@ public class SQLAction implements Serializable {
                     }
                 } // rawCount > 0
             } // while notEof
-            tbGenerator.inputEnd(); // uriReader.close();
+            tbGenerator.loadEnd(); // uriReader.close();
             this.execCommitStatement();
             insertStmt.close();
         } catch (Exception exc) {
-            System.err.println("** offending line: " + tbGenerator.getInputLine());
+            System.err.println("** offending line: " + tbGenerator.getLoadLine());
             log.error(exc.getMessage(), exc);
             this.setCommitted(true); // avoid a final COMMIT
             printSQLError(exc);
             try {
+                tbGenerator.loadEnd(); // uriReader.close();
                 if (insertStmt != null) {
                     insertStmt.close();
                 }

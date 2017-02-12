@@ -836,67 +836,67 @@ public abstract class BaseTable {
     // -r action methods: read this format and create a table
     //=======================================================
     /** read character lines from this URI */
-    protected URIReader uriReader;
+    protected URIReader loadReader;
     /** separator to be used for line splitting */
-    protected String inputSeparator;
+    protected String loadSeparator;
     /** how to trim values */
-    protected int trimSides;
+    protected int loadTrimSides;
 
     /** input line read from URI */
-    protected String inputLine;
+    protected String loadLine;
     /** Returns the line read
-     *  @return inputLine
+     *  @return loadLine
      */
-    public String getInputLine() {
-    	return inputLine;
-    } // getInputLine
+    public String getLoadLine() {
+    	return loadLine;
+    } // getLoadLine
     
-    /** Starts reading from an URI
+    /** Starts loading a table from an URI
      *  @param config Dbat configuration parameters; here: encoding, trimSides and formatMode
      *  @param uri URI of the input file to be read (maybe binary in case of Excel)
      */
-    public void inputStart(Configuration config, String uri) {
+    public void loadStart(Configuration config, String uri) {
         try {
             String enc = config.getEncoding(0); // source encoding
             if (config.getFormatMode().startsWith("xls")) {
                 enc = null; // binary
             }
-            uriReader      = new URIReader(uri, enc);
-            inputSeparator = config.getSeparator();
-            trimSides      = config.getTrimSides();
-            inputLine      = "";
+            loadReader    = new URIReader(uri, enc);
+            loadSeparator = config.getSeparator();
+            loadTrimSides = config.getTrimSides();
+            loadLine      = "";
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
-    } // inputStart
+    } // laodStart
 
-    /** Ends reading from an URI
+    /** Ends loading from an URI
      */
-    public void inputEnd() {
+    public void loadEnd() {
         try {
-            uriReader.close();
+            loadReader.close();
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
-    } // inputEnd
+    } // loadEnd
 
     /** Reads one row from an URI
      *  @param tbMetaData the target table's metadata
      *  @return an array of String values extracted from one input line or row, 
      *  or null if there was no more row which could be read
      */
-    public String[] inputNextRow(TableMetaData tbMetaData) {
-        String[] columnValues = null;
+    public String[] loadNextRow(TableMetaData tbMetaData) {
+        String[] loadValues = null;
         try {
-            inputLine = uriReader.readLine();
-            if (inputLine != null) {
-                columnValues = inputLine.split(inputSeparator, -1);
+            loadLine = loadReader.readLine();
+            if (loadLine != null) {
+                loadValues = loadLine.split(loadSeparator, -1);
              }
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
-        return columnValues;
-    } // inputNextRow
+        return loadValues;
+    } // laodNextRow
 
     //==========================================
     // Table elements generated for a SELECT

@@ -68,13 +68,13 @@ public class FixedWidthTable extends BaseTable {
      *  @return an array of String values extracted from one input line or row, 
      *  or null if there was no more row which could be read
      */
-    public String[] inputNextRow(TableMetaData tbMetaData) {
-        String[] columnValues = null;
+    public String[] loadNextRow(TableMetaData tbMetaData) {
+        String[] loadValues = null;
         int columnCount = tbMetaData.getColumnCount();
         try {
-            String line = uriReader.readLine();
+            String line = loadReader.readLine();
             if (line != null) {
-                columnValues = new String[columnCount];
+                loadValues = new String[columnCount];
                 int spos = 0; // starting position
                 int fixCount = 0;
                 while (fixCount < columnCount && spos < line.length()) {
@@ -85,16 +85,16 @@ public class FixedWidthTable extends BaseTable {
                         if (epos >= line.length()) {
                             epos = line.length();
                         }
-                        switch (trimSides) {
+                        switch (loadTrimSides) {
                             case 0: // notrim
-                                columnValues[fixCount] = (      line.substring(spos, epos))                    ;
+                                loadValues[fixCount] = (      line.substring(spos, epos))                    ;
                                 break;
                             case 1: // rtrim
-                                columnValues[fixCount] = ("x" + line.substring(spos, epos)).trim().substring(1);
+                                loadValues[fixCount] = ("x" + line.substring(spos, epos)).trim().substring(1);
                                 break;
                             default:
                             case 2:
-                                columnValues[fixCount] = (      line.substring(spos, epos)).trim()             ;
+                                loadValues[fixCount] = (      line.substring(spos, epos)).trim()             ;
                                 break;
                         } // switch trimSides
                         spos = epos;
@@ -102,14 +102,14 @@ public class FixedWidthTable extends BaseTable {
                     fixCount ++;
                 } // while fixCount
                 while (fixCount < columnCount) { // not filled
-                    columnValues[fixCount ++] = "";
+                    loadValues[fixCount ++] = "";
                 } // while not filled
             } // line != null
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
-        return columnValues;
-    } // inputNextRow
+        return loadValues;
+    } // loadNextRow
 
     /** Writes a complete header, data or alternate data row with all tags and cell contents.
      *  @param rowType type of the generic row
