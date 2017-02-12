@@ -167,6 +167,13 @@ HTTP view=help lang=de
 
 TEST H05 invalid view request parameter
 HTTP view=root
+
+TEST H06 help page de
+CALL Dbat -e UTF-8 -h -p lang=de
+
+TEST H07 help page fr
+CALL Dbat -e UTF-8 -h -p lang=fr
+
 #-------------------
 # more page
 TEST MR1 more web page en

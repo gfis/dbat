@@ -1,4 +1,5 @@
 /*  Pseudo format which generates a Java program with embedded SQLJ instructions
+    äöüÄÖÜß
     @(#) $Id$
     2016-08-26: with getISOTimestamp()
     2012-06-16: copied from GenerateSQLJ
@@ -53,6 +54,7 @@ public class GenerateSQLJ extends BaseTable {
         setFormatCodes("sqlj");
         setDescription("en", "Generate SQLJ");
         setDescription("de", "SQLJ-Generator");
+        setDescription("fr", "Générateur pour SQLJ");
     } // Constructor
 
     /** Name of the specification file, with optional subdirectory, without extension ".xml|.xsl|.css|.js",

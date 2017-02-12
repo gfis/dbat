@@ -1,4 +1,5 @@
 /*  Generator for a table with (comma, tab) separated values
+    aöüÄÖÜß
     @(#) $Id$
     2011-11-11: writeComment(line, verbose)
     2011-08-24: writeGenericRow
@@ -39,6 +40,7 @@ public class SeparatedTable extends BaseTable {
         setFormatCodes("csv,tsv");
         setDescription("en", "Separated Values");
         setDescription("de", "Werte mit Trennzeichen");
+        setDescription("fr", "Valeurs séparées");
     } // Constructor
 
     /** Writes a comment, but only if the "verbose" level is > 0.

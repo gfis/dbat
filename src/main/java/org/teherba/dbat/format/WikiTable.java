@@ -65,6 +65,7 @@ public class WikiTable extends BaseTable {
         setFormatCodes("wiki");
         setDescription("en", "MediaWiki Text");
         setDescription("de", "MediaWiki-Text");
+        setDescription("fr", "Code pour MediaWiki");
         protocolContext = "http://localhost:8080/dbat/";
     } // Constructor
 

@@ -46,7 +46,7 @@ Ausgabeformat</td>
 <select name="mode" size="6">
 <option value="html" selected="1">html - HTML</option>
 <option value="xml">xml - XML</option>
-<option value="xlsx">xlsx - Excel</option>
+<option value="xlsx">xlsx - Microsoft Excel</option>
 <option value="json">json - JSON</option>
 <option value="wiki">wiki - MediaWiki-Text</option>
 <option value="csv">csv - Werte mit Trennzeichen</option>
@@ -56,7 +56,7 @@ Ausgabeformat</td>
 <option value="update">update - SQL UPDATEs</option>
 <option value="jdbc">jdbc - SQL mit JDBC-Escapes</option>
 <option value="trans">trans - XML+XSLT</option>
-<option value="gen">gen - generate SAX events</option>
+<option value="gen">gen - SAX-Event-Generator</option>
 <option value="spec">spec - Dbat-Spezifikation</option>
 <option value="dbiv">dbiv - Dbiv-Spezifikation</option>
 <option value="echo">echo - Echo SQL</option>

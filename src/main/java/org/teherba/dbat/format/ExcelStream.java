@@ -89,7 +89,7 @@ public class ExcelStream extends BaseTable {
         super();
         setBinaryFormat (true);
         setFormatCodes  (format);
-        setDescription  ("en", "Excel");
+        setDescription  ("en", "Microsoft Excel");
         encoding        = "UTF-8";
         sheetNo         = 0;
         rowNo           = 0;
@@ -105,9 +105,10 @@ public class ExcelStream extends BaseTable {
 
     /** Starts loading a table from an URI
      *  @param config Dbat configuration parameters; here: encoding, trimSides and formatMode
+     *  @param tbMetaData metadata of the table to be loaded
      *  @param uri URI of the input file to be read (maybe binary in case of Excel)
      */
-    public void loadStart(Configuration config, String uri) {
+    public void loadStart(Configuration config, TableMetaData tbMetaData, String uri) {
         try {
             // not really used:
             loadSeparator  = config.getSeparator();
@@ -117,9 +118,19 @@ public class ExcelStream extends BaseTable {
             loadFormatter  = new DataFormatter();
             loadHasHeaders = config.isWithHeaders();
             loadReader     = new URIReader(uri, null); // binary
+            // from http://stackoverflow.com/questions/14522441/determine-ms-excel-file-type-with-apache-poi?noredirect=1&lq=1
             wbook          = WorkbookFactory.create(loadReader.getByteStream());
-                // from http://stackoverflow.com/questions/14522441/determine-ms-excel-file-type-with-apache-poi?noredirect=1&lq=1
-            sheet          = wbook.getSheetAt(0);
+
+            // try to find a sheet with the same name as the table's
+            // from http://stackoverflow.com/questions/12600883/get-excel-sheetnames-using-poi-jar
+            String rawTable= tbMetaData.getTableName();
+            int isheet     = wbook.getNumberOfSheets();
+            boolean found  = false;
+            while (! found && isheet > 0) {
+                isheet --;
+                found = wbook.getSheetName(isheet).equals(rawTable);
+            } // while isheet
+            sheet          = wbook.getSheetAt(isheet);
             riter          = sheet.iterator();
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);

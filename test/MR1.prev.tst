@@ -75,8 +75,8 @@ Language</span>
 <option value="update">update - SQL UPDATEs</option>
 <option value="view">view - Dbiv Spec. File</option>
 <option value="wiki">wiki - MediaWiki Text</option>
-<option value="xls">xls - Excel</option>
-<option value="xlsx">xlsx - Excel</option>
+<option value="xls">xls - Microsoft Excel</option>
+<option value="xlsx">xlsx - Microsoft Excel</option>
 <option value="xml">xml - XML</option>
 </select><p />&nbsp;
 </td>

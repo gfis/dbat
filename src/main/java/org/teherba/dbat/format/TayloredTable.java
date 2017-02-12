@@ -76,6 +76,7 @@ public class TayloredTable extends BaseTable {
         setFormatCodes("taylor");
         setDescription("en", "File Tayloring");
         setDescription("de", "Variablenersetzung");
+        setDescription("fr", "Substitution de variables");
     } // Constructor
 
     /** Initializes a table.
