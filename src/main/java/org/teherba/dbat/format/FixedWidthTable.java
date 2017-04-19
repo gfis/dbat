@@ -61,6 +61,7 @@ public class FixedWidthTable extends BaseTable {
         setFormatCodes("fix");
         setDescription("en", "Fixed width columns");
         setDescription("de", "Spalten fester Breite");
+        setDescription("fr", "Colonnes de largeur fixe");
     } // Constructor
 
     /** Reads one row from an URI.

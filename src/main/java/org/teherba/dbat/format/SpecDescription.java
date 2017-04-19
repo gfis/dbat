@@ -1,4 +1,5 @@
 /*  Generator for a default Dbat XML specification file
+    aöüÄÖÜß
     @(#) $Id$
     2016-10-13: import added
     2016-08-26: with getISOTimestamp()
@@ -65,6 +66,7 @@ public class SpecDescription extends XMLTable {
         setFormatCodes("spec");
         setDescription("en", "Dbat Spec. File");
         setDescription("de", "Dbat-Spezifikation");
+        setDescription("fr", "Spécification pour Dbat");
     } // Constructor
 
     /** XML Namespace prefix for HTML tags */

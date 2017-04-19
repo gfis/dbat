@@ -853,9 +853,10 @@ public abstract class BaseTable {
     
     /** Starts loading a table from an URI
      *  @param config Dbat configuration parameters; here: encoding, trimSides and formatMode
+     *  @param tbMetaData metadata of the table to be loaded
      *  @param uri URI of the input file to be read (maybe binary in case of Excel)
      */
-    public void loadStart(Configuration config, String uri) {
+    public void loadStart(Configuration config, TableMetaData tbMetaData, String uri) {
         try {
             String enc = config.getEncoding(0); // source encoding
             if (config.getFormatMode().startsWith("xls")) {

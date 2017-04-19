@@ -46,7 +46,7 @@ Output Format</td>
 <select name="mode" size="6">
 <option value="html" selected="1">html - HTML</option>
 <option value="xml">xml - XML</option>
-<option value="xlsx">xlsx - Excel</option>
+<option value="xlsx">xlsx - Microsoft Excel</option>
 <option value="json">json - JSON</option>
 <option value="wiki">wiki - MediaWiki Text</option>
 <option value="csv">csv - Separated Values</option>

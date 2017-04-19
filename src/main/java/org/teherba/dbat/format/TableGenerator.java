@@ -1,4 +1,4 @@
-/*  Generator for an XML table which is transformed by an XSLT stylesheet
+/*  Generator for an XML table which is transformed by an XSLT stylesheet äöüÄÖÜß
     @(#) $Id$
     2014-11-10: s|getHrefValue -> s|getWrappedValue
     2011-09-10: copied from TransformedTable
@@ -49,6 +49,8 @@ public class TableGenerator extends BaseTable {
         super();
         setFormatCodes("gen");
         setDescription("en", "generate SAX events");
+        setDescription("de", "SAX-Event-Generator");
+        setDescription("fr", "Générateur d'événements SAX");
         xmlDeclared = false;
         encoding = "UTF-8";
         setOutputFormat("gen");

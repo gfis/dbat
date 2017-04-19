@@ -1712,7 +1712,7 @@ public class SQLAction implements Serializable {
             if (config.getFormatMode().equals("tsv")) {
                 config.setSeparator("\\s+");
             }
-            tbGenerator.loadStart(config, uri);
+            tbGenerator.loadStart(config, tbMetaData, uri);
             while ((loadValues = tbGenerator.loadNextRow(tbMetaData)) != null) { // read and process row
                 int rawCount = loadValues.length;
                 if (debug >= 2) {

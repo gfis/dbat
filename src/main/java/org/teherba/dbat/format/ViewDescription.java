@@ -1,4 +1,5 @@
 /*  Generator for a default Dbiv XML specification file
+    aöüÄÖÜß
     @(#) $Id$
     2016-10-13: less imports
     2016-08-26: with getISOTimestamp()
@@ -60,6 +61,7 @@ public class ViewDescription extends SpecDescription {
         setFormatCodes("dbiv,view");
         setDescription("en", "Dbiv Spec. File");
         setDescription("de", "Dbiv-Spezifikation");
+        setDescription("fr", "Spécification pour Dbiv");
     } // Constructor
 
     /** XML Namespace prefix for HTML tags */

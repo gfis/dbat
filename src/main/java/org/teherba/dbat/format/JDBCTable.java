@@ -1,4 +1,5 @@
 /*  Generator for a JDBC table 
+    äöüÄÖÜß
     @(#) $Id$
     2007-01-12: copied from BaseTable
 */
@@ -36,6 +37,7 @@ public class JDBCTable extends SQLTable {
         super("jdbc");
         setDescription("en", "SQL with JDBC escapes");
         setDescription("de", "SQL mit JDBC-Escapes");
+        setDescription("fr", "SQL avec échappement JDBC");
         isJDBC = true;
     } // Constructor
     

@@ -61,7 +61,7 @@ Sprache</span>
 <option value="dbiv">dbiv - Dbiv-Spezifikation</option>
 <option value="echo">echo - Echo SQL</option>
 <option value="fix">fix - Spalten fester Breite</option>
-<option value="gen">gen - generate SAX events</option>
+<option value="gen">gen - SAX-Event-Generator</option>
 <option value="html" selected="1">html - HTML</option>
 <option value="jdbc">jdbc - SQL mit JDBC-Escapes</option>
 <option value="json">json - JSON</option>
@@ -75,8 +75,8 @@ Sprache</span>
 <option value="update">update - SQL UPDATEs</option>
 <option value="view">view - Dbiv-Spezifikation</option>
 <option value="wiki">wiki - MediaWiki-Text</option>
-<option value="xls">xls - Excel</option>
-<option value="xlsx">xlsx - Excel</option>
+<option value="xls">xls - Microsoft Excel</option>
+<option value="xlsx">xlsx - Microsoft Excel</option>
 <option value="xml">xml - XML</option>
 </select><p />&nbsp;
 </td>
