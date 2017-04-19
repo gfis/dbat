@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Edit the database parameters below, especially users and passwords,
+    Caution: Edit the database parameters below, especially usernames and passwords,
     and copy the file to etc/META-INF/context.xml !
     =============================================
     Configuration of context /dbat 
     @(#) $Id$
+    2016-01-18: mapperContextRootRedirectEnabled=true
     2016-09-11: Georg Fischer: new sample
 -->
 <!--
@@ -27,6 +28,7 @@
         debug="5"
         reloadable="true" 
         crossContext="true"
+        mapperContextRootRedirectEnabled="true"
         >
     <!-- all JDBC resources below must be listed in the value of this environment string -->
     <Environment name="dataSources" value="mysql,worddb:worddb,wiki:wiki" type="java.lang.String" override="false" />
