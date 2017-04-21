@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     @(#) $Id$
+    2017-04-20: Tomcat authentication commented out
     2016-11-14: /home/gfis in comment replaced
     2016-10-11: Servlet 3.0 for Tomcat >= V7; ErrorServlet; DbatServlet now in package dbat.web
     2012-07-04: comments rearranged
@@ -91,5 +92,25 @@
         <welcome-file>index.html</welcome-file>
         <welcome-file>index.htm</welcome-file>
     </welcome-file-list>
+
+<!-- transport-guarantee can be CONFIDENTIAL, INTEGRAL, or NONE -->
+<!--
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Wildcard means whole app requires authentication</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>tomcat</role-name>
+        </auth-constraint>
+
+        <user-data-constraint>
+            <transport-guarantee>NONE</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>BASIC</auth-method>
+    </login-config>
+-->
 
 </web-app>
