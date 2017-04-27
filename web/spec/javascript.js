@@ -30,13 +30,27 @@ function mailtoLink(mailAddr, subject, body) { // surround a mail address by an 
         } // with subject
         document.write('">' + mailAddr + '</a>');
     } // with mailAddr
-} // mailtoLink, <a href="mailto:...">
+} // mailtoLink
 
 function facebookLink(fbName) { // surround a Facebook name by an <a href="https://www.facebook.com/..."> tag
     if (fbName != "undefined" && fbName.length > 0) { // non-empty
         document.write('<a target="_blank" href="https://www.facebook.com/' + fbName + '">' + fbName + '</a>');
     } // non-empty
-} // facebookLink, <a href="https://www.facebook.com/:...">
+} // facebookLink
+
+function sep1000(decNum) { // insert thousand's separators in a decimal number
+    var num = new String(decNum);
+    var th3 = 6;
+    // 123456789.01  length=11
+    // 012345678901
+    //       >>>>>> 
+    // 123 456 789.01
+    while (num.length > th3) {
+    	num = num.substring(0, num.length - th3) + ' ' + num.substring(num.length - th3, num.length);
+    	th3 += 4;
+    } // while th3
+    document.write(num);
+} // sep1000
 
 function telLink(localPrefix, telNo) { // surround a telephone number by an <a href="tel:..."> tag
     var intlTelNo = new String(telNo);
@@ -49,7 +63,7 @@ function telLink(localPrefix, telNo) { // surround a telephone number by an <a h
         }
         document.write('<a href="tel:' + intlTelNo + '">' + telNo + '</a>');
     } // non-empty
-} // telLink, <a href="tel:...">
+} // telLink
 
 /*
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>

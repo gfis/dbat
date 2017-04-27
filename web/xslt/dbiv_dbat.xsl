@@ -2,6 +2,7 @@
 <!--
     Generates a Dbat specification for an interactive view (C/R/U/D) äöü
     @(#) $Id$
+    2017-04-27: transport any javascript= and stylesheet= attributes of iv:dbiv; submit with lang="fr"
     2016-04-16: do not generate CVSID
     2014-11-10: http_request.js one level higher
     2014-11-08: exclude-result-prefixes="true"
@@ -107,8 +108,18 @@
             <xsl:attribute name="encoding"  ><xsl:value-of select="@encoding"   /></xsl:attribute>
             <xsl:attribute name="conn"      ><xsl:value-of select="@conn"       /></xsl:attribute>
             <xsl:attribute name="lang"      ><xsl:value-of select="@lang"       /></xsl:attribute>
-            <xsl:if test="count(iv:view/iv:field/iv:subquery) != 0">
-            <xsl:attribute name="javascript"><xsl:value-of select='"../http_request.js"' /></xsl:attribute>
+            <xsl:if test="string-length(@javascript) != 0 or count(iv:view/iv:field/iv:subquery) != 0">
+            	<xsl:attribute name="javascript">
+            		<xsl:value-of select='@javascript' />
+            		<xsl:if test="count(iv:view/iv:field/iv:subquery) != 0">
+            			<xsl:value-of select='" ../http_request.js"' />
+            		</xsl:if>
+            	</xsl:attribute>
+            </xsl:if>
+            <xsl:if test="string-length(@stylesheet) != 0">
+            	<xsl:attribute name="stylesheet">
+            		<xsl:value-of select='@stylesheet' />
+            	</xsl:attribute>
             </xsl:if>
             <xsl:attribute name="title"     ><xsl:value-of select="translate(@script, '.', '/')" /></xsl:attribute>
             <xsl:value-of select='"&#10;&#32;&#x20;"' />
@@ -177,12 +188,15 @@
                     </xsl:for-each>
                     <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
                     <xsl:choose>
-                        <xsl:when test="../@lang = 'en'">
-                            <ht:input type="submit" value="Delete" />
-                        </xsl:when>
                         <xsl:when test="../@lang = 'de'">
                             <ht:input type="submit" value="L&amp;#xf6;schen" />
                         </xsl:when>
+                        <xsl:when test="../@lang = 'fr'">
+                            <ht:input type="submit" value="Annuller" />
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ht:input type="submit" value="Delete" />
+                        </xsl:otherwise>
                     </xsl:choose>
                     <xsl:text> </xsl:text>
                     <xsl:call-template name="startOver" />
@@ -215,6 +229,7 @@
 
                 <xsl:call-template name="confirmModification">
                      <xsl:with-param name="variant"  select="'del'" />
+                     <xsl:with-param name="lang"     select="@lang" />
                 </xsl:call-template>
             </when>
             <xsl:comment><xsl:text>== d a t ==============</xsl:text></xsl:comment>
@@ -289,8 +304,9 @@
                     </ht:table>
                     <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
                     <xsl:choose>
-                        <xsl:when test="../@lang = 'en'"><ht:input type="submit" value="Save"       /></xsl:when>
-                        <xsl:when test="../@lang = 'de'"><ht:input type="submit" value="Speichern"  /></xsl:when>
+                        <xsl:when test="../@lang = 'de'"><ht:input type="submit" value="Speichern"   /></xsl:when>
+                        <xsl:when test="../@lang = 'fr'"><ht:input type="submit" value="Enregistrer" /></xsl:when>
+                        <xsl:otherwise>                  <ht:input type="submit" value="Save"        /></xsl:otherwise>
                     </xsl:choose>
                     <xsl:text> </xsl:text>
                     <xsl:call-template name="startOver" />
@@ -349,14 +365,18 @@
                 <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
                 <ht:h4>
                     <xsl:choose>
-                        <xsl:when test="../@lang = 'en'">
-                            <xsl:text>Update </xsl:text>
-                            <xsl:call-template name="counterSingular" />
-                        </xsl:when>
                         <xsl:when test="../@lang = 'de'">
                             <xsl:call-template name="counterSingular" />
                             <xsl:text> &amp;#xe4;ndern</xsl:text>
                         </xsl:when>
+                        <xsl:when test="../@lang = 'fr'">
+                            <xsl:text>Modifier </xsl:text>
+                            <xsl:call-template name="counterSingular" />
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:text>Update </xsl:text>
+                            <xsl:call-template name="counterSingular" />
+                        </xsl:otherwise>
                     </xsl:choose>
                 </ht:h4>
                 <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
@@ -388,8 +408,9 @@
                     </ht:table>
                     <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
                     <xsl:choose>
-                        <xsl:when test="../@lang = 'en'"><ht:input type="submit" value="Update" /></xsl:when>
                         <xsl:when test="../@lang = 'de'"><ht:input type="submit" value="&amp;#xc4;ndern" /></xsl:when>
+                        <xsl:when test="../@lang = 'fr'"><ht:input type="submit" value="Modifier"        /></xsl:when>
+                        <xsl:otherwise>                  <ht:input type="submit" value="Update"          /></xsl:otherwise>
                     </xsl:choose>
                     <xsl:text> </xsl:text>
                     <xsl:call-template name="startOver" />
@@ -426,6 +447,7 @@
 
                 <xsl:call-template name="confirmModification">
                      <xsl:with-param name="variant"  select="'upd'" />
+                     <xsl:with-param name="lang"     select="@lang" />
                 </xsl:call-template>
             </when>
             <xsl:value-of select='"&#10;"' />
@@ -465,8 +487,9 @@
                     </xsl:for-each>
                     <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;&#32;&#x20;"' />
                     <xsl:choose>
-                        <xsl:when test="../@lang = 'en'"><ht:input type="submit" value="Search" /></xsl:when>
-                        <xsl:when test="../@lang = 'de'"><ht:input type="submit" value="Suchen" /></xsl:when>
+                        <xsl:when test="../@lang = 'de'"><ht:input type="submit" value="Suchen"   /></xsl:when>
+                        <xsl:when test="../@lang = 'fr'"><ht:input type="submit" value="Chercher" /></xsl:when>
+                        <xsl:otherwise>                  <ht:input type="submit" value="Search"   /></xsl:otherwise>
                     </xsl:choose>
                     <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
                 </ht:form>
@@ -736,12 +759,14 @@
 <xsl:template name="confirmModification">
     <!-- tell the user the outcome of a modify operation -->
     <xsl:param name="variant" /><!-- 'del' or 'upd' -->
+    <xsl:param name="lang"    /><!-- 'en', 'de', 'fr' ... -->
 
     <xsl:value-of select='"&#10;&#32;&#x20;&#32;&#x20;"' />
     <ht:h4><parm name="update_count" />
         <xsl:choose>
-            <xsl:when test="../@lang = 'en'"><xsl:text> row(s) for key</xsl:text></xsl:when>
-            <xsl:when test="../@lang = 'de'"><xsl:text> Zeile(n) zu Schl&amp;#xfc;ssel</xsl:text></xsl:when>
+            <xsl:when test="$lang = 'de'"><xsl:text> Zeile(n) zu Schl&amp;#xfc;ssel</xsl:text></xsl:when>
+            <xsl:when test="$lang = 'fr'"><xsl:text> row(s) for key</xsl:text>                </xsl:when>
+            <xsl:otherwise>               <xsl:text> rangée(s) pour clé</xsl:text>            </xsl:otherwise>
         </xsl:choose>
         <xsl:text></xsl:text>
         <xsl:for-each select="iv:field[string-length(@key) &gt; 0]">
@@ -753,14 +778,16 @@
         <xsl:choose>
             <xsl:when test="$variant = 'del'">
                 <xsl:choose>
-                    <xsl:when test="../@lang = 'en'"><xsl:text> deleted</xsl:text></xsl:when>
-                    <xsl:when test="../@lang = 'de'"><xsl:text> gel&amp;#xf6;scht</xsl:text></xsl:when>
+                    <xsl:when test="$lang = 'de'"><xsl:text> gel&amp;#xf6;scht</xsl:text></xsl:when>
+                    <xsl:when test="$lang = 'fr'"><xsl:text> deleted</xsl:text>          </xsl:when>
+                    <xsl:otherwise>               <xsl:text> annullé</xsl:text>          </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
             <xsl:when test="$variant = 'upd'">
                 <xsl:choose>
-                    <xsl:when test="../@lang = 'en'"><xsl:text> updated</xsl:text></xsl:when>
-                    <xsl:when test="../@lang = 'de'"><xsl:text> ge&amp;#xe4;ndert</xsl:text></xsl:when>
+                    <xsl:when test="$lang = 'de'"><xsl:text> ge&amp;#xe4;ndert</xsl:text></xsl:when>
+                    <xsl:when test="$lang = 'fr'"><xsl:text> modifié</xsl:text>          </xsl:when>
+                    <xsl:otherwise>               <xsl:text> updated</xsl:text>          </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
         </xsl:choose>
@@ -1310,8 +1337,9 @@
                                             <ht:option>
                                                 <xsl:attribute name="value"     ></xsl:attribute>
                                                 <xsl:choose>
-                                                    <xsl:when test="/iv:dbiv/@lang = 'en'"><xsl:text>(any)</xsl:text></xsl:when>
                                                     <xsl:when test="/iv:dbiv/@lang = 'de'"><xsl:text>(alle)</xsl:text></xsl:when>
+                                                    <xsl:when test="/iv:dbiv/@lang = 'fr'"><xsl:text>(tous)</xsl:text></xsl:when>
+                                                    <xsl:otherwise>                        <xsl:text>(any)</xsl:text></xsl:otherwise>
                                                 </xsl:choose>
                                             </ht:option>
                                         </xsl:when>
@@ -1349,8 +1377,9 @@
                                             <xsl:attribute name="init"  ></xsl:attribute>
                                             <xsl:attribute name="empty" >
                                                 <xsl:choose>
-                                                    <xsl:when test="/iv:dbiv/@lang = 'en'"><xsl:text>(any)</xsl:text></xsl:when>
                                                     <xsl:when test="/iv:dbiv/@lang = 'de'"><xsl:text>(alle)</xsl:text></xsl:when>
+                                                    <xsl:when test="/iv:dbiv/@lang = 'fr'"><xsl:text>(tous)</xsl:text></xsl:when>
+                                                    <xsl:otherwise>                        <xsl:text>(any)</xsl:text></xsl:otherwise>
                                                 </xsl:choose>
                                             </xsl:attribute>
                                         </xsl:when>
@@ -1695,13 +1724,15 @@
             <xsl:value-of select='concat("servlet?spec=", /iv:dbiv/@script)' />
         </xsl:attribute>
         <xsl:choose>
-            <xsl:when test="/iv:dbiv/@lang = 'en'"><xsl:text>Back</xsl:text></xsl:when>
             <xsl:when test="/iv:dbiv/@lang = 'de'"><xsl:text>Zur&amp;#xfc;ck</xsl:text></xsl:when>
+            <xsl:when test="/iv:dbiv/@lang = 'fr'"><xsl:text>Retour</xsl:text></xsl:when>
+            <xsl:otherwise>                        <xsl:text>Back</xsl:text></xsl:otherwise>
         </xsl:choose>
     </ht:a>
     <xsl:choose>
-            <xsl:when test="/iv:dbiv/@lang = 'en'"><xsl:text> to the search form</xsl:text></xsl:when>
             <xsl:when test="/iv:dbiv/@lang = 'de'"><xsl:text> zum Suchformular</xsl:text></xsl:when>
+            <xsl:when test="/iv:dbiv/@lang = 'fr'"><xsl:text> au page de recherche</xsl:text></xsl:when>
+            <xsl:otherwise>                        <xsl:text> to the search form</xsl:text></xsl:otherwise>
     </xsl:choose>
     <!-- startOver -->
 </xsl:template>
