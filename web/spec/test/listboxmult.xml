@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
     @(#) $Id$
+    2017-04-28, MG: add various namespace prefixes
     2011-07-29, Dr. Georg Fischer: copied from color04.xml
 -->
-<dbat   xmlns:db="http://www.teherba.org/2007/dbat"
+<db:dbat xmlns:db="http://www.teherba.org/2007/dbat"
         xmlns:ht="http://www.w3.org/1999/xhtml"
         encoding="UTF-8"
         lang="en" 
         conn="worddb" 
         title="listboxmult"
         >
-    <comment lang="en">List Box and List Parameter Test - multiple choice</comment>
-    <comment lang="de">Test von Auswahl- und Parameterlisten - multiple Auswahl</comment>
+    <db:comment lang="en">List Box and List Parameter Test - multiple choice</db:comment>
+    <db:comment lang="de">Test von Auswahl- und Parameterlisten - multiple Auswahl</db:comment>
 
     <ht:h2>List Box and List Parameter Test - check multiple options with Ctrl</ht:h2>
     <ht:form method="get">
@@ -26,11 +27,11 @@
             </db:select>
             <db:listbox height="10" name="namebox" init="M" code="code" display="display" multiple="yes"/>
         </ht:td>
-        <ht:td valign="top" title="Typ">Multiple<br />
-            initials       <br />
-            are selected   <br />
-            by Ctrl-click, <br />
-            all with Ctrl-a<br />
+        <ht:td valign="top" title="Typ">Multiple<ht:br />
+            initials       <ht:br />
+            are selected   <ht:br />
+            by Ctrl-click, <ht:br />
+            all with Ctrl-a<ht:br />
             <ht:input type="submit" value="Search" />
         </ht:td></ht:tr>
         </ht:table>
@@ -41,9 +42,9 @@
         <db:col label="University" >univ </db:col>
         <db:col label="Birthdate"  >birth</db:col>
         <db:from>c01</db:from>
-        <db:where>substr(name, 1, 1) in <listparm name="namebox" init="M" />
+        <db:where>substr(name, 1, 1) in <db:listparm name="namebox" init="M" />
         </db:where>
         <db:order by="name" />
     </db:select>
 
-</dbat>
+</db:dbat>

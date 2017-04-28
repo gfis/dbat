@@ -2,6 +2,7 @@
 <!--
     Generates a Dbat specification for an interactive view (C/R/U/D) äöü
     @(#) $Id$
+    2017-04-28: some defaulted to 'fr', and space in javascript
     2017-04-27: transport any javascript= and stylesheet= attributes of iv:dbiv; submit with lang="fr"
     2016-04-16: do not generate CVSID
     2014-11-10: http_request.js one level higher
@@ -109,17 +110,20 @@
             <xsl:attribute name="conn"      ><xsl:value-of select="@conn"       /></xsl:attribute>
             <xsl:attribute name="lang"      ><xsl:value-of select="@lang"       /></xsl:attribute>
             <xsl:if test="string-length(@javascript) != 0 or count(iv:view/iv:field/iv:subquery) != 0">
-            	<xsl:attribute name="javascript">
-            		<xsl:value-of select='@javascript' />
-            		<xsl:if test="count(iv:view/iv:field/iv:subquery) != 0">
-            			<xsl:value-of select='" ../http_request.js"' />
-            		</xsl:if>
-            	</xsl:attribute>
+              <xsl:attribute name="javascript">
+                <xsl:value-of select='@javascript' />
+                <xsl:if test="count(iv:view/iv:field/iv:subquery) != 0">
+                  <xsl:if test="string-length(@javascript) != 0">
+                    <xsl:value-of select='" "' />
+                  </xsl:if>
+                  <xsl:value-of select='"../http_request.js"' />
+                </xsl:if>
+              </xsl:attribute>
             </xsl:if>
             <xsl:if test="string-length(@stylesheet) != 0">
-            	<xsl:attribute name="stylesheet">
-            		<xsl:value-of select='@stylesheet' />
-            	</xsl:attribute>
+              <xsl:attribute name="stylesheet">
+                <xsl:value-of select='@stylesheet' />
+              </xsl:attribute>
             </xsl:if>
             <xsl:attribute name="title"     ><xsl:value-of select="translate(@script, '.', '/')" /></xsl:attribute>
             <xsl:value-of select='"&#10;&#32;&#x20;"' />
@@ -765,8 +769,8 @@
     <ht:h4><parm name="update_count" />
         <xsl:choose>
             <xsl:when test="$lang = 'de'"><xsl:text> Zeile(n) zu Schl&amp;#xfc;ssel</xsl:text></xsl:when>
-            <xsl:when test="$lang = 'fr'"><xsl:text> row(s) for key</xsl:text>                </xsl:when>
-            <xsl:otherwise>               <xsl:text> rangée(s) pour clé</xsl:text>            </xsl:otherwise>
+            <xsl:when test="$lang = 'fr'"><xsl:text> rangée(s) pour clé</xsl:text>                </xsl:when>
+            <xsl:otherwise>               <xsl:text> row(s) for key</xsl:text>            </xsl:otherwise>
         </xsl:choose>
         <xsl:text></xsl:text>
         <xsl:for-each select="iv:field[string-length(@key) &gt; 0]">
@@ -779,8 +783,8 @@
             <xsl:when test="$variant = 'del'">
                 <xsl:choose>
                     <xsl:when test="$lang = 'de'"><xsl:text> gel&amp;#xf6;scht</xsl:text></xsl:when>
-                    <xsl:when test="$lang = 'fr'"><xsl:text> deleted</xsl:text>          </xsl:when>
-                    <xsl:otherwise>               <xsl:text> annullé</xsl:text>          </xsl:otherwise>
+                    <xsl:when test="$lang = 'fr'"><xsl:text> annullé</xsl:text>          </xsl:when>
+                    <xsl:otherwise>               <xsl:text> deleted</xsl:text>          </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
             <xsl:when test="$variant = 'upd'">
