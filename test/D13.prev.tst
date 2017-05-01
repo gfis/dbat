@@ -8,10 +8,10 @@
     xmlns:ht="http://www.w3.org/1999/xhtml"
     encoding="UTF-8"
     conn="worddb"
-    lang="en"
-    title="c01"
+    lang="de"
+    title="relatives"
     >
-    <ht:h2>Table c01</ht:h2>
+    <ht:h2>Table relatives</ht:h2>
     <ht:form method="get">
         <ht:input label="Prefix" name="prefix" maxsize="20" size="10" />
         <ht:input type="submit" value="Submit" />
@@ -19,14 +19,19 @@
 
     <select>
         <col label="name">a.name</col>
-        <col label="univ">a.univ</col>
-        <col label="year" align="right">a.year</col>
-        <col label="gender">a.gender</col>
+        <col label="family">a.family</col>
         <col label="birth">a.birth</col>
-        <from> c01 a
+        <col label="gender">a.gender</col>
+        <col label="place">a.place</col>
+        <col label="decease" align="right">a.decease</col>
+        <col label="changed">a.changed</col>
+        <col label="user">a.user</col>
+        <from> relatives a
         </from>
-        <where> name like '<parm name="prefix" />%'
+        <where> name || family like '<parm name="prefix" />%'
         </where>
         <counter desc="Row,s" />
     </select>
 </dbat>
+<!-- Ausgabe am yyyy-mm-dd hh:mm:ss durch Dbat-Skript describe, Excel, mehr
+ -->

@@ -637,7 +637,7 @@ HTTP spec=test/minimal
 TEST W09 echo SELECT SQL
 HTTP spec=test/selec01 mode=echo
 
-TEST W10 show default specification
+TEST W10 show default specification (same as mode=html)
 HTTP spec=test/selec01 mode=spec
 
 TEST W11 select as HTML
@@ -695,8 +695,17 @@ CALL Dbat -m jdbc -d c01
 TEST D10 output default specification
 CALL Dbat -m spec -d c01
 
-TEST D12 web describe with specification
+TEST D11 output default interactive view in French
+CALL Dbat -e UTF-8 -p lang=fr -m dbiv -d relatives
+
+TEST D12 web describe with specification: spec:index
 HTTP spec=describe
+
+TEST D13 web describe view specification
+HTTP spec=describe mode=spec lang=de table=relatives
+
+TEST D14 web describe view specification
+HTTP spec=describe mode=dbiv lang=de table=relatives
 #-------------------
 # commandline table selection in various formats
 TEST S02 select as HTML
