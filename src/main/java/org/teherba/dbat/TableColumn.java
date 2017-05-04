@@ -657,11 +657,15 @@ public class TableColumn implements Cloneable {
                         buffer.append(parts[ipart]);
                         buffer.append('"');
                     }
+                    displayValue = parts[ipart]; 
                     ipart ++;
                 } // while ipart
                 buffer.append(");");
                 this.setWrappedValue(ipart >= 2 ? buffer.toString() : null);
-                displayValue = "";
+                if (displayValue == null) {
+                	displayValue = "";
+                }
+                // displayValue = "";
             } else if (wrap.startsWith("verbatim:")) { // HTML in the SQL table cell's value is passed through without modification
                 escapingRule = 0;
                 this.setWrappedValue(null);

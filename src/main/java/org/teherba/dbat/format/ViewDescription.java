@@ -114,16 +114,8 @@ public class ViewDescription extends SpecDescription {
         }
     } // writeStart
 
-     /** Ends a file that may contain several table descriptions and/or a SELECT result sets
-     */
-    public void writeEnd() {
-        try {
-            charWriter.println("</" + SpecificationHandler.DBIV_TAG + ">");
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-        }
-    } // writeEnd
-
+    // writeEnd: inherited
+    
     /** Remembers the table (and its schema).
      *  @param dbMetaData database metadata
      *  as obtained with <code>con.getMetaData()</code>

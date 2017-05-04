@@ -34,4 +34,3 @@
 </dbiv>
 <!-- Ausgabe am yyyy-mm-dd hh:mm:ss durch Dbat-Skript describe, Excel, mehr
  -->
-</dbiv>
