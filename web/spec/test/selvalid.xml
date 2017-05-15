@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Dbat specification
+    @(#) $Id$
+    2017-05-15: Dr. Georg Fischer
+-->
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang="en" 
+        conn="worddb" 
+        title="selvalid"
+        >
+    <comment lang="en">Select with input field validation</comment>
+    <comment lang="de">Abfrage mit Eingabefeld-Validierung</comment>
+    
+    <ht:h3>Select with input field validation</ht:h3>
+    <ht:form method="get">
+        <ht:input label="Start" name="start" maxsize="4" size="4" init="1900" valid="\d{4}" /> &#xa0;
+        <ht:input label="End"   name="end"   maxsize="4" size="4" init="2000" valid="\d{4}" /> &#xa0;
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+    <select limit="2048">
+        <col label="Name"       >name</col>
+        <col label="University" >univ</col>
+        <col label="Year"  align="right">year</col>
+        <col label="Gender"     >gender</col>
+        <col label="Birthdate"  >birth</col>
+        <from>c01</from>
+        <where>year BETWEEN <parm name="start" /> AND <parm name="end" />
+        </where>
+        <order by="1,3" />
+        <counter desc="Person,s"/>
+    </select>
+</dbat>
