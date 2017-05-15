@@ -1400,3 +1400,10 @@ HTTP spec=test.var02 name=M
 TEST VA3 echo with var elements
 HTTP spec=test.var02 mode=echo
 #-------------------
+# input field validation
+TEST VL1 verify 4 digits - match
+HTTP spec=test.selvalid 
+
+TEST VL2 verify 4 digits - no match
+HTTP spec=test.selvalid start=wrong end=bad
+

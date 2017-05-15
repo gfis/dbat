@@ -770,9 +770,12 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 &&  values[0]       != null
                 ) { // with validation
             String value = values[0];
-            tbSerializer.writeMarkup("<h4>Validation problem for field " + name + ", value " + value + " =~ "
-                    + validPattern + " => " + value.matches(validPattern)
-                    + "</h4>");
+            if (debug >= 1) {
+                tbSerializer.writeMarkup("<h4>Validation problem for field " + name 
+                        + ", value " + value + " =~ "
+                        + validPattern + " => " + value.matches(validPattern)
+                        + "</h4>");
+            } // debug
             int code = Messages.validateFormField(config.getLanguage(), attrs2, value, validPattern);
             addErrorCode(code);
             if (code > 0) { // else put a linked asterisk behind the field
