@@ -1,5 +1,6 @@
 /*  TableMetaData - array list of {@link TableColumn}s and associated methods
     @(#) $Id$
+ *  2017-05-27: javadoc 1.8
     2012-01-25: fetchTarget = null | "parm"
     2011-09-30: if (column.getRemark() == null) { column.setRemark(stLabel);
     2011-08-25: addColumn(name, value)
@@ -114,7 +115,7 @@ public class TableMetaData {
         return aggregateIndex;
     } // getAggregateIndex
     /** Sets the index of a column which should be aggregated
-     *  @param aggregateIndex index >= 0
+     *  @param aggregateIndex index &gt;= 0
      *  or special negative values as described for {@link #getAggregateIndex}
      */
     public void setAggregateIndex(int aggregateIndex) {
@@ -369,8 +370,7 @@ public class TableMetaData {
     } // getTableName
 
     /** Sets the table's name, with optional schema/user.
-     *  If the schema is not specificied, it is taken from
-     *  the default in the configuration.
+     *  @param defaultSchema schema for the table
      *  @param tableName name with optional qualifier
      */
     public void setTableName(String defaultSchema, String tableName) {
@@ -519,6 +519,7 @@ public class TableMetaData {
     /** Adds a new column description with a name and a value.
      *  @param name name of the column
      *  @param value value of the column
+     *  @return new column
      */
     public TableColumn addColumn(String name, String value) {
         TableColumn column = new TableColumn(columnList.size());
@@ -682,7 +683,7 @@ public class TableMetaData {
     //-----------------------------------
     /** Aggregates the specified column by appending the
      *  aggregation separator and the current column to the aggregation column's previous value.
-     *  The caller must ensure that the feature is set (aggregateIndex >= 0).
+     *  The caller must ensure that the feature is set (aggregateIndex &gt;= 0).
      *  @param tbSerializer the desired output formatter
      */
     public void aggregateColumn(BaseTable tbSerializer) {
@@ -699,7 +700,7 @@ public class TableMetaData {
     //-----------------------------------
     /** Appends another pivot table column, with the label from the {@link #aggregateIndex} column,
      *  and the value (and all other attributes) from the next column.
-     *  The caller must ensure that the feature is set (aggregateIndex >= 0).
+     *  The caller must ensure that the feature is set (aggregateIndex &gt;= 0).
      *  @param tbSerializer the desired output formatter
      */
     public void addPivotColumn(BaseTable tbSerializer) {

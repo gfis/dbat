@@ -1,5 +1,6 @@
 /*  Generator for a MediaWiki table
     @(#) $Id$
+ *  2017-05-27: javadoc
     2014-11-10: s|getHrefValue -> s|getWrappedValue
     2014-03-04: ignore pseudo columns
     2012-06-25: writeTrailer removed
@@ -174,9 +175,9 @@ public class WikiTable extends BaseTable {
      *  <li>0 = no escaping at all</li>
      *  <li>1 = "&amp;", "&lt;" and "&gt;" are escaped
      *  as "&amp;amp;", "&amp;lt;" and "&amp;gt;" respectively</li>
-     *  <li>2 = "&apos;" is replaced by "&amp;apos"</li>
+     *  <li>2 = "&amp;apos;" is replaced by "&amp;amp;apos;"</li>
      *  <li>3 = combination of rule 1 and rule 2</li>
-     *  <li>4 = like 1, but internally check column.expr for start of tag ('<')
+     *  <li>4 = like 1, but internally check column.expr for start of tag ('&lt;')</li>
      *  </ul>
      */
     public int getEscapingRule() {

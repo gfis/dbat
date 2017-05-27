@@ -1,5 +1,6 @@
 /*  HelpPage.java - show the language specific commandline help text
  *  @(#) $Id$
+ *  2017-05-27: javadoc
  *  2016-10-13: less imports
  *  2016-08-26: param BasePage
  *  2016-04-11: link to index.html was not relative
@@ -55,6 +56,7 @@ public class HelpPage {
      *  @param basePage refers to common web methods and messages
      *  @param language 2-letter code en, de etc.
      *  @param tableFactory factory for table serializers
+     *  @throws IOException if an IO error occurs
      */
     public void showHelp(HttpServletRequest request, HttpServletResponse response
             , BasePage basePage

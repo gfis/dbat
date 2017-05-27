@@ -32,8 +32,8 @@ TESTDIR=test
 # for example make regression TEST=U%
 TEST="%"
 # for Windows, SUDO should be empty
-SUDO=
 SUDO=sudo
+SUDO=
 
 all: regression
 #----

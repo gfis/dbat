@@ -1,5 +1,6 @@
 /*  SQLAction.java - Properties and methods specific for one elementary sequence of SQL instructions
     @(#) $Id$
+ *  2017-05-27: javadoc 1.8
     2017-02-11: loadFromURI, also for Excel
     2017-01-14: skip execSQLStatement for format.EchoSQL
     2016-10-13: less imports
@@ -156,7 +157,7 @@ public class SQLAction implements Serializable {
      *  <ul>
      *  <li>0 = no escaping at all</li>
      *  <li>1 = "&amp;", "&lt;" and "&gt;" are escaped as "&amp;amp;", "&amp;lt;" and "&amp;gt;" respectively</li>
-     *  <li>2 = "&apos;" is replaced by "&amp;apos"</li>
+     *  <li>2 = "&amp;apos;" is replaced by "&amp;amp;apos;"</li>
      *  <li>3 = combination of rule 1 and rule 2</li>
      *  <li>4 = like 1, but only if the SQL expression of the column does not contain a '&lt;' </li>
      *  </ul>
@@ -1672,7 +1673,7 @@ public class SQLAction implements Serializable {
      *  <ol>
      *  <li>Open the database connection.</li>
      *  <li>Prepare an INSERT statement with an appropiate number of "?" placeholders.</li>
-     *  <li>In the URI file reading loop:</li>
+     *  <li>In the URI file reading loop:
      *      <ol>
      *      <li>Clear Parameters.</li>
      *      <li>Set all values read into the prepared statement.</li>
@@ -1681,6 +1682,7 @@ public class SQLAction implements Serializable {
      *      <li>When the whole input row is read, execute the prepared statement.</li>
      *      <li>COMMIT after a predefined number of rows.</li>
      *      </ol>
+     *  </li>
      *  <li>Cleanup statement, file and connection.</li>
      *  </ol>
      *  @param tbMetaData meta data for the target DB table to be loaded, with its name

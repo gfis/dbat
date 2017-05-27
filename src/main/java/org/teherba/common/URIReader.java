@@ -1,5 +1,6 @@
 /*  Reader for a URL or data URI source
  *  @(#) $Id$
+ *  2017-05-27: javadoc
  *  2016-10-13: less imports
  *  2016-10-11: charReader with 500 error message
  *  2016-09-15: file upload with mutlipart/form-data POST request (c.f. prev/URIMultiPart)
@@ -72,14 +73,14 @@ import  org.apache.log4j.Logger;
  *  </li>
  *  <li>data: - data content within an Uniform Resource Identfier (URI) itself</li>
  *  </ol>
- *  A data URI has the following format:<br />
+ *  A data URI has the following format:
+ *  <pre>
  *  data:[&lt;MIME-type&gt;][;charset=&lt;encoding&gt;][;base64],&lt;data&gt;
- *  <p  />
+ *  </pre>
  *  Depending on the <em>encoding</em> parameter during construction, an instance
  *  of the class is either character or byte oriented. The sets of methods of the
  *  <code>BufferedReader</code> and <code>InputStream</code> are both implemented,
  *  but care must be taken to call the appropriate overloaded method name.
- *  <p>
  *  @author Dr. Georg Fischer
  */
 public class URIReader {
@@ -334,13 +335,13 @@ public class URIReader {
      *  <li><em>key=value</em> for ordinary form input fields </li>
      *  <li><em>-F</em> or <em>--form</em> which introduces a file upload parameter tuple
      *      with the following curl-like syntax:
-     *      <em><ul>
+     *      <ul>
      *      <li>field-name=@local-file-name</li>
      *      <li>[;charset=UTF-8|ISO-8859-1|...]</li>
      *      <li>[;type=mime-type]</li>
      *      <li>[;filename=file-name]</li>
-     *      <li>[;binary[=true]]/li>
-     *      </ul></em>
+     *      <li>[;binary[=true]]</li>
+     *      </ul>
      *  </li>
      *  </ul>
      *  Part of this code is adopted from
@@ -506,6 +507,7 @@ public class URIReader {
     // BufferedReader Interface
     //==========================
     /** Closes the stream and releases any system resources associated with it.
+     *  @throws IOException if an IO error occurs
      */
     public void close() throws IOException {
         try {
@@ -527,6 +529,8 @@ public class URIReader {
      *  A limit value larger than the size of the input buffer will cause a new buffer
      *  to be allocated whose size is no smaller than limit.
      *  Therefore large values should be used with care.
+     *  @throws IllegalArgumentException for an illegal argument
+     *  @throws IOException if an IO error occurs
      */
     public void mark(int readAheadLimit) throws IllegalArgumentException, IOException {
         try {
@@ -545,6 +549,7 @@ public class URIReader {
     } // readAheadLimit
 
     /** Tells whether this stream supports the mark() operation, which it does.
+     *  @return whether the <em>mark()</em> operation is supported
      */
     public boolean markSupported() {
         boolean result = false;
@@ -683,7 +688,7 @@ public class URIReader {
     /** Tells whether this stream is ready to be read.
      *  @return     True if the next read() is guaranteed not to block for input, false otherwise.
      *  Note that returning false does not guarantee that the next read will block.
-     *  @throws IOException
+     *  @throws IOException - If an I/O error occurs
      */
     public boolean ready() throws IOException {
         boolean result = false;
@@ -698,6 +703,7 @@ public class URIReader {
     } // ready
 
     /** Resets the stream to the most recent mark.
+     *  @throws IOException - If an I/O error occurs
      */
     public void reset() throws IOException {
         try {

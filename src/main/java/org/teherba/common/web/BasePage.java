@@ -1,5 +1,6 @@
 /*  BasePage.java - common code for web pages äöüÄÖÜß
  *  @(#) $Id$
+ *  2017-05-27: javadoc
  *  2016-12-10: french message texts
  *  2016-10-13: less imports
  *  2016-09-21: stylesheet.css with title="common" attribute for gramword css switching
@@ -192,6 +193,7 @@ public class BasePage {
      *  <p>
      *  Assumes that {@link #out} is set by a previous call to {@link #writeHeader}.
      *  Deprecated, use <em>out.write(getOtherAuxiliaryLinks(language, view);</em> instead.
+     *  @throws IOException if an IO error occurs
      */
     public void writeAuxiliaryLinks(String language, String view) throws IOException {
         out.write(getOtherAuxiliaryLinks(language, view));
@@ -201,6 +203,7 @@ public class BasePage {
      *  but exclude the one for <em>view</em> (or take only that one for <em>=view</em>).
      *  @param language 2-letter code en, de etc.
      *  @param view <em>view</em> parameter in the Http request calling this method.
+     *  @return list of HTML links
      */
     public String getOtherAuxiliaryLinks(String language, String view) {
         StringBuffer result = new StringBuffer(512);
@@ -240,6 +243,7 @@ public class BasePage {
      *  A trailing comma is removed. 
      *  @param language 2-letter code en, de etc.
      *  @param view <em>view</em> parameter in the Http request calling this method.
+     *  @return an HTML link
      */
     public String getAuxiliaryLink(String language, String view) {
         return getOtherAuxiliaryLinks(language, "=" + view);
@@ -253,6 +257,7 @@ public class BasePage {
      *  <li>quest - questions, remarks ...</li>
      *  </ul>
      *  Assumes that {@link #out} is set by a previous call to {@link #writeHeader}.
+     *  @throws IOException if an IO error occurs
      */
     public void writeTrailer(String language, String features) throws IOException {
         if (true) { // try {
@@ -294,7 +299,8 @@ public class BasePage {
      *  <li>[1] = replacement for {parm}</li>
      *  <li>[2] = replacement for {par2}</li>
      *  <li>[3] = replacement for {par3}</li>
-     +  </ul>
+     *  </ul>
+     *  @throws IOException if an IO error occurs
      */
     public void writeMessage(HttpServletRequest request, HttpServletResponse response
             , String language
@@ -375,6 +381,7 @@ public class BasePage {
      *  the file items are stored in {@link #fileItems}.
      *  @param request request with header fields
      *  @param pairs pairs of Strings for expected request parameter fields: (field name, default value)
+     *  @throws IOException if an IO error occurs
      *  @return the value of any "view" field, or <em>null</em> if there is none
      */
     public String getFilesAndFields(HttpServletRequest request, String[] pairs) throws IOException {
@@ -481,6 +488,7 @@ public class BasePage {
      *  @param response response with writer
      *  @param language 2-letter code en, de etc.
      *  @return the writer for the response
+     *  @throws IOException if an IO error occurs
      */
     public PrintWriter writeHeader(HttpServletRequest request, HttpServletResponse response
             , String language
@@ -579,7 +587,8 @@ public class BasePage {
      *  <li>[2] = replacement for {par2}</li>
      *  <li>...</li>
      *  <li>[9] = replacement for {par9}</li>
-     +  </ul>
+     *  </ul>
+     *  @return replaced text
      */
     public String getReplacedText(String language, String[] parms) {
         String messNo   = parms[0];

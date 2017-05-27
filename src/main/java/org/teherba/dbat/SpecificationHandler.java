@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+ *  2017-05-27: javadoc 1.8
     2016-10-13: less imports
     2016-08-09: pass "conn" in writeStart; DBIV_TAG; log.info in resolveEntity
     2016-07-27: correction in size= attribute of listbox
@@ -151,10 +152,10 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     /** Optional linked asterisk leading to the regex validation test form */
     String errorAsterisk;
 
-    /** Overall error condition, 0: none, 1: warning, >= 2: error */
+    /** Overall error condition, 0: none, 1: warning, &gt;= 2: error */
     private int errorCode;
     /** Sets the error code
-     *  @param code 0: none, 1: warning, >= 2: error
+     *  @param code 0: none, 1: warning, &gt;= 2: error
      */
     public void addErrorCode(int code) {
         this.errorCode += code;
@@ -170,20 +171,20 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
      *  The SAX handler will take parameter values from here when
      *  it encounters a <code>&lt;parm&gt;</code> element.
      */
-    private LinkedHashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap;
+    private LinkedHashMap<String, String[]> parameterMap;
     /** Gets the parameter (placeholder) map
      *  @return the locally stored parameter map
      */
-    public Map/*<1.5*/<String, String[]>/*1.5>*/ getParameterMap() {
+    public Map<String, String[]> getParameterMap() {
         return parameterMap;
     } // getParameterMap
 
     /** Sets the parameter (placeholder) map
      *  @param map set the parameter map to this object
      */
-    public void setParameterMap(Map/*<1.5*/<String, String[]>/*1.5>*/  map) {
-        parameterMap = new LinkedHashMap/*<1.5*/<String, String[]>/*1.5>*/();
-        Iterator<String> piter = (new TreeSet/*<1.5*/<String>/*1.5>*/(map.keySet())).iterator();
+    public void setParameterMap(Map<String, String[]>  map) {
+        parameterMap = new LinkedHashMap<String, String[]>();
+        Iterator<String> piter = (new TreeSet<String>(map.keySet())).iterator();
         while (piter.hasNext()) {
             String key = piter.next();
             if (key.startsWith("amp;")) {
@@ -209,8 +210,9 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 
     /** Dumps the parameter map
      *  @param map set the parameter map to this object
+     *  @return a string with all parameter values in legible format
      */
-    private String dumpMap(Map/*<1.5*/<String, String[]>/*1.5>*/  map) {
+    private String dumpMap(Map<String, String[]>  map) {
         StringBuffer result = new StringBuffer(256);
         Iterator<String> piter = map.keySet().iterator();
         while (piter.hasNext()) {
@@ -398,6 +400,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
 
     /** Returns all form parameters (except <em>view, mode</em>)
      *  as URL encoded name=value pairs separated by ampersands.
+     *  @return concatenated URL parameters
      */
     private String repeatURLParameters() {
         StringBuffer result = new StringBuffer(128);
@@ -453,6 +456,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     /** Get the value(s) of a named parameter.
      *  If the parameter name is all uppercase, the values will be uppercased, too.
      *  @param attrs attribute list which should contain a "name=" attribute
+     *  @param attrName name of the parameter
      *  @return array of 1 or more parameter value(s), or 0 values if no "name=" attribute was found
      */
     private String[] getParameterList(Attributes attrs, String attrName) {
@@ -866,7 +870,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     /** buffer for the assembly of other SQL component strings */
     private StringBuffer valBuffer;
     /** buffer for the types and values of placeholders derived from &lt;var&gt; */
-    private ArrayList/*<1.5*/<String>/*1.5>*/ variables;
+    private ArrayList<String> variables;
     /** number of column elements encountered so far */
     private int columnNo;
     /** <em>name</em> attribute of start tag (used for &lt;textarea&gt; only)*/
@@ -878,11 +882,11 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     private static final String SERVLET_SPEC = "servlet?spec=";
 
     /** Dbat Root element tag */
-    public  static final String ROOT_TAG    = "dbat"    ; // target= title= lang=en conn=dbat headers=true encoding=UTF-8
+    public  static final String ROOT_TAG    = "dbat"    ; // target= title= lang=en conn=dbat headers=true 
+                                                          // encoding=UTF-8
                                                           // javascript=http_request.js
                                                           // xslt=
                                                           // stylesheet=stylesheet.css
-                                                          // contenttype=text/html
                                                           // uri=taylor.html
                                                           // debug=0
                                                           // manner=jdbc|sqlj|stp
@@ -919,7 +923,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         private static final String TYPE_TAG        = "type"        ;
         private static final String WIDTH_TAG       = "width"       ;
         private static final String WRAP_TAG        = "wrap"        ;
-    /** whether we are currently inside a <column> element */
+    /** whether we are currently inside a &lt;column&gt; element */
     private boolean inColumn;
 
     /** element tag for comment */
@@ -1052,7 +1056,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         errorCode       = 0;
         chooseTop       = 0;
         chooseStack[chooseTop] = CHOOSE_GEN | CHOOSE_THIS; // code generation is active at the beginning
-        variables       = new ArrayList/*<1.5*/<String>/*1.5>*/ ();
+        variables       = new ArrayList<String> ();
     } // startDocument
 
     /** Receive notification of the end of the XML document.
@@ -1202,7 +1206,6 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     }
                 }
                 //--------
-                String namespacePrefix  = attrs.getValue("nsp"); // empty or a short, lowercase prefix
                 tbSerializer.setParameterMap(parameterMap);
                 tbSerializer.writeStart(new String[] // this may throw an exception "could not compile stylesheet"
                             { "encoding"                                    , config.getEncoding(1)
@@ -2191,7 +2194,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
      *  This is always an absolute URI, unless it is null
      *  (likely because the XMLReader was given an InputSource without one).
      *  This URI is defined by the XML specification to be the one associated with the
-     *  "<" starting the relevant declaration.
+     *  "&lt;" starting the relevant declaration.
      *  @param systemId The system identifier of the external entity being referenced;
      *  either a relative or absolute URI. This is never null when invoked by a SAX2 parser;
      *  only declared entities, and any external subset, are resolved by such parsers.

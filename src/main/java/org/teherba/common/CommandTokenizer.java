@@ -1,5 +1,6 @@
 /*  CommandTokenizer.java - some strange conversion (we don't comment it)
  *  @(#) $Id$
+ *  2017-05-27: javadoc
  *  2016-10-13: less imports
  *  2013-01-05: split()
  *  2012-11-24: handling of '.' and '/'
@@ -49,9 +50,10 @@ public class CommandTokenizer implements Serializable {
     /** Splits a commandline into single arguments: words, options, numbers, strings (which were
      *  single or double quoted)                    
      *  @param command string to be splitted
+     *  @return ArrayList of arguments
      */ 
     public static String[] tokenize(String command) {
-        ArrayList/*<1.5*/<String>/*1.5>*/ result = new ArrayList/*<1.5*/<String>/*1.5>*/();
+        ArrayList<String> result = new ArrayList<String>();
         try {
             StreamTokenizer tokenizer = new StreamTokenizer(new StringReader(command));
             // Caution, real ranges would not work on a non-ASCII JVM !!
@@ -100,9 +102,10 @@ public class CommandTokenizer implements Serializable {
     /** Splits an SQL statement into words, options, numbers, strings (which were
      *  single or double quoted), parentheses and commas.
      *  @param sql string to be splitted
+     *  @return ArrayList of arguments
      */ 
     public static String[] tokenizeSQL(String sql) {
-        ArrayList/*<1.5*/<String>/*1.5>*/ result = new ArrayList/*<1.5*/<String>/*1.5>*/();
+        ArrayList<String> result = new ArrayList<String>();
         try {
             StringTokenizer tokenizer = new StringTokenizer(sql, " \r\n\"\',()", true); // return delimiters
             while (tokenizer.hasMoreTokens()) {
@@ -133,9 +136,10 @@ public class CommandTokenizer implements Serializable {
     /** Splits a command into words, options, numbers, strings (which were
      *  single or double quoted)
      *  @param cmd String to be splitted
+     *  @return ArrayList of arguments
      */ 
     public static String[] split(String cmd) {
-        ArrayList/*<1.5*/<String>/*1.5>*/ result = new ArrayList/*<1.5*/<String>/*1.5>*/();
+        ArrayList<String> result = new ArrayList<String>();
         try {
             Pattern pattern = Pattern.compile("\\s+|[^ \"']+|\\\"[^\\\"]*\\\"|\\'[^\\']*'"); 
             		// whitespace, words+punctuation, double or single quoted strings (without nested quotes)
@@ -206,7 +210,7 @@ public class CommandTokenizer implements Serializable {
      *  <li>-sql filename - tokenize all lines in that file obeying SQL syntax (not properly implemented)</li>
      *  </ul> 
      */
-    public static void main(String args[]) throws Exception {
+    public static void main(String args[]) {
         Logger log = Logger.getLogger(CommandTokenizer.class.getName());;
         int iarg = 0;
         int itok = 0;

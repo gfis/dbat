@@ -4,13 +4,13 @@
     2017-04-28, MG: add various namespace prefixes
     2011-07-29, Dr. Georg Fischer: copied from color04.xml
 -->
-<db:dbat xmlns:db="http://www.teherba.org/2007/dbat"
-        xmlns:ht="http://www.w3.org/1999/xhtml"
-        encoding="UTF-8"
-        lang="en" 
-        conn="worddb" 
-        title="listboxmult"
-        >
+<db:dbat encoding="UTF-8"
+    conn="worddb"
+    lang="en"
+    xmlns:db="http://www.teherba.org/2007/dbat"
+    xmlns:ht="http://www.w3.org/1999/xhtml"
+    title="listboxmult"
+    >
     <db:comment lang="en">List Box and List Parameter Test - multiple choice</db:comment>
     <db:comment lang="de">Test von Auswahl- und Parameterlisten - multiple Auswahl</db:comment>
 

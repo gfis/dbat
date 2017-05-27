@@ -1,5 +1,6 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2017-05-27: javadoc
  *  2016-12-09: Content-disposition filename with parameter values
  *  2016-10-11: package dbat.web; no try...catch; pass exceptions to common.ErrorServlet
  *  2016-09-15: BasicFactory replaced by XtransFactory again; init() not unchecked
@@ -112,7 +113,7 @@ public class DbatServlet extends HttpServlet {
 
     /** Called by the servlet container to indicate to a servlet
      *  that the servlet is being placed into service.
-     *  @throws ServletException
+     *  @throws ServletException if a Servlet error occurs
      */
     public void init() throws ServletException {
         log = Logger.getLogger(DbatServlet.class.getName());
@@ -153,7 +154,7 @@ public class DbatServlet extends HttpServlet {
     /** Processes an http GET request
      *  @param request request with header fields
      *  @param response response with writer
-     *  @throws IOException
+     *  @throws IOException if an IO error occurs
      */
     public void doGet (HttpServletRequest request, HttpServletResponse response) throws IOException {
         generateResponse(request, response);
@@ -162,7 +163,7 @@ public class DbatServlet extends HttpServlet {
     /** Processes an http POST request
      *  @param request request with header fields
      *  @param response response with writer
-     *  @throws IOException
+     *  @throws IOException if an IO error occurs
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         generateResponse(request, response);
@@ -175,6 +176,7 @@ public class DbatServlet extends HttpServlet {
      *  @param mode     output format (default: set to "html" if it was not set)
      *  @param specName name of the specification file
      *  @param encoding target/response encoding
+     *  @return whether response is binary
      */
     private boolean setResponseHeaders(HttpServletRequest request, HttpServletResponse response, 
             String mode, String specName, String encoding) {
@@ -249,7 +251,7 @@ public class DbatServlet extends HttpServlet {
     /** Generates the response (HTML page) for an HTTP request
      *  @param request request with header fields
      *  @param response response with writer
-     *  @throws IOException
+     *  @throws IOException if an IO error occurs
      */
     public void generateResponse(HttpServletRequest request, HttpServletResponse response) throws IOException {
         boolean binary = false; // assume legible character response output

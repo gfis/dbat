@@ -1,5 +1,6 @@
 /*  Generator for an SQL table (DDL or INSERT statements)
     @(#) $Id$
+ *  2017-05-27: javadoc
     2016-10-13: less imports
     2016-08-26: with getISOTimestamp()
     2016-07-29: describeProcdureCOlumns: IS (NOT) NULL not recognized by MySQL
@@ -154,7 +155,7 @@ public class SQLTable extends BaseTable {
         }
     } // writeComment
 
-    /** Writes a comment, but only if the "verbose" level is > 0.
+    /** Writes a comment, but only if the "verbose" level is &gt; 0.
      *  @param line string to be output as a comment
      *  @param verbose level of output detail
      */
@@ -560,14 +561,6 @@ public class SQLTable extends BaseTable {
      *  @param name name of the table
      *  @param tbMetaData meta data of the table
      */
-/*
-    public void startTable(String name, TableMetaData tbMetaData) {
-        super.startTable(name, tbMetaData);
-        tableName = name;
-        cellBuffer.setLength(0);
-        rowCount = 0;
-    } // startTable
-*/
     public void startTable(String name, TableMetaData tbMetaData) {
         super.startTable(name, tbMetaData);
         tableName = name;
@@ -579,6 +572,7 @@ public class SQLTable extends BaseTable {
     /** Gets an JDBC escaped time value
      *  @param escapeTag string to be used to construct the escape
      *  @param value time value
+     *  @return escaped string value, for example "{dt '2017-05-27'}"
      */
     protected String getJDBCescape(String escapeTag, String value) {
         return ((isJDBC ? escapeTag : "") + "\'" + value + "\'"+ (isJDBC ? "}" : ""));

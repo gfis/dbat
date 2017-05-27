@@ -1,5 +1,6 @@
 /*  Generator for binary Excel 97 *.xls (BIFF) and Excel 2007 (Office Open XML, OOXML) tables
  *  @(#) $Id$
+ *  2017-05-27: javadoc
  *  2017-02-11: load from URI
  *  2016-10-13: less imports
  *  2016-05-17: formatting of header line
@@ -299,7 +300,7 @@ public class ExcelStream extends BaseTable {
      *  <li>0 = no escaping at all</li>
      *  <li>1 = "&amp;", "&lt;" and "&gt;" are escaped
      *  as "&amp;amp;", "&amp;lt;" and "&amp;gt;" respectively</li>
-     *  <li>2 = "&apos;" is replaced by "&amp;apos"</li>
+     *  <li>2 = "&amp;apos;" is replaced by "&amp;amp;apos;"</li>
      *  <li>3 = combination of rule 1 and rule 2</li>
      *  </ul>
      */

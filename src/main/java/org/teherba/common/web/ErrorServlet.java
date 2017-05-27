@@ -1,5 +1,6 @@
 /*  ErrorServlet.java - handle severe (500) and other Http errors äöüÄÖÜß
  *  @(#) $Id$
+ *  2017-05-27: javadoc
  *  2016-10-09, Georg Fischer: borrowed from
  *  http://www.jvmhost.com/articles/custom-error-pages-handlers-tomcat-cpanel
  */
@@ -37,7 +38,7 @@ public class ErrorServlet extends HttpServlet {
     /** Processes an http GET request
      *  @param request request with header fields
      *  @param response response with writer
-     *  @throws IOException
+     *  @throws IOException if an IO error occurs
      */
     public void doGet (HttpServletRequest request, HttpServletResponse response) throws IOException {
         // log.debug("doGet");
@@ -47,7 +48,7 @@ public class ErrorServlet extends HttpServlet {
     /** Processes an http POST request
      *  @param request request with header fields
      *  @param response response with writer
-     *  @throws IOException
+     *  @throws IOException if an IO error occurs
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // log.debug("doPost");
@@ -57,6 +58,7 @@ public class ErrorServlet extends HttpServlet {
     /** Generates the response (HTML page) for an http request
      *  @param request request with header fields
      *  @param response response with writer
+     *  @throws IOException if an IO error occurs
      */
     public void generateResponse(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Integer     errorCode   = (Integer)   request.getAttribute("javax.servlet.error.status_code");

@@ -1,5 +1,6 @@
 /*  Generator for a table with fixed width columns
     @(#) $Id$
+ *  2017-05-27: javadoc
     2014-03-04: ignore pseudo columns
     2011-08-24: writeGenericRow
     2011-05-24: avoid empty header line
@@ -167,7 +168,7 @@ public class FixedWidthTable extends BaseTable {
         } // switch rowType
     } // writeGenericRow
 
-    /** Writes a comment, but only if the "verbose" level is > 0.
+    /** Writes a comment, but only if the "verbose" level is &gt; 0.
      *  @param line string to be output as a comment
      *  @param verbose level of output detail
      */

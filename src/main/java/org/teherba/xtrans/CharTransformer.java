@@ -1,7 +1,8 @@
 /*  Pseudo-abstract class for character file format transformers
     @(#) $Id$
-	2010-07-06: super.startDocument()
-	2008-07-19: characters, error, FatalError, warning
+ *  2017-05-27: javadoc 1.8
+    2010-07-06: super.startDocument()
+    2008-07-19: characters, error, FatalError, warning
     2006-09-20: copied from BaseTransformer
 */
 /*
@@ -29,7 +30,7 @@ import  org.xml.sax.SAXException;
 import  org.xml.sax.SAXParseException;
 import  org.apache.log4j.Logger;
 
-/**	Base class for character file format transformers 
+/** Base class for character file format transformers 
  *  defining common properties and methods.
  *  
  *  @author Dr. Georg Fischer
@@ -46,31 +47,31 @@ public abstract class CharTransformer extends BaseTransformer {
         super();
     } // Constructor
     
-	/** Initializes the (quasi-constant) global structures and variables.
-	 *  This method is called by the {@link org.teherba.xtrans.XtransFactory} once for the
-	 *  selected generator and serializer.
-	 */
-	public void initialize() {
-		super.initialize();
+    /** Initializes the (quasi-constant) global structures and variables.
+     *  This method is called by the {@link org.teherba.xtrans.XtransFactory} once for the
+     *  selected generator and serializer.
+     */
+    public void initialize() {
+        super.initialize();
         log = Logger.getLogger(CharTransformer.class.getName());
-	} // initialize
-	
+    } // initialize
+    
     /** Tells that this specific format is a binary format
      *  @return false if character format, true for binary
      */
     public boolean isBinaryFormat() {
-    	setBinaryFormat(false);
+        setBinaryFormat(false);
         return false;
     } // isBinaryFormat
 
-	/** Some formats are based on a character record */
-	protected CharRecord record;
-	
+    /** Some formats are based on a character record */
+    protected CharRecord record;
+    
     /** Sets the underlying record
      *  @param subclassRecord character record for some subclass format
      */
     protected void setRecord(CharRecord subclassRecord) {
-    	this.record = subclassRecord;
+        this.record = subclassRecord;
     } // setRecord
 
     /** Fires several SAX events for the record (pseudo-abstract method)
@@ -109,14 +110,14 @@ public abstract class CharTransformer extends BaseTransformer {
     /* SAX Handler */
     /*=============*/
 
-	/** Some formats are based on a character record */
-	protected CharRecord saxRecord;
-	
+    /** Some formats are based on a character record */
+    protected CharRecord saxRecord;
+    
     /** Sets the underlying record for SAX event processing
      *  @param subclassRecord character record for some subclass format
      */
     protected void setSAXRecord(CharRecord subclassRecord) {
-    	saxRecord = subclassRecord;
+        saxRecord = subclassRecord;
     } // setSAXRecord
 
     /** Receive notification of the beginning of the document,
@@ -127,7 +128,7 @@ public abstract class CharTransformer extends BaseTransformer {
     public void startDocument() 
             throws SAXException {
         try {
-			super.startDocument();
+            super.startDocument();
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
@@ -143,7 +144,7 @@ public abstract class CharTransformer extends BaseTransformer {
      *  or the empty string if qualified names are not available.
      *  @param attrs the attributes attached to the element. 
      *  If there are no attributes, it shall be an empty Attributes object.
-     *  @throws SAX Exception
+     *  @throws SAXException for any SAX error
      */
     public void startElement(String uri, String localName, String qName, Attributes attrs) 
             throws SAXException {

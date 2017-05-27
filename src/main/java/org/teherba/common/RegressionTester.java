@@ -1,5 +1,6 @@
 /*  Run many test cases through a regression test with result file comparision 
  *  @(#) $Id$
+ *  2017-05-27: javadoc
  *  2016-10-13: less imports
  *  2016-09-15: curl syntax for URIReader's file upload constructor
  *  2016-08-10: check for non-empty result file with thisStream.size()
@@ -80,7 +81,7 @@ HttpEntity result = response.getEntity();
  *  files (*.prev.tst) or generates new output files (*.this.tst) and compares them
  *  to the reference files. A typical activation is:
  *  <pre>
- *  java -cp common-core.jar org.teherba.common.RegressionTester test/mysql.tests "*" 2>&1 | tee test/regression_mysql.log
+ *  java -cp common-core.jar org.teherba.common.RegressionTester test/mysql.tests "*" 2&gt;&amp;1 | tee test/regression_mysql.log
  *  </pre>
  *  In order to avoid differences which depend on the date/time, for example,
  *  the program reads a file <em>regression.properties</em>
@@ -108,7 +109,7 @@ Dbat Vx.hhhh/yyyy-mm-dd - DataBase Application Tool
  *  </ul>
  *  The commands and macro definitions are uppercase by convention.
  *  The following macro definitions are recognized:
- *  <table>
+ *  <table><caption>List of Macros</caption>
  *  <tr><td>ARGS=   </td><td>commandline arguments which are appended to the CALL command</td></tr>
  *  <tr><td>CASE    </td><td>built-in macro which returns the name of the current testcase</td></tr>
  *  <tr><td>DATA    </td><td>built-in macro which returns the name of the current data file</td></tr>
@@ -122,7 +123,7 @@ Dbat Vx.hhhh/yyyy-mm-dd - DataBase Application Tool
  *  <tr><td>(other)=</td><td>user defined macro</td></tr>
  *  </table>
  *  The following commands are recognized:
- *  <table>
+ *  <table><caption>List of Commands</caption>
  *  <tr><td>CALL    </td><td>activate the main method in the specified Java class file</td></tr>
  *  <tr><td>DATA    </td><td>starts "here is" content; lines for an auxiliary test file</td></tr>
  *  <tr><td>ECHO    </td><td>output the rest of the line in the test logfile</td></tr>

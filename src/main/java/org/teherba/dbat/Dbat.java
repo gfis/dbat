@@ -1,5 +1,6 @@
 /*  Dbat.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2017-05-27: javadoc 1.8
  *  2016-09-16: -p lang=de sets Locale for SAX messages
  *  2016-08-09: pass "conn" in writeStart
  *  2013-01-05: fit for RegressionTester
@@ -216,6 +217,7 @@ public class Dbat implements Serializable {
      *  @param charReader reader for input, already opened
      *  @param handler SAX handler for Dbat specifications, must be already configured
      *  @param tbSerializer serializer for output format
+     *  @throws Exception for any error
      */
     public void parseXML(Reader charReader, SpecificationHandler handler, BaseTable tbSerializer)
             throws Exception {

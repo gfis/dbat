@@ -1,5 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$ 2016-04-16 14:43:35
+ *  2017-05-27: javadoc 1.8
  *  2016-10-13: less imports
  *  2016-09-16: log.info() without caller's name; Locale.setDefault; better versionString
  *  2016-09-12: getDataSourceMap (from DbatServlet.init)
@@ -255,6 +256,7 @@ public class Configuration implements Serializable {
     /** MIME type for HTML output (constant per application) */
     private String htmlMimeType;
     /** Gets the MIME type to be returned for HTML target format
+     *  @return MIME type
      */
     public String getHtmlMimeType() {
         return this.htmlMimeType;
@@ -300,13 +302,13 @@ public class Configuration implements Serializable {
     /** Remembers the manner of SQL processing */
     private int manner;
     /** Gets the manner of SQL processing
-     *  @return manner
+     *  @return code for JDBC, SQLJ, STP
      */
     public int getManner() {
         return this.manner;
     } // getManner
     /** Sets the manner of SQL processing
-     *  @param manner
+     *  @param manner code for JDBC, SQLJ, STP
      */
     public void setManner(int manner) {
         this.manner = manner;
@@ -628,6 +630,7 @@ public class Configuration implements Serializable {
 
     /** Determine the mapping from connectionIds to {@link DataSource}s 
      *  from the environment variable set in <em>dbat/etc/META-INF/context.xml</em>
+     *  @return Mapping from short strings to data sources
      */
     public LinkedHashMap<String, DataSource> getDataSourceMap() {
         LinkedHashMap<String, DataSource> dsMap = new LinkedHashMap<String, DataSource>(4);
@@ -744,7 +747,7 @@ public class Configuration implements Serializable {
      *  driver = "com.mysql.jdbc.Driver";
      *  url = "jdbc:mysql://localhost/worddb";
      *
-     *  Oracle >= 9.0: ojdbc14.jar
+     *  Oracle &gt;= 9.0: ojdbc14.jar
      *  driver = "oracle.jdbc.driver.OracleDriver";
      *  url = "jdbc:oracle:thin:@localhost:1521:worddb";
      *

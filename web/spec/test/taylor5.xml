@@ -28,6 +28,6 @@
         <counter desc="person,s"/>
     </select>
     <ht:p />
-    -&gt; <a href="servlet?spec=test.taylor5&amp;mode=taylor&amp;sep={}&amp;dummy="  >Pattern Replacing</a>&#xa0; &#xa0;
-    -&gt; <a href="servlet?spec=test.taylor5&amp;mode=taylor&amp;sep={}&amp;uri=bad;&amp;dummy="  >Multiline values</a>&#xa0; &#xa0;
+    -&gt; <ht:a href="servlet?spec=test.taylor5&amp;mode=taylor&amp;sep={}&amp;dummy="  >Pattern Replacing</ht:a>&#xa0; &#xa0;
+    -&gt; <ht:a href="servlet?spec=test.taylor5&amp;mode=taylor&amp;sep={}&amp;uri=bad;&amp;dummy="  >Multiline values</ht:a>&#xa0; &#xa0;
 </dbat>

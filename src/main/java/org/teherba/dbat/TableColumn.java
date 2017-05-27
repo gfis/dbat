@@ -1,5 +1,6 @@
 /*  TableColumn - bean with properties of an abstract column
     @(#) $Id$
+ *  2017-05-27: javadoc 1.8
     2016-12-09: avoid empty Javascrpt function calls
     2016-02-10: values may not be null if wrapped
     2014-11-11: wrap="verbatim"
@@ -615,7 +616,7 @@ public class TableColumn implements Cloneable {
      *
      *  A (relative) link to another specification with parameter(s) must be specified as
      *  <pre>
-     *      spec=basename&amp;name1[sep1&name2[sep2[&name3...]]]
+     *      spec=basename&amp;amp;name1[sep1&amp;amp;name2[sep2[&amp;amp;name3...]]]
      *  </pre>
      *  If there is more than one parameter, non-word separator strings <em>sepi</em> must be noted
      *  between the parameter names. A trailing "=" is ignored for compatibility reasons.

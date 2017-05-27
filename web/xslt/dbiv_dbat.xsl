@@ -106,9 +106,16 @@
     <dbat   xmlns     ="http://www.teherba.org/2007/dbat"
             xmlns:ht  ="http://www.w3.org/1999/xhtml"
             >
-            <xsl:attribute name="encoding"  ><xsl:value-of select="@encoding"   /></xsl:attribute>
             <xsl:attribute name="conn"      ><xsl:value-of select="@conn"       /></xsl:attribute>
-            <xsl:attribute name="lang"      ><xsl:value-of select="@lang"       /></xsl:attribute>
+
+            <xsl:if test="string-length(@debug) != 0">
+              <xsl:attribute name="debug">
+                <xsl:value-of select='@debug' />
+              </xsl:attribute>
+            </xsl:if>
+
+            <xsl:attribute name="encoding"  ><xsl:value-of select="@encoding"   /></xsl:attribute>
+
             <xsl:if test="string-length(@javascript) != 0 or count(iv:view/iv:field/iv:subquery) != 0">
               <xsl:attribute name="javascript">
                 <xsl:value-of select='@javascript' />
@@ -120,13 +127,40 @@
                 </xsl:if>
               </xsl:attribute>
             </xsl:if>
+            
+            <!-- headers not reasonable for dbiv -->
+
+            <xsl:attribute name="lang"      ><xsl:value-of select="@lang"       /></xsl:attribute>
+
+            <xsl:if test="string-length(@manner) != 0">
+              <xsl:attribute name="manner">
+                <xsl:value-of select='@manner' />
+              </xsl:attribute>
+            </xsl:if>
+
+            <xsl:if test="string-length(@mode) != 0">
+              <xsl:attribute name="mode">
+                <xsl:value-of select='@mode' />
+              </xsl:attribute>
+            </xsl:if>
+
             <xsl:if test="string-length(@stylesheet) != 0">
               <xsl:attribute name="stylesheet">
                 <xsl:value-of select='@stylesheet' />
               </xsl:attribute>
             </xsl:if>
+            
+            <xsl:if test="string-length(@target) != 0">
+              <xsl:attribute name="target">
+                <xsl:value-of select='@target' />
+              </xsl:attribute>
+            </xsl:if>
+            
             <xsl:attribute name="title"     ><xsl:value-of select="translate(@script, '.', '/')" /></xsl:attribute>
             <xsl:value-of select='"&#10;&#32;&#x20;"' />
+
+            <!-- uri, xslt not reasonable for dbiv -->
+            
         <xsl:comment><xsl:text>
         param "view" takes the following values:
         sear - search form only

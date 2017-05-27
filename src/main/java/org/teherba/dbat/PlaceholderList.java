@@ -1,5 +1,6 @@
 /*  PlaceholderList - array list of {@link Placholder}s and associated methods
     @(#) $Id$
+ *  2017-05-27: javadoc 1.8
     2016-10-13: less imports
     2012-05-07, Georg Fischer: copied from TableMetaData
  */
@@ -61,6 +62,7 @@ public class PlaceholderList {
      *  @param dir direction indicator: 'i', 'o' or 'b'
      *  @param typeName SQL type of the placeholder
      *  @param value value of the column
+     *  @return the new placeholder
      */
     public Placeholder add(char dir, String typeName, String value) {
         Placeholder placeholder = new Placeholder(dir, typeName, value);
@@ -71,6 +73,7 @@ public class PlaceholderList {
     /** Adds a new (input) placeholder to the list
      *  @param typeName SQL type of the placeholder
      *  @param value value of the column
+     *  @return the new placeholder
      */
     public Placeholder add(String typeName, String value) {
         return this.add('i', typeName, value);
