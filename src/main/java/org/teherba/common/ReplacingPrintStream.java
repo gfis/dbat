@@ -1,5 +1,6 @@
 /*  PrintStream which replaces some patterns (ISO timestamps) by constant strings for RegressionTester
  *  @(#) $Id$
+ *  2017-05-27: javadoc
  *  2016-10-13: less imports
  *  2016-08-10: size()
  *  2016-05-14: renamed from TimestampFilterStream; cleaned
@@ -49,6 +50,8 @@ public class ReplacingPrintStream extends PrintStream {
     /** Constructor with output file
      *  @param fileName name of the file to be written
      *  @param enc character set name
+     *  @throws FileNotFoundException from super
+     *  @throws UnsupportedEncodingException from super
      */
     public ReplacingPrintStream(String fileName, String enc)
             throws FileNotFoundException,
@@ -66,6 +69,8 @@ public class ReplacingPrintStream extends PrintStream {
      *  @param fileName name of the file to be written
      *  @param enc character set name
      *  @param replacements replacement patterns and their substitutions in consecutive elements
+     *  @throws FileNotFoundException from super
+     *  @throws UnsupportedEncodingException from super
      */
     public ReplacingPrintStream(String fileName, String enc, String[] replacements)
             throws FileNotFoundException,

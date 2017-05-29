@@ -1,5 +1,6 @@
 /*  MetaInfPage.java - show meta data from META-INF/MANIFEST.MF, version String, License and NOTICE file
  *  @(#) $Id$
+ *  2017-05-27: javadoc
  *  2016-12-11: language specific heading
  *  2016-10-10: throws IOException
  *  2016-09-20: need any local object of the application to get the proper classloader containing the MANIFEST.MF
@@ -74,6 +75,7 @@ public class MetaInfPage {
      *  </ul>
      *  @param callingServlet the HttpServlet instance calling this method,
      *  for the determination of the proper ClassLoader
+     *  @throws IOException if an IO error occurs
      */
     public void showMetaInf(HttpServletRequest request, HttpServletResponse response
             , BasePage    basePage
@@ -151,6 +153,7 @@ public class MetaInfPage {
      *  @param appName the applications base name (all lowercase, for example "common", "dbat" ...)
      *  @param resourceName name of the resource file in the container JAR/WAR,
      *  for example <em>"META-INF/MANIFEST.MF"</em>
+     *  @throws IOException if an IO error occurs
      *  @return URL if the application was found, or <em>null</em> otherwise
      */
     private URL getMyResourceURL(Object localObject, String appName, String resourceName) throws IOException {
@@ -185,6 +188,7 @@ public class MetaInfPage {
      *  in the JAR or WAR file which contains <em>this</em> class.
      *  @param localObject any object which is loaded with the relevant MANIFEST.MF
      *  @param appName the applications base name (all lowercase, for example "common", "dbat" ...)
+     *  @throws IOException if an IO error occurs
      *  @return a String of the form "Vm.hhhh/yyyy-mm-dd",
      *  where m is the major version,
      *  and hhhh is the build number padded with zeroes or truncated to 4 digits
