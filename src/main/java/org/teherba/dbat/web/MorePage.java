@@ -1,5 +1,6 @@
 /*  MorePage.java - replacement for more.jsp: input form with all parameters äöüÄÖÜ
  *  @(#) $Id$
+ *  2017-05-27: javadoc
  *  2016-12-09: no script.js
  *  2016-10-11: IOException
  *  2016-08-29: many code moved to Messages.addErrorMessageTexts for basePage.writeAuxiliaryLinks
@@ -66,7 +67,9 @@ public class MorePage {
      *  @param request request with header fields
      *  @param response response with writer
      *  @param basePage refers to common web methods and messages
+     *  @param language natural language for messages
      *  @param tableFactory factory for table serializers
+     *  @throws IOException if an IO error occurs
      */
     public void showMore(HttpServletRequest request, HttpServletResponse response
             , BasePage basePage
@@ -261,7 +264,7 @@ public class MorePage {
             out.write("</select><p />&nbsp;\n</td>\n");
             //----------------------------------------
             out.write("<td>\n");
-            basePage.writeAuxiliaryLinks(language, "more");
+            out.write(basePage.getOtherAuxiliaryLinks(language, "more"));
             out.write("<br /><input type=\"submit\" value=\"");
             if (false) {
             } else if (language.startsWith("de")) {
@@ -286,6 +289,7 @@ public class MorePage {
      *  @param request request with header fields
      *  @param response response with writer
      *  @param basePage refers to common web methods and messages
+     *  @param language natural language for messages
      */
     public void showValidate(HttpServletRequest request, HttpServletResponse response
             , BasePage basePage

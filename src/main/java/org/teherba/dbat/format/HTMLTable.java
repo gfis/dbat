@@ -1,5 +1,6 @@
 /*  Generator for an HTML table
     @(#) $Id$
+ *  2017-05-27: javadoc
     2016-12-09: avoid empty Javascrpt function calls
     2016-10-03: style could have been null
     2016-05-19: repair style on rows (table id)
@@ -345,10 +346,10 @@ public class HTMLTable extends XMLTable {
      *  <ul>
      *  <li>0 = no escaping at all</li>
      *  <li>1 = "&amp;", "&lt;" and "&gt;" are escaped
-     *  as "&amp;amp;", "&amp;lt;" and "&amp;gt;" respectively</li>
-     *  <li>2 = "&apos;" is replaced by "&amp;apos"</li>
+     *    as "&amp;amp;", "&amp;lt;" and "&amp;gt;" respectively</li>
+     *  <li>2 = "&amp;apos;" is replaced by "&amp;amp;apos;"</li>
      *  <li>3 = combination of rule 1 and rule 2</li>
-     *  <li>4 = like 1, but internally check column.expr for start of tag ('<')
+     *  <li>4 = like 1, but internally check column.expr for start of tag ('&lt;')</li>
      *  </ul>
      */
     public int getEscapingRule() {

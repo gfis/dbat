@@ -2,7 +2,7 @@
  *	All classes in this package inherit common methods and properties from 
  *	{@link org.teherba.dbat.format.BaseTable}. The selection of a specific format is
  *	done in {@link org.teherba.dbat.format.TableFactory}.
- *	<p />
+ *	<p>
  *  There are several groups of formats:
  *  <ul>
  *  <li>Simple, plain text formats: 

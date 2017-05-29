@@ -1,5 +1,7 @@
 /* BaseRecord.java - common methods for record access
  * @(#) $Id$
+ * 2017-05-27: javadoc 1.8
+ * 2016-10-14: Date, Timestamp, Attributes and SAXException only for "a"
  * 2008-08-04: get|set1, setPadChar
  * 2008-06-23: get|setRecordTag, getRecordURI
  * 2007-01-19: padForSet in char.setString
@@ -123,6 +125,7 @@ public abstract class BaseRecord {
    /** Sets an integer into a field of length 1,
     *  starting at <em>start</em>,
     *  and update the read/write pointer
+    *  @param start starting position of field
     *  @param value value to be written
     *  @return modified position in buffer
     */
@@ -670,6 +673,7 @@ public abstract class BaseRecord {
    public final String ROOT_TAG  = "records";
 
    /** Gets the namespace URI for these records
+    *  @return namespace URI for <em>xtrans</em>
     */
    public String getNamespaceURI() {
        return "http://www.teherba.org/2006/xtrans/Record";
@@ -698,7 +702,7 @@ public abstract class BaseRecord {
     *  or the empty string if qualified names are not available.
     *  @param attrs the attributes attached to the element.
     *  If there are no attributes, it shall be an empty Attributes object.
-    *  @throws SAX Exception
+    *  @throws SAXException for SAX errors
     */
    public void startElement(String uri, String localName, String qName, Attributes attrs) throws SAXException {
    } // startElement

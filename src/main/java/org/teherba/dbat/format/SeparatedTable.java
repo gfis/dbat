@@ -1,6 +1,6 @@
-/*  Generator for a table with (comma, tab) separated values
-    aöüÄÖÜß
+/*  Generator for a table with (comma, tab) separated values  aöüÄÖÜß
     @(#) $Id$
+ *  2017-05-27: javadoc
     2011-11-11: writeComment(line, verbose)
     2011-08-24: writeGenericRow
     2011-02-02: writeRowCounter removed, writeComment prints a line
@@ -43,7 +43,7 @@ public class SeparatedTable extends BaseTable {
         setDescription("fr", "Valeurs séparées");
     } // Constructor
 
-    /** Writes a comment, but only if the "verbose" level is > 0.
+    /** Writes a comment, but only if the "verbose" level is &gt; 0.
      *  @param line string to be output as a comment
      *  @param verbose level of output detail
      */

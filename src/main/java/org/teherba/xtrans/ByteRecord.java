@@ -1,5 +1,7 @@
 /* ByteRecord.java - access methods for byte fields and EBCDIC conversion
  * @(#) $Id$
+ * 2017-05-27: javadoc 1.8
+ * 2016-10-14: Date, Timestamp, Attributes and SAXException only for "a"
  * 2008-08-04: get|set1, setPadChar
  * 2008-06-23: get|setRecordTag, getRecordURI
  * 2007-01-19: padForSet in char.setString
@@ -17,10 +19,6 @@ import  org.teherba.xtrans.BaseRecord;
 import  org.teherba.xtrans.Field;
 import  java.io.InputStream;
 import  java.io.OutputStream;
-import  java.sql.Date;
-import  java.sql.Timestamp;
-import  org.xml.sax.Attributes;
-import  org.xml.sax.SAXException;
 import  org.apache.log4j.Logger;
 
 /**
@@ -115,7 +113,7 @@ public class ByteRecord extends BaseRecord {
            + "\u0070\u008f\u0070\u0070\u0070\u0070\u00a1\u0070"
            + "\u0090\u0070\u0041\u0070\u00fa\u00ea\u0070\u0000"
            ;
-   /** EBCDIC -> ISO-8859-1 conversion table */
+   /** EBCDIC -&gt; ISO-8859-1 conversion table */
    private static final String EBCDIC_TO_LATIN1 =
              "\u0000\u0001\u0002\u0003\u0020\u0009\u0020\u007f"
            + "\u0020\u0020\u0020\u000b\u000c\r\u000e\u000f"
@@ -779,6 +777,7 @@ public class ByteRecord extends BaseRecord {
     *  and update the read/write pointer;
     *  the field contains 2*<em>len</em> digits
     *  @param field field of record to be written (offset and length)
+    *  @param value value to be written
     *  @return modified position in buffer
     */
    public int setUnsignedDecimal(Field field, String value) {
@@ -879,6 +878,7 @@ public class ByteRecord extends BaseRecord {
     *  and update the read/write pointer;
     *  the field contains 2*<em>len</em> digits
     *  @param field field of record to be written (offset and length)
+    *  @param value value to be written
     *  @return modified position in buffer
     */
    public int setDecimal(Field field, String value) {

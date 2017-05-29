@@ -1,5 +1,6 @@
 /*  ConsolePage.java - run a query or SQL instruction from a web form
  *  @(#) $Id$
+ *  2017-05-27: javadoc
  *  2016-10-13: less imports
  *  2016-08-26: param BasePage
  *  2012-07-01, Georg Fischer: copied from MorePage.java
@@ -64,6 +65,7 @@ public class ConsolePage {
      *  @param language 2-letter code en, de etc.
      *  @param tableFactory factory for table serializers
      *  @param dsMap maps connection identifiers (short database instance ids) to {@link DataSource Datasources}
+     *  @throws IOException if an IO error occurs
      */
     public void showConsole(HttpServletRequest request, HttpServletResponse response
             , BasePage basePage
@@ -259,10 +261,6 @@ public class ConsolePage {
             out.write("</tr>\n");
             out.write("</table>\n</form>\n");
             //====================================
-        /*
-            sqlAction  = new SQLAction    (config);
-            tbMetaData = new TableMetaData(config);
-        */
             if (intext.trim().length() > 0) {
                 out.write(intext);
             }

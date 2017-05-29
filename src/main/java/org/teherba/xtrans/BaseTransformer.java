@@ -1,5 +1,7 @@
 /*  (Pseudo-abstract) class for file format transformers
     @(#) $Id$
+ *  2017-05-27: javadoc 1.8
+    2016-10-13: less imports
     2016-09-07: public setMimeType, getOption, getIntOption
     2012-01-10: instantiate Logger in Constructor
     2010-06-01: do not close System.out if processing commands from -f, close at the end only
@@ -11,8 +13,8 @@
     2007-03-23: implements DefaultHandler2, XMLFilter and Locator interfaces
     2006-11-17: from XML works too
     2006-09-19: copied from numword.BaseSpeller
-    
- *  The AbstractXMLReader portion was taken from the 
+
+ *  The AbstractXMLReader portion was taken from the
  *  file javaxslt_examples.zip from chapter 5 in the book
  *  "Java and XSLT", O'Reilly, ISBN: 0596001436, Author: Eric M. Burke, September 2001
  *  (c.f. http://www.perfectxml.com/Oreilly/chapter.asp?row_id=9)
@@ -59,14 +61,9 @@ import  java.util.Properties;
 import  java.util.prefs.Preferences;
 import  java.util.Stack;
 import  javax.xml.transform.Result;
-import  javax.xml.transform.Templates;
 import  javax.xml.transform.Transformer;
-import  javax.xml.transform.TransformerFactory;
 import  javax.xml.transform.sax.SAXResult;
-import  javax.xml.transform.sax.SAXSource;
-import  javax.xml.transform.sax.SAXTransformerFactory;
 import  javax.xml.transform.sax.TransformerHandler;
-import  javax.xml.transform.stream.StreamSource;
 import  org.xml.sax.Attributes;
 import  org.xml.sax.ContentHandler;
 import  org.xml.sax.DTDHandler;
@@ -85,14 +82,14 @@ import  org.xml.sax.ext.DefaultHandler2;
 import  org.xml.sax.ext.LexicalHandler;
 import  org.apache.log4j.Logger;
 
-/** Base class for file format transformers 
+/** Base class for file format transformers
  *  defining common properties and methods.
  *  All Xtrans transformer transformer classes are derived from this class.
- *  A <em>transformer</em> is divided in two parts: 
+ *  A <em>transformer</em> is divided in two parts:
  *  <ul>
  *  <li>the <em>generator</em> which reads some external file format and fires SAX events,</li>
  *  <li>the <em>serializer</em> which accepts SAX events and writes the same external output file format.</li>
- *  </ul> 
+ *  </ul>
  *  <p>
  *  Some of the transformers implement general formats for all types of SAX events,
  *  among them the {@link XMLTransformer} and the PYXTransformer.
@@ -102,38 +99,38 @@ import  org.apache.log4j.Logger;
  *  Except for some members of the <em>org.teherba.xtrans.pseudo</em> subpackage, the transformers will
  *  reproduce the input file if their serializer receives the SAX events fired by their generator.
  *  This is tested by a sequence of the form:
- *  <blockquote>input file -&gt; XYZ generator -&gt; XML serializer 
+ *  <blockquote>input file -&gt; XYZ generator -&gt; XML serializer
  *      -&gt; XML file -&gt; XML generator -&gt; XYZ serializer -&gt; output file,
  *  </blockquote>
  *  where the input and the output file do not differ (sometimes except for whitespace).
  *  <p>
- *  XML processing pipes can be built with some transformer's generator at the start and 
+ *  XML processing pipes can be built with some transformer's generator at the start and
  *  another (or the same) transformer's serializer at the end. In between, XSLT transformations
  *  can be performed, or the stream of SAX events may be modified by filters.
- * 
+ *
  *  @author Dr. Georg Fischer
  */
-public class BaseTransformer 
+public class BaseTransformer
         extends DefaultHandler2
-        implements XMLFilter, TransformerHandler, Locator {
-            
+        implements XMLFilter, TransformerHandler, Locator, LexicalHandler {
+
     public final static String CVSID = "@(#) $Id$";
-    
+
     /** log4j logger (category) */
     private Logger log;
-    
+
     /** whether XML escaping is done by Apache serializer, or must be done explicitely */
     protected boolean mustAmpEscape;
-    
+
     //--------------------------------
     // local variables
     //--------------------------------
     /** input  file encoding, empty for binary (byte) data */
     protected String sourceEncoding;
-    
+
     /** output file encoding, empty for binary (byte) data */
     protected String resultEncoding;
-    
+
     /** reader for text   files */
     protected Reader        charReader;
     /** writer for text   files */
@@ -161,7 +158,7 @@ public class BaseTransformer
 
     /** comma separated list of usual file extensions for this format */
     private   String fileExtensionList;
-    
+
     /** List of options for a transformation */
     private   Properties options;
 
@@ -179,19 +176,19 @@ public class BaseTransformer
 
     /** preferences node for Base64 encoding */
     private Preferences base64Node;
-    
+
     /** name for a temporary node used for Base64 conversion */
     private static final String BASE64_NODE = "BASE64_NODE";
-    
+
     /** Maps tags in the source to XML tags */
-    private HashMap/*<1.5*/<String, String>/*1.5>*/ sourceTagMap;
+    private HashMap<String, String> sourceTagMap;
     /** Maps XML tags to tags in the result (inverse of <em>sourceTagMap</em>) */
-    private HashMap/*<1.5*/<String, String>/*1.5>*/ resultTagMap;
+    private HashMap<String, String> resultTagMap;
     /** Map for simple replacements in source strings */
-    private HashMap/*<1.5*/<String, String>/*1.5>*/ sourceReplaceMap;
+    private HashMap<String, String> sourceReplaceMap;
     /** inverse Map for simple replacements */
-    private HashMap/*<1.5*/<String, String>/*1.5>*/ resultReplaceMap;
-    
+    private HashMap<String, String> resultReplaceMap;
+
     /** system-specific representation of a new line characters sequence */
     public String newline;
 
@@ -205,7 +202,7 @@ public class BaseTransformer
     protected static final String ROW_TAG     = "tr";
     /** Info element tag */
     protected static final String INFO_TAG    = "info";
-    
+
     //--------------------------------
     // Constructor
     //--------------------------------
@@ -223,11 +220,11 @@ public class BaseTransformer
      *  selected generator and serializer.
      *  All heavy-weight initialization should be done here and in the
      *  derived methods. All derived constructors must be kept aa leightweight as possible,
-     *  since they are all called in the constructor of {@link org.teherba.xtrans.XtransFactory}. 
+     *  since they are all called in the constructor of {@link org.teherba.xtrans.XtransFactory}.
      */
     public void initialize() {
         mustAmpEscape = true; // used in XMLTransformer
-        setSourceEncoding("UTF-8"); // ASCII + Western European 
+        setSourceEncoding("UTF-8"); // ASCII + Western European
         setResultEncoding("UTF-8"); // for XML
         // all filehandles unopened so far:
         charReader  = null;
@@ -241,16 +238,16 @@ public class BaseTransformer
         setMimeType    (""); // default: depends on isBinaryFormat
         base64Node          = Preferences.userNodeForPackage(BaseTransformer.class);
         int MAX_MAP         = 32;
-        sourceTagMap        = new HashMap/*<1.5*/<String, String>/*1.5>*/(MAX_MAP);
-        resultTagMap        = new HashMap/*<1.5*/<String, String>/*1.5>*/(MAX_MAP);
-        sourceReplaceMap    = new HashMap/*<1.5*/<String, String>/*1.5>*/(MAX_MAP);
-        resultReplaceMap    = new HashMap/*<1.5*/<String, String>/*1.5>*/(MAX_MAP);
-        tagStack            = new Stack/*<1.5*/<String>/*1.5>*/();
+        sourceTagMap        = new HashMap<String, String>(MAX_MAP);
+        resultTagMap        = new HashMap<String, String>(MAX_MAP);
+        sourceReplaceMap    = new HashMap<String, String>(MAX_MAP);
+        resultReplaceMap    = new HashMap<String, String>(MAX_MAP);
+        tagStack            = new Stack<String>();
         newline             = System.getProperty("line.separator");
         rootTag             = "document";
         // putEntityReplacements();
     } // initialize
-    
+
     /*==========*/
     /*  Utility */
     /*==========*/
@@ -279,31 +276,31 @@ public class BaseTransformer
     // Encoding
     //--------------------------------
     /** Sets the input  file encoding
-     *  @param encoding name of the encoding (UTF-8, ISO-8859-1), 
+     *  @param encoding name of the encoding (UTF-8, ISO-8859-1),
      *  or empty for binary data
      */
     public void setSourceEncoding(String encoding) {
         sourceEncoding = encoding;
     } // setSourceEncoding
-    
+
     /** Sets the output file encoding
-     *  @param encoding name of the encoding (UTF-8, ISO-8859-1), 
+     *  @param encoding name of the encoding (UTF-8, ISO-8859-1),
      *  or empty for binary data
      */
     public void setResultEncoding(String encoding) {
         resultEncoding = encoding;
     } // setResultEncoding
-    
+
     /** Gets the input  file encoding
-     *  @return encoding name of the source encoding (UTF-8, ISO-8859-1), 
+     *  @return encoding name of the source encoding (UTF-8, ISO-8859-1),
      *  or empty for binary data
      */
     public String getSourceEncoding() {
         return sourceEncoding;
     } // getSourceEncoding
-    
+
     /** Gets the output file encoding
-     *  @return encoding name of the result encoding (UTF-8, ISO-8859-1), 
+     *  @return encoding name of the result encoding (UTF-8, ISO-8859-1),
      *  or empty for binary data
      */
     public String getResultEncoding() {
@@ -314,16 +311,16 @@ public class BaseTransformer
     // Source and Result formats
     //--------------------------------
     /** Sets the input  file format
-     *  @param format name of the format (UTF-8, ISO-8859-1), 
+     *  @param format name of the format (UTF-8, ISO-8859-1),
      *  or empty for binary data
      */
 /*
     public void setSourceFormat(String format) {
         sourceFormat = format;
     }
-*/  
+*/
     /** Sets the output file format
-     *  @param format name of the format (UTF-8, ISO-8859-1), 
+     *  @param format name of the format (UTF-8, ISO-8859-1),
      *  or empty for binary data
      */
 /*
@@ -362,7 +359,7 @@ public class BaseTransformer
         }
         return (comma > 0) ? fileExtensionList.substring(0, comma) : "dat";
     } // getFileExtension
-    
+
     /** Sets the file extensions used for this file format
      *  @param extensionList comma separated list of usual file extensions
      *  for this format
@@ -371,14 +368,14 @@ public class BaseTransformer
         this.fileExtensionList = extensionList;
     } // setFileExtensions
     //--------------------------------------------------
-    /** Gets the namespace prefix 
+    /** Gets the namespace prefix
      *  @return namespace prefix without colon, or empty string
      */
     public String getNamespacePrefix() {
         return namespacePrefix;
     } // getNamespacePrefix
-    
-    /** Sets the namespace prefix 
+
+    /** Sets the namespace prefix
      *  @param prefix namespace prefix without colon, or empty string
      */
     public void setNamespacePrefix(String prefix) {
@@ -391,7 +388,7 @@ public class BaseTransformer
     public String getNamespaceURI() {
         return namespaceURI;
     } // getNamespaceURI
-    
+
     /** Sets the XML namespace URI
      *  @param uri Universal Resource Identifier for the namespace
      */
@@ -410,14 +407,14 @@ public class BaseTransformer
     } // setNamespace
 
     //--------------------------------------------------
-    /** Sets the file open mode 
+    /** Sets the file open mode
      *  @param append true if write methods should append to output file
      */
     public void setAppend(boolean append) {
         this.append = append;
     } // setAppend
 
-    /** Opens some named (ordinary) input or output file 
+    /** Opens some named (ordinary) input or output file
      *  @param ifile 0 for source file, 1 for result file
      *  @param fileName name of the (ordinary) file to be opened, or null for STDIN/STDOUT
      *  @return whether the operation was successful
@@ -487,7 +484,7 @@ public class BaseTransformer
         }
         return result;
     } // openFile
-    
+
     /** Opens some input or output stream
      *  @param ifile 0 for source, 1 for result
      *  @param stream object for stream input or output, respectively (may not be null)
@@ -533,7 +530,7 @@ public class BaseTransformer
         }
         return result;
     } // openStream
-    
+
     /** Closes any open input and output files
      */
     public void closeAll() {
@@ -557,7 +554,7 @@ public class BaseTransformer
             exc.printStackTrace();
         }
     } // closeAll
-    
+
     /** Closes open input and output files except for stdin and stdout.
      *  @param fileNames names of the input and output file, or null
      */
@@ -592,7 +589,7 @@ public class BaseTransformer
             exc.printStackTrace();
         }
     } // closeAll
-    
+
     //--------------------------------------------------
     /** Sets the reader for character data.
      *  @param reader reader to be used to read character data
@@ -650,7 +647,7 @@ public class BaseTransformer
         return byteWriter;
     } // getByteWriter
     //--------------------------------------------------
-    
+
     /** Tells whether the file format handled by this transformer
      *  uses byte files, or character files if false.
      *  @return true if the format uses byte files
@@ -658,14 +655,14 @@ public class BaseTransformer
     public boolean isBinaryFormat() {
         return binary;
     } // isBinaryFormat
-    
+
     /** Sets the binary format property
      *  @param binary true (false) if the format is (not) binary
      */
     public void setBinaryFormat(boolean binary) {
         this.binary = binary;
     } // setBinaryFormat
-    
+
     /** Determines whether the head of the input file
      *  indicates that the file has a particular format
      *  @return true if the input file seems to be in this format
@@ -673,7 +670,7 @@ public class BaseTransformer
     public boolean detect() {
         return false;
     } // detect
-    
+
     /** Gets the list of applicable file format codes which are
      *  "understood" by this module
      *  @return list of (lowercase) file format codes
@@ -682,7 +679,7 @@ public class BaseTransformer
     public String getFormatCodes() {
         return formatCodeList;
     } // getFormatCodes
-    
+
     /** Gets the first (main) code for the format
      *  @return file format code (lowercase)
      */
@@ -694,7 +691,7 @@ public class BaseTransformer
         }
         return result;
     } // getFirstFormatCode
-    
+
     /** Sets the list of applicable file formats which are
      *  "understood" by this module
      *  @param list list of (lowercase) format codes
@@ -713,7 +710,7 @@ public class BaseTransformer
     public String getDescription() {
         return description;
     } // getDescription
-    
+
     /** Sets the description for the format.
      *  @param text text describing the format of this transformer
      */
@@ -731,7 +728,7 @@ public class BaseTransformer
      */
     protected void setOption(String name, String value) {
         options.setProperty(name.toLowerCase(), value);
-        // log.info("setOption(\"" + name + "\", \"" + value + "\");"); 
+        // log.info("setOption(\"" + name + "\", \"" + value + "\");");
     } // setOption
 
     /** Sets the value of an integer option.
@@ -741,17 +738,17 @@ public class BaseTransformer
      */
     public void setIntOption(String name, int value) {
         options.setProperty(name.toLowerCase(), Integer.toString(value));
-        // log.debug("setIntOption(\"" + name + "\", " + value + ");"); 
+        // log.debug("setIntOption(\"" + name + "\", " + value + ");");
     } // setIntOption
 
-    /** Parses a string for pairs of option names, possibly 
-     *  preceeded with "-", and values. Missing values default 
+    /** Parses a string for pairs of option names, possibly
+     *  preceeded with "-", and values. Missing values default
      *  to "1".
      *  @param str string with pairs of option names and values,
      *  e.g. "-width 20 -group 2"
      */
     public void parseOptionString(String str) {
-        // log.debug("parseOptionString(\"" + str + "\");"); 
+        // log.debug("parseOptionString(\"" + str + "\");");
         String [] parts = str.split("\\s+");
         boolean isName = false;
         String name = "";
@@ -785,6 +782,7 @@ public class BaseTransformer
      *  Option names are used by internal methods which always specify them in lower case.
      *  @param name name of the option
      *  @param def default value if option is not set
+     *  @return option value
      */
     public String getOption(String name, String def) {
         String result = options.getProperty(name);
@@ -795,6 +793,7 @@ public class BaseTransformer
      *  Option names are used by internal methods which always specify them in lower case.
      *  @param name name of the option
      *  @param def default value if option is not set or invalid
+     *  @return option value
      */
     public int getIntOption(String name, int def) {
         int result = def;
@@ -802,7 +801,7 @@ public class BaseTransformer
         if (temp != null && temp.length() > 0) {
             try {
                 result = Integer.parseInt(temp);
-            } catch (Exception exc) { 
+            } catch (Exception exc) {
                 // take default if error
             }
         }
@@ -832,9 +831,9 @@ public class BaseTransformer
     //--------------------------------
     // Conversion methods
     //--------------------------------
-    /** Converts a character to an XML entity of the form "&#x{hexstring};" 
+    /** Converts a character to an XML entity of the form "&amp;#x{hexstring};"
      *  @param st1 character for the entity
-     *  @return XML entity, for example "&#xa;"
+     *  @return XML entity, for example "&amp;#xa;"
      */
     public String string1ToEntity(String st1) {
         StringBuffer result = new StringBuffer(8);
@@ -844,9 +843,9 @@ public class BaseTransformer
         return result.toString();
     } // string1ToEntity
 
-    /** Converts an XML entity of the form "&#x{hexstring};" or "&#{decimaldigits};" 
+    /** Converts an XML entity of the form "&amp;#x{hexstring};" or "&amp;#{decimaldigits};"
      *  to the corresponding character
-     *  @param entity an XML entity, for example "&#xa;" 
+     *  @param entity an XML entity, for example "&amp;#xa;"
      *  @return character for the entity
      */
     public String entityToString1(String entity) {
@@ -861,7 +860,7 @@ public class BaseTransformer
             } else if (entity.startsWith("&#")) { // decimal
                 result = Character.toString((char) Integer.parseInt(entity.substring(2)));
             } else {
-                // leave degree - strange unique character 
+                // leave degree - strange unique character
             }
         } catch (Exception exc) {
         }
@@ -870,7 +869,7 @@ public class BaseTransformer
 
     /** Replaces any entities (in fact "character references") by their
      *  corresponding character equivalents
-     *  @param source a string containing XML entities, for example "&#xa;" 
+     *  @param source a string containing XML entities, for example "&amp;#xa;"
      *  @return string with entities replaced
      */
     public static String replaceEntities(String source) {
@@ -929,10 +928,10 @@ public class BaseTransformer
         return result.toString();
     } // replaceEntities
 
-    /** Converts from byte[] to Base64 encoding 
+    /** Converts from byte[] to Base64 encoding
      *  @param  bytes array of bytes to be encoded
      *  @param  len length of <em>bytes</em>
-     *  @return the byte array encoded in Base64, that is a sequences 
+     *  @return the byte array encoded in Base64, that is a sequences
      *  of letters, digits, "+", "/" and "="
      */
     public String bytesToBase64(byte[] bytes, int len) {
@@ -948,11 +947,11 @@ public class BaseTransformer
         return result;
     } // bytesToBase64
 
-    /** Converts from String to Base64 encoding 
+    /** Converts from String to Base64 encoding
      *  @param str string of characters to be encoded
      *  @param encoding encoding encoding to be used for the generation
      *  of a byte array, e.g. "UTF-8" or "ISO-8859-1"
-     *  @return the byte array encoded in Base64, that is a sequences 
+     *  @return the byte array encoded in Base64, that is a sequences
      *  of letters, digits, "+", "/" and "="
      */
     public String stringToBase64(String str, String encoding) {
@@ -1049,13 +1048,13 @@ public class BaseTransformer
         sourceReplaceMap.put(source, result);
         resultReplaceMap.put(result, source);
     } // putReplacementMap
-    
+
     /** Represents the entity escape character itself */
     private static final String AMP     = "&";
     /** Represents the escaped entity escape character */
     private static final String AMP_AMP = "&amp;";
-    
-    /** Fills both replacement maps with the pairs 
+
+    /** Fills both replacement maps with the pairs
      *  for common XML entities
      */
     protected void putEntityReplacements() {
@@ -1065,10 +1064,10 @@ public class BaseTransformer
         putReplacementMap("<"   , "&lt;"    );
         putReplacementMap(">"   , "&gt;"    );
     } // putEntityReplacements
-    
-    /** Replaces all strings stored by <em>putReplacement</em> 
-     *  during a transformation to XML. 
-     *  "&" must be replaced <em>before</em> all other strings if their replacement contains "&".
+
+    /** Replaces all strings stored by <em>putReplacement</em>
+     *  during a transformation to XML.
+     *  "&amp;" must be replaced <em>before</em> all other strings if their replacement contains "&amp;".
      *  @param source string where to replace for transformation to XML
      *  @return resulting string after all replacements
      */
@@ -1079,7 +1078,7 @@ public class BaseTransformer
         if (sourceReplaceMap.get(key) != null) {
             result = result.replaceAll("\\" + key, (String) sourceReplaceMap.get(key));
         }
-        
+
         Iterator iter = sourceReplaceMap.keySet().iterator();
         while (iter.hasNext()) {
             key = (String) iter.next();
@@ -1089,28 +1088,28 @@ public class BaseTransformer
         } // while iter
         return result;
     } // replaceInSource
-    
-    /** Replaces nothing - allows for easy switching calls of this method 
+
+    /** Replaces nothing - allows for easy switching calls of this method
      *  to {@link #replaceInSource} and vice versa
-     *  @param source string 
+     *  @param source string
      *  @return identical to source
      */
     public String replaceNoSource(String source) {
         return source;
     } // replaceNoSource
-    
-    /** Replaces nothing - allows for easy switching calls of this method 
+
+    /** Replaces nothing - allows for easy switching calls of this method
      *  to {@link #replaceInResult} and vice versa
-     *  @param source string 
+     *  @param source string
      *  @return identical to source
      */
     public String replaceNoResult(String source) {
         return source;
     } // replaceNoResult
-    
-    /** Replaces all strings stored by <em>putReplacement</em> 
+
+    /** Replaces all strings stored by <em>putReplacement</em>
      *  during a transformation from XML
-     *  "&amp;" must be replaced <em>after</em> all other strings if their replacement contains "&".
+     *  "&amp;" must be replaced <em>after</em> all other strings if their replacement contains "&amp;".
      *  @param source string where to replace for transformation from XML
      *  @return resulting string after all replacements
      */
@@ -1124,7 +1123,7 @@ public class BaseTransformer
                 result = result.replaceAll("\\" + key, (String) resultReplaceMap.get(key));
             }
         } // while iter
-        
+
         key = AMP_AMP;
         if (resultReplaceMap.get(key) != null) {
             result = result.replaceAll("\\" + key, (String) resultReplaceMap.get(key));
@@ -1132,7 +1131,7 @@ public class BaseTransformer
         return result;
     } // replaceInResult
 
-    /** Determines which value is replaced for some key 
+    /** Determines which value is replaced for some key
      *  during a transformation to XML
      *  @param key which is to be replaced
      *  @return resulting replacement value
@@ -1145,8 +1144,8 @@ public class BaseTransformer
         }
         return result;
     } // getSourceReplacement
-    
-    /** Determines which value is replaced for some key 
+
+    /** Determines which value is replaced for some key
      *  during a transformation from XML
      *  @param key which is to be replaced
      *  @return resulting replacement value
@@ -1165,10 +1164,10 @@ public class BaseTransformer
     ////////////////////////////////////////////////////////////////////
 
     /** standard SAX2 features of the XMLReader */
-    private Map/*<1.5*/<String, Boolean>/*1.5>*/ featureMap = new HashMap/*<1.5*/<String, Boolean>/*1.5>*/();
+    private Map<String, Boolean> featureMap = new HashMap<String, Boolean>();
 
     /** standard SAX2 properties of the XMLReader */
-    private Map/*<1.5*/<String, Object>/*1.5>*/ propertyMap = new HashMap/*<1.5*/<String, Object>/*1.5>*/();
+    private Map<String, Object> propertyMap = new HashMap<String, Object>();
 
     /** standard SAX2 entity resolver */
     private EntityResolver entityResolver;
@@ -1187,12 +1186,12 @@ public class BaseTransformer
 
     /** parent reader/filter */
     private XMLReader parent;
-    
+
     // XMLReader.java - read an XML document.
     // http://www.saxproject.org
     // Written by David Megginson
     // NO WARRANTY!  This class is in the Public Domain.
-    // Id: XMLReader.java,v 1.9 2004/04/26 17:34:34 dmegginson Exp 
+    // Id: XMLReader.java,v 1.9 2004/04/26 17:34:34 dmegginson Exp
     /**
      * Interface for reading an XML document using callbacks.
      *
@@ -1203,9 +1202,9 @@ public class BaseTransformer
      * for further information.
      * </blockquote>
      *
-     * <p><strong>Note:</strong> despite its name, this interface does 
-     * <em>not</em> extend the standard Java {@link java.io.Reader Reader} 
-     * interface, because reading XML is a fundamentally different activity 
+     * <p><strong>Note:</strong> despite its name, this interface does
+     * <em>not</em> extend the standard Java {@link java.io.Reader Reader}
+     * interface, because reading XML is a fundamentally different activity
      * than reading character data.</p>
      *
      * <p>XMLReader is the interface that an XML parser's SAX2 driver must
@@ -1225,7 +1224,7 @@ public class BaseTransformer
      * interface (as well as some minor ones):</p>
      *
      * <ol>
-     * <li>it adds a standard way to query and set features and 
+     * <li>it adds a standard way to query and set features and
      *  properties; and</li>
      * <li>it adds Namespace support, which is required for many
      *  higher-level XML standards.</li>
@@ -1239,10 +1238,10 @@ public class BaseTransformer
      * @version 2.0.1+ (sax2r3pre1)
      * @see org.xml.sax.XMLFilter
      * @see org.xml.sax.helpers.ParserAdapter
-     * @see org.xml.sax.helpers.XMLReaderAdapter 
+     * @see org.xml.sax.helpers.XMLReaderAdapter
      */
     // public interface XMLReader
-    
+
     ////////////////////////////////////////////////////////////////////
     // SAX Configuration - features and properties
     ////////////////////////////////////////////////////////////////////
@@ -1274,7 +1273,7 @@ public class BaseTransformer
      * try {
      *   r.setFeature("http://xml.org/sax/features/validation", true);
      * } catch (SAXException e) {
-     *   System.err.println("Cannot activate validation."); 
+     *   System.err.println("Cannot activate validation.");
      * }
      *
      *                         // register event handlers
@@ -1299,14 +1298,14 @@ public class BaseTransformer
      * @exception org.xml.sax.SAXNotRecognizedException If the feature
      *            value can't be assigned or retrieved.
      * @exception org.xml.sax.SAXNotSupportedException When the
-     *            XMLReader recognizes the feature name but 
+     *            XMLReader recognizes the feature name but
      *            cannot determine its value at this time.
      * @see #setFeature
      */
-    public boolean getFeature(String name) 
+    public boolean getFeature(String name)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         Boolean featureValue = this.featureMap.get(name);
-        return (featureValue == null) 
+        return (featureValue == null)
                 ? false
                 : featureValue.booleanValue();
     } // getFeature
@@ -1317,8 +1316,8 @@ public class BaseTransformer
      * <p>The feature name is any fully-qualified URI.  It is
      * possible for an XMLReader to expose a feature value but
      * to be unable to change the current value.
-     * Some feature values may be immutable or mutable only 
-     * in specific contexts, such as before, during, or after 
+     * Some feature values may be immutable or mutable only
+     * in specific contexts, such as before, during, or after
      * a parse.</p>
      *
      * <p>All XMLReaders are required to support setting
@@ -1330,7 +1329,7 @@ public class BaseTransformer
      * @exception org.xml.sax.SAXNotRecognizedException If the feature
      *            value can't be assigned or retrieved.
      * @exception org.xml.sax.SAXNotSupportedException When the
-     *            XMLReader recognizes the feature name but 
+     *            XMLReader recognizes the feature name but
      *            cannot set the requested value.
      * @see #getFeature
      */
@@ -1360,7 +1359,7 @@ public class BaseTransformer
      * @exception org.xml.sax.SAXNotRecognizedException If the property
      *            value can't be assigned or retrieved.
      * @exception org.xml.sax.SAXNotSupportedException When the
-     *            XMLReader recognizes the property name but 
+     *            XMLReader recognizes the property name but
      *            cannot determine its value at this time.
      * @see #setProperty
      */
@@ -1368,19 +1367,19 @@ public class BaseTransformer
             throws SAXNotRecognizedException, SAXNotSupportedException {
         return this.propertyMap.get(name);
     } // getProperty
- 
+
     /**
      * Set the value of a property.
      *
      * <p>The property name is any fully-qualified URI.  It is
      * possible for an XMLReader to recognize a property name but
      * to be unable to change the current value.
-     * Some property values may be immutable or mutable only 
-     * in specific contexts, such as before, during, or after 
+     * Some property values may be immutable or mutable only
+     * in specific contexts, such as before, during, or after
      * a parse.</p>
      *
      * <p>XMLReaders are not required to recognize setting
-     * any specific property names, though a core set is defined by 
+     * any specific property names, though a core set is defined by
      * SAX2.</p>
      *
      * <p>This method is also the standard mechanism for setting
@@ -1391,14 +1390,14 @@ public class BaseTransformer
      * @exception org.xml.sax.SAXNotRecognizedException If the property
      *            value can't be assigned or retrieved.
      * @exception org.xml.sax.SAXNotSupportedException When the
-     *            XMLReader recognizes the property name but 
+     *            XMLReader recognizes the property name but
      *            cannot set the requested value.
      */
     public void setProperty(String name, Object value)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         this.propertyMap.put(name, value);
     } // setProperty
- 
+
     ////////////////////////////////////////////////////////////////////
     // SAX Event handlers.
     ////////////////////////////////////////////////////////////////////
@@ -1419,7 +1418,7 @@ public class BaseTransformer
     public void setEntityResolver(EntityResolver resolver) {
         this.entityResolver = resolver;
     } // setEntityResolver
- 
+
     /**
      * Return the current entity resolver.
      *
@@ -1446,7 +1445,7 @@ public class BaseTransformer
     public void setDTDHandler(DTDHandler handler) {
         this.dtdHandler = handler;
     } // setDTDHandler
- 
+
     /** Return the current DTD handler.
      *
      * @return The current DTD handler, or null if none
@@ -1456,7 +1455,7 @@ public class BaseTransformer
     public DTDHandler getDTDHandler() {
         return this.dtdHandler;
     } // getDTDHandler
- 
+
     /** Allow an application to register a content event handler.
      *
      * <p>If the application does not register a content handler, all
@@ -1473,7 +1472,7 @@ public class BaseTransformer
     public void setContentHandler(ContentHandler handler) {
         this.contentHandler = handler;
     } // setContentHandler
- 
+
     /** Return the current content handler.
      *
      * @return The current content handler, or null if none has been registered.
@@ -1482,7 +1481,7 @@ public class BaseTransformer
     public ContentHandler getContentHandler() {
         return this.contentHandler;
     } // getContentHandler
- 
+
     /** Allow an application to register a lexical handler.
      *
      * <p>If the application does not register a lexical handler, all
@@ -1495,7 +1494,7 @@ public class BaseTransformer
     public void setLexicalHandler(LexicalHandler handler) {
         this.lexicalHandler = handler;
     } // setLexicalHandler
- 
+
     /** Return the current lexical handler.
      *
      * @return The current lexical handler, or null if none has been registered.
@@ -1504,7 +1503,7 @@ public class BaseTransformer
     public LexicalHandler getLexicalHandler() {
         return this.lexicalHandler;
     } // getLexicalHandler
- 
+
     /**
      * Allow an application to register an error event handler.
      *
@@ -1524,7 +1523,7 @@ public class BaseTransformer
     public void setErrorHandler(ErrorHandler handler) {
         this.errorHandler = handler;
     } // setErrorHandler
- 
+
     /**
      * Return the current error handler.
      *
@@ -1535,7 +1534,7 @@ public class BaseTransformer
     public ErrorHandler getErrorHandler() {
         return this.errorHandler;
     } // getErrorHandler
- 
+
     ////////////////////////////////////////////////////////////////////
     // Parsing.
     ////////////////////////////////////////////////////////////////////
@@ -1565,7 +1564,7 @@ public class BaseTransformer
      * handlers.</p>
      *
      * <p>This method is synchronous: it will not return until parsing
-     * has ended.  If a client application wants to terminate 
+     * has ended.  If a client application wants to terminate
      * parsing early, it should throw an exception.</p>
      *
      * @param input The input source for the top-level of the
@@ -1580,7 +1579,7 @@ public class BaseTransformer
      * @see #setEntityResolver
      * @see #setDTDHandler
      * @see #setContentHandler
-     * @see #setErrorHandler 
+     * @see #setErrorHandler
      */
     public void parse(InputSource input) throws IOException, SAXException {
         try {
@@ -1639,13 +1638,13 @@ public class BaseTransformer
         }
     } // parse
 
-    /** Report a fatal XML parsing error. 
-     *  The default implementation throws a SAXParseException. 
-     *  Application writers may override this method in a subclass 
-     *  if they need to take specific actions for each fatal error 
-     *  (such as collecting all of the errors into a single report): 
-     *  in any case, the application must stop all regular processing 
-     *  when this method is invoked, since the document is no longer reliable, 
+    /** Report a fatal XML parsing error.
+     *  The default implementation throws a SAXParseException.
+     *  Application writers may override this method in a subclass
+     *  if they need to take specific actions for each fatal error
+     *  (such as collecting all of the errors into a single report):
+     *  in any case, the application must stop all regular processing
+     *  when this method is invoked, since the document is no longer reliable,
      *  and the parser may no longer report parsing events.
      *  @param exc exception reproted by the parser
      */
@@ -1658,25 +1657,25 @@ public class BaseTransformer
     //////////////////////////////////////////////////////////////////////////
 
     /** Gets the parent reader.
-     *  This method allows the application to query the parent reader 
-     *  (which may be another filter). It is generally a bad idea 
-     *  to perform any operations on the parent reader directly: 
+     *  This method allows the application to query the parent reader
+     *  (which may be another filter). It is generally a bad idea
+     *  to perform any operations on the parent reader directly:
      *  they should all pass through this filter.
      *  @return parent The parent filter, or null if none has been set.
      */
     public XMLReader getParent() {
         return parent;
-    } // getParent  
+    } // getParent
 
     /** Sets the parent reader.
-     *  This method allows the application to link the filter to a 
+     *  This method allows the application to link the filter to a
      *  parent reader (which may be another filter). The argument may not be null.
      *  @param parent The parent reader
      */
     public void setParent(XMLReader parent) {
         this.parent = parent;
-    } // setParent  
-    
+    } // setParent
+
     //////////////////////////////////////////////////////////////////////////
     // Default implementations of Locator methods
     //////////////////////////////////////////////////////////////////////////
@@ -1686,11 +1685,11 @@ public class BaseTransformer
 
     /** current line number in character file starting with 1, or -1 if not known */
     protected int lineNo;
-    
-    /** current column number in character file, 
-     *  byte position in byte file, 
+
+    /** current column number in character file,
+     *  byte position in byte file,
      *  always starting with 1
-     *  or -1 if not known 
+     *  or -1 if not known
      */
     protected int columnNo;
 
@@ -1728,9 +1727,9 @@ public class BaseTransformer
     //////////////////////////////////////////////////////////////////////////
     /** local handle for the result of this TransformerHandler */
     protected Result result;
-    
+
     /** Set the Result associated with this TransformerHandler to be used for the transformation.
-     *  @param result - A Result instance, should not be null. 
+     *  @param result - A Result instance, should not be null.
      *  @throws IllegalArgumentException - if result is invalid for some reason.
      */
     public void setResult(Result result) throws IllegalArgumentException {
@@ -1738,13 +1737,13 @@ public class BaseTransformer
     } // setResult
 
     /** Get the Result associated with this TransformerHandler to be used for the transformation.
-     *  @return A Result instance, should not be null. 
+     *  @return A Result instance, should not be null.
      */
     public Result getResult() {
         return result;
     } // getResult
 
-    /** Get the Transformer associated with this handler, 
+    /** Get the Transformer associated with this handler,
      *  which is needed in order to set parameters and output properties.
      *  @return Transformer associated with this TransformerHandler.
      */
@@ -1781,7 +1780,7 @@ public class BaseTransformer
                 result.append("=\"");
                 String value = attrs.getValue(iattr);
                 if (mustAmpEscape) {
-                    value = value  
+                    value = value
                         .replaceAll("&", "&amp;")
                         .replaceAll("\\\"", "&quot;")
                         .replaceAll("\\\'", "&apos;")
@@ -1813,7 +1812,7 @@ public class BaseTransformer
         result.append('>');
         return result.toString();
     } // getStartTag
-        
+
     /** Reconstructs an XML empty tag without attributes
      *  @param qName name (tag) of the element
      *  @return empty tag
@@ -1826,7 +1825,7 @@ public class BaseTransformer
         result.append(" />");
         return result.toString();
     } // getEmptyTag
-        
+
     /** Reconstructs an XML empty tag with attributes
      *  @param qName name (tag) of the element
      *  @param attrs attributes of the element
@@ -1841,7 +1840,7 @@ public class BaseTransformer
         result.append(" />");
         return result.toString();
     } // getEmptyTag
-        
+
     /** Reconstructs an XML end tag
      *  @param qName name (tag) of the element
      *  @return end tag
@@ -1854,9 +1853,10 @@ public class BaseTransformer
         result.append('>');
         return result.toString();
     } // getEndTag
-        
+
     /** Constructs an Attributes list from a single key-value pair
      *  @param key name of the attribute (without namespace)
+     *  @param value value of the attribute
      *  @return Attributes2 list with a single attribute
      */
     public Attributes toAttribute(String key, String value) {
@@ -1866,7 +1866,7 @@ public class BaseTransformer
         }
         return attrs;
     } // toAttribute
-        
+
     /** Constructs an Attributes list from key-value pairs
      *  @param keyValues keys and values in alternating sequence
      *  @return Attributes list with all attributes
@@ -1882,7 +1882,7 @@ public class BaseTransformer
         } // while over pairs
         return attrs;
     } // toAttributes(String[])
-        
+
     /** Constructs an Attributes list from key-value pairs
      *  @param keyValues keys and values in alternating sequence
      *  @return Attributes list with all attributes
@@ -1898,7 +1898,7 @@ public class BaseTransformer
         } // while over pairs
         return attrs;
     } // attributesArray(String[])
-        
+
     /** Constructs an Attributes2 list from key-value pairs
      *  @param keyValues keys and values in alternating sequence
      *  @return Attributes2 list with all attribute
@@ -1918,8 +1918,8 @@ public class BaseTransformer
         } // while over pairs
         return attrs;
     } // toAttributes(ArrayList)
-        
-    /** Converts a leading string of whitespace characters to a 
+
+    /** Converts a leading string of whitespace characters to a
      *  description and returns the rest of the string starting with some
      *  non-whitespace character.
      *  @param line string with leading whitespace
@@ -1937,12 +1937,12 @@ public class BaseTransformer
         int count = 0;
         int pos = 0;
         char coch = 's'; // assume space at the beginning
-        if (true) { 
+        if (true) {
             boolean busy = true;
             while (! busy && pos < line.length()) {
                 char ch = line.charAt(pos ++);
                 switch (ch) {
-                    case ' ': 
+                    case ' ':
                         if (coch == 't') { // switch from spaces to tabs
                             code.append(Integer.toString(count));
                             code.append(coch);
@@ -1952,7 +1952,7 @@ public class BaseTransformer
                             count ++;
                         }
                         break;
-                    case '\t': 
+                    case '\t':
                         if (coch == 's') { // switch from tabs to spaces
                             code.append(Integer.toString(count));
                             code.append(coch);
@@ -1981,18 +1981,18 @@ public class BaseTransformer
     /** Get a string of spaces and tabs from the "w" attribute.
      *  @param attrs attributes attached to some XML element, with a coded "w" attribute
      *  consisting of numbers (count) and the letters "t" for tab, "s" for space,
-     *  for example "4t2s" = 4 tabs followed by 2 spaces (a trailing "s" may be omitted). 
+     *  for example "4t2s" = 4 tabs followed by 2 spaces (a trailing "s" may be omitted).
      *  @return string with space and/or tab characters, or the empty string
      */
     public static String attrToWhitespace(Attributes attrs) {
         return attrToWhitespace(attrs, "w");
     } // attrToWhitespace()
-    
+
     /** Get a string of spaces and tabs from an attribute.
      *  @param attrs attributes attached to some XML element, with a coded attribute
      *  consisting of numbers (count) and the letters "t" for tab, "s" for space,
      *  for example "4t2s" = 4 tabs followed by 2 spaces (a trailing "s" may be omitted).
-     *  @param attrName name of the whitespace attribute 
+     *  @param attrName name of the whitespace attribute
      *  @return string with space and/or tab characters, or the empty string
      */
     public static String attrToWhitespace(Attributes attrs, String attrName) {
@@ -2007,17 +2007,17 @@ public class BaseTransformer
             while (pos < wsAttr.length()) {
                 char ch = wsAttr.charAt(pos ++);
                 switch (ch) {
-                    case 's': 
+                    case 's':
                         while (count > 0) {
                             result.append(' ');
                             count --;
-                        } 
+                        }
                         break;
-                    case 't': 
+                    case 't':
                         while (count > 0) {
                             result.append('\t');
                             count --;
-                        } 
+                        }
                         break;
                     default:
                         if (Character.isDigit(ch)) {
@@ -2029,7 +2029,7 @@ public class BaseTransformer
             while (count > 0) { // no following letter => spaces
                 result.append(' ');
                 count --;
-            } 
+            }
         } // with "w" attribute
         return result.toString();
     } // attrToWhitespace(,)
@@ -2039,74 +2039,74 @@ public class BaseTransformer
     //------------------------------------------------
     /** Handler for outgoing SAX events in a filter */
     protected ContentHandler filterHandler;
-      
+
     /** Receive notification of the beginning of the document,
      *  and initialize the outgoing handler for a filter.
-     *  @throws SAXException - any SAX exception, 
+     *  @throws SAXException - any SAX exception,
      *  possibly wrapping another exception
      */
-    public void startDocument() 
+    public void startDocument()
             throws SAXException {
         SAXResult saxResult = (SAXResult) getResult();
         if (saxResult != null) {
-            filterHandler = saxResult.getHandler(); 
+            filterHandler = saxResult.getHandler();
         } else { // no parent set - assume XML serializer as default
             // System.err.println("BaseTransformer.startDocument: no parent set");
             XMLTransformer xmlTransformer = new XMLTransformer();
-            xmlTransformer.setCharWriter(getCharWriter()); 
+            xmlTransformer.setCharWriter(getCharWriter());
             filterHandler = (new SAXResult(xmlTransformer)).getHandler();
-        } // default 
+        } // default
     } // startDocument
-    
+
     /** Receive notification of the end of the document.
-     *  @throws SAXException - any SAX exception, 
+     *  @throws SAXException - any SAX exception,
      *  possibly wrapping another exception
      */
-    public void endDocument() 
+    public void endDocument()
             throws SAXException {
     } // endDocument
 
     /** Receive notification of the start of an element.
      *  Looks for the element which contains raw lines.
-     *  @param uri The Namespace URI, or the empty string if the element has no Namespace URI 
+     *  @param uri The Namespace URI, or the empty string if the element has no Namespace URI
      *  or if Namespace processing is not being performed.
-     *  @param localName the local name (without prefix), 
+     *  @param localName the local name (without prefix),
      *  or the empty string if namespace processing is not being performed.
-     *  @param qName the qualified name (with prefix), 
+     *  @param qName the qualified name (with prefix),
      *  or the empty string if qualified names are not available.
-     *  @param attrs the attributes attached to the element. 
+     *  @param attrs the attributes attached to the element.
      *  If there are no attributes, it shall be an empty Attributes object.
-     *  @throws SAXException - any SAX exception, 
+     *  @throws SAXException - any SAX exception,
      *  possibly wrapping another exception
      */
-    public void startElement(String uri, String localName, String qName, Attributes attrs) 
+    public void startElement(String uri, String localName, String qName, Attributes attrs)
             throws SAXException {
     } // startElement
-    
+
     /** Receive notification of the end of an element.
      *  Looks for the element which contains raw lines.
      *  Terminates the line.
-     *  @param uri the Namespace URI, or the empty string if the element has no Namespace URI 
+     *  @param uri the Namespace URI, or the empty string if the element has no Namespace URI
      *  or if Namespace processing is not being performed.
-     *  @param localName the local name (without prefix), 
+     *  @param localName the local name (without prefix),
      *  or the empty string if Namespace processing is not being performed.
-     *  @param qName the qualified name (with prefix), 
+     *  @param qName the qualified name (with prefix),
      *  or the empty string if qualified names are not available.
-     *  @throws SAXException - any SAX exception, 
+     *  @throws SAXException - any SAX exception,
      *  possibly wrapping another exception
      */
-    public void endElement(String uri, String localName, String qName) 
+    public void endElement(String uri, String localName, String qName)
             throws SAXException {
     } // endElement
-    
+
     /** Receive notification of character data inside an element.
      *  @param ch the characters.
      *  @param start the start position in the character array.
-     *  @param len the number of characters to use from the character array. 
-     *  @throws SAXException - any SAX exception, 
+     *  @param len the number of characters to use from the character array.
+     *  @throws SAXException - any SAX exception,
      *  possibly wrapping another exception
      */
-    public void characters(char[] ch, int start, int len) 
+    public void characters(char[] ch, int start, int len)
             throws SAXException {
     } // characters
 
@@ -2123,7 +2123,7 @@ public class BaseTransformer
             log.error(exc.getMessage(), exc);
         }
     } // fireStartDocument
-    
+
     /** Ends the XML document
      */
     public void fireEndDocument() {
@@ -2133,10 +2133,10 @@ public class BaseTransformer
             log.error(exc.getMessage(), exc);
         }
     } // fireEndDocument
-    
+
     /** Starts an XML element without namespace declaration
      *  @param tag name of the element
-     *  @param attrs list of attributes 
+     *  @param attrs list of attributes
      */
     public void fireStartElement(String tag, Attributes attrs) {
         // log.debug("fireStartElement " + tag + (contentHandler == null ? " null" : " ch"));
@@ -2149,7 +2149,7 @@ public class BaseTransformer
         }
     } // fireStartElement
 
-    /** Ends an XML element 
+    /** Ends an XML element
      *  @param tag name of the element
      */
     public void fireEndElement(String tag) {
@@ -2157,7 +2157,7 @@ public class BaseTransformer
             contentHandler.endElement("", tag, namespace + tag);
         } catch (Exception exc) {
             System.out.println("contentHandler=" + contentHandler
-                    + ", tag=" + tag 
+                    + ", tag=" + tag
                     + ", namespace=" + namespace
                     );
             log.error(exc.getMessage(), exc);
@@ -2189,7 +2189,7 @@ public class BaseTransformer
         }
     } // fireCharacters
 
-    /** Writes a new line in the XML output 
+    /** Writes a new line in the XML output
      */
     public void fireLineBreak() {
         try {
@@ -2214,8 +2214,8 @@ public class BaseTransformer
 
     /** Writes an XML processing instruction.
      *  @param target the processing instruction target
-     *  @param data the processing instruction data, or null if none was supplied. 
-     *  The data does not include any whitespace separating it from the target 
+     *  @param data the processing instruction data, or null if none was supplied.
+     *  The data does not include any whitespace separating it from the target
      */
     public void fireProcessingInstruction(String target, String data) {
         try {
@@ -2234,7 +2234,7 @@ public class BaseTransformer
     public void fireStartRoot(String tag) {
         if (namespaceURI.length() > 0) {
             String nsp = getNamespacePrefix();
-            fireStartElement(tag, toAttribute("xmlns" 
+            fireStartElement(tag, toAttribute("xmlns"
                     + (nsp.equals("") ? "" : (":" + nsp))
                     , getNamespaceURI())
                     );
@@ -2252,7 +2252,7 @@ public class BaseTransformer
 
     /** Writes an empty XML element
      *  @param tag name of the element
-     *  @param attrs list of attributes 
+     *  @param attrs list of attributes
      */
     public void fireEmptyElement(String tag, Attributes attrs) {
         try {
@@ -2289,7 +2289,7 @@ public class BaseTransformer
     } // fireSimpleElement
 
     /** stack of element tags (for closing tags) */
-    protected Stack/*<1.5*/<String>/*1.5>*/ tagStack;
+    protected Stack<String> tagStack;
 
     /** Starts a nested XML element with attributes
      *  @param tag the element's tag
@@ -2303,7 +2303,7 @@ public class BaseTransformer
             fireStartElement(tag);
         }
     } // pushXML
-    
+
     /** Starts a nested XML element without attributes
      *  @param tag the element's tag
      */
@@ -2311,7 +2311,7 @@ public class BaseTransformer
         tagStack.push(tag);
         fireStartElement(tag);
     } // pushXML
-    
+
     /** Ends a nested XML element, if the specified element is on top of the stack.
      *  @param tag the element's tag which is expected on the stack
      *  @return whether the expected element was really on top of the stack
@@ -2324,14 +2324,16 @@ public class BaseTransformer
                 tagStack.pop();
                 fireEndElement(tag);
                 result = true;
-            } // else ignore
+            } else if (true) {
+                fireComment("popXML(\"" + tag + "\") found \"" + top + "\"");
+            }
         } else {
             fireComment("stack underflow error");
         }
         return result;
     } // popXML
-    
-    /** Ends a nested XML element 
+
+    /** Ends a nested XML element
      */
     protected void popXML() {
         if (! tagStack.isEmpty()) {
@@ -2341,8 +2343,9 @@ public class BaseTransformer
             fireComment("stack underflow error");
         }
     } // popXML
-    
+
     /** Determines the tag in the stack's top element
+     *  @return top element
      */
     protected String topXML() {
         String result = "";
@@ -2351,7 +2354,7 @@ public class BaseTransformer
         }
         return result;
     } // topXML
-    
+
     /** Writes a value as a sequence of LSB bytes.
      *  @param value string value of the attribute to be output
      *  @param len number of bytes to be written for the attribute
@@ -2372,9 +2375,9 @@ public class BaseTransformer
             log.error(exc.getMessage() + "; invalid value " + value, exc);
         }
     } // putLSB
-    
+
     //----------------------------------
-    // generate and serialize 
+    // generate and serialize
     //----------------------------------
     /** Transforms from the specified input file format to SAX events
      *  @return whether the transformation was successful

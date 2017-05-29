@@ -56,8 +56,8 @@
             </xs:sequence>
         </xs:choice>
         <xs:attribute name="conn"       type="xs:NCName" />
-        <xs:attribute name="lang"       type="iv:LangType"  />
         <xs:attribute name="encoding"   type="xs:string" />
+        <xs:attribute name="lang"       type="iv:LangType"  />
         <xs:attribute name="script"     type="xs:string" />
     </xs:complexType>
 <!--
@@ -120,7 +120,7 @@
         <xs:attribute name="href"       type="xs:string" />
         <xs:attribute name="id"         type="xs:ID"    /><!-- td=id0, td=id1, input=id2 -->
         <xs:attribute name="init"       type="xs:string" />
-        <xs:attribute name="key"        type="xs:unsignedShort" />
+        <xs:attribute name="key"        type="iv:KeyType" />
         <xs:attribute name="label"      type="xs:string" />
         <xs:attribute name="link"       type="xs:string" />
         <xs:attribute name="name"       type="xs:NCName" />
@@ -155,13 +155,13 @@
         </xs:choice>
         <xs:attribute name="by"         type="xs:string" />
     </xs:complexType>
-
+<!--
     <xs:complexType name="ParameterizedText" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="parm"     type="iv:ParmType"     />
         </xs:choice>
     </xs:complexType>
-
+-->
     <xs:complexType name="ParmType">
         <xs:attribute name="name"       type="xs:NCName" use="required" />
         <xs:attribute name="init"       type="xs:string" />
@@ -285,6 +285,17 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="KeyType">
+        <xs:union> 
+            <xs:simpleType> 
+                <xs:restriction base="unsignedShort" /> 
+            </xs:simpleType> 
+            <xs:simpleType> 
+                <xs:restriction base="xs:string" /> 
+            </xs:simpleType> 
+        </xs:union> 
+    </xs:simpleType>
+
     <xs:simpleType name="LangType">
         <xs:restriction base="xs:language">
             <xs:enumeration value="eng"     ></xs:enumeration>
@@ -292,6 +303,7 @@
             <xs:enumeration value="deu"     ></xs:enumeration>
             <xs:enumeration value="de"      ></xs:enumeration>
             <xs:enumeration value="fra"     ></xs:enumeration>
+            <xs:enumeration value="fr"      ></xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
 

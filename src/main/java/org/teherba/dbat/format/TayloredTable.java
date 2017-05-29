@@ -1,5 +1,6 @@
 /*  File Tayloring with the result set of a query
     @(#) $Id$
+ *  2017-05-27: javadoc
     2016-08-09: missing template file => multiline key=value pairs + 1 empty line
     2016-04-28: comment for uri= parameter resp. attribute; startTable with metadata
     2011-08-24: writeGenericRow
@@ -41,12 +42,12 @@ import  org.apache.log4j.Logger;
  *  <li>in the root (dbat) element attribute <code>uri=</code> of a specification file.</li>
  *  </ul>
  *  Reading may happen from STDIN, from a local file, an URL or a <code>data:</code> URI.
- *  <p  />
+ *  <p>
  *  The template contains variable names, which correspond to the label
  *  attributes of the columns. In the template, they are prefixed or enclosed by the character(s)
  *  given in the <em>separator</em> property.
  *  These separators are internally quoted for regex replacement operations.
- *  <p  />
+ *  </p><p>
  *  Later, every row of the query's result set is splitted into values
  *  which replace the variables in the template. The template is output as many times as
  *  there are rows in the result set.

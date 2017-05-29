@@ -1,6 +1,6 @@
-/*  Pseudo format which generates a Java program with embedded SQLJ instructions
-    äöüÄÖÜß
+/*  Pseudo format which generates a Java program with embedded SQLJ instructions - äöüÄÖÜß
     @(#) $Id$
+ *  2017-05-27: javadoc
     2016-08-26: with getISOTimestamp()
     2012-06-16: copied from GenerateSQLJ
 */
@@ -59,7 +59,7 @@ public class GenerateSQLJ extends BaseTable {
 
     /** Name of the specification file, with optional subdirectory, without extension ".xml|.xsl|.css|.js",
      *  any slash replaced by a dot, the first letter of the last component is uppercased,
-     *  for example "test/xslt_brackets" ->
+     *  for example "test/xslt_brackets"
      */
     private String targetClassName;
 
@@ -68,7 +68,7 @@ public class GenerateSQLJ extends BaseTable {
      *  @param parameterMap map of request parameters to values
      *  The following names are interpreted:
      *  <ul>
-     *  <li>specname - name of the parent spec, which is turned into a suitable Java class name
+     *  <li>specname - name of the parent spec, which is turned into a suitable Java class name</li>
      *  </ul>
      */
     public void writeStart(String[] params,  HashMap<String, String[]> parameterMap) {

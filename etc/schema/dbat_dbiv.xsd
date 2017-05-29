@@ -48,6 +48,8 @@
         <xs:sequence>
             <xs:element name="comment" type="db:CommentType"  minOccurs="0" maxOccurs="unbounded"/>
             <xs:choice minOccurs="1" maxOccurs="unbounded">
+                <xs:element name="a"        type="db:AType"        />
+                <xs:element name="break"    type="db:BreakType"    />
                 <xs:element name="call"     type="db:CallType"     />
                 <xs:element name="choose"   type="db:ChooseType"   />
                 <xs:element name="connect"  type="db:ConnectType"  />
@@ -64,15 +66,13 @@
             </xs:choice>
         </xs:sequence>
         <xs:attribute name="conn"           type="xs:NCName"    />
-        <xs:attribute name="contenttype"    type="xs:string"    />
-        <xs:attribute name="debug"          type="xs:string"    />
+        <xs:attribute name="debug"          type="xs:unsignedShort"    />
         <xs:attribute name="encoding"       type="xs:string"    />
         <xs:attribute name="headers"        type="db:BoolType"  />
         <xs:attribute name="javascript"     type="xs:string"    />
-        <xs:attribute name="lang"           type="LangType"     />
+        <xs:attribute name="lang"           type="db:LangType"     />
         <xs:attribute name="manner"         type="db:MannerType"/>
         <xs:attribute name="mode"           type="xs:NCName"    />
-        <xs:attribute name="nsp"            type="xs:string"    />
         <xs:attribute name="stylesheet"     type="xs:string"    />
         <xs:attribute name="target"         type="xs:string"    />
         <xs:attribute name="title"          type="xs:string"    />
@@ -89,6 +89,18 @@
 <!--
     complex types for dbat XML elements in alphabetical order
 -->
+    <xs:complexType name="AType" mixed="false">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:any namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
+        </xs:sequence>
+        <xs:attribute name="href"       type="xs:string"   />
+        <xs:attribute name="id"         type="xs:ID"    />
+        <xs:attribute name="target"     type="xs:string" />
+    </xs:complexType>
+
+    <xs:complexType name="BreakType" mixed="false">
+    </xs:complexType>
+
     <xs:complexType name="CallType" mixed="false">
         <xs:sequence minOccurs="1" maxOccurs="unbounded">
             <xs:element name="col" type="db:ColType" />
@@ -97,7 +109,7 @@
         <xs:attribute name="id"         type="xs:ID"    />
         <xs:attribute name="into"       type="db:IntoParmType" />
         <xs:attribute name="name"       type="xs:NCName" />
-        <xs:attribute name="limit"      type="xs:string" />
+        <xs:attribute name="limit"      type="db:LimitType" />
     </xs:complexType>
 
     <xs:complexType name="ChooseType" mixed="true">
@@ -118,6 +130,7 @@
         </xs:choice>
         <xs:attribute name="align"  type="db:AlignType" />
         <xs:attribute name="dir"    type="db:DirType"   />
+        <xs:attribute name="expr"   type="xs:string" /><!-- same as "expr" -->
         <xs:attribute name="href"   type="xs:string" />
         <xs:attribute name="key"    type="xs:unsignedShort" />
         <xs:attribute name="label"  type="xs:string" />
@@ -194,6 +207,8 @@
         </xs:choice>
     </xs:complexType>
 
+    <!-- FormType ??? -->
+    
     <xs:complexType name="FromType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="choose"   type="db:ChooseType" />
@@ -234,10 +249,15 @@
     </xs:complexType>
 
     <xs:complexType name="ListBoxType">
-        <xs:attribute name="name"       type="xs:NCName" use="required" />
+        <xs:attribute name="code"       type="xs:NCName" />
+        <xs:attribute name="display"    type="xs:NCName" />
+        <xs:attribute name="empty"      type="xs:string" />
+        <xs:attribute name="height"     type="xs:unsignedShort" />
         <xs:attribute name="init"       type="xs:string" />
         <xs:attribute name="label"      type="xs:string" />
-        <xs:attribute name="height"     type="xs:unsignedShort" />
+        <xs:attribute name="multiple"   type="db:BoolType" />
+        <xs:attribute name="name"       type="xs:NCName" use="required" />
+        <xs:attribute name="valid"      type="xs:string" />
     </xs:complexType>
 
     <xs:complexType name="ListParmType">
@@ -277,7 +297,7 @@
         </xs:choice>
         <xs:attribute name="by"         type="xs:string" />
     </xs:complexType>
-
+<!--
     <xs:complexType name="ParameterizedText" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="choose"   type="db:ChooseType" />
@@ -286,14 +306,13 @@
             <xs:element name="var"      type="db:VarType" />
         </xs:choice>
     </xs:complexType>
-
+-->
     <xs:complexType name="ParmType">
         <xs:attribute name="name"       type="xs:NCName" use="required" />
         <xs:attribute name="format"     type="db:FormatType" />
         <xs:attribute name="init"       type="xs:string" />
         <xs:attribute name="list"       type="db:ListType" />
         <xs:attribute name="ix"         type="xs:unsignedShort" />
-
     </xs:complexType>
 
     <xs:complexType name="ReadType" mixed="true">
@@ -446,7 +465,22 @@
             <xs:enumeration value="en" ></xs:enumeration>
             <xs:enumeration value="deu"></xs:enumeration>
             <xs:enumeration value="de" ></xs:enumeration>
+            <xs:enumeration value="fra"></xs:enumeration>
+            <xs:enumeration value="fr" ></xs:enumeration>
         </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="LimitType">
+        <xs:union> 
+            <xs:simpleType> 
+                <xs:restriction base="xs:integer"/> 
+            </xs:simpleType> 
+            <xs:simpleType> 
+                <xs:restriction base="xs:string"> 
+                    <xs:enumeration value="vertical"/> 
+                </xs:restriction> 
+            </xs:simpleType> 
+        </xs:union> 
     </xs:simpleType>
 
     <xs:simpleType name="ListType">

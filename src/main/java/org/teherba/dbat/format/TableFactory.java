@@ -1,5 +1,6 @@
 /*  Selects the applicable table generator
     @(#) $Id$
+ *  2017-05-27: javadoc
     2016-09-17: size()
     2016-08-09: former name DefaultSpecTable -> SpecDescription, + ViewDescription; reordered
     2016-05-12: ExcelStream with Apache POI replaces ExcelTable
@@ -56,6 +57,7 @@ public class TableFactory {
 
     /** Attempts to instantiate the serializer for some output format
      *  @param serializerName name of the class for the serializer
+     *  @return when the class was found
      */
     private boolean addSerializer(String serializerName) {
         boolean result = true; // assume that class is found
@@ -128,6 +130,7 @@ public class TableFactory {
      *  Table class.
      *  @param baseTable the table formatter to be tested
      *  @param format code for the desired format
+     *  @return whether the formatter class can handle the desired format 
      */
     public boolean isApplicable(BaseTable baseTable, String format) {
         boolean result = false;

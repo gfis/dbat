@@ -1,5 +1,7 @@
 /*  Selects the applicable transformer, and creates transformation pipelines
     @(#) $Id$
+ *  2017-05-27: javadoc 1.8
+    2016-10-16: less imports; TeeFilter
     2016-09-17: dynamic ArrayList of transformers; MutiFormatFactory removed
     2014-11-07: private TransformerHandlers -> public
     2010-12-07: -sqlpretty
@@ -44,6 +46,8 @@
  */
 package org.teherba.xtrans;
 import  org.teherba.xtrans.BaseTransformer;
+import  org.teherba.xtrans.DummyEntityResolver;
+import  org.teherba.xtrans.TeeFilter;
 import  org.teherba.xtrans.XMLTransformer;
 import  java.io.File;
 import  java.io.PrintWriter;
@@ -59,7 +63,6 @@ import  javax.xml.transform.sax.SAXSource;
 import  javax.xml.transform.sax.SAXTransformerFactory;
 import  javax.xml.transform.sax.TransformerHandler;
 import  javax.xml.transform.stream.StreamSource;
-import  org.xml.sax.XMLReader;
 import  org.apache.log4j.Logger;
 
 /** Selects a specific transformer, and iterates over the descriptions
@@ -180,6 +183,7 @@ public class XtransFactory {
             this.addClass("proglang.VisualBasicTransformer");
             this.addClass("pseudo.CountingSerializer");
             this.addClass("pseudo.FileTreeGenerator");
+            this.addClass("pseudo.JavaImportChecker");
             this.addClass("pseudo.LevelFilter");
         //  this.addClass("pseudo.MailSerializer");
             this.addClass("pseudo.SequenceGenerator");
@@ -193,6 +197,7 @@ public class XtransFactory {
      *  transformer class.
      *  @param transformer the transformer to be tested
      *  @param format code for the desired format
+     *  @return whether to class can handle this format
      */
     private boolean isApplicable(BaseTransformer transformer, String format) {
         boolean result = false;
@@ -262,29 +267,40 @@ public class XtransFactory {
      *  @param format name of the filter
      *  @return the filtering transformer for that format,
      *  or null if a handler could not be created
-     *  @throws some exeption
      */
-    public TransformerHandler getFilterHandler(String format) throws Exception {
+    public TransformerHandler getFilterHandler(String format) {
         TransformerHandler handler = null;
         try {
             // log.debug("filter-name=" + format);
-            handler = (new XtransFactory      ()).getTransformer(format); 
+            handler = (new XtransFactory      ()).getTransformer(format);
                  // an XtransFactory instance always returns the same object
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
-            throw exc;
         }
         return handler;
     } // getFilterHandler
+    
+    /** Gets the "tee" (duplicating) transformer.
+     *  @param duplName name of the "T" output file 
+     *  @return the duplicating transformer writing to that output file
+     */
+    public TransformerHandler getTeeFilterHandler(String duplName) {
+        TransformerHandler handler = null;
+        try {
+            handler = new TeeFilter(duplName);
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+        return handler;
+    } // getTeeFilterHandler
 
     /** Gets a handler from a translet (precompiled stylesheet).
      *  @param transletClassName name of the translet class
      *  @param saxFactory the SAXTransformerFactory to be used
      *  @return a transformer handler which performs the XSLT,
      *  or null if a handler could not be created
-     *  @throws some exeption
      */
-    public TransformerHandler getTransletHandler(String transletClassName, SAXTransformerFactory saxFactory) throws Exception {
+    public TransformerHandler getTransletHandler(String transletClassName, SAXTransformerFactory saxFactory) {
         TransformerHandler handler = null;
         try {
             saxFactory.setAttribute("use-classpath", "true");
@@ -295,7 +311,6 @@ public class XtransFactory {
             handler = saxFactory.newTransformerHandler(translet);
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
-            throw exc;
         }
         return handler;
     } // getTransletHandler
@@ -304,16 +319,14 @@ public class XtransFactory {
      *  @param fileName path and name of the stylesheet file
      *  @return a transformer handler which performs the XSLT,
      *  or null if a handler could not be created
-     *  @throws some exeption
      */
-    public TransformerHandler getXSLHandler(String fileName) throws Exception {
+    public TransformerHandler getXSLHandler(String fileName) {
         TransformerHandler handler = null;
         try {
             // log.warn("xsl-name = " + fileName);
             handler = saxFactory.newTransformerHandler(new StreamSource(fileName));
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
-            throw exc;
         }
         return handler;
     } // getXSLHandler
@@ -332,10 +345,9 @@ public class XtransFactory {
      *  the output filename is missing. There may be 0, 1 or 2 filenames.
      *  <p>
      *  The default format is "-xml" for input and output.
-     *  @throws some exeption, for example if the stylesheet could not be compiled
      */
-    public void createPipeLine(String[] args) throws Exception {
-        try {
+    public void createPipeLine(String[] args) {
+        if (true) { // try {
             generator   = null;
             serializer  = null;
             int MAX_BASE = 2;
@@ -359,6 +371,12 @@ public class XtransFactory {
                         return;
                     }
                     handlers[ihand ++] = getFilterHandler(args[iarg ++]);
+                } else if (arg.startsWith("-tee" ))  { // -tee
+                    if (iarg >= args.length) {
+                        log.error(arg + " must be followed by an output filename");
+                        return;
+                    }
+                    handlers[ihand ++] = getTeeFilterHandler(realPath + args[iarg ++]);
                 } else if (arg.startsWith("-trans")) { // -translet
                     if (iarg >= args.length) {
                         log.error(arg + " must be followed by a translet name");
@@ -421,23 +439,30 @@ public class XtransFactory {
             serializer = bases[1];
             generator.setContentHandler(serializer);
             generator.setLexicalHandler(serializer);
+            generator.setEntityResolver(new DummyEntityResolver());
 
             // insert the stylesheet or filter transformation handler(s) into the double linked chain
             int nhand = ihand; // number of XSLT transformation handlers
             if (nhand > 0) {
                 bases[0].setContentHandler(handlers[0]); // feed the generator's SAX events into the first handler
-            //  bases[0].setLexicalHandler(handlers[0]); // feed the generator's SAX events into the first handler
-                bases[0].setProperty("http://xml.org/sax/properties/lexical-handler", handlers[0]);
+                try {
+                    bases[0].setProperty("http://xml.org/sax/properties/lexical-handler", handlers[0]);
+                    bases[0].setFeature("http://xml.org/sax/features/external-general-entities", false);
+                } catch (Exception exc) {
+                    // ignore
+                }
                 handlers[nhand - 1].setResult(new SAXResult(bases[1])); // feed result of last handler into serializer
-            }
+            } // nhand > 0
             ihand = nhand - 1;
             while (ihand > 0) {
                 handlers[ihand - 1].setResult(new SAXResult(handlers[ihand])); // feed one handler's SAX events into the next handler
                 ihand --;
             } // while ihand
+    /*
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
             throw exc;
+    */
         }
     } // createPipeLine
 
@@ -503,8 +528,8 @@ public class XtransFactory {
         StringBuffer result = new StringBuffer(1024);
         Iterator<BaseTransformer> iter = this.getIterator();
         while (iter.hasNext()) {
-            BaseTransformer trans = iter.next();  
-            String name = trans.getClass().getName(); 
+            BaseTransformer trans = iter.next();
+            String name = trans.getClass().getName();
             result.append(name);
             result.append(' ');
             result.append(trans.getFormatCodes());
@@ -512,7 +537,7 @@ public class XtransFactory {
         } // while hasNext
         return result.toString();
     } // toString
-    
+
     /** Maps subpackage names to their descriptions */
     private static HashMap<String, String> descMap;
 

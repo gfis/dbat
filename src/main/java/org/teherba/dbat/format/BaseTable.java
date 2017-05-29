@@ -1,5 +1,6 @@
 /*  Base class for file format representing table descriptions or results sets
  *  @(#) $Id$
+ *  2017-05-27: javadoc
  *  2017-02-11: input* methods for -r in SQLAction
  *  2016-12-09: getDescription with fallback to "en"
  *  2016-10-13: less imports
@@ -63,7 +64,7 @@ import  org.apache.log4j.Logger;
  *  <ul>
  *  <li>the description of  a relational table or view, or</li>
  *  <li>a result set obtained from an SQL SELECT statement.</li>
- *  <ul>
+ *  </ul>
  *  Any specific format implementation like {@link HTMLTable}, {@link XMLTable}, {@link SeparatedTable} and so on
  *  extends this class.
  *  Apart from bean properties for all table formats, this class defines
@@ -396,9 +397,9 @@ public abstract class BaseTable {
     //  Utility methods
     //===================
 
-    /** Converts a character to an XML entity of the form "&#x{hexstring};"
+    /** Converts a character to an XML entity of the form "&amp;#x{hexstring};"
      *  @param ch character for the entity
-     *  @return XML entity, for example "&#xa;"
+     *  @return XML entity, for example "&amp;#xa;"
      */
     public String charToEntity(char ch) {
         StringBuffer result = new StringBuffer(8);
@@ -408,9 +409,9 @@ public abstract class BaseTable {
         return result.toString();
     } // charToEntity
 
-    /** Converts an XML entity of the form "&#x{hexstring};" or "&#{decimaldigits};"
+    /** Converts an XML entity of the form "&amp;#x{hexstring};" or "&amp;#{decimaldigits};"
      *  to the corresponding character
-     *  @param entity an XML entity, for example "&#xa;"
+     *  @param entity an XML entity, for example "&amp;#xa;"
      *  @return character for the entity
      */
     public char entityToChar(String entity) {
@@ -518,7 +519,7 @@ public abstract class BaseTable {
      */
     private StringBuffer pseudoParameters;
     /** Gets the remembered parameters string
-     *  @return concatenated parameters in the form <pre>&parm1=val1&parm2=val2</pre>
+     *  @return concatenated parameters in the form <pre>&amp;parm1=val1&amp;parm2=val2</pre>
      */
     protected String getPseudoParms() {
         return pseudoParameters.toString();
@@ -544,9 +545,9 @@ public abstract class BaseTable {
      */
     protected String nextStyle;
     /** Gets the next style
-     *  @return style to be remembered, or null = reset
+     *  @return remembered style, or null = reset
      */
-    protected String getNextStyle(String style) {
+    protected String getNextStyle() {
         return nextStyle;
     } // getNextStyle
     /** Sets the next style
@@ -707,7 +708,7 @@ public abstract class BaseTable {
         endTable();
     } // endDescription
 
-    /** Simple cell which only has <code>href=</code and <code>value=</code> attributes */
+    /** Simple cell which only has <code>href=</code> and <code>value=</code> attributes */
     private TableColumn singleCell;
     /** Gets the simple cell
      *  @return a column
@@ -947,7 +948,7 @@ public abstract class BaseTable {
     public void writeComment(String line) {
     } // writeComment(1)
 
-    /** Writes a comment, but only if the "verbose" level is > 0.
+    /** Writes a comment, but only if the "verbose" level is &gt; 0.
      *  @param line string to be output as a comment
      *  @param verbose level of output detail
      */
@@ -984,9 +985,9 @@ public abstract class BaseTable {
      *  <li>0 = no escaping at all</li>
      *  <li>1 = "&amp;", "&lt;" and "&gt;" are escaped
      *  as "&amp;amp;", "&amp;lt;" and "&amp;gt;" respectively</li>
-     *  <li>2 = "&apos;" is replaced by "&amp;apos"</li>
+     *  <li>2 = "&amp;apos;" is replaced by "&amp;amp;apos;"</li>
      *  <li>3 = combination of rule 1 and rule 2</li>
-     *  <li>4 = like 1, but internally check column.expr for start of tag ('<')
+     *  <li>4 = like 1, but internally check column.expr for start of tag ('&lt;')</li>
      *  </ul>
      */
     public int getEscapingRule() {

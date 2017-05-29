@@ -1,5 +1,6 @@
 /*  Messages.java - Static help texts and other language specific messages for Dbat. äöüÄÖÜ
  *  @(#) $Id$ 
+ *  2017-05-27: javadoc
  *  2017-02-11: adapted to www.teherba.org/dbat
  *  2016-12-09: add fr messages
  *  2016-12-09: view-source: not for Chrome
@@ -54,7 +55,7 @@ import  org.xml.sax.helpers.AttributesImpl;
  *  <li>en - English</li>
  *  <li>de - German</li>
  *  </ul>
- *  <p />
+ *  <p>
  *  All methods in this class are not stateful, and therefore are
  *  <em>static</em> for easier activation.
  *  @author Dr. Georg Fischer
@@ -290,6 +291,7 @@ public class Messages implements Serializable {
      *  the available JDBC drivers.
      *  @param language one of "en", "de"
      *  @param tableFactory factory for table serializers
+     *  @throws IOException if an IO error occurs
      *  @return a block of plain text
      */
     public static String getHelpText(String language, TableFactory tableFactory) throws IOException {
@@ -375,7 +377,7 @@ public class Messages implements Serializable {
 
     /** Gets the title text for a sortable column.
      *  @param language ISO country code: "de", "en"
-     *  @return language specific title attribute for the &lt;th&gt element.
+     *  @return language specific title attribute for the &lt;th&gt; element.
      */
     public static String getSortTitle(String language) {
         StringBuffer result = new StringBuffer(64);

@@ -1,6 +1,6 @@
-/*  Generator for a default Dbat XML specification file
-    aöüÄÖÜß
+/*  Generator for a default Dbat XML specification file - aöüÄÖÜß
     @(#) $Id$
+ *  2017-05-27: javadoc
     2017-05-01, MG: aligned with ViewDescription
     2016-10-13: import added
     2016-08-26: with getISOTimestamp()
@@ -80,13 +80,13 @@ public class SpecDescription extends XMLTable {
     private static final String HTML_PREFIX = "ht";
 
     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
-     *  @param params array of 0 or more (name, value) strings which specify features in the file header.
+     *  @param attributes array of 0 or more (name, value) strings which specify features in the file header.
      *  @param parameterMap map of request parameters to values
      *  The following names are interpreted:
      *  <ul>
-     *  <li>conn - connection id</li>
-     *  <li>lang - natural language for output</li>
-    *  </ul>
+     *    <li>conn - connection id</li>
+     *    <li>lang - natural language for output</li>
+     *  </ul>
      */
     public void writeStart(String[] attributes,  HashMap<String, String[]> parameterMap) {
         try {
