@@ -1,5 +1,6 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2017-06-17: StaticMirror
  *  2017-05-27: javadoc
  *  2016-12-09: Content-disposition filename with parameter values
  *  2016-10-11: package dbat.web; no try...catch; pass exceptions to common.ErrorServlet
@@ -48,6 +49,7 @@ import  org.teherba.dbat.Dbat;
 import  org.teherba.dbat.Configuration;
 import  org.teherba.dbat.SpecificationHandler;
 import  org.teherba.dbat.SQLAction;
+import  org.teherba.dbat.StaticMirror;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.TableFactory;
@@ -460,6 +462,10 @@ public class DbatServlet extends HttpServlet {
             (new MetaInfPage    ()).showMetaInf (request, response, basePage, language, view, this);
         } else if (view.equals("more")) {
             (new MorePage       ()).showMore    (request, response, basePage, language, tableFactory);
+        } else if (view.equals("mirror")) {
+            /*
+                nyi
+            */
         } else if (view.equals("validate")) {
             (new MorePage       ()).showValidate(request, response, basePage, language);
         } else { // unknown view
