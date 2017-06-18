@@ -130,12 +130,14 @@ public class HTMLTable extends XMLTable {
             charWriter.println("<?xml version=\"1.0\" encoding=\"" + encoding + "\"?>");
             charWriter.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\""
                     + "\n\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\" [");
+            charWriter.println("]>");
+        /*
+        */
         /*  handle parameter substitution with JavaScript in the future
             if (System.getProperty("file.separator").startsWith("/")) {
                 charWriter.print  (getEntitiesFromParameters(parameterMap));
             } // else IE6: cannot handle Entity declarations in DTDs
         */
-            charWriter.println("]>");
             if (xslt != null) { // an URL to a valid XSL transformation stylesheet
                 charWriter.println("<?xml-stylesheet type=\"text/xsl\" href=\"" + xslt + "\" ?>");
             }
