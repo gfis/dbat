@@ -1,5 +1,6 @@
 /*  Reader for a URL or data URI source
  *  @(#) $Id$
+ *  2017-06-18: mark without throws, and implements InputStream
  *  2017-05-27: javadoc
  *  2016-10-13: less imports
  *  2016-10-11: charReader with 500 error message
@@ -83,7 +84,7 @@ import  org.apache.log4j.Logger;
  *  but care must be taken to call the appropriate overloaded method name.
  *  @author Dr. Georg Fischer
  */
-public class URIReader {
+public class URIReader extends InputStream {
     public final static String CVSID = "@(#) $Id$";
     /** log4j logger (category) */
     private Logger log;
@@ -323,7 +324,7 @@ public class URIReader {
             isOpened = false; // no message
         } catch (Exception exc) {
             isOpened = false; // for any problem
-            log.error(exc.getMessage() + ", parmURI=\"" + parmURI + "\"", exc);
+            log.error(exc.getMessage() + ", parmURI=\"" + parmURI + "\", enc=\"" + enc + "\"\n", exc);
             charReader = new BufferedReader(new StringReader(exc.getMessage()));
         }
     } // Constructor(4)
@@ -529,10 +530,8 @@ public class URIReader {
      *  A limit value larger than the size of the input buffer will cause a new buffer
      *  to be allocated whose size is no smaller than limit.
      *  Therefore large values should be used with care.
-     *  @throws IllegalArgumentException for an illegal argument
-     *  @throws IOException if an IO error occurs
      */
-    public void mark(int readAheadLimit) throws IllegalArgumentException, IOException {
+    public void mark(int readAheadLimit) {
         try {
             if (false) {
             } else if (this.charReader != null && isEncoded) {
@@ -542,9 +541,9 @@ public class URIReader {
             } else {
             }
         } catch (IllegalArgumentException exc) {
-            throw exc;
+            log.error(exc.getMessage(), exc);
         } catch (IOException exc) {
-            throw exc;
+            log.error(exc.getMessage(), exc);
         }
     } // readAheadLimit
 

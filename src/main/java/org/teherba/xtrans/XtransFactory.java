@@ -83,9 +83,9 @@ public class XtransFactory {
     /** Output writer, consumes SAX events */
     private BaseTransformer serializer;
     /** Factory for SAX XSLT transformers and translets */
-    private static SAXTransformerFactory saxFactory;
+    protected static SAXTransformerFactory saxFactory;
     /** real path to web context */
-    private String realPath;
+    protected String realPath;
     /** ArrayList of transformers for different formats */
     protected ArrayList<BaseTransformer> transformers;
 
@@ -121,7 +121,6 @@ public class XtransFactory {
             transformers.add(new XMLTransformer());
             // the order here defines the order in documentation.jsp,
             // should be: "... group by package order by package, name"
-        //  this.addClass("XMLTransformer");
             this.addClass("config.IniTransformer");
             this.addClass("config.MakefileTransformer");
             this.addClass("config.ManifestTransformer");
