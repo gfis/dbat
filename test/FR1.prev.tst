@@ -90,7 +90,7 @@ WHERE name like 'Johannes%';
 
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/color09.xml" type="text/plain">test/color09</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;fragment=&amp;name=Johannes&amp;spec=test.color09&amp;lang=en">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;fragment=&amp;name=Johannes&amp;spec=test.color09&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;fragment=&amp;name=Johannes&amp;spec=test.color09&amp;lang=en">more</a>
 
 </body></html>

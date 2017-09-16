@@ -1406,4 +1406,26 @@ HTTP spec=test.selvalid
 
 TEST VL2 verify 4 digits - no match
 HTTP spec=test.selvalid start=wrong end=bad
+#----
+# more than 4000 Excel styles
+TEST ER1 create table
+DATA # same structure as c01
+  DROP   TABLE IF EXISTS er1 ;
+  CREATE TABLE er1
+  ( name   VARCHAR(16) NOT NULL
+  , univ   VARCHAR(16)
+  , year   INT
+  , gender CHAR(1)
+  , birth  DATE
+  -- , PRIMARY KEY (name)
+  ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
+  COMMIT;
+  SELECT COUNT(*) FROM er1;
+CALL Dbat -f $(DATA)
+CALL Dbat "INSERT INTO er1 SELECT a.name, a.univ, a.year, a.gender, a.birth FROM c01 a, c01 b, c01 c, c01 d;"
+CALL Dbat -n er1
+
+TEST ER2 output to Excel 97 (*.xls)
+CALL Dbat -m xls -5000 er1
+CALL Dbat "DROP TABLE er1"
 

@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+    2017-09-16: default for Excel was mode=xls, now xlsx
  *  2017-05-27: javadoc 1.8
     2016-10-13: less imports
     2016-08-09: pass "conn" in writeStart; DBIV_TAG; log.info in resolveEntity
@@ -389,7 +390,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 } // WEB_CALL
             } // "script" was present
             sourceUrl      += specUrl + specName + (callType == Configuration.CLI_CALL ? "" : ".xml");
-            String xlsUrl   = "servlet?&amp;mode=xls"
+            String xlsUrl   = "servlet?&amp;mode=xlsx"
                             + repeatURLParameters();
             String moreUrl  = "servlet?&amp;view=more&amp;mode=" + tbSerializer.getOutputFormat()
                             + repeatURLParameters();

@@ -58,7 +58,7 @@
 	</table>
     
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/callx10.xml" type="text/plain">test/callx10</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;iname0=row2&amp;spec=test%2Fcallx10&amp;lang=en&amp;update_count=1&amp;odec1=194706290530000000&amp;odec2=194706.290&amp;odate3=1981-08-09&amp;otime4=11%3A30%3A00&amp;ots5=1981-08-09+11%3A30%3A00.000">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;iname0=row2&amp;spec=test%2Fcallx10&amp;lang=en&amp;update_count=1&amp;odec1=194706290530000000&amp;odec2=194706.290&amp;odate3=1981-08-09&amp;otime4=11%3A30%3A00&amp;ots5=1981-08-09+11%3A30%3A00.000">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;iname0=row2&amp;spec=test%2Fcallx10&amp;lang=en&amp;update_count=1&amp;odec1=194706290530000000&amp;odec2=194706.290&amp;odate3=1981-08-09&amp;otime4=11%3A30%3A00&amp;ots5=1981-08-09+11%3A30%3A00.000">more</a>
 
 </body></html>

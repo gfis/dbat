@@ -23,7 +23,7 @@
     &lt;parm name="VALUE" format="upper" /&gt; THAT+IS+THE+1ST+VALUE<br />
     &lt;parm name="VALUE" format="none"  /&gt; That+is+the+1st+value<br />
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./web/spec/test/parmform.xml" type="text/plain">web/spec/test/parmform.xml</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;VALUE=That%2Bis%2Bthe%2B1st%2Bvalue&amp;value=That%2Bis%2Bthe%2B2nd%2Bvalue&amp;lang=en">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;VALUE=That%2Bis%2Bthe%2B1st%2Bvalue&amp;value=That%2Bis%2Bthe%2B2nd%2Bvalue&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;VALUE=That%2Bis%2Bthe%2B1st%2Bvalue&amp;value=That%2Bis%2Bthe%2B2nd%2Bvalue&amp;lang=en">more</a>
 
 </body></html>

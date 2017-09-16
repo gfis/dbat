@@ -46,7 +46,7 @@ WHERE name like '%';
 </table>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/selec05.xml" type="text/plain">test/selec05</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fselec05&amp;lang=en&amp;name=%25">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test%2Fselec05&amp;lang=en&amp;name=%25">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fselec05&amp;lang=en&amp;name=%25">more</a>
 
 </body></html>

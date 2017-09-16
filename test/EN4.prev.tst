@@ -46,7 +46,7 @@ ORDER BY 1;
 		</table>
 	</form>
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/enum02.xml" type="text/plain">test/enum02</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fenum02&amp;lang=en&amp;gender=N&amp;code=F&amp;code=M&amp;code=N&amp;display=female&amp;display=male&amp;display=neuter">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test%2Fenum02&amp;lang=en&amp;gender=N&amp;code=F&amp;code=M&amp;code=N&amp;display=female&amp;display=male&amp;display=neuter">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fenum02&amp;lang=en&amp;gender=N&amp;code=F&amp;code=M&amp;code=N&amp;display=female&amp;display=male&amp;display=neuter">more</a>
 
 </body></html>

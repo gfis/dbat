@@ -44,7 +44,7 @@ ORDER BY 1,3;
 </table>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/selvalid.xml" type="text/plain">test/selvalid</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test.selvalid&amp;lang=en&amp;start=1900&amp;end=2000">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test.selvalid&amp;lang=en&amp;start=1900&amp;end=2000">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test.selvalid&amp;lang=en&amp;start=1900&amp;end=2000">more</a>
 
 </body></html>

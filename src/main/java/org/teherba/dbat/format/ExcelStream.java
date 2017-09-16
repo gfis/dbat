@@ -1,5 +1,6 @@
 /*  Generator for binary Excel 97 *.xls (BIFF) and Excel 2007 (Office Open XML, OOXML) tables
  *  @(#) $Id$
+ *  2017-09-16: POI (or Excel ?) does not support more than 4000 styles - create them for rowNo == 1 only
  *  2017-05-27: javadoc
  *  2017-02-11: load from URI
  *  2016-10-13: less imports
@@ -74,6 +75,8 @@ public class ExcelStream extends BaseTable {
     private Sheet sheet;
     /** current {@link Row} to be filled with {@link Cell}s */
     private Row row;
+    /** current {@link CellStyle}s for all values in the (first) {@link Row} */
+    private CellStyle[] cellStyles;
     /** {@link DataFormat} for {@link #wbook} */
     private DataFormat wbDataFormat;
 
@@ -320,16 +323,17 @@ public class ExcelStream extends BaseTable {
         String pseudo = null;
         int ncol = columnList.size();
         int icol = 0;
-        Row  row  = null;
-        Cell cell = null;
-        Font font       = wbook.createFont();
-        CellStyle style = wbook.createCellStyle();
-        style.setFont(font);
+        Row  row        = null;
+        Cell cell       = null;
+        Font font       = null;
+        CellStyle style = null;
         switch (rowType) {
             case HEADER:
-                row = sheet.createRow(rowNo ++);
-                // row.setHeightInPoints(12.75f);
+                row     = sheet.createRow(rowNo);
+                font    = wbook.createFont();
                 font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+                style   = wbook.createCellStyle();
+                style.setFont(font);
                 style.setAlignment(CellStyle.ALIGN_CENTER);
                 while (icol < ncol) {
                     column = columnList.get(icol);
@@ -378,14 +382,22 @@ public class ExcelStream extends BaseTable {
                     sheet.setColumnWidth(icol, 256 * width);
                     icol ++;
                 } // while icol
-                break;
+                rowNo ++;
+                break; // HEADER
             case DATA:
-                row = sheet.createRow(rowNo ++);
-                // row.setHeightInPoints(12.75f);
+                row = sheet.createRow(rowNo);
                 font  = wbook.createFont();
+                if (rowNo <= 1) {
+                    cellStyles = new CellStyle[ncol];
+                }
                 while (icol < ncol) {
-                    style = wbook.createCellStyle();
-                    style.setFont(font);
+                    if (rowNo <= 1) { // create style for 1st row only
+                        cellStyles[icol] = wbook.createCellStyle();
+                        style = cellStyles[icol];
+                        style.setFont(font);
+                    } else { // take style from 1st row and do not modify it below
+                        style = cellStyles[icol];
+                    }
                     column = columnList.get(icol);
                     pseudo = column.getPseudo();
                     if (pseudo != null) {
@@ -409,63 +421,80 @@ public class ExcelStream extends BaseTable {
                                 case Types.SMALLINT:
                                 case Types.TINYINT:
                                 case Types.REAL:
-                                    style.setDataFormat(wbDataFormat.getFormat("0"));
-                                    style.setAlignment(CellStyle.ALIGN_RIGHT);
                                     cell.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     cell.setCellValue(Double.valueOf(value));
+                                    if (rowNo <= 1) {
+                                        style.setDataFormat(wbDataFormat.getFormat("0"));
+                                        style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                    }
                                     break;
                                 case Types.DECIMAL:
-                                    style.setAlignment(CellStyle.ALIGN_RIGHT);
                                     cell.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     cell.setCellValue(Double.valueOf(value));
-                                    int decimalDigits = column.getDecimal(); // not yet filled properly, therefore:
-                                    decimalDigits = 0;
-                                    int dotPos = value.indexOf('.');
-                                    if (dotPos >= 0) {
-                                        decimalDigits = value.length() - 1 - dotPos;
-                                    }
-                                    String fraction = "00";
-                                    if (false) {
-                                    } else if (decimalDigits <= 0 || decimalDigits > 10) {
-                                        style.setDataFormat(wbDataFormat.getFormat("0"));
-                                    } else if (decimalDigits <= 10) {
-                                        fraction = "0000000000".substring(0, decimalDigits);
-                                        style.setDataFormat(wbDataFormat.getFormat("0." + fraction));
+                                    if (rowNo <= 1) {
+                                        int decimalDigits = column.getDecimal(); // not yet filled properly, therefore:
+                                        decimalDigits = 0;
+                                        int dotPos = value.indexOf('.');
+                                        if (dotPos >= 0) {
+                                            decimalDigits = value.length() - 1 - dotPos;
+                                        }
+                                        String fraction = "00";
+                                        if (false) {
+                                        } else if (decimalDigits <= 0 || decimalDigits > 10) {
+                                            style.setDataFormat(wbDataFormat.getFormat("0"));
+                                        } else if (decimalDigits <= 10) {
+                                            fraction = "0000000000".substring(0, decimalDigits);
+                                            style.setDataFormat(wbDataFormat.getFormat("0." + fraction));
+                                        }
+                                        style.setAlignment(CellStyle.ALIGN_RIGHT);
                                     }
                                     break;
                                 case Types.CHAR:
                                 case Types.VARCHAR:
-                                    style.setAlignment(CellStyle.ALIGN_LEFT);
                                     cell.setCellType(Cell.CELL_TYPE_STRING);
                                     cell.setCellValue(value);
+                                    if (rowNo <= 1) {
+                                        style.setAlignment(CellStyle.ALIGN_LEFT);
+                                    }
                                     break;
                                 case Types.DATE:
-                                    style.setAlignment(CellStyle.ALIGN_RIGHT);
                                     cell.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     cell.setCellValue(SQLAction.DATE_FORMAT.parse(value));
-                                    style.setDataFormat(wbDataFormat.getFormat("yyyy-mm-dd"));
+                                    if (rowNo <= 1) {
+                                        style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                        style.setDataFormat(wbDataFormat.getFormat("yyyy-mm-dd"));
+                                    }
                                     break;
                                 case Types.TIME:
-                                    style.setAlignment(CellStyle.ALIGN_RIGHT);
                                     cell.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     cell.setCellValue(SQLAction.TIME_FORMAT.parse(value));
-                                    style.setDataFormat(wbDataFormat.getFormat("hh:mm:ss"));
+                                    if (rowNo <= 1) {
+                                        style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                        style.setDataFormat(wbDataFormat.getFormat("hh:mm:ss"));
+                                    }
                                     break;
                                 case Types.TIMESTAMP:
-                                    style.setAlignment(CellStyle.ALIGN_RIGHT);
                                     cell.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     cell.setCellValue(SQLAction.TIMESTAMP_FORMAT.parse(value));
-                                    style.setDataFormat(wbDataFormat.getFormat("yyyy-mm-dd hh:mm:ss"));
+                                    if (rowNo <= 1) {
+                                        style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                        style.setDataFormat(wbDataFormat.getFormat("yyyy-mm-dd hh:mm:ss"));
+                                    }
                                     break;
                                 } // switch type
                             } catch (Exception exc) { // treat the value as text
-                                    cell.setCellValue(value);
+                                cell.setCellValue(value);
                             }
                             cell.setCellStyle(style);
                         } // not NULL
                     } // pseudo == null
                     icol ++;
                 } // while icol
+                rowNo ++;
+                break; // DATA
+            case DATA2:
+            case ROW1:
+                // do not increment rowNo
                 break;
         } // switch rowType
     } // writeGenericRow

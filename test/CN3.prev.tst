@@ -68,7 +68,7 @@ WHERE name like 'Ilse%';
 </table>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/counter01.xml" type="text/plain">test/counter01</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;name=Ilse&amp;spec=test%2Fcounter01&amp;lang=en">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;name=Ilse&amp;spec=test%2Fcounter01&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;name=Ilse&amp;spec=test%2Fcounter01&amp;lang=en">more</a>
 
 </body></html>

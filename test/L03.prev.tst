@@ -65,7 +65,7 @@ ORDER BY name;
 
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/listboxmult.xml" type="text/plain">test/listboxmult</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;namebox=D&amp;namebox=F&amp;namebox=J&amp;spec=test%2Flistboxmult&amp;lang=en&amp;code=D&amp;code=E&amp;code=F&amp;code=I&amp;code=J&amp;code=L&amp;code=M&amp;code=M&amp;display=Dorothea&amp;display=Eberhard&amp;display=Fritz&amp;display=Ilse&amp;display=Johannes&amp;display=Lucie&amp;display=Maria&amp;display=Martha">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;namebox=D&amp;namebox=F&amp;namebox=J&amp;spec=test%2Flistboxmult&amp;lang=en&amp;code=D&amp;code=E&amp;code=F&amp;code=I&amp;code=J&amp;code=L&amp;code=M&amp;code=M&amp;display=Dorothea&amp;display=Eberhard&amp;display=Fritz&amp;display=Ilse&amp;display=Johannes&amp;display=Lucie&amp;display=Maria&amp;display=Martha">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;namebox=D&amp;namebox=F&amp;namebox=J&amp;spec=test%2Flistboxmult&amp;lang=en&amp;code=D&amp;code=E&amp;code=F&amp;code=I&amp;code=J&amp;code=L&amp;code=M&amp;code=M&amp;display=Dorothea&amp;display=Eberhard&amp;display=Fritz&amp;display=Ilse&amp;display=Johannes&amp;display=Lucie&amp;display=Maria&amp;display=Martha">more</a>
 
 </body></html>

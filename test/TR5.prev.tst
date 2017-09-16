@@ -32,7 +32,7 @@ FROM c01;
 
     
 <br />Output by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/trail05.xml" type="text/plain">test/trail05</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Ftrail05&amp;lang=en">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test%2Ftrail05&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Ftrail05&amp;lang=en">more</a>
 
 </body></html>

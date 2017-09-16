@@ -25,7 +25,7 @@
     <h3><a href="servlet?spec=test.align01&amp;name=M&amp;year=1995">1995</a>
     </h3>
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./web/spec/test/parmlink.xml" type="text/plain">web/spec/test/parmlink.xml</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;lang=en&amp;name=M&amp;year=1995">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;lang=en&amp;name=M&amp;year=1995">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;lang=en&amp;name=M&amp;year=1995">more</a>
 
 </body></html>

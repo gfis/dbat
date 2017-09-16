@@ -22,7 +22,7 @@
     </form>
     
 <h4 style="color:red">There was a validation problem with the input field(s) highlighted in red.<br /> Please move the mouse cursor over the field or click on the asterisk to see the <a href="servlet?view=validate&amp;lang=en&amp;regex=" target="_blank">validation rule</a>.</h4><br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/selvalid.xml" type="text/plain">test/selvalid</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;end=bad&amp;spec=test.selvalid&amp;start=wrong&amp;lang=en">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;end=bad&amp;spec=test.selvalid&amp;start=wrong&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;end=bad&amp;spec=test.selvalid&amp;start=wrong&amp;lang=en">more</a>
 
 </body></html>

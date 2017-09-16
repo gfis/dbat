@@ -24,7 +24,7 @@
     <h3>Path Tests</h3>
     view source
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/pathstyle.xml" type="text/plain">test/pathstyle</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Fpathstyle&amp;lang=en">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test%2Fpathstyle&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fpathstyle&amp;lang=en">more</a>
 
 </body></html>

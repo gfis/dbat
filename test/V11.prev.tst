@@ -112,7 +112,7 @@ ORDER BY name,family;
   
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/crud03.xml" type="text/plain">test/crud03</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;birth=&amp;code=F&amp;code=M&amp;decease=&amp;display=female&amp;display=male&amp;enc=ISO-8859-1&amp;lang=en&amp;place=&amp;search_family=&amp;search_gender=&amp;search_name=&amp;spec=test.crud03&amp;user=">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;birth=&amp;code=F&amp;code=M&amp;decease=&amp;display=female&amp;display=male&amp;enc=ISO-8859-1&amp;lang=en&amp;place=&amp;search_family=&amp;search_gender=&amp;search_name=&amp;spec=test.crud03&amp;user=">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;birth=&amp;code=F&amp;code=M&amp;decease=&amp;display=female&amp;display=male&amp;enc=ISO-8859-1&amp;lang=en&amp;place=&amp;search_family=&amp;search_gender=&amp;search_name=&amp;spec=test.crud03&amp;user=">more</a>
 
 </body></html>

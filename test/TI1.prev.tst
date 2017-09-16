@@ -47,7 +47,7 @@ ORDER BY name;
 </table>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./web/spec/test/highlight.xml" type="text/plain">web/spec/test/highlight.xml</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;keyword=ajax&amp;lang=en">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;keyword=ajax&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;keyword=ajax&amp;lang=en">more</a>
 
 </body></html>

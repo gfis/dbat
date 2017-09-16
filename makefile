@@ -256,3 +256,8 @@ misc:
 	$(SUDO) cp -v web/spec/test/check_word.xml $(TOMC)/spec/test
 mod:
 	$(DBAW) "update relatives set name='Cäcilie' where name='Cacilie'"
+#----------------------
+style-test:
+	$(DBAW) -f temp/cal2017.sql
+	$(DBAW) -n calwork_temp
+	$(DBAW) -m xlsx -4000 calwork_temp > temp/calwork_temp.xlsx

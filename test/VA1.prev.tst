@@ -42,7 +42,7 @@ ORDER BY 1;
 </table>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/var01.xml" type="text/plain">test/var01</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;name=%25&amp;spec=test.var01&amp;lang=en">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;name=%25&amp;spec=test.var01&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;name=%25&amp;spec=test.var01&amp;lang=en">more</a>
 
 </body></html>

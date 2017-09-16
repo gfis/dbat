@@ -31,7 +31,7 @@ FROM pivot;
 
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./web/spec/test/aggr01.xml" type="text/plain">web/spec/test/aggr01.xml</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;lang=en">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;lang=en">more</a>
 
 </body></html>

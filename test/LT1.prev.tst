@@ -34,7 +34,7 @@ delta tau omega</h4>
 RHO ZETA CHI</h4>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/textarea.xml" type="text/plain">test/textarea</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Ftextarea&amp;lang=en&amp;wordlist=alpha+beta+gamma%0Adelta+tau+omega&amp;WORDLIST=epsilon+my+ny%0Arho+zeta+chi">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test%2Ftextarea&amp;lang=en&amp;wordlist=alpha+beta+gamma%0Adelta+tau+omega&amp;WORDLIST=epsilon+my+ny%0Arho+zeta+chi">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Ftextarea&amp;lang=en&amp;wordlist=alpha+beta+gamma%0Adelta+tau+omega&amp;WORDLIST=epsilon+my+ny%0Arho+zeta+chi">more</a>
 
 </body></html>

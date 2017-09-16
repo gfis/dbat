@@ -46,7 +46,7 @@ ORDER BY name;
 </table>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/uml01.xml" type="text/plain">test/uml01</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;search_name=C%25C3%25A4cilie&amp;spec=test.uml01&amp;lang=en&amp;name=%25">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;search_name=C%25C3%25A4cilie&amp;spec=test.uml01&amp;lang=en&amp;name=%25">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;search_name=C%25C3%25A4cilie&amp;spec=test.uml01&amp;lang=en&amp;name=%25">more</a>
 
 </body></html>

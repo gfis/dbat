@@ -20,7 +20,7 @@
     </script>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/rewrite.xml" type="text/plain">test/rewrite</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;DBSYS=ORA1&amp;spec=test.rewrite&amp;lang=en">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;DBSYS=ORA1&amp;spec=test.rewrite&amp;lang=en">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;DBSYS=ORA1&amp;spec=test.rewrite&amp;lang=en">more</a>
 
 </body></html>

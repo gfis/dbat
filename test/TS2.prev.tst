@@ -40,7 +40,7 @@ WHERE name like '%r%';
 </table>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./web/spec/test/xslt_brackets.xml" type="text/plain">web/spec/test/xslt_brackets.xml</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;lang=en&amp;name=%25r">Excel</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;lang=en&amp;name=%25r">Excel</a>,
 <a href="servlet?&amp;view=more&amp;mode=html&amp;lang=en&amp;name=%25r">more</a>
 
 </body></html>

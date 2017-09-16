@@ -32,6 +32,6 @@ FROM c01;
 
     
 <br />Output by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/trail04.xml" type="text/plain">test/trail04</a>,
-<a target="_blank" href="servlet?&amp;mode=xls&amp;spec=test%2Ftrail04&amp;lang=en">Excel</a>
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test%2Ftrail04&amp;lang=en">Excel</a>
 
 </body></html>
