@@ -1294,7 +1294,8 @@ public class SQLAction implements Serializable {
      *  @param selectSql SQL statement which returned the result set, for debugging
      *  @param stResults result set from JDBC execute
      */
-    private void serializeQueryResults(TableMetaData tbMetaData, String selectSql, ResultSet stResults) {
+    private void serializeQueryResults(TableMetaData tbMetaData, String selectSql, ResultSet stResults) 
+    		throws Exception {
         String value = "";
         TableColumn column = null;
         BaseTable tbSerializer  = config.getTableSerializer();
@@ -1393,6 +1394,7 @@ public class SQLAction implements Serializable {
             log.error(exc.getMessage() + ", SQL=\"" + selectSql + "\"", exc);
             printSQLError(exc);
             setCommitted(true); // avoid a final COMMIT
+            throw exc;
         }
     } // serializeQueryResults
 
