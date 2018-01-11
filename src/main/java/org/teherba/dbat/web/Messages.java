@@ -1,5 +1,6 @@
 /*  Messages.java - Static help texts and other language specific messages for Dbat. äöüÄÖÜ
  *  @(#) $Id$ 
+ *  2018-01-11: property "console=none|select|update"
  *  2017-05-27: javadoc
  *  2017-02-11: adapted to www.teherba.org/dbat
  *  2016-12-09: add fr messages
@@ -89,11 +90,13 @@ public class Messages implements Serializable {
         basePage.add("en", smess, "{parm}List</a> of available specifications");
         basePage.add("de", smess, "{parm}Liste</a> der abrufbaren Spezifikationen");
         basePage.add("fr", smess, "{parm}Liste</a> des spécifications disponibles");
+/* now hand-coded in web/MorePage
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"con\"         href=\"servlet?view=con\">");
         basePage.add("en", smess, "{parm}SQL Console</a>");
         basePage.add("de", smess, "{parm}SQL-Konsole</a>");
         basePage.add("fr", smess, "{parm}Console SQL</a>");
+*/
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"describe\"    href=\"servlet?spec=describe\">");
         basePage.add("en", smess, "{parm}describe DDL</a> of a Table or View");
@@ -128,6 +131,13 @@ public class Messages implements Serializable {
                 + "<br />Bitte rufen Sie die " + appLink + "-Startseite auf.");
         basePage.add("fr", "404", "Un fichier de spécification <em>{parm}</em> n'a pas été trouvé. "
                 + "<br />Veuillez vérifier la page d'accueil" + appLink + ".");
+        //--------
+        basePage.add("en", "410", "Execution of SQL instructions for DB connection "
+                + "<em>{parm}</em> is not allowed.");
+        basePage.add("de", "410", "SQL-Befehle f&#xfc;r DB-Verbindung "
+                + "<em>{parm}</em> sind nicht erlaubt.");
+        basePage.add("fr", "410", "Commandes SQL pour DB connection "
+                + "<em>{parm}</em> ne sont pas possible.");
         //--------
     } // addMessageTexts
 
@@ -356,19 +366,16 @@ public class Messages implements Serializable {
         } else if (language.equals("de")) {
             result = (""
                     + " verarbeitete " +  instructionSum + " SQL-Anweisung"  + (instructionSum != 1 ? "en" : "")
-                //  + " mit " + config.getDriverURL()
                     + ", " + manipulatedSum + " betroffene Zeile"            + (manipulatedSum != 1 ? "n" : "")
                     + " in " + Long.toString((System.nanoTime() - startTime) / 1000000L) + " ms");
         } else if (language.equals("fr")) {
             result = (""
                     + " traité " +  instructionSum + " instruction"  +   (instructionSum != 1 ? "s" : "") + " SQL"
-                //  + " avec " + config.getDriverURL()
                     + ", " + manipulatedSum + (manipulatedSum != 1 ? " rangées concernées" : " rangée concernée")
                     + " en " + Long.toString((System.nanoTime() - startTime) / 1000000L) + " ms");
         } else { // default: en
             result = (""
                     + " executed " +  instructionSum + " SQL statement"  + (instructionSum != 1 ? "s" : "")
-                //  + " on " + config.getDriverURL()
                     + " affecting " + manipulatedSum + " row"            + (manipulatedSum != 1 ? "s" : "")
                     + " in " + Long.toString((System.nanoTime() - startTime) / 1000000L) + " ms");
         }

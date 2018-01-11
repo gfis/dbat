@@ -1,7 +1,8 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2018-01-11: property "console=none|select|update"
  *  2017-06-17: StaticMirror
- *  2017-05-27: javadoc
+ *  2017-05-27: javadoc 1.8
  *  2016-12-09: Content-disposition filename with parameter values
  *  2016-10-11: package dbat.web; no try...catch; pass exceptions to common.ErrorServlet
  *  2016-09-15: BasicFactory replaced by XtransFactory again; init() not unchecked
@@ -257,7 +258,7 @@ public class DbatServlet extends HttpServlet {
      */
     public void generateResponse(HttpServletRequest request, HttpServletResponse response) throws IOException {
         boolean binary = false; // assume legible character response output
-        config.configure(config.WEB_CALL, dsMap);
+        config.configure(config.WEB_CALL, dsMap); // why?
         TableFactory tableFactory = new TableFactory();
         request.setCharacterEncoding("UTF-8");
         // HttpSession session = request.getSession();       
@@ -399,10 +400,15 @@ public class DbatServlet extends HttpServlet {
             // if (view == null || view.length() == 0 || view.matches("del|del2|dat|ins|ins2|upd|upd2|sear"))
 
         } else if (view.equals("con")) { // View "con" collects the parameters from the SQL Console
-            (new ConsolePage    ()).showConsole(request, response, basePage, language, tableFactory, dsMap);
-
+            if (! config.hasConsole()) { // not allowed
+                basePage.writeMessage(request, response, language, new String[] { "410", connectionId });
+            } else { 
+                (new ConsolePage    ()).showConsole(request, response, basePage, language, tableFactory, dsMap, config);
+            }
         } else if (view.equals("con2")) { // View "con2" is for the result of the SQL console
-            if (true) { // try {
+            if (! config.hasConsole()) { // not allowed
+                basePage.writeMessage(request, response, language, new String[] { "410", connectionId });
+            } else { 
                 String intext   = BasePage.getInputField(request, "intext"   , ";"       );
                 fetchLimit      = BasePage.getInputField(request, "fetch"    , 64        );
                 // response.setContentType(config.getHtmlMimeType()); // default
@@ -426,8 +432,7 @@ public class DbatServlet extends HttpServlet {
                 } else {
                     config.setConnectionId(); // default: take first in list
                 }
-                /* initializeAction */
-                SQLAction sqlAction  = new SQLAction(config);
+                SQLAction sqlAction  = new SQLAction(config, true); // possibly readonly if fromConsole
                 TableMetaData tbMetaData = new TableMetaData(config);
                 tbMetaData.setFillState(1);
                 tbSerializer.writeStart(new String[] // this may throw an exception "could not compile stylesheet"
@@ -445,11 +450,7 @@ public class DbatServlet extends HttpServlet {
                 sqlAction.terminate();
                 tbSerializer.writeEnd();
                 tbSerializer.close();
-        /*
-            } catch (Exception exc) {
-                log.error(exc.getMessage(), exc);
-        */
-            }
+            } // allowed
             // view "con2"
 
         // now the views for the auxiliary pages
@@ -461,7 +462,7 @@ public class DbatServlet extends HttpServlet {
                 ) {
             (new MetaInfPage    ()).showMetaInf (request, response, basePage, language, view, this);
         } else if (view.equals("more")) {
-            (new MorePage       ()).showMore    (request, response, basePage, language, tableFactory);
+            (new MorePage       ()).showMore    (request, response, basePage, language, tableFactory, config);
         } else if (view.equals("mirror")) {
             /*
                 nyi

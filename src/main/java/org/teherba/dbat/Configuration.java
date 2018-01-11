@@ -1,5 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$ 2016-04-16 14:43:35
+ *  2018-01-11: property "console=none|select|update"
  *  2017-05-27: javadoc 1.8
  *  2016-10-13: less imports
  *  2016-09-16: log.info() without caller's name; Locale.setDefault; better versionString
@@ -134,13 +135,49 @@ public class Configuration implements Serializable {
     public void setConnectionId() {
         if (dsMap != null) {
             boolean busy = true;
-            Iterator/*<1.5*/<String>/*1.5>*/ miter = dsMap.keySet().iterator();
+            Iterator<String> miter = dsMap.keySet().iterator();
             while (busy && miter.hasNext()) {
                 this.connectionId = miter.next();
                 busy = false; // take first only
             } // while busy
         } // dsMap != null
     } // setConnectionId(0)
+    //--------
+    /** Property for the behaviour of the SQL console window */
+    private String console;
+    /** no console window (default) */
+    public static final String CONSOLE_NONE   = "no access";
+    /** console window with read access */
+    public static final String CONSOLE_SELECT = "SELECT";
+    /** console window with modify access */
+    public static final String CONSOLE_UPDATE = "UPDATE";
+    /** Gets the console property
+     *  @return one of {@link #CONSOLE_NONE}, {@link #CONSOLE_SELECT}, {@link #CONSOLE_UPDATE}
+     */
+    public String getConsole() {
+        return this.console;
+    } // getConsole
+    /** Sets the console property
+     *  @param console, one of "none", "select" or "update"
+     */
+    public void setConsole(String console) {
+        if (false) {
+        } else if (console.equals("none"  )) {
+            this.console = CONSOLE_NONE;
+        } else if (console.equals("select")) {
+            this.console = CONSOLE_SELECT;
+        } else if (console.equals("update")) {
+            this.console = CONSOLE_UPDATE;
+        } else { // default
+            this.console = CONSOLE_NONE;
+        }
+    } // setConsole
+    /** Whether the SQL console window should be shown
+     *  @return false if "console=none", true otherwise
+     */
+    public boolean hasConsole() {
+    	return ! this.console.equals(CONSOLE_NONE);
+    } // hasConsole
     //--------
     /** Character for the decimal point or comma */
     private String  decimalSeparator;
@@ -364,19 +401,19 @@ public class Configuration implements Serializable {
      *  The SAX handler will take parameter values from here when
      *  it encounters a <code>&lt;parm&gt;</code> element.
      */
-    private HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap;
+    private HashMap<String, String[]> parameterMap;
     /** Gets the parameter (placeholder) map
      *  @return the locally stored parameter map
      */
-    public HashMap/*<1.5*/<String, String[]>/*1.5>*/ getParameterMap() {
+    public HashMap<String, String[]> getParameterMap() {
         return parameterMap;
     } // getParameterMap
     /** Sets the parameter (placeholder) map
      *  @param map set the parameter map to this object
      */
-    public void setParameterMap(Map/*<1.5*/<String, String[]>/*1.5>*/  map) {
-        parameterMap = new HashMap/*<1.5*/<String, String[]>/*1.5>*/();
-        Iterator/*<1.5*/<String>/*1.5>*/ piter = map.keySet().iterator();
+    public void setParameterMap(Map<String, String[]>  map) {
+        parameterMap = new HashMap<String, String[]>();
+        Iterator<String> piter = map.keySet().iterator();
         while (piter.hasNext()) {
             String key = piter.next();
             if (key.startsWith("amp;")) {
@@ -563,7 +600,7 @@ public class Configuration implements Serializable {
     } // getCallType
     //--------
     /** Maps connection identifiers (short database instance ids) to {@link DataSource Datasources} */
-    private LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap;
+    private LinkedHashMap<String, DataSource> dsMap;
 
     //================================
     // Constructor and initialization
@@ -590,6 +627,7 @@ public class Configuration implements Serializable {
         dsMap           = null;
         setAutoCommit   (callType == WEB_CALL); // only Web queries are always autocommitted (for DB/2)
         setConnectionId ("worddb");
+        setConsole      ("none");
         setRdbmsId      ("jdbc:mysql");
         setDefaultSchema("");
         setNamespacePrefix("");
@@ -603,7 +641,7 @@ public class Configuration implements Serializable {
         setMaxCommit    (getFetchLimit()); // very high - never reached
         setNullText     (1); // write "null"
         setTrimSides    (2); // trim on both sides
-        setParameterMap (new HashMap/*<1.5*/<String, String[]>/*1.5>*/());
+        setParameterMap (new HashMap<String, String[]>());
         setProcSeparator(null); // no default
         setDecimalSeparator("."); // US-English convention
         propFileName    = ""; // default (built-in) connection properties
@@ -623,7 +661,7 @@ public class Configuration implements Serializable {
      *  @param dsMap maps connection ids to pre-initialized DataSources,
      *  see <em>DbatServlet</em>.
      */
-    public void configure(int callType, LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap) {
+    public void configure(int callType, LinkedHashMap<String, DataSource> dsMap) {
         configure(callType);
         this.dsMap = dsMap;
     } // configure(callType, dsMap)
@@ -684,7 +722,8 @@ public class Configuration implements Serializable {
      *  <ul>
      *  <li>decimal="." the character to be used as decimal separator</li>
      *  <li>commit=250 number of rows after which a COMMIT statement is inserted by formats -sql/jdbc, -update</li>
-     *  <li>null=1(0) if the <em>null</em> value should be (not) written by text formats</li>
+     *  <li>console=none|read|modify behaviour ot the SQL console window</li>
+     *  <li>null=1(0) if the <em>null</em> value should (not) be written by text formats</li>
      *  <li>schema= the default DB schema</li>
      *  <li>trim=2 how CHAR and VARCHAR values are trimmed: 0 = never, 1 = rtrim, 2 = trim on both sides</li>
      *  </ul>
@@ -698,19 +737,15 @@ public class Configuration implements Serializable {
         } catch (Exception exc) {
             setMaxCommit(getFetchLimit());
         }
-        { // try not necessary
-            prop =       props.getProperty("decimal"  , "."  ).trim();
-            if (prop != null) {
-                setDecimalSeparator(prop);
-            }
-        }
+        setConsole         (props.getProperty("console"  , "none").trim());
+        setDecimalSeparator(props.getProperty("decimal"  , "."   ).trim());
         try {
             prop =       props.getProperty("null"     , "1"  ).trim();
             setNullText(Integer.parseInt(prop));
         } catch (Exception exc) {
             setNullText(1);
         }
-        setDefaultSchema(props.getProperty("schema"   , ""   ).trim());
+        setDefaultSchema   (props.getProperty("schema"   , ""    ).trim());
         try {
             prop =       props.getProperty("trim"     , "2"  ).trim();
             setTrimSides(Integer.parseInt(prop));

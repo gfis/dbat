@@ -29,6 +29,7 @@
  */
 package org.teherba.dbat.web;
 import  org.teherba.dbat.web.Messages;
+import  org.teherba.dbat.Configuration;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.TableFactory;
 import  org.teherba.common.web.BasePage;
@@ -69,12 +70,14 @@ public class MorePage {
      *  @param basePage refers to common web methods and messages
      *  @param language natural language for messages
      *  @param tableFactory factory for table serializers
+     *  @param connectionId code for the database to be used
      *  @throws IOException if an IO error occurs
      */
     public void showMore(HttpServletRequest request, HttpServletResponse response
             , BasePage basePage
             , String language
             , TableFactory tableFactory
+            , Configuration config
             ) throws IOException {
         if (true) { // try {
             PrintWriter out = basePage.writeHeader(request, response, language);
@@ -265,6 +268,18 @@ public class MorePage {
             //----------------------------------------
             out.write("<td>\n");
             out.write(basePage.getOtherAuxiliaryLinks(language, "more"));
+            out.write("<a title=\"con\"         href=\"servlet?view=con&conn=" 
+                    + config.getConnectionId() + "\">");
+            if (false) {
+            } else if (language.startsWith("de")) {
+                out.write("SQL-Konsole");
+            } else if (language.startsWith("fr")) {
+                out.write("Console SQL");
+            } else {
+                out.write("SQL Console");
+            }
+            out.write("</a> (" + config.getConsole() + ")\n");
+            
             out.write("<br /><input type=\"submit\" value=\"");
             if (false) {
             } else if (language.startsWith("de")) {

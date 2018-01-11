@@ -26,7 +26,7 @@
             </col>
             <col label="Spezifikation" href="servlet?&amp;spec=">subdir || '.' || name</col>
             <col label="Beschreibung" remark="title - comment">'<ht:strong>' || title || '</ht:strong> &amp;mdash; ' || comment</col>
-            <col label="Parameter mit Initialwerten">params</col>
+            <col label="Parameter mit Initialwerten" width="100">params</col>
             <from>spec_index
             </from>
             <where>lang = '<parm name="lang" init="en" />'

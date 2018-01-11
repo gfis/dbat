@@ -379,7 +379,7 @@ public class ExcelStream extends BaseTable {
                             width = (width <= 19) ? 21 : width;
                             break;
                     } // switch type
-                    sheet.setColumnWidth(icol, 256 * width);
+                    sheet.setColumnWidth(icol, 256 * (width > 250 ? 250 : width));
                     icol ++;
                 } // while icol
                 rowNo ++;

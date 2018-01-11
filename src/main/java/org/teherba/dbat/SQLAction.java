@@ -1,6 +1,7 @@
 /*  SQLAction.java - Properties and methods specific for one elementary sequence of SQL instructions
     @(#) $Id$
- *  2017-05-27: javadoc 1.8
+    2018-01-11: better detection of 1st SQL verb, and distinction between query and update for console
+    2017-05-27: javadoc 1.8
     2017-02-11: loadFromURI, also for Excel
     2017-01-14: skip execSQLStatement for format.EchoSQL
     2016-10-13: less imports
@@ -179,6 +180,15 @@ public class SQLAction implements Serializable {
         this.fetchLimit = fetchLimit;
     } // setFetchLimit
     //--------
+    /** whether the SQLAction was called from the SQL Console window */
+    private boolean fromConsole;
+    /** Determines whether the SQLAction was called from the SQL Console window
+     *  @return true if in SQL Console window, false otherwise
+     */
+    public boolean isFromConsole() {
+        return  this.fromConsole;
+    } // isFromConsole
+    //--------
     /** number of SQL instructions executed in this action */
     private int instructionSum;
     /** Gets the number of instructions executed in this action
@@ -282,6 +292,7 @@ public class SQLAction implements Serializable {
         log = Logger.getLogger(SQLAction.class.getName());
         batchInsert         = false;        // -b
         setMaxCommit(250);
+        fromConsole           = false;
     } // Constructor
 
     /** Constructor from configuration
@@ -292,6 +303,15 @@ public class SQLAction implements Serializable {
         setConfiguration(config);
         setFetchLimit (config.getFetchLimit());
         setWithHeaders(config.isWithHeaders());
+    } // Constructor
+
+    /** Constructor from SQL Console window
+     *  @param config overall configuration of a session
+     *  @param fromConsole whether SQLAction is called from the SQL console window
+     */
+    public SQLAction(Configuration config, boolean fromConsole) {
+        this(config);
+        this.fromConsole = fromConsole;
     } // Constructor
 
     /** Terminates the processing of SQL statements,
@@ -1295,7 +1315,7 @@ public class SQLAction implements Serializable {
      *  @param stResults result set from JDBC execute
      */
     private void serializeQueryResults(TableMetaData tbMetaData, String selectSql, ResultSet stResults) 
-    		throws Exception {
+            throws Exception {
         String value = "";
         TableColumn column = null;
         BaseTable tbSerializer  = config.getTableSerializer();
@@ -1452,6 +1472,24 @@ public class SQLAction implements Serializable {
         } // while ivar
     } // setPlaceholders
 
+    /** Gets the (first) word in an SQL instruction.
+     *  @param sqlInstruction String which starts with "CREATE", "(SELECT", "WITH" etc.
+     *  @return the first word in uppercase
+     */
+    private String getSQLVerb(String sqlInstruction) {
+        String result = "DDL_DML";
+        String[] words = sqlInstruction.split("\\b", 8); // on word boundaries
+        int iw = 0;
+        while (iw < words.length) {
+            if (Character.isLetter(words[iw].charAt(0))) {
+                result = words[iw].toUpperCase();
+                iw = words.length; // break loop
+            } // if letters
+            iw ++;
+        } // while iw
+        return result;
+    } // getSQLVerb
+    
     /** Execute a single SQL statement.
      *  SQL Comments starting with "--" were removed previously by the caller.
      *  @param tbMetaData meta data for the table as far as they are alreay known
@@ -1485,8 +1523,9 @@ public class SQLAction implements Serializable {
                 if (con == null) { // not yet set
                     con = config.openConnection();
                 }
-                String[] words = sqlInstruction.split("\\s+", 3); // starts with verb - c.f. the trim() above
-                String verb = words[0].toUpperCase();
+                // String[] words = sqlInstruction.split("\\s+", 3); // starts with verb - c.f. the trim() above
+                // String verb = words[0].toUpperCase();
+                String verb = getSQLVerb(sqlInstruction);
                 int updateCount = 0;
                 if (false) {
                 } else if (verb.equals("SELECT") || (verb.equals("WITH") && sqlInstruction.toUpperCase().indexOf("SELECT") >= 0)) {
@@ -1807,12 +1846,12 @@ public class SQLAction implements Serializable {
             this.execCommitStatement();
             insertStmt.close();
         } catch (Exception exc) {
-        	StringBuffer mess = new StringBuffer(512);
+            StringBuffer mess = new StringBuffer(512);
             mess.append("** offending values:");
             icol = 0;
             while (icol < loadValues.length) {
                 mess.append(" \'" + loadValues[icol] + "\'");
-            	icol ++;
+                icol ++;
             } // while icol
             mess.append("\n");
             mess.append(exc.getMessage());

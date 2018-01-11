@@ -519,6 +519,12 @@ HTTP spec=test/index view=con2 enc=ISO-8859-1 lang=en mode=html conn=worddb inte
 
 TEST SC3 submit SQL from console with limit 8
 HTTP spec=test/index view=con2 enc=ISO-8859-1 lang=en mode=html conn=worddb intext=select+*+from+de1 fetch=8
+
+TEST SC4 submit SQL from console with UPDATE
+HTTP spec=test/index view=con2 enc=ISO-8859-1 lang=en mode=html conn=worddb intext=update+de1+set+fill1='G'+where+name0='row4'
+
+TEST SC5 test whether UPDATE succeeded
+HTTP spec=test/index view=con2 enc=ISO-8859-1 lang=en mode=html conn=worddb intext=select+fill1+from+de1
 #--------------------
 TEST SS1 explicit stylesheet
 HTTP spec=test/stylesheet1
@@ -1407,7 +1413,7 @@ HTTP spec=test.selvalid
 TEST VL2 verify 4 digits - no match
 HTTP spec=test.selvalid start=wrong end=bad
 #----
-# more than 4000 Excel styles
+# Error: more than 4000 Excel styles
 TEST ER1 create table
 DATA # same structure as c01
   DROP   TABLE IF EXISTS er1 ;
@@ -1428,4 +1434,8 @@ CALL Dbat -n er1
 TEST ER2 output to Excel 97 (*.xls)
 CALL Dbat -m xls -5000 er1
 CALL Dbat "DROP TABLE er1"
+
+# Error: cell width > 255 characters
+TEST ER3 cell width > 255
+CALL Dbat -m xls -2 spec_index
 

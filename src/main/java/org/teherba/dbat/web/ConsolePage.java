@@ -1,6 +1,7 @@
 /*  ConsolePage.java - run a query or SQL instruction from a web form
  *  @(#) $Id$
- *  2017-05-27: javadoc
+ *  2018-01-11: property "console=none|select|update"
+ *  2017-05-27: javadoc 1.8
  *  2016-10-13: less imports
  *  2016-08-26: param BasePage
  *  2012-07-01, Georg Fischer: copied from MorePage.java
@@ -21,6 +22,7 @@
  * limitations under the License.
  */
 package org.teherba.dbat.web;
+import  org.teherba.dbat.Configuration;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.TableFactory;
 import  org.teherba.common.web.BasePage;
@@ -64,7 +66,8 @@ public class ConsolePage {
      *  @param basePage refers to common web methods and messages
      *  @param language 2-letter code en, de etc.
      *  @param tableFactory factory for table serializers
-     *  @param dsMap maps connection identifiers (short database instance ids) to {@link DataSource Datasources}
+     *  @param dsMap maps connection identifies (short database instance ids) to {@link DataSource Datasources}
+     *  @param config general configuration data
      *  @throws IOException if an IO error occurs
      */
     public void showConsole(HttpServletRequest request, HttpServletResponse response
@@ -72,6 +75,7 @@ public class ConsolePage {
             , String language
             , TableFactory tableFactory
             , LinkedHashMap<String, DataSource> dsMap
+            , Configuration config
             ) throws IOException {
         if (true) { // try {
             PrintWriter out = basePage.writeHeader(request, response, language);
@@ -87,18 +91,20 @@ public class ConsolePage {
             } // valid dsMap
             String encoding     = BasePage.getInputField(request, "enc"   , "ISO-8859-1");
             String mode         = BasePage.getInputField(request, "mode"  , "html"      );
-            // String language     = BasePage.getInputField(request, "lang"  , "en"        );
             connectionId        = BasePage.getInputField(request, "conn"  , "mysql"     );
             String intext       = BasePage.getInputField(request, "intext", ""          );
             int    fetchLimit   = BasePage.getInputField(request, "fetch" , 64          );
 
             String consoleWord = null;
             if (false) {
-            } else if (language.startsWith("de")) {
-                consoleWord = "-SQL-Konsole";
+            } else if (language.equals("de")) {
+                consoleWord = "SQL-Konsole";
+            } else if (language.equals("fr")) {
+                consoleWord = "Console SQL";
             } else {
-                consoleWord = " SQL console";
+                consoleWord = "SQL Console";
             }
+            consoleWord = " " + consoleWord + " (" + config.getConsole() + ")";
 
             out.write("<title>" + basePage.getAppName() + consoleWord + "</title>\n");
             out.write("<style>\ntd,th\n");
