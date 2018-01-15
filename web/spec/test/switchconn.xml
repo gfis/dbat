@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
     @(#) $Id$
+    2018-01-15: connectionID=wiki removed
     2016-05-24: Dr. Georg Fischer
 -->
 <dbat   xmlns   ="http://www.teherba.org/2007/dbat"
@@ -23,13 +24,6 @@
     <select>
         <col label="Number of Rows" align="right">count(*)</col>
         <from>c01</from>
-    </select>
-
-    <ht:h3>Switch to connection <ht:em>wiki</ht:em></ht:h3>
-    <connect to="wiki" />
-    <select>
-        <col label="Number of Rows" align="right">count(*)</col>
-        <from>users</from>
     </select>
 
 </dbat>

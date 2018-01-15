@@ -90,13 +90,11 @@ public class Messages implements Serializable {
         basePage.add("en", smess, "{parm}List</a> of available specifications");
         basePage.add("de", smess, "{parm}Liste</a> der abrufbaren Spezifikationen");
         basePage.add("fr", smess, "{parm}Liste</a> des spécifications disponibles");
-/* now hand-coded in web/MorePage
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"con\"         href=\"servlet?view=con\">");
         basePage.add("en", smess, "{parm}SQL Console</a>");
         basePage.add("de", smess, "{parm}SQL-Konsole</a>");
         basePage.add("fr", smess, "{parm}Console SQL</a>");
-*/
         smess = String.format("%03d", imess ++);
         basePage.add(laux, smess, "<a title=\"describe\"    href=\"servlet?spec=describe\">");
         basePage.add("en", smess, "{parm}describe DDL</a> of a Table or View");

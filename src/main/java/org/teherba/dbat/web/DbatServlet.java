@@ -1,6 +1,6 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
- *  2018-01-11: property "console=none|select|update"
+ *  2018-01-11: property "console=none|SELECT|UPDATE"; ConfigurationPage
  *  2017-06-17: StaticMirror
  *  2017-05-27: javadoc 1.8
  *  2016-12-09: Content-disposition filename with parameter values
@@ -13,8 +13,8 @@
  *  2016-04-28: &uri=... -> config.setInputURI(inputURI);
  *  2014-11-11: handler.setResponse
  *  2014-11-05: transforms and processes dbiv specs also
- *  2012-07-01: subpackage view; ConsolePage
- *  2012-03-16: dsMap filled only here, DBCPoolingListener abandonned
+ *  2012-07-01: subpackage view; ConfigurationPage
+ *  2012-03-16: dataSourceMap filled only here, DBCPoolingListener abandonned
  *  2012-02-11: all JSPs replaced by View*.java
  *  2011-12-14: response.setContentType("text/comma-separated-values");
  *  2011-12-03: echo, fix, jdbc, sql, taylor, wiki and all others -> text/plain, *.txt
@@ -54,6 +54,7 @@ import  org.teherba.dbat.StaticMirror;
 import  org.teherba.dbat.TableMetaData;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.TableFactory;
+import  org.teherba.dbat.web.ConfigurationPage;
 import  org.teherba.dbat.web.ConsolePage;
 import  org.teherba.dbat.web.HelpPage;
 import  org.teherba.dbat.web.Messages;
@@ -106,7 +107,9 @@ public class DbatServlet extends HttpServlet {
     /** URL path to this application, e.g. /var/lib/tomcat8/webapps/dbat[/spec/] */
     private String specPath;
     /** Maps connection identifiers (short database instance ids) to {@link DataSource Datasources} */
-    private LinkedHashMap<String, DataSource> dsMap;
+    private LinkedHashMap<String, DataSource> dataSourceMap;
+    /** Maps connection identifiers to "none", "SELECT" or "UPDATE" (for the behaviour of ConsolePage) */
+    private LinkedHashMap<String, String>     consoleMap;
     /** Dbat's configuration data */
     private Configuration config;
     /** common code and messages for auxiliary web pages */
@@ -124,7 +127,8 @@ public class DbatServlet extends HttpServlet {
         Messages.addMessageTexts(basePage);
 
         config = new Configuration();
-        dsMap = config.getDataSourceMap();        
+        dataSourceMap = config.getDataSourceMap();
+        consoleMap    = config.getConsoleMap();
 
         ServletContext context = getServletContext();
         specPath = context.getInitParameter("specPath");
@@ -140,10 +144,10 @@ public class DbatServlet extends HttpServlet {
         log.info("specPath=" + specPath); // e.g.  specPath=/var/lib/tomcat8/webapps/dbat/spec/
 
         if (true) { // debugging
-            Iterator<String> miter = dsMap.keySet().iterator();
+            Iterator<String> miter = dataSourceMap.keySet().iterator();
             while (miter.hasNext()) {
                 String connectionId = miter.next();
-                DataSource ds = dsMap.get(connectionId);
+                DataSource ds = dataSourceMap.get(connectionId);
                 log.info("init: connectionId=" + connectionId + ", DataSource=" + ds.toString());
                 try {
                     log.info("driverURL=" + ds.getConnection().getMetaData().getURL());
@@ -181,7 +185,7 @@ public class DbatServlet extends HttpServlet {
      *  @param encoding target/response encoding
      *  @return whether response is binary
      */
-    private boolean setResponseHeaders(HttpServletRequest request, HttpServletResponse response, 
+    private boolean setResponseHeaders(HttpServletRequest request, HttpServletResponse response,
             String mode, String specName, String encoding) {
         boolean result = false; // assume legible character response output
         String targetFileName = specName.replaceAll("/", ".");
@@ -243,7 +247,7 @@ public class DbatServlet extends HttpServlet {
             response.setContentType(mimeType + ";charset=" + encoding);
             response.setHeader("Content-Disposition", "inline;filename=\"" + targetFileName + "\""); // attachment would store immediately
             response.setCharacterEncoding(encoding);
-     /*  
+     /*
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
      */
@@ -258,10 +262,10 @@ public class DbatServlet extends HttpServlet {
      */
     public void generateResponse(HttpServletRequest request, HttpServletResponse response) throws IOException {
         boolean binary = false; // assume legible character response output
-        config.configure(config.WEB_CALL, dsMap); // why?
+        config.configure(config.WEB_CALL, dataSourceMap); // why?
         TableFactory tableFactory = new TableFactory();
         request.setCharacterEncoding("UTF-8");
-        // HttpSession session = request.getSession();       
+        // HttpSession session = request.getSession();
 
         boolean isDbiv = false; // whether the input file is a Dbiv specification
         String specName     = BasePage.getInputField(request, "spec"     , "index")
@@ -275,6 +279,11 @@ public class DbatServlet extends HttpServlet {
             config.addProperties(connectionId + ".properties");
             config.setConnectionId(connectionId);
         } // with conn
+        connectionId        = config.getConnectionId();
+        String console      = consoleMap.get(connectionId);
+        if (console == null) {
+            console         = config.CONSOLE_NONE;
+        }
         String encoding     = BasePage.getInputField(request, "enc"      , "UTF-8"   );
         int    fetchLimit   = BasePage.getInputField(request, "fetch"    , 0x7fffffff); // "unlimited"
         String inputURI     = BasePage.getInputField(request, "uri"      , null      );
@@ -307,7 +316,7 @@ public class DbatServlet extends HttpServlet {
                                 // assume all spec files in UTF-8 XML
                         String line = charReader.readLine();
                         charReader.close();
-                        if (line != null) { // at least one line 
+                        if (line != null) { // at least one line
                             String[] parts = line.split(";"); // up to 3 parts: [wait;[lang;]]redir-spec
                             String targetName = parts[parts.length - 1];
                             switch (parts.length) {
@@ -327,15 +336,15 @@ public class DbatServlet extends HttpServlet {
                             } // switch parts
                             sourceFileName = specPath + targetName + ".xml";
                             specFile = new File(sourceFileName);
-                            basePage.writeMessage(request, response, language, new String[] 
+                            basePage.writeMessage(request, response, language, new String[]
                                     { "301", specName, "/dbat/servlet?spec=" + targetName, waitTime });
                             // redir line != null
                         } else { // .redir has no line - error, => 404
-                            basePage.writeMessage(request, response, language, new String[] 
+                            basePage.writeMessage(request, response, language, new String[]
                                     { "404", specName });
                         }
                     } else { // .redir also not found: 404 - really not found
-                        basePage.writeMessage(request, response, language, new String[] 
+                        basePage.writeMessage(request, response, language, new String[]
                                 { "404", specName });
                     } // 404
                 } // not found
@@ -400,15 +409,15 @@ public class DbatServlet extends HttpServlet {
             // if (view == null || view.length() == 0 || view.matches("del|del2|dat|ins|ins2|upd|upd2|sear"))
 
         } else if (view.equals("con")) { // View "con" collects the parameters from the SQL Console
-            if (! config.hasConsole()) { // not allowed
+            if (console.equals(config.CONSOLE_NONE)) { // not allowed
                 basePage.writeMessage(request, response, language, new String[] { "410", connectionId });
-            } else { 
-                (new ConsolePage    ()).showConsole(request, response, basePage, language, tableFactory, dsMap, config);
+            } else {
+                (new ConsolePage()).showConsole(request, response, basePage, language, tableFactory, consoleMap);
             }
         } else if (view.equals("con2")) { // View "con2" is for the result of the SQL console
-            if (! config.hasConsole()) { // not allowed
+            if (console.equals(config.CONSOLE_NONE)) { // not allowed
                 basePage.writeMessage(request, response, language, new String[] { "410", connectionId });
-            } else { 
+            } else {
                 String intext   = BasePage.getInputField(request, "intext"   , ";"       );
                 fetchLimit      = BasePage.getInputField(request, "fetch"    , 64        );
                 // response.setContentType(config.getHtmlMimeType()); // default
@@ -426,13 +435,7 @@ public class DbatServlet extends HttpServlet {
                 config.setLanguage(language);
                 config.setFetchLimit(fetchLimit);
                 config.setTableSerializer(tbSerializer);
-                if (connectionId    != null) {
-                    config.addProperties(connectionId + ".properties");
-                    config.setConnectionId(connectionId);
-                } else {
-                    config.setConnectionId(); // default: take first in list
-                }
-                SQLAction sqlAction  = new SQLAction(config, true); // possibly readonly if fromConsole
+                SQLAction sqlAction  = new SQLAction(config, console); // possibly readonly if in SQL console window
                 TableMetaData tbMetaData = new TableMetaData(config);
                 tbMetaData.setFillState(1);
                 tbSerializer.writeStart(new String[] // this may throw an exception "could not compile stylesheet"
@@ -443,15 +446,24 @@ public class DbatServlet extends HttpServlet {
                             }
                             , new HashMap<String, String[]>() // parameterMap
                             );
-                sqlAction.execSQLStatement(tbMetaData, intext
+                String verb = sqlAction.execSQLStatement(tbMetaData, intext
                         , new ArrayList<String>() // variables
                         , new HashMap<String, String[]>() // parameterMap
                         );
+                // update c01 set gender='A' where name='Lucie'
+                // select * from c01
+                if (! verb.equals("SELECT")) {
+                    tbSerializer.writeMarkup("<ht:h4>"
+                            + sqlAction.getManipulatedSum()
+                            + " row(s) affected</ht:h4>\n");
+                } // ! SELECT
                 sqlAction.terminate();
                 tbSerializer.writeEnd();
                 tbSerializer.close();
             } // allowed
             // view "con2"
+        } else if (view.equals("config")) {
+                (new ConfigurationPage    ()).showConfiguration(request, response, basePage, language, config);
 
         // now the views for the auxiliary pages
         } else if (view.equals("help")) {

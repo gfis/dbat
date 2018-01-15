@@ -36,5 +36,8 @@ FROM c01;
 </table>
 
 
-    <h3>Switch to connection <em>wiki</em></h3>
-    <h3 class="error">Specification parsing error: org.apache.tomcat.dbcp.dbcp.SQLNestedException: Cannot create PoolableConnectionFactory (Access denied for user 'wikiuser'@'localhost' (using password: YES))</h3><pre class="error">connect</pre>
+<br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/switchconn.xml" type="text/plain">test/switchconn</a>,
+<a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test%2Fswitchconn&amp;lang=en">Excel</a>,
+<a href="servlet?&amp;view=more&amp;mode=html&amp;spec=test%2Fswitchconn&amp;lang=en">more</a>
+
+</body></html>

@@ -268,6 +268,7 @@ public class MorePage {
             //----------------------------------------
             out.write("<td>\n");
             out.write(basePage.getOtherAuxiliaryLinks(language, "more"));
+        /*
             out.write("<a title=\"con\"         href=\"servlet?view=con&conn=" 
                     + config.getConnectionId() + "\">");
             if (false) {
@@ -279,7 +280,7 @@ public class MorePage {
                 out.write("SQL Console");
             }
             out.write("</a> (" + config.getConsole() + ")\n");
-            
+        */
             out.write("<br /><input type=\"submit\" value=\"");
             if (false) {
             } else if (language.startsWith("de")) {

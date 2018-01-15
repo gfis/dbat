@@ -520,10 +520,13 @@ HTTP spec=test/index view=con2 enc=ISO-8859-1 lang=en mode=html conn=worddb inte
 TEST SC3 submit SQL from console with limit 8
 HTTP spec=test/index view=con2 enc=ISO-8859-1 lang=en mode=html conn=worddb intext=select+*+from+de1 fetch=8
 
-TEST SC4 submit SQL from console with UPDATE
+TEST SC4 submit SQL from console with UPDATE attempt to read-only connection
+HTTP spec=test/index view=con2 enc=ISO-8859-1 lang=en mode=html conn=mysql  intext=update+de1+set+fill1='G'+where+name0='row4'
+
+TEST SC5 submit SQL from console with UPDATE to writable conection
 HTTP spec=test/index view=con2 enc=ISO-8859-1 lang=en mode=html conn=worddb intext=update+de1+set+fill1='G'+where+name0='row4'
 
-TEST SC5 test whether UPDATE succeeded
+TEST SC6 test whether UPDATE succeeded
 HTTP spec=test/index view=con2 enc=ISO-8859-1 lang=en mode=html conn=worddb intext=select+fill1+from+de1
 #--------------------
 TEST SS1 explicit stylesheet

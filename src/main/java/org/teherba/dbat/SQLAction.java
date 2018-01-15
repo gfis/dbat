@@ -138,6 +138,21 @@ public class SQLAction implements Serializable {
         setTrimSides       (config.getTrimSides       ());
     } // setConfiguration
     //--------
+    /** whether the SQLAction was called from the SQL Console window */
+    private String consoleAccess;
+    /** Determine whether the connection will be read-only
+     *  @return {@link Configuration.CONFIG_SELECT} or {@link Configuration.CONFIG_UPDATE}
+     */
+    public String getConsoleAccess() {
+        return  this.consoleAccess;
+    } // getConsoleAccess
+    /** Set the connection read-only state for console windows
+     *  @param consoleAccess, one of {@link Configuration.CONFIG_SELECT} or {@link Configuration.CONFIG_UPDATE}
+     */
+    public void setConsoleAccess(String consoleAccess) {
+        this.consoleAccess = consoleAccess;
+    } // setConsoleAccess
+    //--------
     /** Character for the decimal point or comma */
     private String  decimalSeparator;
     /** Gets the decimal separator
@@ -179,15 +194,6 @@ public class SQLAction implements Serializable {
     public void setFetchLimit(int fetchLimit) {
         this.fetchLimit = fetchLimit;
     } // setFetchLimit
-    //--------
-    /** whether the SQLAction was called from the SQL Console window */
-    private boolean fromConsole;
-    /** Determines whether the SQLAction was called from the SQL Console window
-     *  @return true if in SQL Console window, false otherwise
-     */
-    public boolean isFromConsole() {
-        return  this.fromConsole;
-    } // isFromConsole
     //--------
     /** number of SQL instructions executed in this action */
     private int instructionSum;
@@ -292,7 +298,7 @@ public class SQLAction implements Serializable {
         log = Logger.getLogger(SQLAction.class.getName());
         batchInsert         = false;        // -b
         setMaxCommit(250);
-        fromConsole           = false;
+        setConsoleAccess(Configuration.CONSOLE_NONE);
     } // Constructor
 
     /** Constructor from configuration
@@ -307,11 +313,11 @@ public class SQLAction implements Serializable {
 
     /** Constructor from SQL Console window
      *  @param config overall configuration of a session
-     *  @param fromConsole whether SQLAction is called from the SQL console window
+     *  @param consoleAccess one of {@link Configuration.CONFIG_SELECT} or {@link Configuration.CONFIG_UPDATE}
      */
-    public SQLAction(Configuration config, boolean fromConsole) {
+    public SQLAction(Configuration config, String consoleAccess) {
         this(config);
-        this.fromConsole = fromConsole;
+        setConsoleAccess(consoleAccess);
     } // Constructor
 
     /** Terminates the processing of SQL statements,
@@ -1510,22 +1516,28 @@ public class SQLAction implements Serializable {
      *  @param variables pairs of types and values for variables to be filled
      *  into any placeholders ("?") in the prepared statement
      *  @param parameterMap map containing HTTP request or CLI parameter settings
+     *  @return first SQL verb: SELECT, UPDATE etc.
      */
-    public void execSQLStatement(TableMetaData tbMetaData, String sqlInstruction
+    public String execSQLStatement(TableMetaData tbMetaData, String sqlInstruction
             , ArrayList<String> variables
             , HashMap<String, String[]> parameterMap) {
+        String verb = "";
         Connection con          = config.getOpenConnection();
+        boolean oldReadOnly = true;
         BaseTable  tbSerializer = config.getTableSerializer();
-        int result = 0;
         PreparedStatement statement = null;
         try {
             if (sqlInstruction.length() > 0) { // statement non-empty
                 if (con == null) { // not yet set
                     con = config.openConnection();
                 }
+                oldReadOnly = con.isReadOnly();
+                if (consoleAccess.equals(Configuration.CONSOLE_SELECT)) {
+                    con.setReadOnly(true);
+                }
                 // String[] words = sqlInstruction.split("\\s+", 3); // starts with verb - c.f. the trim() above
                 // String verb = words[0].toUpperCase();
-                String verb = getSQLVerb(sqlInstruction);
+                verb = getSQLVerb(sqlInstruction);
                 int updateCount = 0;
                 if (false) {
                 } else if (verb.equals("SELECT") || (verb.equals("WITH") && sqlInstruction.toUpperCase().indexOf("SELECT") >= 0)) {
@@ -1552,7 +1564,6 @@ public class SQLAction implements Serializable {
                              parameterMap.put(config.UPDATE_COUNT, new String[] { String.valueOf(updateCount) });
                         }
                         // log.info("callStoredProcedure with \"" + sqlInstruction + "\", updateCount=" + updateCount);
-                        result = updateCount;
                     } // ! EchoSQL
                 } else if (verb.equals("COMMIT")) {
                     setCommitted(true); // avoid a final COMMIT
@@ -1571,12 +1582,14 @@ public class SQLAction implements Serializable {
                         if (parameterMap != null) {
                             parameterMap.put(config.UPDATE_COUNT, new String[] { String.valueOf(updateCount) });
                         }
-                        result = updateCount;
                     } // ! EchoSQL
                     statement.close();
                 } // DDL or DML
                 instructionSum ++;
                 manipulatedSum += updateCount;
+                if (consoleAccess.equals(Configuration.CONSOLE_SELECT)) {
+                    con.setReadOnly(oldReadOnly);
+                }
             } // statement non-empty
         } catch (SQLException exc) {
             log.error(exc.getMessage(), exc);
@@ -1587,6 +1600,9 @@ public class SQLAction implements Serializable {
             tbSerializer.writeMarkup(sqlInstruction);
             tbSerializer.writeMarkup("</pre>");
             try {
+                if (consoleAccess.equals(Configuration.CONSOLE_SELECT)) {
+                    con.setReadOnly(oldReadOnly);
+                }
                 if (statement != null) {
                     statement.close();
                 }
@@ -1614,6 +1630,7 @@ public class SQLAction implements Serializable {
             }
             setCommitted(true); // avoid a final COMMIT
         } // catch
+        return verb;
     } // execSQLStatement
 
     /** Execute a single COMMIT statement.
@@ -1870,23 +1887,5 @@ public class SQLAction implements Serializable {
             config.closeConnection();
         }
     } // loadFromURI
-
-    //====================
-    // Main method - Test
-    //====================
-
-    /** Test driver -
-     *  call it with -h to display possible options and arguments.
-     *  The result is printed to STDOUT.
-     *  @param args command line arguments: options, strings, table- or filenames
-     */
-    public static void main(String[] args) {
-        Logger log = Logger.getLogger(SQLAction.class.getName());
-        try {
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-        } finally {
-        }
-    } // main
 
 } // SQLAction

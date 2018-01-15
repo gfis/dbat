@@ -5,6 +5,7 @@
     =============================================
     Configuration of context /dbat 
     @(#) $Id$
+    2018-01-15: environment variable "console"; wiki removed
     2016-01-18: mapperContextRootRedirectEnabled=true
     2016-09-11: Georg Fischer: new sample
 -->
@@ -30,8 +31,10 @@
         crossContext="true"
         mapperContextRootRedirectEnabled="true"
         >
+    <!-- DB access in the SQL console window -->
+    <Environment name="console"     value="mysql:select,worddb:update" type="java.lang.String" override="false" />
     <!-- all JDBC resources below must be listed in the value of this environment string -->
-    <Environment name="dataSources" value="mysql,worddb:worddb,wiki:wiki" type="java.lang.String" override="false" />
+    <Environment name="dataSources" value="mysql:worddb,worddb:worddb" type="java.lang.String" override="false" />
 
     <Resource name="jdbc/worddb" 
             auth="Container" type="javax.sql.DataSource" 
@@ -48,14 +51,6 @@
             maxActive="16" maxIdle="1" maxWait="10000" 
             username="????" password="????"
             driverClassName="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/worddb"
-            />
-    <Resource name="jdbc/wiki" 
-            auth="Container" type="javax.sql.DataSource" 
-            factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory"
-            removeAbandoned="true" removeAbandonedTimeout="30" logAbandoned="true"
-            maxActive="4" maxIdle="1" maxWait="10000" 
-            username="????" password="????"
-            driverClassName="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/wikidb"
             />
 <!-- would need write privilege
     <Resource name="jdbc/sqlite3" 

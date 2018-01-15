@@ -10,7 +10,13 @@
 <link rel="stylesheet" type="text/css" href="stylesheet.css" />
 </head><body>
 <!-- SQL:
-update de1 set fill1='G' where name0='row4';
+select fill1 from de1;
 :SQL -->
-<h3 class="error">SQL Error in SQLAction.execSQLStatement: S1009 Connection is read-only. Queries leading to data modification are not allowed</h3><pre class="error">update de1 set fill1='G' where name0='row4'</pre><ht:h4>0 row(s) affected</ht:h4>
+<table id="table_not_specified">
+<tr><th>fill1</th></tr>
+<tr><td></td></tr>
+<tr><td></td></tr>
+<tr><td></td></tr>
+<tr><td>G</td></tr>
+</table>
 </body></html>

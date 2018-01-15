@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
 <link rel="stylesheet" title="common" type="text/css" href="stylesheet.css" />
-<title>Dbat SQL console</title>
+<title>Dbat SQL Console</title>
 <style>
 td,th
 {vertical-align:top;margin:0px;padding-top:0px;padding-bottom:0px;padding-left:10px;padding-right:10px;border:none;}
@@ -17,7 +17,7 @@ td,th
 </head>
 <body>
 <!--enc="ISO-8859-1", mode="html", lang="en"-->
-<h3><a title="main" href="index.html">Dbat</a> SQL console</h3>
+<h3><a title="main" href="index.html">Dbat</a> SQL Console</h3>
 <form action="servlet" method="get">
 <input type = "hidden" name="view" value="con2" />
 <table cellpadding="8">
@@ -65,10 +65,9 @@ Output Format</td>
 </select>
 </td>
 <td>
-<select name="conn" size="3">
-<option value="mysql" selected="1">mysql</option>
-<option value="worddb">worddb</option>
-<option value="wiki">wiki</option>
+<select name="conn" size="2">
+<option value="mysql" selected="1">mysql:SELECT</option>
+<option value="worddb">worddb:UPDATE</option>
 </select>
 <p /><input type="submit" value="Submit" />
 </td>
@@ -85,5 +84,9 @@ SQL
 </tr>
 </table>
 </form>
-<!-- language="en", features="" -->
+<!-- language="en", features="back.quest" -->
+<p>
+Back to the <a title="main" href="index.html">Dbat</a> main page</p>
+<p><span style="font-size:small">
+Questions, remarks: email to  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
 </body></html>

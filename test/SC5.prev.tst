@@ -10,13 +10,7 @@
 <link rel="stylesheet" type="text/css" href="stylesheet.css" />
 </head><body>
 <!-- SQL:
-select fill1 from de1;
+update de1 set fill1='G' where name0='row4';
 :SQL -->
-<table id="table_not_specified">
-<tr><th>fill1</th></tr>
-<tr><td></td></tr>
-<tr><td></td></tr>
-<tr><td></td></tr>
-<tr><td>G</td></tr>
-</table>
+<ht:h4>1 row(s) affected</ht:h4>
 </body></html>

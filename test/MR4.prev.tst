@@ -65,10 +65,9 @@ Ausgabeformat</td>
 </select>
 </td>
 <td>
-<select name="conn" size="3">
-<option value="mysql" selected="1">mysql</option>
-<option value="worddb">worddb</option>
-<option value="wiki">wiki</option>
+<select name="conn" size="2">
+<option value="mysql" selected="1">mysql:SELECT</option>
+<option value="worddb">worddb:UPDATE</option>
 </select>
 <p /><input type="submit" value="Absenden" />
 </td>
@@ -85,5 +84,9 @@ SQL
 </tr>
 </table>
 </form>
-<!-- language="de", features="" -->
+<!-- language="de", features="back.quest" -->
+<p>
+Zurück zur <a title="main" href="index.html">Dbat</a>-Startseite</p>
+<p><span style="font-size:small">
+Fragen, Hinweise: EMail an  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
 </body></html>

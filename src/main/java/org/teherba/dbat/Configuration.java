@@ -1,6 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$ 2016-04-16 14:43:35
- *  2018-01-11: property "console=none|select|update"
+ *  2018-01-11: toString(); consoleMap
  *  2017-05-27: javadoc 1.8
  *  2016-10-13: less imports
  *  2016-09-16: log.info() without caller's name; Locale.setDefault; better versionString
@@ -15,7 +15,7 @@
  *  2012-06-12: Javadoc cleaned for github
  *  2012-03-12: DBAN_URI; works for Geronimo, WASCE
  *  2012-01-31: BasicDataSource no longer used
- *  2012-01-25: fallback to dbat.properties if dsMap not filled by DBCPoolingListener
+ *  2012-01-25: fallback to dbat.properties if dataSourceMap not filled by DBCPoolingListener
  *  2011-11-11: set|getVerbose; Config.DB2 etc.
  *  2011-09-17: default connection = worddb
  *  2011-08-23, major version 6: with writeGenericRow
@@ -42,6 +42,7 @@ import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.xtrans.BaseTransformer;
 import  java.io.File;
 import  java.io.FileInputStream;
+import  java.io.InputStream;
 import  java.io.Serializable;
 import  javax.naming.Context;
 import  javax.naming.InitialContext;
@@ -130,17 +131,17 @@ public class Configuration implements Serializable {
     public void setConnectionId(String connectionId) {
         this.connectionId = connectionId;
     } // setConnectionId(1)
-    /** Sets the connection id to the default: take first key in {@link #dsMap}
+    /** Sets the connection id to the default: take first key in {@link #dataSourceMap}
      */
     public void setConnectionId() {
-        if (dsMap != null) {
+        if (dataSourceMap != null) {
             boolean busy = true;
-            Iterator<String> miter = dsMap.keySet().iterator();
+            Iterator<String> miter = dataSourceMap.keySet().iterator();
             while (busy && miter.hasNext()) {
                 this.connectionId = miter.next();
                 busy = false; // take first only
             } // while busy
-        } // dsMap != null
+        } // dataSourceMap != null
     } // setConnectionId(0)
     //--------
     /** Property for the behaviour of the SQL console window */
@@ -176,7 +177,7 @@ public class Configuration implements Serializable {
      *  @return false if "console=none", true otherwise
      */
     public boolean hasConsole() {
-    	return ! this.console.equals(CONSOLE_NONE);
+        return ! this.console.equals(CONSOLE_NONE);
     } // hasConsole
     //--------
     /** Character for the decimal point or comma */
@@ -427,7 +428,19 @@ public class Configuration implements Serializable {
     } // setParameterMap
     //--------
     /** Name of a file with user defineable properties (related to the connection) */
-    private String  propFileName;
+    private String  lastPropsName;
+    /** Gets the name of the last properties file which was read
+     */
+    public String getLastPropsName() {
+        return lastPropsName;
+    } // getLastPropsName
+    /** Sets the name of the last properties file which was read
+     *  @param lastPropsName for example "dbat.properties"
+     */
+    public void setLastPropsName(String lastPropsName) {
+        this.lastPropsName = lastPropsName;
+    } // setLastPropsName
+    //--------
     /** User defineable properties, database connection parameters and other properties.
      *  These are retrieved from:
      *  <ol>
@@ -600,12 +613,53 @@ public class Configuration implements Serializable {
     } // getCallType
     //--------
     /** Maps connection identifiers (short database instance ids) to {@link DataSource Datasources} */
-    private LinkedHashMap<String, DataSource> dsMap;
+    private LinkedHashMap<String, DataSource> dataSourceMap;
+
+    /** Shows all properties
+     */
+    public String toString() {
+        StringBuffer dsList = new StringBuffer(64);
+        Iterator<String> diter = dataSourceMap.keySet().iterator();
+        while (diter.hasNext()) {
+            dsList.append(",");
+            dsList.append(diter.next());
+        } // while diter
+        String result = "";
+        result += "autoCommit="         + hasAutoCommit()           + "\n";
+        result += "callType="           + getCallType()             + "\n";
+        result += "connectionId="       + getConnectionId()         + "\n";
+        result += "console="            + getConsole()              + "\n";
+        result += "decimalSeparator="   + getDecimalSeparator()     + "\n";
+        result += "defaultSchema="      + getDefaultSchema()        + "\n";
+        result += "driverURL="          + getDriverURL()            + "\n";
+        result += "dataSourceMap="      + dsList.toString().substring(1) + "\n";
+        result += "encoding="           + getEncoding(0) + "," + getEncoding(1) + "\n";
+        result += "fetchLimit="         + getFetchLimit()           + "\n";
+        result += "htmlMimeType="       + getHtmlMimeType()         + "\n";
+        result += "inputURI="           + getInputURI()             + "\n";
+        result += "language="           + getLanguage()             + "\n";
+        result += "lastPropsName="      + getLastPropsName()        + "\n";
+        result += "manner="             + getManner()               + "\n";
+        result += "maxCommit="          + getMaxCommit()            + "\n";
+        result += "namespacePrefix="    + getNamespacePrefix()      + "\n";
+        result += "nullText="           + getNullText()             + "\n";
+    //  result += "parameterMap="       + getProcSeparator()        + "\n";
+        result += "procSeparator="      + getProcSeparator()        + "\n";
+    //  result += "props="              + getProcSeparator()        + "\n";
+        result += "rdbmsId="            + getRdbmsId()              + "\n";
+        result += "separator="          + getSeparator()            + "\n";
+    //  result += "tableSerializer="    + getTableSerializer().getDescription(getLanguage()) + "\n";
+        result += "trimSides="          + getTrimSides()            + "\n";
+        result += "verbose="            + getVerbose()              + "\n";
+        result += "withHeaders="        + isWithHeaders()           + "\n";
+        result += "zipFileName="        + getZipFileName()          + "\n";
+                ;
+        return result;
+    } // toString
 
     //================================
     // Constructor and initialization
     //================================
-
     /** No-args Constructor
      */
     public Configuration() {
@@ -624,7 +678,7 @@ public class Configuration implements Serializable {
         //                 : "text/html";              // for Windows, InternetExplorer <= V6.x
         htmlMimeType    = "application/xhtml+xml"; // now works for IE also
         con             = null;
-        dsMap           = null;
+        dataSourceMap   = null;
         setAutoCommit   (callType == WEB_CALL); // only Web queries are always autocommitted (for DB/2)
         setConnectionId ("worddb");
         setConsole      ("none");
@@ -644,7 +698,7 @@ public class Configuration implements Serializable {
         setParameterMap (new HashMap<String, String[]>());
         setProcSeparator(null); // no default
         setDecimalSeparator("."); // US-English convention
-        propFileName    = ""; // default (built-in) connection properties
+        setLastPropsName("undefined"); // default (built-in) connection properties
         props           = new Properties();
         // (0) set hardcoded default values
         props.setProperty("driver"      , "org.sqlite.JDBC"                 );
@@ -658,20 +712,20 @@ public class Configuration implements Serializable {
 
     /** Initializes the class for the 1st (or 2nd, 3rd etc) call.
      *  @param callType whether the class is activated by CLI, WEB or SOAP
-     *  @param dsMap maps connection ids to pre-initialized DataSources,
+     *  @param dataSourceMap maps connection ids to pre-initialized DataSources,
      *  see <em>DbatServlet</em>.
      */
-    public void configure(int callType, LinkedHashMap<String, DataSource> dsMap) {
+    public void configure(int callType, LinkedHashMap<String, DataSource> dataSourceMap) {
         configure(callType);
-        this.dsMap = dsMap;
-    } // configure(callType, dsMap)
+        this.dataSourceMap = dataSourceMap;
+    } // configure(callType, dataSourceMap)
 
     /** Determine the mapping from connectionIds to {@link DataSource}s 
-     *  from the environment variable set in <em>dbat/etc/META-INF/context.xml</em>
+     *  from the environment variable "java:comp/env/dataSources" set in <em>dbat/etc/META-INF/context.xml</em>
      *  @return Mapping from short strings to data sources
      */
     public LinkedHashMap<String, DataSource> getDataSourceMap() {
-        LinkedHashMap<String, DataSource> dsMap = new LinkedHashMap<String, DataSource>(4);
+        LinkedHashMap<String, DataSource> dataSourceMap = new LinkedHashMap<String, DataSource>(4);
         try {
             Context envContext = (Context) new InitialContext().lookup("java:comp/env"); // get the environment naming context
             String dsList = ((String) envContext.lookup("dataSources")).replaceAll("\\s+", "");
@@ -706,14 +760,49 @@ public class Configuration implements Serializable {
                     // ignore
                 }
                 log.info("connectionId=\"" + connectionId + "\" mapped to \"" + dsName + "\"");
-                dsMap.put(connectionId, (DataSource) envContext.lookup("jdbc/" + dsName));
+                dataSourceMap.put(connectionId, (DataSource) envContext.lookup("jdbc/" + dsName));
                 ipair ++;
             } // while ipair
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
-        return dsMap;
+        return dataSourceMap;
     } // getDataSourceMap
+
+    /** Determine the mapping from connectionIds to CONSOLE_* properties 
+     *  from the environment variable "java:comp/env/console" set in <em>dbat/etc/META-INF/context.xml</em>
+     *  @return Mapping from short strings to constants "none|SELECT|UPDATE"
+     */
+    public LinkedHashMap<String, String> getConsoleMap() {
+        LinkedHashMap<String, String> consoleMap = new LinkedHashMap<String, String>(4);
+        try {
+            Context envContext = (Context) new InitialContext().lookup("java:comp/env"); // get the environment naming context
+            String consList = ((String) envContext.lookup("console")).replaceAll("\\s+", "");
+
+            String[] pairs = consList.split("\\,");
+            int ipair = 0;
+            while (ipair < pairs.length) {
+                String[] parts = pairs[ipair].split("\\:");
+                String connectionId = "mysql";
+                setConsole("none");
+                if (false) {
+                } else if (parts.length == 0) {
+                    // ignore
+                } else if (parts.length == 1) { // no behaviour -> CONSOLE_NONE
+                    connectionId = parts[0];
+	                consoleMap.put(connectionId, getConsole());
+                } else if (parts.length >= 2) { // explicit behaviour (-> CONSOLE_SELECT or CONSOLE_UPDATE)
+                	connectionId = parts[0];
+                    setConsole(parts[1]);
+	                consoleMap.put(connectionId, getConsole());
+                }
+                ipair ++;
+            } // while ipair
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+        return consoleMap;
+    } // getConsoleMap
     //========================
     // Auxiliary methods
     //========================
@@ -792,22 +881,29 @@ public class Configuration implements Serializable {
      *  </pre>
      */
     public void addProperties(String propsName) {
+        InputStream propsStream = null;
         // (1) try to get properties from the classpath (jar-file)
         try {
-            props.load(Configuration.class.getClassLoader().getResourceAsStream(propsName));
+        	String path = "/WEB-INF/classes/";
+            propsStream = Configuration.class.getClassLoader().getResourceAsStream(path + propsName);
+            if (propsStream != null) {
+                props.load(propsStream);
+                setLastPropsName("jar:file:" + path + propsName);
+            }
         } catch (Exception exc) {
-            // ignore errors
+            log.error(exc.getMessage(), exc);
         }
         // (2) add properties from file with same name in the current directory
         try {
             File propsFile = new File(propsName);
             if (propsFile.canRead()) {
-                FileInputStream propsStream = new FileInputStream(propsFile);
+                propsStream = new FileInputStream(propsFile);
                 props.load(propsStream);
                 propsStream.close();
+                setLastPropsName("./" + propsName);
             } // load from current dir
         } catch (Exception exc) {
-            // ignore errors
+            log.error(exc.getMessage(), exc);
         }
         String driverURL = props.getProperty("url");
         if (driverURL != null) {
@@ -832,9 +928,9 @@ public class Configuration implements Serializable {
         Connection result = null;
         DataSource ds = null;
         if (false) {
-        } else if (callType == WEB_CALL && dsMap != null) { // assume that dsMap was prefilled by web container
+        } else if (callType == WEB_CALL && dataSourceMap != null) { // assume that dataSourceMap was prefilled by web container
             try {
-                ds = dsMap.get(connectionId);
+                ds = dataSourceMap.get(connectionId);
                 if (ds != null) { // known connection id
                     result = ds.getConnection();
                 } else {

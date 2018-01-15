@@ -66,29 +66,27 @@ public class ConsolePage {
      *  @param basePage refers to common web methods and messages
      *  @param language 2-letter code en, de etc.
      *  @param tableFactory factory for table serializers
-     *  @param dsMap maps connection identifies (short database instance ids) to {@link DataSource Datasources}
-     *  @param config general configuration data
+     *  @param consoleMap maps connection identifiers to {@link Configuration.CONSOLE_SELECT} or {@link Configuration.CONSOLE_UPDATE}
      *  @throws IOException if an IO error occurs
      */
     public void showConsole(HttpServletRequest request, HttpServletResponse response
             , BasePage basePage
             , String language
             , TableFactory tableFactory
-            , LinkedHashMap<String, DataSource> dsMap
-            , Configuration config
+            , LinkedHashMap<String, String> consoleMap
             ) throws IOException {
         if (true) { // try {
             PrintWriter out = basePage.writeHeader(request, response, language);
 
             String connectionId  = null;
-            if (dsMap != null && ! dsMap.isEmpty()) {
-                Iterator<String> citer = dsMap.keySet().iterator();
+            if (consoleMap != null && ! consoleMap.isEmpty()) {
+                Iterator<String> citer = consoleMap.keySet().iterator();
                 boolean busy = true;
                 while (busy && citer.hasNext()) {
                     connectionId = (String) citer.next();
                     busy = false; // take first only
                 } // while citer
-            } // valid dsMap
+            } // valid consoleMap
             String encoding     = BasePage.getInputField(request, "enc"   , "ISO-8859-1");
             String mode         = BasePage.getInputField(request, "mode"  , "html"      );
             connectionId        = BasePage.getInputField(request, "conn"  , "mysql"     );
@@ -98,13 +96,12 @@ public class ConsolePage {
             String consoleWord = null;
             if (false) {
             } else if (language.equals("de")) {
-                consoleWord = "SQL-Konsole";
+                consoleWord = "-SQL-Konsole";
             } else if (language.equals("fr")) {
-                consoleWord = "Console SQL";
+                consoleWord = " Console SQL";
             } else {
-                consoleWord = "SQL Console";
+                consoleWord = " SQL Console";
             }
-            consoleWord = " " + consoleWord + " (" + config.getConsole() + ")";
 
             out.write("<title>" + basePage.getAppName() + consoleWord + "</title>\n");
             out.write("<style>\ntd,th\n");
@@ -218,9 +215,9 @@ public class ConsolePage {
             out.write("<td>\n<select name=\"mode\" size=\"");
             out.write("6"); // all formats: String.valueOf(factory.getCount()));
             out.write("\">\n");
-            Iterator <BaseTable> titer = tableFactory.getIterator();
+            Iterator<BaseTable> titer = tableFactory.getIterator();
             while (titer.hasNext()) {
-                BaseTable tableFormat = (BaseTable) titer.next();
+                BaseTable tableFormat = titer.next();
                 String code = tableFormat.getFirstFormatCode();
                 out.write("<option value=\"" + code + "\""
                           + (code.equals(mode) ? " selected=\"1\"" : "")
@@ -230,15 +227,15 @@ public class ConsolePage {
             out.write("</select>\n</td>\n");
 
             out.write("<td>\n<select name=\"conn\" size=\"");
-            out.write("3"); // all connection Ids
+            out.write(String.valueOf(consoleMap.size())); // all connectionIds named in "java:comp/env/console"
             out.write("\">\n");
-            Iterator <String> diter = dsMap.keySet().iterator();
+            Iterator<String> diter = consoleMap.keySet().iterator();
             while (diter.hasNext()) {
-                String connId = (String) diter.next();
+                String connId = diter.next();
                 out.write("<option value=\"" + connId + "\""
                           + (connId.equals(connectionId) ? " selected=\"1\"" : "")
                           + ">"
-                          + connId + "</option>\n");
+                          + connId + ":" + consoleMap.get(connId) + "</option>\n");
             } // while diter
             out.write("</select>\n<p />");
 
@@ -270,11 +267,7 @@ public class ConsolePage {
             if (intext.trim().length() > 0) {
                 out.write(intext);
             }
-            basePage.writeTrailer(language, "");
-    /*
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-    */
+            basePage.writeTrailer(language, "back.quest");
         }
     } // showConsole
 
