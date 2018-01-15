@@ -141,13 +141,13 @@ public class SQLAction implements Serializable {
     /** whether the SQLAction was called from the SQL Console window */
     private String consoleAccess;
     /** Determine whether the connection will be read-only
-     *  @return {@link Configuration.CONFIG_SELECT} or {@link Configuration.CONFIG_UPDATE}
+     *  @return {@link Configuration#CONSOLE_SELECT} or {@link Configuration#CONSOLE_UPDATE}
      */
     public String getConsoleAccess() {
         return  this.consoleAccess;
     } // getConsoleAccess
     /** Set the connection read-only state for console windows
-     *  @param consoleAccess, one of {@link Configuration.CONFIG_SELECT} or {@link Configuration.CONFIG_UPDATE}
+     *  @param consoleAccess  one of {@link Configuration#CONSOLE_SELECT} or {@link Configuration#CONSOLE_UPDATE}
      */
     public void setConsoleAccess(String consoleAccess) {
         this.consoleAccess = consoleAccess;
@@ -313,7 +313,7 @@ public class SQLAction implements Serializable {
 
     /** Constructor from SQL Console window
      *  @param config overall configuration of a session
-     *  @param consoleAccess one of {@link Configuration.CONFIG_SELECT} or {@link Configuration.CONFIG_UPDATE}
+     *  @param consoleAccess one of {@link Configuration#CONSOLE_SELECT} or {@link Configuration#CONSOLE_UPDATE}
      */
     public SQLAction(Configuration config, String consoleAccess) {
         this(config);

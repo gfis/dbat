@@ -70,7 +70,7 @@ public class MorePage {
      *  @param basePage refers to common web methods and messages
      *  @param language natural language for messages
      *  @param tableFactory factory for table serializers
-     *  @param connectionId code for the database to be used
+     *  @param config pointer to Dbat's configuration 
      *  @throws IOException if an IO error occurs
      */
     public void showMore(HttpServletRequest request, HttpServletResponse response

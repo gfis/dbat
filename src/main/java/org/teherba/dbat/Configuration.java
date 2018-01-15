@@ -1,6 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$ 2016-04-16 14:43:35
- *  2018-01-11: toString(); consoleMap
+ *  2018-01-11: toString(); getConsoleMap
  *  2017-05-27: javadoc 1.8
  *  2016-10-13: less imports
  *  2016-09-16: log.info() without caller's name; Locale.setDefault; better versionString
@@ -158,8 +158,8 @@ public class Configuration implements Serializable {
     public String getConsole() {
         return this.console;
     } // getConsole
-    /** Sets the console property
-     *  @param console, one of "none", "select" or "update"
+    /** Sets the console access property
+     *  @param console one of "none", "select" or "update"
      */
     public void setConsole(String console) {
         if (false) {
@@ -624,11 +624,19 @@ public class Configuration implements Serializable {
             dsList.append(",");
             dsList.append(diter.next());
         } // while diter
+    /*
+        StringBuffer conList = new StringBuffer(64);
+        Iterator<String> citer = consoleMap.keySet().iterator();
+        while (citer.hasNext()) {
+            conList.append(",");
+            conList.append(citer.next());
+        } // while citer
+    */
         String result = "";
         result += "autoCommit="         + hasAutoCommit()           + "\n";
         result += "callType="           + getCallType()             + "\n";
         result += "connectionId="       + getConnectionId()         + "\n";
-        result += "console="            + getConsole()              + "\n";
+    //  result += "consoleMap="         + conList.toString().substring(1) + "\n";
         result += "decimalSeparator="   + getDecimalSeparator()     + "\n";
         result += "defaultSchema="      + getDefaultSchema()        + "\n";
         result += "driverURL="          + getDriverURL()            + "\n";
@@ -725,7 +733,7 @@ public class Configuration implements Serializable {
      *  @return Mapping from short strings to data sources
      */
     public LinkedHashMap<String, DataSource> getDataSourceMap() {
-        LinkedHashMap<String, DataSource> dataSourceMap = new LinkedHashMap<String, DataSource>(4);
+        LinkedHashMap<String, DataSource> result = new LinkedHashMap<String, DataSource>(4);
         try {
             Context envContext = (Context) new InitialContext().lookup("java:comp/env"); // get the environment naming context
             String dsList = ((String) envContext.lookup("dataSources")).replaceAll("\\s+", "");
@@ -760,13 +768,13 @@ public class Configuration implements Serializable {
                     // ignore
                 }
                 log.info("connectionId=\"" + connectionId + "\" mapped to \"" + dsName + "\"");
-                dataSourceMap.put(connectionId, (DataSource) envContext.lookup("jdbc/" + dsName));
+                result.put(connectionId, (DataSource) envContext.lookup("jdbc/" + dsName));
                 ipair ++;
             } // while ipair
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
-        return dataSourceMap;
+        return result;
     } // getDataSourceMap
 
     /** Determine the mapping from connectionIds to CONSOLE_* properties 
@@ -774,7 +782,7 @@ public class Configuration implements Serializable {
      *  @return Mapping from short strings to constants "none|SELECT|UPDATE"
      */
     public LinkedHashMap<String, String> getConsoleMap() {
-        LinkedHashMap<String, String> consoleMap = new LinkedHashMap<String, String>(4);
+        LinkedHashMap<String, String> result = new LinkedHashMap<String, String>(4);
         try {
             Context envContext = (Context) new InitialContext().lookup("java:comp/env"); // get the environment naming context
             String consList = ((String) envContext.lookup("console")).replaceAll("\\s+", "");
@@ -790,18 +798,18 @@ public class Configuration implements Serializable {
                     // ignore
                 } else if (parts.length == 1) { // no behaviour -> CONSOLE_NONE
                     connectionId = parts[0];
-	                consoleMap.put(connectionId, getConsole());
+	                result.put(connectionId, getConsole());
                 } else if (parts.length >= 2) { // explicit behaviour (-> CONSOLE_SELECT or CONSOLE_UPDATE)
                 	connectionId = parts[0];
                     setConsole(parts[1]);
-	                consoleMap.put(connectionId, getConsole());
+	                result.put(connectionId, getConsole());
                 }
                 ipair ++;
             } // while ipair
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
-        return consoleMap;
+        return result;
     } // getConsoleMap
     //========================
     // Auxiliary methods

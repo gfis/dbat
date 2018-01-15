@@ -66,7 +66,8 @@ public class ConsolePage {
      *  @param basePage refers to common web methods and messages
      *  @param language 2-letter code en, de etc.
      *  @param tableFactory factory for table serializers
-     *  @param consoleMap maps connection identifiers to {@link Configuration.CONSOLE_SELECT} or {@link Configuration.CONSOLE_UPDATE}
+     *  @param consoleMap maps connection identifiers to 
+     *  {@link Configuration#CONSOLE_SELECT} or {@link Configuration#CONSOLE_UPDATE}
      *  @throws IOException if an IO error occurs
      */
     public void showConsole(HttpServletRequest request, HttpServletResponse response

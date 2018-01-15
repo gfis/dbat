@@ -32,9 +32,11 @@ import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.common.URIReader;
 import  org.apache.poi.ss.usermodel.Cell;
 import  org.apache.poi.ss.usermodel.CellStyle;
+// 3.17 // import  org.apache.poi.ss.usermodel.CellType;
 import  org.apache.poi.ss.usermodel.DataFormat;
 import  org.apache.poi.ss.usermodel.DataFormatter;
 import  org.apache.poi.ss.usermodel.Font;
+import  org.apache.poi.ss.usermodel.HorizontalAlignment;
 import  org.apache.poi.ss.usermodel.Row;
 import  org.apache.poi.ss.usermodel.Sheet;
 import  org.apache.poi.ss.usermodel.Workbook;
@@ -230,7 +232,7 @@ public class ExcelStream extends BaseTable {
      *  The possible attribute names are described in {@link BaseTable#writeStart}.
      *  @param parameterMap map of request parameters to values
      */
-    public void writeStart(String[] attributes,  HashMap/*<1.5*/<String, String[]>/*1.5>*/ parameterMap) {
+    public void writeStart(String[] attributes,  HashMap<String, String[]> parameterMap) {
         try {
             decimalSeparator = null;
             String[] pdec = parameterMap.get("decimal");
@@ -331,10 +333,12 @@ public class ExcelStream extends BaseTable {
             case HEADER:
                 row     = sheet.createRow(rowNo);
                 font    = wbook.createFont();
-                font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+                // font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+                font.setBold(true);
                 style   = wbook.createCellStyle();
                 style.setFont(font);
-                style.setAlignment(CellStyle.ALIGN_CENTER);
+                /* 3.14 */ style.setAlignment(CellStyle.ALIGN_CENTER);
+                // 3.17 // style.setAlignment(HorizontalAlignment.CENTER);
                 while (icol < ncol) {
                     column = columnList.get(icol);
                     pseudo = column.getPseudo();
@@ -421,15 +425,18 @@ public class ExcelStream extends BaseTable {
                                 case Types.SMALLINT:
                                 case Types.TINYINT:
                                 case Types.REAL:
-                                    cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    /* 3.14 */ cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    // 3.17 // cell.setCellType(CellType.NUMERIC);
                                     cell.setCellValue(Double.valueOf(value));
                                     if (rowNo <= 1) {
                                         style.setDataFormat(wbDataFormat.getFormat("0"));
-                                        style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                        /* 3.14 */ style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                        // 3.17 // style.setAlignment(HorizontalAlignment.RIGHT);
                                     }
                                     break;
                                 case Types.DECIMAL:
-                                    cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    /* 3.14 */ cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    // 3.17 // cell.setCellType(CellType.NUMERIC);
                                     cell.setCellValue(Double.valueOf(value));
                                     if (rowNo <= 1) {
                                         int decimalDigits = column.getDecimal(); // not yet filled properly, therefore:
@@ -446,38 +453,47 @@ public class ExcelStream extends BaseTable {
                                             fraction = "0000000000".substring(0, decimalDigits);
                                             style.setDataFormat(wbDataFormat.getFormat("0." + fraction));
                                         }
-                                        style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                        /* 3.14 */ style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                        // 3.17 // style.setAlignment(HorizontalAlignment.RIGHT);
                                     }
                                     break;
                                 case Types.CHAR:
                                 case Types.VARCHAR:
-                                    cell.setCellType(Cell.CELL_TYPE_STRING);
+                                    /* 3.14 */ cell.setCellType(Cell.CELL_TYPE_STRING);
+                                    // 3.17 // cell.setCellType(CellType.STRING);
                                     cell.setCellValue(value);
                                     if (rowNo <= 1) {
-                                        style.setAlignment(CellStyle.ALIGN_LEFT);
+                                        /* 3.14 */ style.setAlignment(CellStyle.ALIGN_LEFT);
+                                        // 3.17 // style.setAlignment(HorizontalAlignment.LEFT);
                                     }
                                     break;
                                 case Types.DATE:
-                                    cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    /* 3.14 */ cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    // 3.17 // cell.setCellType(CellType.NUMERIC);
                                     cell.setCellValue(SQLAction.DATE_FORMAT.parse(value));
                                     if (rowNo <= 1) {
-                                        style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                        /* 3.14 */ style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                        // 3.17 // style.setAlignment(HorizontalAlignment.RIGHT);
                                         style.setDataFormat(wbDataFormat.getFormat("yyyy-mm-dd"));
                                     }
                                     break;
                                 case Types.TIME:
-                                    cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    /* 3.14 */ cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    // 3.17 // cell.setCellType(CellType.NUMERIC);
                                     cell.setCellValue(SQLAction.TIME_FORMAT.parse(value));
                                     if (rowNo <= 1) {
-                                        style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                        /* 3.14 */ style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                        // 3.17 // style.setAlignment(HorizontalAlignment.RIGHT);
                                         style.setDataFormat(wbDataFormat.getFormat("hh:mm:ss"));
                                     }
                                     break;
                                 case Types.TIMESTAMP:
-                                    cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    /* 3.14 */ cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    // 3.17 // cell.setCellType(CellType.NUMERIC);
                                     cell.setCellValue(SQLAction.TIMESTAMP_FORMAT.parse(value));
                                     if (rowNo <= 1) {
-                                        style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                        /* 3.14 */ style.setAlignment(CellStyle.ALIGN_RIGHT);
+                                        // 3.17 // style.setAlignment(HorizontalAlignment.RIGHT);
                                         style.setDataFormat(wbDataFormat.getFormat("yyyy-mm-dd hh:mm:ss"));
                                     }
                                     break;
