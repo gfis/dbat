@@ -1,5 +1,6 @@
 /*  Dbat.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2018-01-19: unused code removed
  *  2017-05-27: javadoc 1.8
  *  2016-09-16: -p lang=de sets Locale for SAX messages
  *  2016-08-09: pass "conn" in writeStart
@@ -165,17 +166,6 @@ public class Dbat implements Serializable {
         verbose                 = 0;            // -v
         tableFactory            = new TableFactory();
     } // initialize
-
-    /** Initializes the class for the 1st (or 2nd, 3rd etc) call of {@link #processArguments} et al.
-     *  @param callType whether the class is activated by CLI, WEB or SOAP
-     *  @param dsMap maps connection ids to pre-initialized DataSources,
-     *  see <em>DbatServlet</em>.
-     */
-    public void initialize(int callType, LinkedHashMap/*<1.5*/<String, DataSource>/*1.5>*/ dsMap) {
-        initialize(callType);
-        config                  = new Configuration();
-        config.configure        (callType, dsMap);
-    } // initialize(2)
 
     /** Terminates the processing of SQL statements,
      *  clean-up for the next invocation
@@ -571,11 +561,6 @@ public class Dbat implements Serializable {
             } // default
 
             config.evaluateProperties();
-        /*
-            if (! config.getSeparator().equals("\t") && ! formatMode.equals("csv")) {  // -s was present
-                formatMode = "csv";
-            }
-        */
             if (formatMode.equals("fix")) {
                 config.setWithHeaders(false);
                 config.setSeparator("");
@@ -721,26 +706,6 @@ public class Dbat implements Serializable {
         }
     } // process
 
-    /** Executes a {@link Dbat} command line as if it were passed by the shell,
-     *  and prints the resulting rows in the specified format.
-     *  This method is used by the deprecated <em>DbatService</em>.
-     *  @param writer PrintWriter for result output
-     *  @param commandLine command line with options, SQL, file- and/or tablenames
-     */
-    public void processCommandLine(PrintWriter writer, String commandLine) {
-        processArguments(writer, Pattern.compile("\\s+").split(commandLine)); // split on whitespace
-    } // processCommandLine
-
-    /** Executes a single SQL statement (one string),
-     *  and prints the resulting rows in the specified format
-     *  @param writer PrintWriter for result output
-     *  @param stmtSql options, file- and/or tablenames
-     */
-/*
-    public void processStatement(PrintWriter writer, String stmtSql) {
-        processArguments(writer, new String [] { stmtSql });
-    } // processStatement
-*/
     /** Processes all command line arguments, executes the SQL,
      *  and prints the resulting rows in the specified format.
      *  Only one main action (SQL instruction) will be executed if no
@@ -748,7 +713,7 @@ public class Dbat implements Serializable {
      *  @param writer PrintWriter for result output
      *  @param args command line arguments: options, strings, table- or filenames
      */
-    public void processArguments(PrintWriter writer, String[] args) {
+    private void processArguments(PrintWriter writer, String[] args) {
         TableMetaData tbMetaData = new TableMetaData();
         int karg = evaluateOptions(args, config, tbMetaData);
         // System.err.println("main action=" + mainAction + ", argsSql=" + argsSql);

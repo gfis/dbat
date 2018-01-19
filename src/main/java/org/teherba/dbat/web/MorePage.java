@@ -1,5 +1,6 @@
 /*  MorePage.java - replacement for more.jsp: input form with all parameters äöüÄÖÜ
  *  @(#) $Id$
+ *  2018-01-19: console (comments)
  *  2017-05-27: javadoc
  *  2016-12-09: no script.js
  *  2016-10-11: IOException
@@ -268,19 +269,6 @@ public class MorePage {
             //----------------------------------------
             out.write("<td>\n");
             out.write(basePage.getOtherAuxiliaryLinks(language, "more"));
-        /*
-            out.write("<a title=\"con\"         href=\"servlet?view=con&conn=" 
-                    + config.getConnectionId() + "\">");
-            if (false) {
-            } else if (language.startsWith("de")) {
-                out.write("SQL-Konsole");
-            } else if (language.startsWith("fr")) {
-                out.write("Console SQL");
-            } else {
-                out.write("SQL Console");
-            }
-            out.write("</a> (" + config.getConsole() + ")\n");
-        */
             out.write("<br /><input type=\"submit\" value=\"");
             if (false) {
             } else if (language.startsWith("de")) {
@@ -294,11 +282,7 @@ public class MorePage {
             //----------------------------------------
             
             basePage.writeTrailer(language, "quest");
-    /*
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-    */
-        }
+        } // true / try
     } // showMore
 
     /** Shows the form for Java regular expression evaluation

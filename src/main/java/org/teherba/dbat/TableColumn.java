@@ -1,5 +1,6 @@
 /*  TableColumn - bean with properties of an abstract column
     @(#) $Id$
+    2017-10-02: no message for "Fragmented"
  *  2017-05-27: javadoc 1.8
     2016-12-09: avoid empty Javascrpt function calls
     2016-02-10: values may not be null if wrapped
@@ -318,7 +319,7 @@ public class TableColumn implements Cloneable {
                 fragPos = wrappedValue.indexOf('#');
             }
             if (fragPos >= 0) { // with fragment
-                System.err.println("fragmented: " + wrappedValue);
+                // System.err.println("fragmented: " + wrappedValue);
                 int ampPos = wrappedValue.indexOf('&', fragPos);
                 if (false && ampPos >= 0) { // there are parameters behind '#': move fragment to the end
                     result = wrappedValue.substring(0, fragPos)

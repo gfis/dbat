@@ -1,5 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$ 2016-04-16 14:43:35
+ *  2018-01-19: loadContextEnvironment()
  *  2018-01-11: toString(); getConsoleMap
  *  2017-05-27: javadoc 1.8
  *  2016-10-13: less imports
@@ -104,6 +105,23 @@ public class Configuration implements Serializable {
         autoCommit = auto;
     } // setAutoCommit
     //--------
+    /** when called from the commandline - no DB connection pooling */
+    public static final int CLI_CALL  = 0;
+    /** when called from the web application - Tomcat's DBCP */
+    public static final int WEB_CALL  = 1;
+    /** when called as a SOAP service - ??? (like CLI_CALL so far) */
+    public static final int SOAP_CALL = 2;
+    /** when called from the commandline - use BasicDataSource */
+    // public static final int DSO_CALL  = 3;
+    /** Remembers the type of activation (one of the xxx_CALL constants) */
+    private int callType;
+    /** Gets the type of activation.
+     *  @return one of the constants *_CALL
+     */
+    public int getCallType() {
+        return callType;
+    } // getCallType
+    //--------
     /** Opened connection to some database */
     private Connection con;
 
@@ -155,13 +173,13 @@ public class Configuration implements Serializable {
     /** Gets the console property
      *  @return one of {@link #CONSOLE_NONE}, {@link #CONSOLE_SELECT}, {@link #CONSOLE_UPDATE}
      */
-    public String getConsole() {
+    private String getConsole() {
         return this.console;
     } // getConsole
     /** Sets the console access property
      *  @param console one of "none", "select" or "update"
      */
-    public void setConsole(String console) {
+    private void setConsole(String console) {
         if (false) {
         } else if (console.equals("none"  )) {
             this.console = CONSOLE_NONE;
@@ -179,6 +197,102 @@ public class Configuration implements Serializable {
     public boolean hasConsole() {
         return ! this.console.equals(CONSOLE_NONE);
     } // hasConsole
+
+    /** Maps connection identifiers (short database instance ids) to a console access property */
+    private LinkedHashMap<String, String    > consoleMap;
+    /** Maps connection identifiers (short database instance ids) to {@link DataSource Datasources} */
+    private LinkedHashMap<String, DataSource> dataSourceMap;
+
+    /** Gets environment variables from the servlet context (defined inf file etc/META_INF/context.xml).
+     *  <ul>
+     *  <li>java:comp/env/console</li>
+     *  <li>java:comp/env/dataSources</li>
+     *  </ul>
+     */
+    public void loadContextEnvironment() {
+        try {
+            Context envContext = (Context) new InitialContext().lookup("java:comp/env"); // get the environment naming context
+            //-------- consoleAccess per connId
+            String consList = ((String) envContext.lookup("console")).replaceAll("[ \\,\\;]+", ",");
+            String[] 
+            pairs = consList.split("\\,");
+            int 
+            ipair = 0;
+            while (ipair < pairs.length) {
+                String[] parts = pairs[ipair].split("\\:");
+                String connectionId = null;
+                if (false) {
+                } else if (parts.length == 0) {
+                    // ignore
+                } else if (parts.length == 1) { // connId, but no behaviour specified, defaults to CONSOLE_SELECT
+                    connectionId = parts[0];
+                    consoleMap.put(connectionId, Configuration.CONSOLE_SELECT);
+                } else if (parts.length >= 2) { // explicit behaviour (-> CONSOLE_SELECT or CONSOLE_UPDATE)
+                    connectionId = parts[0];
+                    setConsole(parts[1]);
+                    consoleMap.put(connectionId, getConsole());
+                }
+                ipair ++;
+            } // while ipair
+            
+            //-------- dataSources per connId
+            String dsList = ((String) envContext.lookup("dataSources")).replaceAll("[ \\,\\;]+", ",");
+            // log.info(" dsList=\"" + dsList + "\"");
+
+            pairs = dsList.split("\\,");
+            ipair = 0;
+            while (ipair < pairs.length) {
+                String[] parts = pairs[ipair].split("\\:");
+                String connectionId = "mysql";
+                String dsName       = connectionId;
+                if (false) {
+                } else if (parts.length == 0) {
+                    // ignore
+                } else if (parts.length == 1) { // direct connectionId, e.g. "worddb"
+                    connectionId = parts[0];
+                    dsName       = connectionId;
+                    if (dsName.length() > 6) { // unusual, external DS names - use heuristics
+                        if (false) {
+                        } else if (dsName.indexOf("COSM") >= 0) {
+                            connectionId = "cosm";
+                        } else if (dsName.indexOf("DB2T") >= 0) {
+                            connectionId = "db2t";
+                        } else if (dsName.indexOf("DB2")  >= 0) {
+                            connectionId = "db2a";
+                        }
+                    } // if heuristics
+                } else if (parts.length == 2) { // explicit renaming of connectionId, e.g. "worddb:DBAT_Word_DataSource
+                    connectionId = parts[0];
+                    dsName       = parts[1];
+                } else { // more than one ":"
+                    // ignore
+                }
+                log.info("connectionId=\"" + connectionId + "\" mapped to \"" + dsName + "\"");
+                dataSourceMap.put(connectionId, (DataSource) envContext.lookup("jdbc/" + dsName));
+                ipair ++;
+            } // while ipair
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+    } // loadContextEnvironment
+    
+    /** Determine the mapping from connectionIds to CONSOLE_* properties 
+     *  from the environment variable "java:comp/env/console" set in <em>dbat/etc/META-INF/context.xml</em>
+     *  @return Mapping from short strings to constants "SELECT|UPDATE"; 
+     *  connections with "none" are not stored
+     */
+    public LinkedHashMap<String, String> getConsoleMap() {
+        return consoleMap;
+    } // getConsoleMap
+
+    /** Determine the mapping from connectionIds to {@link DataSource}s 
+     *  from the environment variable "java:comp/env/dataSources" set in <em>dbat/etc/META-INF/context.xml</em>
+     *  @return Mapping from short strings to data sources
+     */
+    public LinkedHashMap<String, DataSource> getDataSourceMap() {
+        return dataSourceMap;
+    } // getDataSourceMap
+
     //--------
     /** Character for the decimal point or comma */
     private String  decimalSeparator;
@@ -595,25 +709,6 @@ public class Configuration implements Serializable {
         this.zipFileName = zipFileName;
     } // setZipFileName
     //--------
-    /** when called from the commandline - no DB connection pooling */
-    public static final int CLI_CALL  = 0;
-    /** when called from the web application - Tomcat's DBCP */
-    public static final int WEB_CALL  = 1;
-    /** when called as a SOAP service - ??? (like CLI_CALL so far) */
-    public static final int SOAP_CALL = 2;
-    /** when called from the commandline - use BasicDataSource */
-    // public static final int DSO_CALL  = 3;
-    /** Remembers the type of activation (one of the xxx_CALL constants) */
-    private int callType;
-    /** Gets the type of activation.
-     *  @return one of the constants *_CALL
-     */
-    public int getCallType() {
-        return callType;
-    } // getCallType
-    //--------
-    /** Maps connection identifiers (short database instance ids) to {@link DataSource Datasources} */
-    private LinkedHashMap<String, DataSource> dataSourceMap;
 
     /** Shows all properties
      */
@@ -686,7 +781,8 @@ public class Configuration implements Serializable {
         //                 : "text/html";              // for Windows, InternetExplorer <= V6.x
         htmlMimeType    = "application/xhtml+xml"; // now works for IE also
         con             = null;
-        dataSourceMap   = null;
+        consoleMap      = new LinkedHashMap<String, String    >(4);
+        dataSourceMap   = new LinkedHashMap<String, DataSource>(4);
         setAutoCommit   (callType == WEB_CALL); // only Web queries are always autocommitted (for DB/2)
         setConnectionId ("worddb");
         setConsole      ("none");
@@ -718,99 +814,6 @@ public class Configuration implements Serializable {
         evaluateProperties();
     } // configure
 
-    /** Initializes the class for the 1st (or 2nd, 3rd etc) call.
-     *  @param callType whether the class is activated by CLI, WEB or SOAP
-     *  @param dataSourceMap maps connection ids to pre-initialized DataSources,
-     *  see <em>DbatServlet</em>.
-     */
-    public void configure(int callType, LinkedHashMap<String, DataSource> dataSourceMap) {
-        configure(callType);
-        this.dataSourceMap = dataSourceMap;
-    } // configure(callType, dataSourceMap)
-
-    /** Determine the mapping from connectionIds to {@link DataSource}s 
-     *  from the environment variable "java:comp/env/dataSources" set in <em>dbat/etc/META-INF/context.xml</em>
-     *  @return Mapping from short strings to data sources
-     */
-    public LinkedHashMap<String, DataSource> getDataSourceMap() {
-        LinkedHashMap<String, DataSource> result = new LinkedHashMap<String, DataSource>(4);
-        try {
-            Context envContext = (Context) new InitialContext().lookup("java:comp/env"); // get the environment naming context
-            String dsList = ((String) envContext.lookup("dataSources")).replaceAll("\\s+", "");
-            log.info(" dsList=\"" + dsList + "\"");
-
-            String[] pairs = dsList.split("\\,");
-            int ipair = 0;
-            while (ipair < pairs.length) {
-                String[] parts = pairs[ipair].split("\\:");
-                String connectionId = "mysql";
-                String dsName       = connectionId;
-                if (false) {
-                } else if (parts.length == 0) {
-                    // ignore
-                } else if (parts.length == 1) { // direct connectionId, e.g. "worddb"
-                    connectionId = parts[0];
-                    dsName       = connectionId;
-                    if (dsName.length() > 6) { // unusual, external DS names - use heuristics
-                        if (false) {
-                        } else if (dsName.indexOf("COSM") >= 0) {
-                            connectionId = "cosm";
-                        } else if (dsName.indexOf("DB2T") >= 0) {
-                            connectionId = "db2t";
-                        } else if (dsName.indexOf("DB2")  >= 0) {
-                            connectionId = "db2a";
-                        }
-                    } // if heuristics
-                } else if (parts.length == 2) { // explicit renaming of connectionId, e.g. "worddb:DBAT_Word_DataSource
-                    connectionId = parts[0];
-                    dsName       = parts[1];
-                } else { // more than one ":"
-                    // ignore
-                }
-                log.info("connectionId=\"" + connectionId + "\" mapped to \"" + dsName + "\"");
-                result.put(connectionId, (DataSource) envContext.lookup("jdbc/" + dsName));
-                ipair ++;
-            } // while ipair
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-        }
-        return result;
-    } // getDataSourceMap
-
-    /** Determine the mapping from connectionIds to CONSOLE_* properties 
-     *  from the environment variable "java:comp/env/console" set in <em>dbat/etc/META-INF/context.xml</em>
-     *  @return Mapping from short strings to constants "none|SELECT|UPDATE"
-     */
-    public LinkedHashMap<String, String> getConsoleMap() {
-        LinkedHashMap<String, String> result = new LinkedHashMap<String, String>(4);
-        try {
-            Context envContext = (Context) new InitialContext().lookup("java:comp/env"); // get the environment naming context
-            String consList = ((String) envContext.lookup("console")).replaceAll("\\s+", "");
-
-            String[] pairs = consList.split("\\,");
-            int ipair = 0;
-            while (ipair < pairs.length) {
-                String[] parts = pairs[ipair].split("\\:");
-                String connectionId = "mysql";
-                setConsole("none");
-                if (false) {
-                } else if (parts.length == 0) {
-                    // ignore
-                } else if (parts.length == 1) { // no behaviour -> CONSOLE_NONE
-                    connectionId = parts[0];
-	                result.put(connectionId, getConsole());
-                } else if (parts.length >= 2) { // explicit behaviour (-> CONSOLE_SELECT or CONSOLE_UPDATE)
-                	connectionId = parts[0];
-                    setConsole(parts[1]);
-	                result.put(connectionId, getConsole());
-                }
-                ipair ++;
-            } // while ipair
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-        }
-        return result;
-    } // getConsoleMap
     //========================
     // Auxiliary methods
     //========================
@@ -892,7 +895,7 @@ public class Configuration implements Serializable {
         InputStream propsStream = null;
         // (1) try to get properties from the classpath (jar-file)
         try {
-        	String path = "/WEB-INF/classes/";
+            String path = "/WEB-INF/classes/";
             propsStream = Configuration.class.getClassLoader().getResourceAsStream(path + propsName);
             if (propsStream != null) {
                 props.load(propsStream);

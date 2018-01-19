@@ -106,12 +106,12 @@ public class DbatServlet extends HttpServlet {
     private Logger log;
     /** URL path to this application, e.g. /var/lib/tomcat8/webapps/dbat[/spec/] */
     private String specPath;
-    /** Maps connection identifiers (short database instance ids) to {@link DataSource Datasources} */
-    private LinkedHashMap<String, DataSource> dataSourceMap;
-    /** Maps connection identifiers to "none", "SELECT" or "UPDATE" (for the behaviour of ConsolePage) */
-    private LinkedHashMap<String, String>     consoleMap;
     /** Dbat's configuration data */
     private Configuration config;
+    /** Maps connection identifiers to "none", "SELECT" or "UPDATE" (for the behaviour of ConsolePage) */
+    private LinkedHashMap<String, String>     consoleMap;
+    /** Maps connection identifiers (short database instance ids) to {@link DataSource Datasources} */
+    private LinkedHashMap<String, DataSource> dataSourceMap;
     /** common code and messages for auxiliary web pages */
     private BasePage basePage;
     /** name of this application */
@@ -127,6 +127,8 @@ public class DbatServlet extends HttpServlet {
         Messages.addMessageTexts(basePage);
 
         config = new Configuration();
+        config.configure(config.WEB_CALL);
+        config.loadContextEnvironment();
         dataSourceMap = config.getDataSourceMap();
         consoleMap    = config.getConsoleMap();
 
@@ -143,7 +145,7 @@ public class DbatServlet extends HttpServlet {
         }
         log.info("specPath=" + specPath); // e.g.  specPath=/var/lib/tomcat8/webapps/dbat/spec/
 
-        if (true) { // debugging
+        if (false) { // debugging
             Iterator<String> miter = dataSourceMap.keySet().iterator();
             while (miter.hasNext()) {
                 String connectionId = miter.next();
@@ -262,7 +264,7 @@ public class DbatServlet extends HttpServlet {
      */
     public void generateResponse(HttpServletRequest request, HttpServletResponse response) throws IOException {
         boolean binary = false; // assume legible character response output
-        config.configure(config.WEB_CALL, dataSourceMap); // why?
+        // config.configure(config.WEB_CALL, dataSourceMap); // why? because of withHeaders
         TableFactory tableFactory = new TableFactory();
         request.setCharacterEncoding("UTF-8");
         // HttpSession session = request.getSession();
@@ -409,15 +411,19 @@ public class DbatServlet extends HttpServlet {
             // if (view == null || view.length() == 0 || view.matches("del|del2|dat|ins|ins2|upd|upd2|sear"))
 
         } else if (view.equals("con")) { // View "con" collects the parameters from the SQL Console
-            if (console.equals(config.CONSOLE_NONE)) { // not allowed
-                basePage.writeMessage(request, response, language, new String[] { "410", connectionId });
+            if (consoleMap.size() <= 0) { // not any connection allowed
+                basePage.writeMessage(request, response, language, new String[] { "410" });
+                        // "Execution of SQL instructions is not allowed."
             } else {
                 (new ConsolePage()).showConsole(request, response, basePage, language, tableFactory, consoleMap);
             }
         } else if (view.equals("con2")) { // View "con2" is for the result of the SQL console
-            if (console.equals(config.CONSOLE_NONE)) { // not allowed
-                basePage.writeMessage(request, response, language, new String[] { "410", connectionId });
-            } else {
+            if (consoleMap.size() <= 0) { // not any connection allowed
+                basePage.writeMessage(request, response, language, new String[] { "410" });
+            } else if (console.equals(Configuration.CONSOLE_NONE)) {
+                basePage.writeMessage(request, response, language, new String[] { "411", connectionId });
+                        // Execution of SQL instructions for DB connection <em>{parm}</em> is not allowed."
+            } else { // CONSOLE_SELECT || CONSOLE_UPDATE
                 String intext   = BasePage.getInputField(request, "intext"   , ";"       );
                 fetchLimit      = BasePage.getInputField(request, "fetch"    , 64        );
                 // response.setContentType(config.getHtmlMimeType()); // default

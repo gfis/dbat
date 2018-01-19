@@ -1160,10 +1160,12 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 }
                 //--------
                 String headers      = attrs.getValue("headers");
-                if (headers         != null && (headers.startsWith("n") || headers.startsWith("f"))) {
-                    config.setWithHeaders(false);
-                }
-               //--------
+                if (headers         == null) {
+                    config.setWithHeaders(true);
+                } else {
+                    config.setWithHeaders(headers.matches("[yYjJtT].*"));
+                }                   
+                //--------
                 String language     = attrs.getValue("lang");
                 Object obj          = parameterMap.get("lang");
                 if (obj != null) {

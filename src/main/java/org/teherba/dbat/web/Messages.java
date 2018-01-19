@@ -130,11 +130,14 @@ public class Messages implements Serializable {
         basePage.add("fr", "404", "Un fichier de spécification <em>{parm}</em> n'a pas été trouvé. "
                 + "<br />Veuillez vérifier la page d'accueil" + appLink + ".");
         //--------
-        basePage.add("en", "410", "Execution of SQL instructions for DB connection "
+        basePage.add("en", "410", "Execution of SQL instructions is not allowed.");
+        basePage.add("de", "410", "SQL-Befehle sind nicht erlaubt.");
+        basePage.add("fr", "410", "Commandes SQL  ne sont pas possible.");
+        basePage.add("en", "411", "Execution of SQL instructions for DB connection "
                 + "<em>{parm}</em> is not allowed.");
-        basePage.add("de", "410", "SQL-Befehle f&#xfc;r DB-Verbindung "
+        basePage.add("de", "411", "SQL-Befehle f&#xfc;r DB-Verbindung "
                 + "<em>{parm}</em> sind nicht erlaubt.");
-        basePage.add("fr", "410", "Commandes SQL pour DB connection "
+        basePage.add("fr", "411", "Commandes SQL pour DB connection "
                 + "<em>{parm}</em> ne sont pas possible.");
         //--------
     } // addMessageTexts

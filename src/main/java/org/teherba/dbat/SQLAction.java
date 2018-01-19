@@ -1,5 +1,6 @@
 /*  SQLAction.java - Properties and methods specific for one elementary sequence of SQL instructions
     @(#) $Id$
+    2018-01-19: use getConsoleAccess()
     2018-01-11: better detection of 1st SQL verb, and distinction between query and update for console
     2017-05-27: javadoc 1.8
     2017-02-11: loadFromURI, also for Excel
@@ -1532,7 +1533,7 @@ public class SQLAction implements Serializable {
                     con = config.openConnection();
                 }
                 oldReadOnly = con.isReadOnly();
-                if (consoleAccess.equals(Configuration.CONSOLE_SELECT)) {
+                if (getConsoleAccess().equals(Configuration.CONSOLE_SELECT)) {
                     con.setReadOnly(true);
                 }
                 // String[] words = sqlInstruction.split("\\s+", 3); // starts with verb - c.f. the trim() above
@@ -1587,7 +1588,7 @@ public class SQLAction implements Serializable {
                 } // DDL or DML
                 instructionSum ++;
                 manipulatedSum += updateCount;
-                if (consoleAccess.equals(Configuration.CONSOLE_SELECT)) {
+                if (getConsoleAccess().equals(Configuration.CONSOLE_SELECT)) {
                     con.setReadOnly(oldReadOnly);
                 }
             } // statement non-empty
