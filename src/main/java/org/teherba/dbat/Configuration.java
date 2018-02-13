@@ -271,6 +271,7 @@ public class Configuration implements Serializable {
                 dataSourceMap.put(connectionId, (DataSource) envContext.lookup("jdbc/" + dsName));
                 ipair ++;
             } // while ipair
+            envContext.close();
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
@@ -862,7 +863,7 @@ public class Configuration implements Serializable {
     public void setProperty(String name, String value) {
         props.setProperty(name, value);
         evaluateProperties(); // maybe it was one of the non-JDBC-oriented
-    } // addProperties
+    } // setProperty
 
     /** Adds properties from a file in the classpath, or in the current directory
      *  (of the context in case of the web application).
@@ -895,7 +896,7 @@ public class Configuration implements Serializable {
         InputStream propsStream = null;
         // (1) try to get properties from the classpath (jar-file)
         try {
-            String path = "/WEB-INF/classes/";
+            String path = getCallType() == CLI_CALL ? "" : "/WEB-INF/classes/";
             propsStream = Configuration.class.getClassLoader().getResourceAsStream(path + propsName);
             if (propsStream != null) {
                 props.load(propsStream);

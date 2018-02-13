@@ -1,5 +1,6 @@
 /*  ConsolePage.java - run a query or SQL instruction from a web form
  *  @(#) $Id$
+ *  2018-02-13: always select the first connId
  *  2018-01-11: property "console=none|select|update"
  *  2017-05-27: javadoc 1.8
  *  2016-10-13: less imports
@@ -231,12 +232,15 @@ public class ConsolePage {
             out.write(String.valueOf(consoleMap.size())); // all connectionIds named in "java:comp/env/console"
             out.write("\">\n");
             Iterator<String> diter = consoleMap.keySet().iterator();
+            int cindex = 0; // 2018-02-13: always select the first connId
             while (diter.hasNext()) {
                 String connId = diter.next();
                 out.write("<option value=\"" + connId + "\""
-                          + (connId.equals(connectionId) ? " selected=\"1\"" : "")
+                          + (cindex == 0 // (connId.equals(connectionId) 
+                          		? " selected=\"1\"" : "")
                           + ">"
                           + connId + ":" + consoleMap.get(connId) + "</option>\n");
+                cindex ++;
             } // while diter
             out.write("</select>\n<p />");
 

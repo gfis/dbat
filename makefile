@@ -107,7 +107,7 @@ same_iv1:
 jfind:
 	find src -iname "*.java" | xargs -l grep -iH "$(JF)"
 rmbak:
-	find src -iname "*.java.bak" | xargs -l rm -v
+	find etc src web -iname "*.bak" | xargs -l rm -v
 #---------------------------------------------------
 exit1:
 	java -jar dist/dbat.jar -c wi17 -n user_groups
