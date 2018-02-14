@@ -14,5 +14,5 @@
 <h3><a title="main" href="index.html">Dbat</a>-Meldung 404: Eine Spezifikationsdatei <em>test/wrong_spec_file</em> wurde nicht gefunden.<br />Bitte rufen Sie die <a title="main" href="index.html">Dbat</a>-Startseite auf.</h3>
 <!-- language="de", features="quest" -->
 <p><span style="font-size:small">
-Fragen, Hinweise: EMail an  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
+Fragen, Hinweise: EMail an  <a href="mailto:Dr.Georg.Fischer@gmail.com?&subject=Dbat">Dr.Georg.Fischer@gmail.com</a></span></p>
 </body></html>

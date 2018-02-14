@@ -14,5 +14,5 @@
 <h3><a title="main" href="index.html">Dbat</a> Message 404: A specification file <em>test/wrong_spec_file</em> was not found.<br />Please check the <a title="main" href="index.html">Dbat</a> home page.</h3>
 <!-- language="en", features="quest" -->
 <p><span style="font-size:small">
-Questions, remarks: email to  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
+Questions, remarks: email to  <a href="mailto:Dr.Georg.Fischer@gmail.com?&subject=Dbat">Dr.Georg.Fischer@gmail.com</a></span></p>
 </body></html>

@@ -1,5 +1,6 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2018-02-13: read etc/dbat.properties only
  *  2018-01-11: property "console=none|SELECT|UPDATE"; ConfigurationPage
  *  2017-06-17: StaticMirror
  *  2017-05-27: javadoc 1.8
@@ -124,13 +125,13 @@ public class DbatServlet extends HttpServlet {
     public void init() throws ServletException {
         log = Logger.getLogger(DbatServlet.class.getName());
         basePage = new BasePage(APP_NAME);
-        Messages.addMessageTexts(basePage);
 
         config = new Configuration();
         config.configure(config.WEB_CALL);
         config.loadContextEnvironment();
         dataSourceMap = config.getDataSourceMap();
         consoleMap    = config.getConsoleMap();
+        Messages.addMessageTexts(basePage, config);
 
         ServletContext context = getServletContext();
         specPath = context.getInitParameter("specPath");
@@ -278,13 +279,13 @@ public class DbatServlet extends HttpServlet {
         } // isDbiv
         String connectionId = BasePage.getInputField(request, "conn"     , "");
         if (connectionId.length() > 0) {
-            config.addProperties(connectionId + ".properties");
+            // config.addProperties(connectionId + ".properties");
             config.setConnectionId(connectionId);
         } // with conn
         connectionId        = config.getConnectionId();
-        String console      = consoleMap.get(connectionId);
-        if (console == null) {
-            console         = config.CONSOLE_NONE;
+        String consoleAccess= consoleMap.get(connectionId);
+        if (consoleAccess == null) {
+            consoleAccess   = config.CONSOLE_NONE;
         }
         String encoding     = BasePage.getInputField(request, "enc"      , "UTF-8"   );
         int    fetchLimit   = BasePage.getInputField(request, "fetch"    , 0x7fffffff); // "unlimited"
@@ -420,7 +421,7 @@ public class DbatServlet extends HttpServlet {
         } else if (view.equals("con2")) { // View "con2" is for the result of the SQL console
             if (consoleMap.size() <= 0) { // not any connection allowed
                 basePage.writeMessage(request, response, language, new String[] { "410" });
-            } else if (console.equals(Configuration.CONSOLE_NONE)) {
+            } else if (consoleAccess.equals(Configuration.CONSOLE_NONE)) {
                 basePage.writeMessage(request, response, language, new String[] { "411", connectionId });
                         // Execution of SQL instructions for DB connection <em>{parm}</em> is not allowed."
             } else { // CONSOLE_SELECT || CONSOLE_UPDATE
@@ -441,7 +442,7 @@ public class DbatServlet extends HttpServlet {
                 config.setLanguage(language);
                 config.setFetchLimit(fetchLimit);
                 config.setTableSerializer(tbSerializer);
-                SQLAction sqlAction  = new SQLAction(config, console); // possibly readonly if in SQL console window
+                SQLAction sqlAction  = new SQLAction(config, consoleAccess); // possibly readonly if in SQL console window
                 TableMetaData tbMetaData = new TableMetaData(config);
                 tbMetaData.setFillState(1);
                 tbSerializer.writeStart(new String[] // this may throw an exception "could not compile stylesheet"
@@ -473,7 +474,7 @@ public class DbatServlet extends HttpServlet {
 
         // now the views for the auxiliary pages
         } else if (view.equals("help")) {
-            (new HelpPage       ()).showHelp    (request, response, basePage, language, tableFactory);
+            (new HelpPage       ()).showHelp    (request, response, basePage, language, config, tableFactory);
         } else if (view.equals("license")
                 || view.equals("manifest")
                 || view.equals("notice")

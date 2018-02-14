@@ -840,13 +840,13 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     private void saveConnectionAttribute(Attributes attrs, String attrName) {
         String connectionId = attrs.getValue(attrName);
         if (connectionId != null) {
-            config.addProperties(connectionId + ".properties");
+            // config.addProperties(connectionId + ".properties");
             config.setConnectionId(connectionId);
         } else {
             Object obj = parameterMap.get("conn");
             if (obj != null) {
                 connectionId = ((String[]) obj)[0]; // override it from the HttpRequest
-                config.addProperties(connectionId + ".properties");
+                // config.addProperties(connectionId + ".properties");
                 config.setConnectionId(connectionId);
                 setParameter("conn", connectionId); // store it in links and subsequent requests
             } else { // &conn= not set in HttpRequest

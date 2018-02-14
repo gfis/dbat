@@ -49,4 +49,5 @@ Formats de sortie inclus (-m):
   echo      Echo SQL
   sqlj      Générateur pour SQLJ
   probe     Probe SQL
+Adresse email: punctum@punctum.com
 

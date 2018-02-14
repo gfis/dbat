@@ -658,8 +658,7 @@ public class Dbat implements Serializable {
                 default:
                 case '?':
                 case 'h':
-                    // Messages.usage(config.getLanguage());
-                    System.out.println(Messages.getHelpText(config.getLanguage(), tableFactory));
+                    System.out.println(Messages.getHelpText(config.getLanguage(), config, tableFactory));
                     break;
                 case 'n':
                     sqlAction.setWithHeaders(false);

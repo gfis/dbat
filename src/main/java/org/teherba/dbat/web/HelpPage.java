@@ -24,6 +24,7 @@
  * limitations under the License.
  */
 package org.teherba.dbat.web;
+import  org.teherba.dbat.Configuration;
 import  org.teherba.dbat.web.Messages;
 import  org.teherba.dbat.format.TableFactory;
 import  org.teherba.common.web.BasePage;
@@ -55,12 +56,14 @@ public class HelpPage {
      *  @param response response with writer
      *  @param basePage refers to common web methods and messages
      *  @param language 2-letter code en, de etc.
+     *  @param config all configuration parameters
      *  @param tableFactory factory for table serializers
      *  @throws IOException if an IO error occurs
      */
     public void showHelp(HttpServletRequest request, HttpServletResponse response
             , BasePage basePage
             , String language
+            , Configuration config
             , TableFactory tableFactory
             ) throws IOException {
         if (true) { // try {
@@ -88,7 +91,7 @@ public class HelpPage {
             }
             out.write("</h3>\n");
             out.write("<pre>\n");
-            out.write(Messages.getHelpText(language, tableFactory));
+            out.write(Messages.getHelpText(language, config, tableFactory));
             out.write("\n</pre>\n");
 
             out.write("<p><a href=\"servlet?view=more&lang=" + language + "\">");

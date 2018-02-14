@@ -15,5 +15,5 @@
 <h3><a title="main" href="index.html">Dbat</a>-Meldung 301: Die Spezifikationsdatei <em>test/redir3</em> wurde nach <em><a href="/dbat/servlet?spec=test/selec01">/dbat/servlet?spec=test/selec01</a></em> verschoben.<br />Bitte &auml;ndern Sie Ihre Favoriten/Lesezeichen.<br />Sie werden in 3 s auf die neue Seite umgelenkt.</h3>
 <!-- language="de", features="quest" -->
 <p><span style="font-size:small">
-Fragen, Hinweise: EMail an  <a href="mailto:punctum@punctum.com?&subject=Dbat">Dr. Georg Fischer</a></span></p>
+Fragen, Hinweise: EMail an  <a href="mailto:Dr.Georg.Fischer@gmail.com?&subject=Dbat">Dr.Georg.Fischer@gmail.com</a></span></p>
 </body></html>

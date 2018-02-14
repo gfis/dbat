@@ -49,4 +49,5 @@ Implemented output formats (-m):
   echo      Echo SQL
   sqlj      Generate SQLJ
   probe     Probe SQL
+Email address: punctum@punctum.com
 

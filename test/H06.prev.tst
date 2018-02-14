@@ -48,4 +48,5 @@ Implementierte Ausgabeformate (-m):
   echo      Echo SQL
   sqlj      SQLJ-Generator
   probe     SQL-Syntaxtest
+Email-Adresse: punctum@punctum.com
 

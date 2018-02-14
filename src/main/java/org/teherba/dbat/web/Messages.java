@@ -1,5 +1,6 @@
 /*  Messages.java - Static help texts and other language specific messages for Dbat. äöüÄÖÜ
  *  @(#) $Id$ 
+ *  2018-02-13: emailAddress from Configuration
  *  2018-01-11: property "console=none|select|update"
  *  2017-05-27: javadoc
  *  2017-02-11: adapted to www.teherba.org/dbat
@@ -36,6 +37,7 @@
  * limitations under the License.
  */
 package org.teherba.dbat.web;
+import  org.teherba.dbat.Configuration;
 import  org.teherba.dbat.format.BaseTable;
 import  org.teherba.dbat.format.TableFactory;
 import  org.teherba.common.web.BasePage;
@@ -64,6 +66,9 @@ import  org.xml.sax.helpers.AttributesImpl;
 public class Messages implements Serializable {
     public final static String CVSID = "@(#) $Id$";
 
+	/** EMail address for meta pages */
+	private static String emailAddress = "punctum@punctum.com";
+
     /** No-args Constructor
      */
     public Messages() {
@@ -72,14 +77,15 @@ public class Messages implements Serializable {
     /** Sets the application-specific error message texts
      *  @param basePage reference to the hash for message texts
      */
-    public static void addMessageTexts(BasePage basePage) {
+    public static void addMessageTexts(BasePage basePage, Configuration config) {
         String appLink = "<a title=\"main\" href=\"index.html\">" + basePage.getAppName() + "</a>";
         //--------
+        emailAddress = config.getEmailAddress();
         basePage.add("en", "001", appLink);
         basePage.add("en", "002"
-                , " <a href=\"mailto:punctum@punctum.com"
+                , " <a href=\"mailto:" + emailAddress
                 + "?&subject=" + basePage.getAppName()
-                + "\">Dr. Georg Fischer</a>"
+                + "\">" + emailAddress /* .substring(0, emailAddress.indexOf("@")) */ + "</a>"
                 );
         //--------
         String laux = basePage.LANG_AUX;  // pseudo language code for links to auxiliary information
@@ -300,12 +306,13 @@ public class Messages implements Serializable {
                 ;
     /** Get the tools version, the explanation of the options and
      *  the available JDBC drivers.
-     *  @param language one of "en", "de"
+     *  @param language 2-letter code en, de, fre
+     *  @param config all configuration properties
      *  @param tableFactory factory for table serializers
      *  @throws IOException if an IO error occurs
      *  @return a block of plain text
      */
-    public static String getHelpText(String language, TableFactory tableFactory) throws IOException {
+    public static String getHelpText(String language, Configuration config, TableFactory tableFactory) throws IOException {
         StringBuffer help = new StringBuffer(2048);
         final String SPACE2 = "  ";
         help.append("Dbat " + (new MetaInfPage()).getVersionString(tableFactory, "dbat") 
@@ -322,7 +329,7 @@ public class Messages implements Serializable {
         try { Class.forName("com.mysql.jdbc.Driver"     ).newInstance(); } catch (Exception exc) { }
         try { Class.forName("org.sqlite.JDBC"           ).newInstance(); } catch (Exception exc) { }
         try {
-            Enumeration/*<1.5*/<Driver>/*1.5>*/ drivers = DriverManager.getDrivers();
+            Enumeration<Driver> drivers = DriverManager.getDrivers();
             while (drivers.hasMoreElements()) {
                 Driver driver = drivers.nextElement();
                 String driverName = driver.toString();
@@ -341,6 +348,7 @@ public class Messages implements Serializable {
         } catch (Exception exc) {
             // log.error(exc.getMessage(), exc);
         }
+        
         if (false) {
         } else if (language.startsWith("de")) {
             help.append("Implementierte Ausgabeformate (-m):\n");
@@ -350,6 +358,17 @@ public class Messages implements Serializable {
             help.append("Implemented output formats (-m):\n");
         }
         help.append(tableFactory.getHelpList(language));
+        
+        if (false) {
+        } else if (language.startsWith("de")) {
+            help.append("Email-Adresse: ");
+        } else if (language.startsWith("fr")) {
+            help.append("Adresse email: ");
+        } else {
+            help.append("Email address: ");
+        }
+        help.append(config.getEmailAddress());
+        help.append("\n");
         return help.toString();
     } // getHelpText
 

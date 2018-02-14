@@ -1,5 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$ 2016-04-16 14:43:35
+ *  2018-02-13: s|getEmailAddress
  *  2018-01-19: loadContextEnvironment()
  *  2018-01-11: toString(); getConsoleMap
  *  2017-05-27: javadoc 1.8
@@ -50,6 +51,7 @@ import  javax.naming.InitialContext;
 import  java.net.URL;
 import  java.sql.Connection;
 import  java.sql.DriverManager;
+import  java.util.Enumeration;
 import  java.util.HashMap;
 import  java.util.Iterator;
 import  java.util.LinkedHashMap;
@@ -271,7 +273,7 @@ public class Configuration implements Serializable {
                 dataSourceMap.put(connectionId, (DataSource) envContext.lookup("jdbc/" + dsName));
                 ipair ++;
             } // while ipair
-            envContext.close();
+            // envContext.close(); - caused an exception: context is not writeable
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
@@ -340,6 +342,21 @@ public class Configuration implements Serializable {
         this.driverURL = urn;
     } // setDriverURL
     //--------
+    /** which emailAddress to use on meta pages */
+    private String emailAddress;
+    /** Gets the emailAddress
+     *  @return for example "Dr.Georg.Fischer@gmail.com" 
+     */
+    public String getEmailAddress() {
+        return emailAddress;
+    } // getEmailAddress
+    /** Sets the emailAddress for meta pages
+     *  @param email a valid email address
+     */
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    } // setEmailAddress
+    //--------
     /** which encodings to use for source [0] and target [1]: ISO-8859-1 (default), UTF-8 and so on */
     private String[] encoding;
     /** Gets the encoding for source or target
@@ -349,7 +366,6 @@ public class Configuration implements Serializable {
     public String getEncoding(int side) {
         return encoding[side];
     } // getEncoding
-
     /** Sets the encoding
      *  @param side 0 = source, 1 = target
      *  @param enc encoding (ISO-8859-1, UTF-8 ...)
@@ -711,32 +727,37 @@ public class Configuration implements Serializable {
     } // setZipFileName
     //--------
 
-    /** Shows all properties
+    /** Shows all configuration properties
+     *  @return a printable list of parameters and their values
      */
     public String toString() {
         StringBuffer dsList = new StringBuffer(64);
+        String key = null;
         Iterator<String> diter = dataSourceMap.keySet().iterator();
         while (diter.hasNext()) {
             dsList.append(",");
-            dsList.append(diter.next());
+            key = diter.next();
+            dsList.append(key);
         } // while diter
-    /*
         StringBuffer conList = new StringBuffer(64);
         Iterator<String> citer = consoleMap.keySet().iterator();
         while (citer.hasNext()) {
             conList.append(",");
-            conList.append(citer.next());
+            key = citer.next();
+            conList.append(key);
+            conList.append(":");
+            conList.append(consoleMap.get(key));
         } // while citer
-    */
         String result = "";
         result += "autoCommit="         + hasAutoCommit()           + "\n";
         result += "callType="           + getCallType()             + "\n";
         result += "connectionId="       + getConnectionId()         + "\n";
-    //  result += "consoleMap="         + conList.toString().substring(1) + "\n";
+        result += "consoleMap="         + conList.toString().substring(1) + "\n";
         result += "decimalSeparator="   + getDecimalSeparator()     + "\n";
         result += "defaultSchema="      + getDefaultSchema()        + "\n";
         result += "driverURL="          + getDriverURL()            + "\n";
         result += "dataSourceMap="      + dsList.toString().substring(1) + "\n";
+        result += "emailAddress="       + getEmailAddress()         + "\n";
         result += "encoding="           + getEncoding(0) + "," + getEncoding(1) + "\n";
         result += "fetchLimit="         + getFetchLimit()           + "\n";
         result += "htmlMimeType="       + getHtmlMimeType()         + "\n";
@@ -757,7 +778,27 @@ public class Configuration implements Serializable {
         result += "verbose="            + getVerbose()              + "\n";
         result += "withHeaders="        + isWithHeaders()           + "\n";
         result += "zipFileName="        + getZipFileName()          + "\n";
-                ;
+        if (true) { // debug
+            try {
+                ClassLoader cloader = this.getClass().getClassLoader();
+                Enumeration<URL> resEnum = cloader.getResources("dbat.properties");
+                boolean busy = true;
+                while (busy && resEnum.hasMoreElements()) {
+                    URL url = resEnum.nextElement();
+                    String urlst = url.toString();
+                /*
+                    if (    urlst.indexOf(appName + ".jar!/")            >= 0 ||
+                            urlst.indexOf(appName + "/WEB-INF/classes/") >= 0) {
+                        busy = false;
+                    } else { // ignore appl-core.jar
+                    }
+                */
+                    result += "properties=" + urlst;
+                } // while resEnum
+            } catch (Exception exc) {
+                log.error(exc.getMessage(), exc);
+            }
+        } // debug
         return result;
     } // toString
 
@@ -791,6 +832,7 @@ public class Configuration implements Serializable {
         setDefaultSchema("");
         setNamespacePrefix("");
         setWithHeaders  (true);
+        setEmailAddress ("punctum@punctum.com");
         setFetchLimit   (1947062906); // very high
         encoding        = new String[2]; // [0] = input, [1] = output
         setEncoding     (0, "ISO-8859-1"); // -e default for input and output
@@ -831,24 +873,24 @@ public class Configuration implements Serializable {
      */
     public void evaluateProperties() {
         // (3) evaluate non-JDBC oriented properties
+        setDecimalSeparator(props.getProperty("decimal"  , "."  ).trim());
+        setDefaultSchema   (props.getProperty("schema"   , ""   ).trim());
+        setEmailAddress    (props.getProperty("email"    , "punctum@punctum.com").trim());
         String prop = null;
         try {
-            prop =       props.getProperty("commit"   , "250").trim();
+            prop =          props.getProperty("commit"   , "250").trim();
             setMaxCommit(Integer.parseInt(prop));
         } catch (Exception exc) {
             setMaxCommit(getFetchLimit());
         }
-        setConsole         (props.getProperty("console"  , "none").trim());
-        setDecimalSeparator(props.getProperty("decimal"  , "."   ).trim());
         try {
-            prop =       props.getProperty("null"     , "1"  ).trim();
+            prop =          props.getProperty("null"     , "1"  ).trim();
             setNullText(Integer.parseInt(prop));
         } catch (Exception exc) {
             setNullText(1);
         }
-        setDefaultSchema   (props.getProperty("schema"   , ""    ).trim());
         try {
-            prop =       props.getProperty("trim"     , "2"  ).trim();
+            prop =          props.getProperty("trim"     , "2"  ).trim();
             setTrimSides(Integer.parseInt(prop));
         } catch (Exception exc) {
             setTrimSides(2);
@@ -857,6 +899,7 @@ public class Configuration implements Serializable {
 
     /** Sets a single property in this configuration,
      *  and evaluates it.
+     *  Used only in <em>Dbat</em>.
      *  @param name name of the property
      *  @param value value of property <em>name</em>
      */
@@ -896,7 +939,9 @@ public class Configuration implements Serializable {
         InputStream propsStream = null;
         // (1) try to get properties from the classpath (jar-file)
         try {
-            String path = getCallType() == CLI_CALL ? "" : "/WEB-INF/classes/";
+            String path = getCallType() == CLI_CALL ? "" : "../../../";
+                    // move upwards: WEB-INF/classes/org/teherba/dbat/Configuration.class -> WEB-INF/classes/dbat.properties
+            path = "";
             propsStream = Configuration.class.getClassLoader().getResourceAsStream(path + propsName);
             if (propsStream != null) {
                 props.load(propsStream);
