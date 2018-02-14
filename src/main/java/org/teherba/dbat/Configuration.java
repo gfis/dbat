@@ -205,90 +205,16 @@ public class Configuration implements Serializable {
     /** Maps connection identifiers (short database instance ids) to {@link DataSource Datasources} */
     private LinkedHashMap<String, DataSource> dataSourceMap;
 
-    /** Gets environment variables from the servlet context (defined inf file etc/META_INF/context.xml).
-     *  <ul>
-     *  <li>java:comp/env/console</li>
-     *  <li>java:comp/env/dataSources</li>
-     *  </ul>
-     */
-    public void loadContextEnvironment() {
-        try {
-            Context envContext = (Context) new InitialContext().lookup("java:comp/env"); // get the environment naming context
-            //-------- consoleAccess per connId
-            String consList = ((String) envContext.lookup("console")).replaceAll("[ \\,\\;]+", ",");
-            String[] 
-            pairs = consList.split("\\,");
-            int 
-            ipair = 0;
-            while (ipair < pairs.length) {
-                String[] parts = pairs[ipair].split("\\:");
-                String connectionId = null;
-                if (false) {
-                } else if (parts.length == 0) {
-                    // ignore
-                } else if (parts.length == 1) { // connId, but no behaviour specified, defaults to CONSOLE_SELECT
-                    connectionId = parts[0];
-                    consoleMap.put(connectionId, Configuration.CONSOLE_SELECT);
-                } else if (parts.length >= 2) { // explicit behaviour (-> CONSOLE_SELECT or CONSOLE_UPDATE)
-                    connectionId = parts[0];
-                    setConsole(parts[1]);
-                    consoleMap.put(connectionId, getConsole());
-                }
-                ipair ++;
-            } // while ipair
-            
-            //-------- dataSources per connId
-            String dsList = ((String) envContext.lookup("dataSources")).replaceAll("[ \\,\\;]+", ",");
-            // log.info(" dsList=\"" + dsList + "\"");
-
-            pairs = dsList.split("\\,");
-            ipair = 0;
-            while (ipair < pairs.length) {
-                String[] parts = pairs[ipair].split("\\:");
-                String connectionId = "mysql";
-                String dsName       = connectionId;
-                if (false) {
-                } else if (parts.length == 0) {
-                    // ignore
-                } else if (parts.length == 1) { // direct connectionId, e.g. "worddb"
-                    connectionId = parts[0];
-                    dsName       = connectionId;
-                    if (dsName.length() > 6) { // unusual, external DS names - use heuristics
-                        if (false) {
-                        } else if (dsName.indexOf("COSM") >= 0) {
-                            connectionId = "cosm";
-                        } else if (dsName.indexOf("DB2T") >= 0) {
-                            connectionId = "db2t";
-                        } else if (dsName.indexOf("DB2")  >= 0) {
-                            connectionId = "db2a";
-                        }
-                    } // if heuristics
-                } else if (parts.length == 2) { // explicit renaming of connectionId, e.g. "worddb:DBAT_Word_DataSource
-                    connectionId = parts[0];
-                    dsName       = parts[1];
-                } else { // more than one ":"
-                    // ignore
-                }
-                log.info("connectionId=\"" + connectionId + "\" mapped to \"" + dsName + "\"");
-                dataSourceMap.put(connectionId, (DataSource) envContext.lookup("jdbc/" + dsName));
-                ipair ++;
-            } // while ipair
-            // envContext.close(); - caused an exception: context is not writeable
-        } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-        }
-    } // loadContextEnvironment
-    
-    /** Determine the mapping from connectionIds to CONSOLE_* properties 
+    /** Determine the mapping from connectionIds to CONSOLE_* properties
      *  from the environment variable "java:comp/env/console" set in <em>dbat/etc/META-INF/context.xml</em>
-     *  @return Mapping from short strings to constants "SELECT|UPDATE"; 
+     *  @return Mapping from short strings to constants "SELECT|UPDATE";
      *  connections with "none" are not stored
      */
     public LinkedHashMap<String, String> getConsoleMap() {
         return consoleMap;
     } // getConsoleMap
 
-    /** Determine the mapping from connectionIds to {@link DataSource}s 
+    /** Determine the mapping from connectionIds to {@link DataSource}s
      *  from the environment variable "java:comp/env/dataSources" set in <em>dbat/etc/META-INF/context.xml</em>
      *  @return Mapping from short strings to data sources
      */
@@ -345,13 +271,13 @@ public class Configuration implements Serializable {
     /** which emailAddress to use on meta pages */
     private String emailAddress;
     /** Gets the emailAddress
-     *  @return for example "Dr.Georg.Fischer@gmail.com" 
+     *  @return for example "Dr.Georg.Fischer@gmail.com"
      */
     public String getEmailAddress() {
         return emailAddress;
     } // getEmailAddress
     /** Sets the emailAddress for meta pages
-     *  @param email a valid email address
+     *  @param emailAddress a valid email address
      */
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
@@ -966,7 +892,72 @@ public class Configuration implements Serializable {
         if (driverURL != null) {
             setRdbmsId(driverURL);
         }
+        // evaluateProperties();
     } // addProperties
+
+    /** Gets environment variables from the servlet context (defined inf file etc/META_INF/context.xml).
+     *  <ul>
+     *  <li>java:comp/env/console</li>
+     *  <li>java:comp/env/dataSources</li>
+     *  </ul>
+     */
+    public void loadContextEnvironment() {
+        try {
+            Context envContext = (Context) new InitialContext().lookup("java:comp/env"); // get the environment naming context
+            //-------- consoleAccess per connId
+            String consList = ((String) envContext.lookup("console")).replaceAll("[ \\,\\;]+", ",");
+            String[]
+            pairs = consList.split("\\,");
+            int
+            ipair = 0;
+            while (ipair < pairs.length) {
+                String[] parts = pairs[ipair].split("\\:");
+                String connectionId = null;
+                if (false) {
+                } else if (parts.length == 0) {
+                    // ignore
+                } else if (parts.length == 1) { // connId, but no behaviour specified, defaults to CONSOLE_SELECT
+                    connectionId = parts[0];
+                    consoleMap.put(connectionId, Configuration.CONSOLE_SELECT);
+                } else if (parts.length >= 2) { // explicit behaviour (-> CONSOLE_SELECT or CONSOLE_UPDATE)
+                    connectionId = parts[0];
+                    setConsole(parts[1]);
+                    consoleMap.put(connectionId, getConsole());
+                }
+                ipair ++;
+            } // while ipair
+
+            //-------- dataSources per connId
+            String dsList = ((String) envContext.lookup("dataSources")).replaceAll("[ \\,\\;]+", ",");
+            // log.info(" dsList=\"" + dsList + "\"");
+
+            pairs = dsList.split("\\,");
+            ipair = 0;
+            while (ipair < pairs.length) {
+                String[] parts = pairs[ipair].split("\\:");
+                String connectionId = "mysql";
+                String dsName       = connectionId;
+                if (false) {
+                } else if (parts.length == 0) {
+                    // ignore
+                } else if (parts.length == 1) { // direct connectionId, e.g. "worddb"
+                    connectionId = parts[0];
+                    dsName       = connectionId;
+                } else if (parts.length == 2) { // explicit renaming of connectionId, e.g. "worddb:DBAT_Word_DataSource
+                    connectionId = parts[0];
+                    dsName       = parts[1];
+                } else { // more than one ":"
+                    // ignore
+                }
+                log.info("connectionId=\"" + connectionId + "\" mapped to \"" + dsName + "\"");
+                dataSourceMap.put(connectionId, (DataSource) envContext.lookup("jdbc/" + dsName));
+                ipair ++;
+            } // while ipair
+            // envContext.close(); - caused an exception: context is not writeable
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+    } // loadContextEnvironment
 
 /* BasicDataSourceFactory contains:
    52       private final static String PROP_DRIVERCLASSNAME    = "driverClassName";
