@@ -77,6 +77,7 @@ import  java.nio.channels.Channels;
 import  java.nio.channels.ReadableByteChannel;
 import  java.nio.channels.WritableByteChannel;
 import  java.util.LinkedHashMap;
+import  java.util.Locale;
 import  java.util.regex.Pattern;
 import  javax.sql.DataSource;
 import  javax.xml.parsers.SAXParser;
@@ -84,6 +85,7 @@ import  javax.xml.parsers.SAXParserFactory;
 import  org.xml.sax.InputSource;
 import  org.xml.sax.SAXParseException;
 import  org.xml.sax.XMLReader;
+// import  org.xml.sax.helpers.XMLReaderAdapter;
 import  org.apache.log4j.Logger;
 
 /** Database application tool for JDBC compatible relational databases.
@@ -147,6 +149,9 @@ public class Dbat implements Serializable {
     /** User defineable properties and the connection for the JDBC database */
     private Configuration config;
 
+    /** Language for message output */
+    private String language;
+    
     /** Get the configuration (for example in order to open a DB connection)
      *  @return configuration
      */
@@ -165,6 +170,7 @@ public class Dbat implements Serializable {
         config.setDefaultSchema ("");
         verbose                 = 0;            // -v
         tableFactory            = new TableFactory();
+        language                = config.getLanguage(); // from config only at the very beginning
     } // initialize
 
     /** Terminates the processing of SQL statements,
@@ -207,43 +213,52 @@ public class Dbat implements Serializable {
      *  @param charReader reader for input, already opened
      *  @param handler SAX handler for Dbat specifications, must be already configured
      *  @param tbSerializer serializer for output format
+     *  @param specFileName name of the specification file (for error message)
+     *  @param language language for error messages, 2-letter code en, de, fr
      *  @throws Exception for any error
      */
-    public void parseXML(Reader charReader, SpecificationHandler handler, BaseTable tbSerializer)
+    public void parseXML(Reader charReader, SpecificationHandler handler
+            , BaseTable tbSerializer
+            , String specFileName
+            , String language)
             throws Exception {
+        Locale oldLocale = Locale.getDefault(); // push
         try {
             SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
             XMLReader xmlReader = saxParser.getXMLReader();
             xmlReader.setFeature("http://xml.org/sax/features/namespaces"           , true);
             xmlReader.setFeature("http://xml.org/sax/features/validation"           , true);
-            // xmlReader.setFeature("http://xml.org/sax/features/use-entity-resolver2" , true);
+            xmlReader.setFeature("http://xml.org/sax/features/use-entity-resolver2" , true);
             xmlReader.setEntityResolver(handler.getEntityResolver());
-            try { // protect against XML errors
-                saxParser.parse(new InputSource(charReader), handler);
-            } catch (SAXParseException exc) { // XML errors
-                tbSerializer.writeMarkup("<h3 class=\"error\">XML SAX parsing error: "
-                        + exc.getMessage()
-                        + " in Dbat specification, line " + exc.getLineNumber()
-                        + ", column " + exc.getColumnNumber()
-                        + ", cause: " + exc.getCause()
-                        +  "</h3>");
-                // exc.printStackTrace();
-                tbSerializer.writeEnd();
-                throw exc;
-            } catch (Exception exc) { // XML errors
-                tbSerializer.writeMarkup("<h3 class=\"error\">XML processing error: "
-                        + exc.getMessage()
-                //      + " in Dbat specification, line " + exc.getLineNumber()
-                //      + ", column " + exc.getColumnNumber()
-                        + ", cause: " + exc.getCause()
-                        +  "</h3>");
-                // exc.printStackTrace();
-                tbSerializer.writeEnd();
-                throw exc;
-            } // catch XML errors
+            Locale.setDefault  (new Locale(language));
+            saxParser.parse(new InputSource(charReader), handler);
+        } catch (SAXParseException exc) { // SAX parsing errors
+            tbSerializer.writeMarkup("<h3 class=\"error\">XML SAX parsing error: "
+                    + exc.getMessage()
+                    + " in Dbat specification <em>"
+                    + specFileName
+                    + "</em>, line " + exc.getLineNumber()
+                    + ", column " + exc.getColumnNumber()
+                    + ", cause: " + exc.getCause()
+                    +  "</h3>");
+            tbSerializer.writeEnd();
+            // throw exc;
+        } catch (Exception exc) { // any other errors
+            tbSerializer.writeMarkup("<h3 class=\"error\">XML processing error: "
+                    + exc.getMessage()
+                    + " in Dbat specification <em>"
+                    + specFileName
+                    + "</em>"
+                    + ", cause: " + exc.getCause()
+                    +  "</h3>");
+            exc.printStackTrace(tbSerializer.getCharWriter());
+            tbSerializer.writeEnd();
+            // throw exc;
+        } // catch XML errors
+        try {
+            Locale.setDefault(oldLocale); // pop
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
-            throw exc;
+            // ignore
         }
     } // parseXML
 
@@ -261,7 +276,7 @@ public class Dbat implements Serializable {
             handler.setSpecPaths("./", "./", specFileName);
             ReadableByteChannel channel = (new FileInputStream (specFileName)).getChannel();
             BufferedReader charReader = new BufferedReader(Channels.newReader(channel, config.getEncoding(0)));
-            parseXML(charReader, handler, config.getTableSerializer());
+            parseXML(charReader, handler, config.getTableSerializer(), specFileName, language);
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
@@ -406,6 +421,7 @@ public class Dbat implements Serializable {
                             config.getParameterMap().put(pkey, new String[] { pval } );
                             if (false) {
                             } else if (pkey.startsWith("lang")) {
+                                language = pval;
                                 config.setLanguage(pval);
                             } else if (false) { // ... more settings?
                             }
@@ -616,7 +632,7 @@ public class Dbat implements Serializable {
                     && ! (tbSerializer instanceof TableGenerator)
                     && ! (mainAction == 'f' && isSourceType(".xml"))) {
                 tbSerializer.setParameterMap(config.getParameterMap());
-                String language = "en";
+                // String language = "en";
                 Object obj      = config.getParameterMap().get("lang");
                 if (obj != null) {
                     language    = ((String[]) obj)[0]; // override it from the HttpRequest
@@ -658,7 +674,7 @@ public class Dbat implements Serializable {
                 default:
                 case '?':
                 case 'h':
-                    System.out.println(Messages.getHelpText(config.getLanguage(), config, tableFactory));
+                    System.out.println(Messages.getHelpText(language, config, tableFactory));
                     break;
                 case 'n':
                     sqlAction.setWithHeaders(false);
@@ -683,7 +699,7 @@ public class Dbat implements Serializable {
             } // switch mainAction
 
             if (verbose > 0) { // System.err is mapped to System.out in RegressionTester, do not move this code
-                System.err.println(Messages.getTimingMessage(config.getLanguage()
+                System.err.println(Messages.getTimingMessage(language
                         , startTime
                         , sqlAction.getInstructionSum()
                         , sqlAction.getManipulatedSum()

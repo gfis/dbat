@@ -1,6 +1,6 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
- *  2018-02-13: read etc/dbat.properties only
+ *  2018-02-13: read etc/dbat.properties only; lang and connId via session again
  *  2018-01-11: property "console=none|SELECT|UPDATE"; ConfigurationPage
  *  2017-06-17: StaticMirror
  *  2017-05-27: javadoc 1.8
@@ -81,6 +81,7 @@ import  javax.servlet.ServletException;
 import  javax.servlet.http.HttpServlet;
 import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;
+import  javax.servlet.http.HttpSession;
 import  javax.sql.DataSource;
 import  javax.xml.transform.sax.SAXResult;
 import  javax.xml.transform.sax.TransformerHandler;
@@ -192,8 +193,7 @@ public class DbatServlet extends HttpServlet {
             String mode, String specName, String encoding) {
         boolean result = false; // assume legible character response output
         String targetFileName = specName.replaceAll("/", ".");
-
-        if (true) { // append parameter values
+        if (true) { // append parameter values to Content-Disposition", "inline;filename="
             Map parameterMap = request.getParameterMap(); // do NOT! use <String, String[]>
             Iterator parmIter = parameterMap.keySet().iterator();
             StringBuffer buffer = new StringBuffer(256);
@@ -213,7 +213,7 @@ public class DbatServlet extends HttpServlet {
                 } // unknown
             } // while parmIter
             targetFileName += buffer.toString().replaceAll("[^a-zA-Z0-9.\\-]", "_");
-        } // append parameter values
+        } // append parameter values to Content-Disposition
 
         String mimeType = "";
         if (true) { // try {
@@ -268,7 +268,7 @@ public class DbatServlet extends HttpServlet {
         // config.configure(config.WEB_CALL, dataSourceMap); // why? because of withHeaders
         TableFactory tableFactory = new TableFactory();
         request.setCharacterEncoding("UTF-8");
-        // HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
 
         boolean isDbiv = false; // whether the input file is a Dbiv specification
         String specName     = BasePage.getInputField(request, "spec"     , "index")
@@ -291,7 +291,8 @@ public class DbatServlet extends HttpServlet {
         int    fetchLimit   = BasePage.getInputField(request, "fetch"    , 0x7fffffff); // "unlimited"
         String inputURI     = BasePage.getInputField(request, "uri"      , null      );
         String mode         = BasePage.getInputField(request, "mode"     , "html"    );
-        String language     = BasePage.getInputField(request, "lang"     , "en"      );
+        String language     = BasePage.getInputField(request, "lang"
+                            , basePage.getSessionAttribute(session, "lang", "en"));
         String separator    = BasePage.getInputField(request, "sep"      , ";"       );
         if (mode.compareToIgnoreCase("tsv") == 0) {
             separator   = "\t";
@@ -310,8 +311,8 @@ public class DbatServlet extends HttpServlet {
                 File specFile = new File(sourceFileName);
                 boolean found = specFile.exists();
                 if (! found) { // spec file not found
-                    // session.setAttribute("lang", language);
-                    // session.setAttribute("parm", specName);
+                    session.setAttribute("lang", language);
+                    session.setAttribute("spec", specName);
                     specFile = new File(specPath + specName + ".redir"); // try same name with ".redir"
                     if (specFile.exists()) { // 304 - redirection found
                         channel = (new FileInputStream (specFile)).getChannel();
@@ -382,7 +383,7 @@ public class DbatServlet extends HttpServlet {
                         channel = (new FileInputStream (specFile)).getChannel();
                         Reader charReader = new BufferedReader(Channels.newReader(channel, "UTF-8"));
                                 // assume all spec files in UTF-8 XML
-                        (new Dbat()).parseXML(charReader, handler, tbSerializer);
+                        (new Dbat()).parseXML(charReader, handler, tbSerializer, specName, language);
                     } else { // Dbiv XML syntax for interactive views
                         XtransFactory xtransFactory = new XtransFactory(); // knows XML only
                         BaseTransformer generator  = xtransFactory.getTransformer("xml");

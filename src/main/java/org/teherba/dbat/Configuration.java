@@ -449,17 +449,17 @@ public class Configuration implements Serializable {
     /** Language to be used for footer and messages */
     private String language;
     /** Gets the language (for messages)
-     *  @return iso 2 letter ISO country code ("en", "de")
+     *  @return 2 letter ISO country code ("en", "de")
      */
     public String getLanguage() {
         return language;
     } // getLanguage
     /** Sets the language (for message)
-     *  @param iso2 2 letter ISO country code ("en", "de")
+     *  @param language 2 letter ISO country code ("en", "de")
      */
-    public void setLanguage(String iso2) {
-        language = iso2;
-        Locale.setDefault(new Locale(iso2));
+    public void setLanguage(String language) {
+        this.language = language;
+        Locale.setDefault(new Locale(language));
     } // setLanguage
     //--------
     /** when processing SQL by JDBC */

@@ -1,5 +1,6 @@
 /*  Transforms (generates and serializes) XML files; must be UTF-(: äöüÄÖÜß
     @(#) $Id$
+    2018-02-14: ignore comment output in internal dbiv XML
  *  2017-05-27: javadoc 1.8
     2016-10-14: ignore external DTDs with DummyEntityResolver
     2007-03-29, Georg Fischer: copied from SwiftTransformer
@@ -242,8 +243,12 @@ public class XMLTransformer extends CharTransformer {
             if (handler != null) {
                 getLexicalHandler().comment(ch, start, len);
             } else {
-                // log.error("comment: " + ch + ", start=" + start + ", len=" + len);
-                charWriter.print("<!--" + new String(ch, start, len) + "-->");
+                if (charWriter == null) {
+                     // log.error("null charWriter in comment: " + new String(ch, start, len));
+                     // ignore, it would be for th einternal XML in dbiv expansion
+                } else {
+                    charWriter.print("<!--" + new String(ch, start, len) + "-->");
+                }
             }
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);

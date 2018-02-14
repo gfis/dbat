@@ -66,8 +66,8 @@ import  org.xml.sax.helpers.AttributesImpl;
 public class Messages implements Serializable {
     public final static String CVSID = "@(#) $Id$";
 
-	/** EMail address for meta pages */
-	private static String emailAddress = "punctum@punctum.com";
+    /** EMail address for meta pages */
+    private static String emailAddress = "punctum@punctum.com";
 
     /** No-args Constructor
      */
