@@ -11,3 +11,6 @@ The tool can be called from Java programs for a quick and simple query from a da
 
 The servlet bundled with this application reads and interpretes XML specifications of queries and generates a HTML form that contains the result table. There are elements for parameter input fields, and for the insert/delete/update features of a simple web-based form application. 
  
+The Dbat wiki has been moved over to http://www.teherba.org/dbat www.teherba.org/dbat. 
+
+Please write to dr.georg.fischer@gmail.com if you desire write access there.
