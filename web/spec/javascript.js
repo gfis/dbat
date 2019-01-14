@@ -1,5 +1,6 @@
 /*  Common JavaScript functions
     @(#) $Id$
+    2019-01-03: generalLink(url, show, target)
     2016-04-30: mailToLink with up to 3 parameters
     2016-02-09: code.jquery.com commented out; telLink
     2015-04-25: loadPage
@@ -38,6 +39,24 @@ function facebookLink(fbName) { // surround a Facebook name by an <a href="https
     } // non-empty
 } // facebookLink
 
+function url(link, show, target) { // surround an URL by an <a href="..."> tag
+    if (show   === undefined || show.length   == 0) {
+        show   = link;
+    }
+    if (link   !== undefined && link.length     > 0) { // non-empty
+        document.write('<a href="' + link);
+        if (false) {
+        } else if (target === undefined) {
+            document.write('" target="_blank');
+        } else if (target.length > 0) {
+            document.write('" target="' + target);
+        } else { // length == 0
+            // ignore, "" -> no target
+        }
+        document.write('">' + show + '</a>');
+    } // non-empty
+} // generalLink
+
 function sep1000(decNum) { // insert thousand's separators in a decimal number
     var num = new String(decNum);
     var th3 = 6;
@@ -46,8 +65,8 @@ function sep1000(decNum) { // insert thousand's separators in a decimal number
     //       >>>>>> 
     // 123 456 789.01
     while (num.length > th3) {
-    	num = num.substring(0, num.length - th3) + ' ' + num.substring(num.length - th3, num.length);
-    	th3 += 4;
+        num = num.substring(0, num.length - th3) + ' ' + num.substring(num.length - th3, num.length);
+        th3 += 4;
     } // while th3
     document.write(num);
 } // sep1000

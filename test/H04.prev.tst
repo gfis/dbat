@@ -65,11 +65,11 @@ Implementierte Ausgabeformate (-m):
   echo      Echo SQL
   sqlj      SQLJ-Generator
   probe     SQL-Syntaxtest
-Email-Adresse: Dr.Georg.Fischer@gmail.com
+Email-Adresse: punctum@punctum.com
 
 </pre>
 <p><a href="servlet?view=more&lang=de">mehr ...</a></p>
 <!-- language="de", features="quest" -->
 <p><span style="font-size:small">
-Fragen, Hinweise: EMail an  <a href="mailto:Dr.Georg.Fischer@gmail.com?&subject=Dbat">Dr.Georg.Fischer@gmail.com</a></span></p>
+Fragen, Hinweise: EMail an  <a href="mailto:punctum@punctum.com?&subject=Dbat">punctum@punctum.com</a></span></p>
 </body></html>

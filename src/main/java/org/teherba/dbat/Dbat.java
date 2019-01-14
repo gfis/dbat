@@ -1,5 +1,6 @@
 /*  Dbat.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2019-01-14: connId.toLowerCase()
  *  2018-01-19: unused code removed
  *  2017-05-27: javadoc 1.8
  *  2016-09-16: -p lang=de sets Locale for SAX messages
@@ -328,7 +329,9 @@ public class Dbat implements Serializable {
                     } else // important, and -call must be tested first
                     if (opt.startsWith("c")) { // explicit connection id
                         if (iarg < args.length) {
-                            String connId = args[iarg ++];
+                            String connId = args[iarg ++]
+                                .toLowerCase() // <- G.B. 2019-01-02 
+                                ; 
                             if (! connId.endsWith(".properties")) {
                                 propFileName = connId + ".properties";
                             } else {

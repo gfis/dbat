@@ -66,11 +66,11 @@ Implemented output formats (-m):
   echo      Echo SQL
   sqlj      Generate SQLJ
   probe     Probe SQL
-Email address: Dr.Georg.Fischer@gmail.com
+Email address: punctum@punctum.com
 
 </pre>
 <p><a href="servlet?view=more&lang=en">more ...</a></p>
 <!-- language="en", features="quest" -->
 <p><span style="font-size:small">
-Questions, remarks: email to  <a href="mailto:Dr.Georg.Fischer@gmail.com?&subject=Dbat">Dr.Georg.Fischer@gmail.com</a></span></p>
+Questions, remarks: email to  <a href="mailto:punctum@punctum.com?&subject=Dbat">punctum@punctum.com</a></span></p>
 </body></html>

@@ -97,5 +97,5 @@ Language</span>
 </form>
 <!-- language="en", features="quest" -->
 <p><span style="font-size:small">
-Questions, remarks: email to  <a href="mailto:Dr.Georg.Fischer@gmail.com?&subject=Dbat">Dr.Georg.Fischer@gmail.com</a></span></p>
+Questions, remarks: email to  <a href="mailto:punctum@punctum.com?&subject=Dbat">punctum@punctum.com</a></span></p>
 </body></html>

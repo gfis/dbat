@@ -88,5 +88,5 @@ SQL
 <p>
 Zurück zur <a title="main" href="index.html">Dbat</a>-Startseite</p>
 <p><span style="font-size:small">
-Fragen, Hinweise: EMail an  <a href="mailto:Dr.Georg.Fischer@gmail.com?&subject=Dbat">Dr.Georg.Fischer@gmail.com</a></span></p>
+Fragen, Hinweise: EMail an  <a href="mailto:punctum@punctum.com?&subject=Dbat">punctum@punctum.com</a></span></p>
 </body></html>

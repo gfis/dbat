@@ -47,5 +47,5 @@ des éléments XML <tt>&lt;input&gt;, &lt;select&gt;</tt> and <tt>&lt;textarea&g
 spécifications de <a href="index.html">Dbat</a>.
 <!-- language="fr", features="quest" -->
 <p><span style="font-size:small">
-Questions, remarques: e-mail à  <a href="mailto:Dr.Georg.Fischer@gmail.com?&subject=Dbat">Dr.Georg.Fischer@gmail.com</a></span></p>
+Questions, remarques: e-mail à  <a href="mailto:punctum@punctum.com?&subject=Dbat">punctum@punctum.com</a></span></p>
 </body></html>
