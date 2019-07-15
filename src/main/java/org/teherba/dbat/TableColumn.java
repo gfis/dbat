@@ -1,7 +1,8 @@
 /*  TableColumn - bean with properties of an abstract column
     @(#) $Id$
+    2019-07-12: output NULL for nullText != 0
     2017-10-02: no message for "Fragmented"
- *  2017-05-27: javadoc 1.8
+    2017-05-27: javadoc 1.8
     2016-12-09: avoid empty Javascrpt function calls
     2016-02-10: values may not be null if wrapped
     2014-11-11: wrap="verbatim"
@@ -629,7 +630,7 @@ public class TableColumn implements Cloneable {
      *  As a special case, the value <em>null</em> is passed through.
      */
     public void separateWrappedValue(String values, String targetEncoding, int escapingRule, int nullText) {
-        if (values == null) {
+        if (values == null && nullText == 0) {
             values = "";
         }
         String displayValue = null;

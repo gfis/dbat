@@ -472,6 +472,24 @@ HTTP spec=test/multicss
 TEST MU3 Web path test - stylesheets, javascript, xslt
 HTTP spec=test/pathstyle
 #-------------------
+# Display NULL or ""
+TEST NU1 Fill table C11 with a subset of C01
+DATA #
+  DELETE FROM C11;
+  INSERT INTO C11 (SELECT * FROM C01 WHERE UPPER(NAME) LIKE '%A%');
+  COMMIT;
+  SELECT * FROM C11;
+CALL Dbat -f $(DATA)
+  
+TEST NU2 SELECT with empty fields for NULL
+CALL Dbat -m fix -c test/null0.properties "SELECT a.name, b.birth FROM c01 a LEFT JOIN c11 b ON a.name = b.name ORDER BY 1;"
+
+TEST NU3 fixed format with null fields
+CALL Dbat -m fix -c test/null1.properties "SELECT a.name, b.birth FROM c01 a LEFT JOIN c11 b ON a.name = b.name ORDER BY 1;"
+
+TEST NU4 INSERTs with NULL fields
+CALL Dbat -m sql -c test/null1.properties "SELECT a.name, b.birth FROM c01 a LEFT JOIN c11 b ON a.name = b.name ORDER BY 1;"
+#-------------------
 # error handling tests
 TEST Y01 error message: spec file not found
 HTTP spec=test/wrong_spec_file
@@ -610,13 +628,13 @@ TEST TL4 file tayloring - with data: URI template
 CALL Dbat -m taylor -s "ß" -u "data:%09%c3%9fname%09in+%c3%9funiv+%c3%9fyear%0a" "select name, univ, year from c01"
 
 TEST TL5 file tayloring from web URI
-HTTP spec=test/taylor5 mode=taylor sep={}
+HTTP spec=test/taylor5 mode=taylor sep={} 
 
 TEST TL6 file tayloring from file URI specified with -u
 CALL Dbat -m taylor -s "{}" -u "web/spec/test/taylor.html" -f "web/spec/test/taylor5.xml"
 
 TEST TL7 file tayloring from file URI specified in the spec file
-HTTP spec=test/taylor5 mode=taylor sep={}
+HTTP spec=test/taylor5 mode=taylor sep={} 
 
 TEST TL8 file tayloring with empty URI -> multiline
 HTTP spec=test/taylor5 mode=taylor sep={} uri=bad
@@ -1195,10 +1213,10 @@ HTTP spec=describe table=product_order
 # SQL Views
 TEST VW1 create view
 DATA --
- create view vw1 as
-    select name
+ CREATE VIEW vw1 AS
+    SELECT name
     , birth
-    from c01;
+    FROM c01;
 CALL Dbat -v -f $(DATA)
 
 TEST VW2 describe view
@@ -1206,7 +1224,7 @@ CALL Dbat -d vw1
 
 TEST VW4 drop view
 DATA --
- drop view vw1;
+ DROP VIEW vw1;
 CALL Dbat -v -f $(DATA)
 #-------------------
 # variants of the trailer line
