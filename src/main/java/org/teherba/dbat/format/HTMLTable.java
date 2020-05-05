@@ -1,6 +1,7 @@
 /*  Generator for an HTML table
     @(#) $Id$
- *  2017-05-27: javadoc
+    2020-05-04: attribute target= in <col>
+    2017-05-27: javadoc
     2016-12-09: avoid empty Javascrpt function calls
     2016-10-03: style could have been null
     2016-05-19: repair style on rows (table id)
@@ -386,6 +387,7 @@ public class HTMLTable extends XMLTable {
      */
     public String getFlatValue(TableColumn column) {
         StringBuffer result = new StringBuffer(128);
+        String target       = column.getTarget();
         String value        = column.getValue();
         String wrap         = column.getWrap();
         String wrappedValue = column.getWrappedValue();
@@ -404,6 +406,10 @@ public class HTMLTable extends XMLTable {
             if (wrappedValue != null) {
                 result.append("<a href=\"");
                 result.append(wrappedValue.replaceAll("&", "&amp;"));
+                if (target != null && target.length() > 0) {
+                    result.append("\" target=\"");
+                    result.append(target);
+                }
                 result.append("\">");
             }
             String pseudo = column.getPseudo();

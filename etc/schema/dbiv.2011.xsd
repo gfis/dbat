@@ -2,6 +2,7 @@
 <!--
     dbiv.2011.xsd - Schema for Dbat Interactive Views
     @(#) $Id$
+    2020-05-05: <col target="...">
     2014-11-09: iv prefix
     2012-06-25: more restrictions
     2012-06-22: <text label="..."> generates 2 columns
@@ -131,6 +132,7 @@
         <xs:attribute name="show"       type="iv:ShowType"  />
         <xs:attribute name="size"       type="xs:unsignedShort" />
         <xs:attribute name="style"      type="xs:string" />
+        <xs:attribute name="target"     type="iv:TargetType"  />
         <xs:attribute name="type"       type="iv:TypeType"  />
         <xs:attribute name="valid"      type="xs:string" />
     </xs:complexType>
@@ -322,6 +324,15 @@
             <xs:enumeration value="always"  ></xs:enumeration><!-- this is the default -->
             <xs:enumeration value="search"  ></xs:enumeration><!-- show column in search result table only -->
             <xs:enumeration value="detail"  ></xs:enumeration><!-- show column in update/insert form only -->
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="TargetType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="_blank"> </xs:enumeration>
+            <xs:enumeration value="_parent"></xs:enumeration>
+            <xs:enumeration value="_self">  </xs:enumeration>
+            <xs:enumeration value="_top">   </xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
 

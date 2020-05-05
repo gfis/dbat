@@ -2,6 +2,7 @@
 
 # Collection of Testcases for Dbat with MySQL driver
 # @(#) $Id: all.tca 955 2012-06-05 07:22:59Z gfis $
+# 2020-05-04: <col target="..."> attribute: TA1
 # 2017-02-11: -r: load from Excel
 # 2016-05-24: + CC1
 # 2016-05-10: TL%, UA%
@@ -690,6 +691,12 @@ CALL Dbat -m html  -f web/spec/test/selec05.xml
 
 TEST W17 test <read> element in <col>
 HTTP spec=test/selec05
+
+TEST S18 test target attribute in <col>
+CALL Dbat -m html  -f web/spec/test/selec07.xml
+
+TEST W18 test target attribute in <col>
+HTTP spec=test/selec07
 #-------------------
 # describe table
 TEST D01 describe table

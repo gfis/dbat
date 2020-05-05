@@ -1,5 +1,6 @@
 /*  TableColumn - bean with properties of an abstract column
     @(#) $Id$
+    2020-05-04: attribute target= in <col>
     2019-07-12: output NULL for nullText != 0
     2017-10-02: no message for "Fragmented"
     2017-05-27: javadoc 1.8
@@ -96,6 +97,7 @@ public class TableColumn implements Cloneable {
         wrappedValue  = null;
         nullable    = true;
         style       = "";
+        target      = null; // no target attribute
         typeName    = "";
         value       = "";
         width       = 0; // indicates that it can still be overriden from dbMetaData
@@ -140,6 +142,7 @@ public class TableColumn implements Cloneable {
         result.pseudo       = this.pseudo   ;
         result.remark       = this.remark    ;
         result.style        = this.style    ;
+        result.target       = this.target   ;
         result.typeName     = this.typeName ;
         result.value        = this.value    ;
         result.width        = this.width    ;
@@ -454,6 +457,22 @@ public class TableColumn implements Cloneable {
     public void setStyle(String style) {
         this.style = style;
     } // setStyle
+    //----------------
+    /** Target attribute for <a href="   " target="   "> links
+     */
+    private String target;
+    /** Gets the target property of a column
+     *  @return (for example) "_blank" or null for no target
+     */
+    public String getTarget() {
+        return target;
+    } // getTarget
+    /** Sets the target attribute
+     *  @param target attribute, for example "_blank" or null for no target
+     */
+    public void setTarget(String target) {
+        this.target = target;
+    } // setTarget
     //----------------
     /** SQL data type names for the column */
     private String typeName;

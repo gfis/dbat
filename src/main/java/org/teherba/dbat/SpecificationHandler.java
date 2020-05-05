@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+    2020-05-04: attribute target= in <col>
     2017-09-16: default for Excel was mode=xls, now xlsx
  *  2017-05-27: javadoc 1.8
     2016-10-13: less imports
@@ -904,7 +905,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     private static final String CHOOSE_TAG  = "choose"  ;
 
     /** Column element tag with attributes */
-    private static final String COL_TAG     = "col"     ; // align= dir= href= key= label= link= name= pseudo= remark= style= type= width=
+    private static final String COL_TAG     = "col"     ; // align= dir= href= key= label= link= name= pseudo= remark= style= target= type= width=
     /** Column element tag without attributes */
     private static final String COLUMN_TAG  = "column"  ;
     /* now the subelements of <column> which correspond to attribute names of <col> */
@@ -921,6 +922,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         private static final String REMARK_TAG      = "remark"      ;
         private static final String SQL_TAG         = "sql"         ;
         private static final String STYLE_TAG       = "style"       ;
+        private static final String TARGET_TAG      = "target"      ;
         private static final String TYPE_TAG        = "type"        ;
         private static final String WIDTH_TAG       = "width"       ;
         private static final String WRAP_TAG        = "wrap"        ;
@@ -1129,7 +1131,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             */
             if ((chooseStack[chooseTop] & CHOOSE_THIS) == zeroAndNotEcho) {
                 // ignore all normal start tags
-            } else if (inColumn) { // align= dir= href= label= link= name= pseudo= remark= style= type= wrap=
+            } else if (inColumn) { // align= dir= href= label= link= name= pseudo= remark= style= target= type= wrap=
                 colBuffer.setLength(0); // start character assembly for all subordinate elements
 
             } else if (qName.equals(ROOT_TAG    )) {
@@ -1345,6 +1347,10 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 String style = attrs.getValue("style");
                 if (style != null && style.length() > 0) {
                     column.setStyle(style);
+                }
+                String target = attrs.getValue("target");
+                if (target != null && target.length() > 0) {
+                    column.setTarget(target);
                 }
                 String typeName = attrs.getValue("type");
                 if (typeName != null && typeName.length() > 0) {

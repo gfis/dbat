@@ -2,6 +2,7 @@
 <!--
     dbat_dbiv.xsd - Schema for Dbat and Dbiv specifications
     @(#) $Id$
+    2020-05-05: <col target="...">
     2016-05-24: <connect to="..." />; <div> allowed at many places
     2014-11-11: WrapType "verbatim"
     2014-11-09: unify dbat and dbiv schemas (German Reunion happened before 25 years)
@@ -141,6 +142,7 @@
         <xs:attribute name="sep"    type="xs:string" />
         <xs:attribute name="sql"    type="xs:string" /><!-- same as "expr" -->
         <xs:attribute name="style"  type="xs:string" />
+        <xs:attribute name="target" type="db:TargetType" />
         <xs:attribute name="type"   type="db:TypeType" />
         <xs:attribute name="width"  type="xs:unsignedShort" />
         <xs:attribute name="wrap"   type="db:WrapType" />
@@ -208,7 +210,7 @@
     </xs:complexType>
 
     <!-- FormType ??? -->
-    
+
     <xs:complexType name="FromType" mixed="true">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="choose"   type="db:ChooseType" />
@@ -471,16 +473,16 @@
     </xs:simpleType>
 
     <xs:simpleType name="LimitType">
-        <xs:union> 
-            <xs:simpleType> 
-                <xs:restriction base="xs:integer"/> 
-            </xs:simpleType> 
-            <xs:simpleType> 
-                <xs:restriction base="xs:string"> 
-                    <xs:enumeration value="vertical"/> 
-                </xs:restriction> 
-            </xs:simpleType> 
-        </xs:union> 
+        <xs:union>
+            <xs:simpleType>
+                <xs:restriction base="xs:integer"/>
+            </xs:simpleType>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="vertical"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:union>
     </xs:simpleType>
 
     <xs:simpleType name="ListType">
@@ -496,6 +498,15 @@
             <xs:enumeration value="jdbc"></xs:enumeration>
             <xs:enumeration value="sqlj"></xs:enumeration>
             <xs:enumeration value="stp" ></xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="TargetType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="_blank"> </xs:enumeration>
+            <xs:enumeration value="_parent"></xs:enumeration>
+            <xs:enumeration value="_self">  </xs:enumeration>
+            <xs:enumeration value="_top">   </xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
 
