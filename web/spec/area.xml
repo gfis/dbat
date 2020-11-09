@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2020-11-06: Dr. Georg Fischer
+-->    
+<dbat encoding="UTF-8"
+    conn="worddb"
+    lang="en"
+    xmlns   ="http://www.teherba.org/2007/dbat"
+    xmlns:ht="http://www.w3.org/1999/xhtml"
+    execsql ="0"
+    title="area"
+    >
+    <comment lang="en">specifications in one area</comment>
+    <comment lang="de">Spezifikationen in einem Teilbereich</comment>
+    <choose>
+    <when name="lang" match="de"> 
+        <ht:a href="servlet?spec=area&amp;lang=en"><ht:img src="img/en_flag.png" align="right" title="English" /></ht:a>
+        <ht:form method="get">
+            <ht:input label="Bereich" name="subdir" maxsize="64" size="32" init="test" />% <ht:br />
+            <ht:input type="hidden"   name="execsql" value="1" />
+            <ht:input type="submit" value="Liste anzeigen" /> 
+        </ht:form>
+        <ht:h3><ht:a href="index.html">Dbat</ht:a>-Spezifikationen in Bereich <ht:em><parm name="subdir" /></ht:em></ht:h3>
+        <select>
+            <col label="Spezifikation" href="servlet?&amp;spec=">subdir || '.' || name</col>
+            <col label="Beschreibung" remark="title - comment">'<ht:strong>' || title || '</ht:strong> &#x2014; ' || comment</col>
+            <col label="Parameter mit Initialwerten" width="100">params</col>
+            <from>spec_index
+            </from>
+            <where>lang   = '<parm name="lang" init="de" />'
+              AND  subdir = '<parm name="subdir" />'
+            </where>
+            <order by="subdir,name" />
+            <counter desc="Spezifikation,en" />
+        </select>
+    </when>
+    <otherwise><!-- lang="en" -->
+        <ht:a href="servlet?spec=area&amp;lang=de"><ht:img src="img/de_flag.png" align="right" title="Deutsch" /></ht:a>
+        <ht:form method="get">
+            <ht:input label="Area"    name="subdir" maxsize="64" size="32" init="test" />% <ht:br />
+            <ht:input type="hidden"   name="execsql" value="1" />
+            <ht:input type="submit" value="Show list" /> 
+        </ht:form>
+        <ht:h3><ht:a href="index.html">Dbat</ht:a> specifications in area <ht:em><parm name="subdir" /></ht:em></ht:h3>
+        <select>
+            <col label="Specification" href="servlet?&amp;spec=">subdir || '.' || name</col>
+            <col label="Description">'<ht:strong>' || title || '</ht:strong> &#x2014; ' || comment</col>
+            <col label="Parameters with defaults">params</col>
+            <from>spec_index
+            </from>
+            <where>lang   = '<parm name="lang" init="en" />'
+              AND  subdir = '<parm name="subdir" />'
+            </where>
+            <order by="subdir,name" />
+            <counter desc="Specification,s" />
+        </select>
+    </otherwise>
+    </choose>
+    <trailer select="out dbat script" />
+</dbat>

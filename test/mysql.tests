@@ -2,6 +2,7 @@
 
 # Collection of Testcases for Dbat with MySQL driver
 # @(#) $Id: all.tca 955 2012-06-05 07:22:59Z gfis $
+# 2020-11-06: ES1, ES2 for execSQL
 # 2020-05-04: <col target="..."> attribute: TA1
 # 2017-02-11: -r: load from Excel
 # 2016-05-24: + CC1
@@ -863,6 +864,12 @@ HTTP spec=test/enum01
 
 TEST EN4 enumerations into listbox
 HTTP spec=test/enum02
+#--------------------------
+TEST ES1 execsql=0
+HTTP spec=area
+
+TEST ES2 execsql=1
+HTTP spec=area&subdir=&execsql=1
 #--------------------------
 # aggregation, pivot and grouping
 TEST C02 create pivot table

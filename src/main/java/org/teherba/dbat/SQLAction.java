@@ -1,5 +1,6 @@
 /*  SQLAction.java - Properties and methods specific for one elementary sequence of SQL instructions
     @(#) $Id$
+    2020-11-06: execSQL=1|0
     2018-01-19: use getConsoleAccess()
     2018-01-11: better detection of 1st SQL verb, and distinction between query and update for console
     2017-05-27: javadoc 1.8
@@ -25,7 +26,7 @@
     2011-05-04, Dr. Georg Fischer: extracted from Dbat.java
 */
 /*
- * Copyright 2006 Dr. Georg Fischer <punctum at punctum dot kom>
+ * Copyright 2011 Dr. Georg Fischer <punctum at punctum dot kom>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1523,7 +1524,8 @@ public class SQLAction implements Serializable {
             , ArrayList<String> variables
             , HashMap<String, String[]> parameterMap) {
         String verb = "";
-        Connection con          = config.getOpenConnection();
+        Connection con      = config.getOpenConnection();
+        int execSQL         = config.getExecSQL();
         boolean oldReadOnly = true;
         BaseTable  tbSerializer = config.getTableSerializer();
         PreparedStatement statement = null;
@@ -1548,7 +1550,7 @@ public class SQLAction implements Serializable {
                     } // set placeholders
                     // statement.setQueryTimeout(120); // not supported by DB2 JDBC driver
                     tbSerializer.writeSQLInstruction(tbMetaData, sqlInstruction, 0, config.getVerbose(), variables);
-                    if (! (tbSerializer instanceof EchoSQL)) {
+                    if (! (tbSerializer instanceof EchoSQL) && execSQL >= 1) {
                         ResultSet stResults = statement.executeQuery();
                         serializeQueryResults(tbMetaData, sqlInstruction, stResults);
                         stResults.close();
@@ -1559,7 +1561,7 @@ public class SQLAction implements Serializable {
                     statement.close();
                 } else if (verb.equals("CALL")) {
                     String[] args = CommandTokenizer.tokenize(sqlInstruction);
-                    if (! (tbSerializer instanceof EchoSQL)) {
+                    if (! (tbSerializer instanceof EchoSQL) && execSQL >= 1) {
                         updateCount = callStoredProcedure(con, tbMetaData, 1, args);
                         if (parameterMap != null) {
                              parameterMap.put(config.UPDATE_COUNT, new String[] { String.valueOf(updateCount) });
@@ -1578,7 +1580,7 @@ public class SQLAction implements Serializable {
                         setPlaceholders(statement, variables); // set the values of all placeholders
                     } // set placeholders
                     tbSerializer.writeSQLInstruction(tbMetaData, sqlInstruction, 2, config.getVerbose(), variables);
-                    if (! (tbSerializer instanceof EchoSQL)) {
+                    if (! (tbSerializer instanceof EchoSQL) && execSQL >= 1) {
                         updateCount = statement.executeUpdate();
                         if (parameterMap != null) {
                             parameterMap.put(config.UPDATE_COUNT, new String[] { String.valueOf(updateCount) });

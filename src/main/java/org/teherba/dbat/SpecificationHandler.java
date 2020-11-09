@@ -400,7 +400,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         return result;
     } // getTrailer
 
-    /** Returns all form parameters (except <em>view, mode</em>)
+    /** Returns all form parameters (except <em>execsql, mode, view</em>)
      *  as URL encoded name=value pairs separated by ampersands.
      *  @return concatenated URL parameters
      */
@@ -409,7 +409,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         Iterator<String> parmIter = parameterMap.keySet().iterator();
         while (parmIter.hasNext()) {
             String name = parmIter.next();
-            if (name != null && ! name.matches("view|mode")) {
+            if (name != null && ! name.matches("execsql|mode|view")) {
                 String[] params = (String[]) (parameterMap.get(name));
                 int iparm = 0;
                 while (iparm < params.length) {
@@ -1161,6 +1161,22 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     title = "Dbat";
                 }
                 //--------
+                String execsqlAttr  = attrs.getValue  ("execsql");
+                Object 
+                obj                 = parameterMap.get("execsql");
+                if (obj != null) {
+                    execsqlAttr     = ((String[]) obj)[0]; // override it from the HttpRequest
+                }
+                int execSQL = 1;
+                try {
+                    if (execsqlAttr != null) {
+                        execSQL = Integer.parseInt(execsqlAttr);
+                    }
+                } catch (Exception exc) {
+                    // ignore
+                }
+                config.setExecSQL(execSQL);
+                //--------
                 String headers      = attrs.getValue("headers");
                 if (headers         == null) {
                     config.setWithHeaders(true);
@@ -1168,8 +1184,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     config.setWithHeaders(headers.matches("[yYjJtT].*"));
                 }                   
                 //--------
-                String language     = attrs.getValue("lang");
-                Object obj          = parameterMap.get("lang");
+                String language     = attrs.getValue  ("lang");
+                obj                 = parameterMap.get("lang");
                 if (obj != null) {
                     language    = ((String[]) obj)[0]; // override it from the HttpRequest
                 } else { // &lang= not set in HttpRequest

@@ -1,6 +1,7 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$ 2016-04-16 14:43:35
- *  2018-02-13: s|getEmailAddress
+ *  2020-11-06: set|getExecSQL, default 1
+ *  2018-02-13: set|getEmailAddress
  *  2018-01-19: loadContextEnvironment()
  *  2018-01-11: toString(); getConsoleMap
  *  2017-05-27: javadoc 1.8
@@ -302,6 +303,21 @@ public class Configuration implements Serializable {
             encoding[1] = enc;
         }
     } // setEncoding
+    //--------
+    /** whether to execute the SQL when loading the page */
+    private int     execSQL;
+    /** Gets the flag for initial SQL execution
+     *  @return  1 if SQL is executed, 0 if not
+     */
+    public int getExecSQL() {
+        return this.execSQL;
+    } // getExecSQL
+    /** Sets the flag for initial SQL execution
+     *  @param execSQL 1 if SQL is executed, 0 if not
+     */
+    public void setExecSQL(int execSQL) {
+        this.execSQL = execSQL;
+    } // setExecSQL
     //--------
     /** maximum number of rows to be fetched; default "infinite" */
     private int     fetchLimit;
@@ -802,6 +818,7 @@ public class Configuration implements Serializable {
         setDecimalSeparator(props.getProperty("decimal"  , "."  ).trim());
         setDefaultSchema   (props.getProperty("schema"   , ""   ).trim());
         setEmailAddress    (props.getProperty("email"    , "punctum@punctum.com").trim());
+        setExecSQL         (1);
         String prop = null;
         try {
             prop =          props.getProperty("commit"   , "250").trim();

@@ -52,11 +52,11 @@
         </xsl:choose>
     </xsl:variable>
 
-	<xsl:template match="@*|node()">
-		<xsl:copy>
-			<xsl:apply-templates select="@*|node()" />
-		</xsl:copy>
-	</xsl:template>
+    <xsl:template match="@*|node()">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()" />
+        </xsl:copy>
+    </xsl:template>
 
     <xsl:template match="db:dbat">
         <xsl:value-of select='concat("&#10;INSERT INTO spec_index", " (subdir, name, lang, title, comment, params) VALUES (&#10;&#9;")' />
@@ -72,21 +72,21 @@
         <xsl:value-of select='concat("&apos;", ");"              )' />
         <xsl:value-of select='concat("&#10;", "COMMIT;")' />
     </xsl:template>
-        
+
     <xsl:template match="db:comment">
         <xsl:if test="@lang = $lang">
             <xsl:value-of select="concat(normalize-space(.), ' ')" />
         </xsl:if>
     </xsl:template>
-    
-	<xsl:template match="node()" mode="parm">
-       	<xsl:apply-templates select="node()" mode="parm" />
-	</xsl:template>
+
+    <xsl:template match="node()" mode="parm">
+        <xsl:apply-templates select="node()" mode="parm" />
+    </xsl:template>
 
     <xsl:template match="db:parm" mode="parm">
         <xsl:value-of select="concat('&amp;', ./@name, '=', ./@init, ' ')" />
     </xsl:template>
-    
+
     <xsl:template match="ht:form">
         <xsl:for-each select="ht:input">
             <xsl:if test="string-length(./@size) &gt; 0">
@@ -94,5 +94,5 @@
             </xsl:if>
         </xsl:for-each>
     </xsl:template>
-    
+
 </xsl:stylesheet>
