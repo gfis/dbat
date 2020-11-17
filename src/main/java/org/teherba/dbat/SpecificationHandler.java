@@ -1,8 +1,9 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+    2020-11-16: <select scroll="w,h">
     2020-05-04: attribute target= in <col>
     2017-09-16: default for Excel was mode=xls, now xlsx
- *  2017-05-27: javadoc 1.8
+    2017-05-27: javadoc 1.8
     2016-10-13: less imports
     2016-08-09: pass "conn" in writeStart; DBIV_TAG; log.info in resolveEntity
     2016-07-27: correction in size= attribute of listbox
@@ -1677,6 +1678,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     tbMetaData.setAggregationSeparator  (attrs.getValue("with")         ); // char or "pivot"; pass null if default
                     String fetchTarget              =    attrs.getValue("into")          ; // null (default) or "parm"
                     tbMetaData.setGroupColumns          (attrs.getValue("group")        ); // pass null if feature is not desired
+                    tbMetaData.setScrollArea            (attrs.getValue("scroll")       ); // pass null for no scrolling
                     getIdAttribute(attrs, tbMetaData);
                     currentNameSpace = config.DBAT_URI; // leave HTML, enter specification syntax
                     if (false) {

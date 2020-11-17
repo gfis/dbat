@@ -458,7 +458,7 @@ public class TableColumn implements Cloneable {
         this.style = style;
     } // setStyle
     //----------------
-    /** Target attribute for <a href="   " target="   "> links
+    /** Target attribute for &lt;a href="   " target="   "&gt; links
      */
     private String target;
     /** Gets the target property of a column
@@ -679,13 +679,13 @@ public class TableColumn implements Cloneable {
                         buffer.append(parts[ipart]);
                         buffer.append('"');
                     }
-                    displayValue = parts[ipart]; 
+                    displayValue = parts[ipart];
                     ipart ++;
                 } // while ipart
                 buffer.append(");");
                 this.setWrappedValue(ipart >= 2 ? buffer.toString() : null);
                 if (displayValue == null) {
-                	displayValue = "";
+                    displayValue = "";
                 }
                 // displayValue = "";
             } else if (wrap.startsWith("verbatim:")) { // HTML in the SQL table cell's value is passed through without modification

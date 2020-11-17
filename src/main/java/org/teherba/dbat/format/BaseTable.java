@@ -904,19 +904,20 @@ public abstract class BaseTable {
     // Table elements generated for a SELECT
     //==========================================
 
-    /** Initializes a table
-     *  @param tableName name of the table
-     */
-    public void startTable(String tableName) {
-    } // startTable
-
-    /** Initializes a table - with meta data, currently only implemented in SQLTable and its subclasses.
+    /** Initializes a table - with meta data, 
+     *  currently implemented only in HTMLTable, TayloredTable, SQLTable and its subclasses.
      *  For subclasses which do not override this method, the meta data are ignored.
      *  @param tableName name of the table
      *  @param tbMetaData meta data of the table
      */
     public void startTable(String tableName, TableMetaData tbMetaData) {
         startTable(tableName);
+    } // startTable
+
+    /** Initializes a table
+     *  @param tableName name of the table
+     */
+    public void startTable(String tableName) {
     } // startTable
 
     /** Terminates  a table

@@ -1,5 +1,6 @@
-/*	stylesheet.css - Cascaded Style Sheet
+/*	stylesheet.css - Cascaded Style Sheet for Dbat
 	@(#) $Id$
+	2020-11-16: class .sticky for <th> of scrollable tables
 	2012-12-10: table.sortable thead
 	2011-02-01: visibility styles
 	2010-09-15: more colors
@@ -22,7 +23,7 @@
 .G	{ color:white   ; background-color: darkblue		}
 .R	{ color:white   ; background-color: darkmagenta		}
 
-.nbord  { vertical-align:top; margin:0px; 
+.nbord  { vertical-align:top; margin:0px;
 	      padding-top:0px; padding-bottom:0px; padding-left:4px; padding-right:4px;
 	      border:none }
 .error  { color:red     ; font-family: Courier; }
@@ -35,39 +36,43 @@ table.sortable thead {
 	cursor: pointer
 	}
 td,th
-	{ vertical-align:top; margin:0px; 
-	  padding-top:0px; padding-bottom: 0px;padding-left:4px; padding-right:4px; 
+	{ vertical-align:top; margin:0px;
+	  padding-top:0px; padding-bottom: 0px;padding-left:4px; padding-right:4px;
 	  border:1px solid #aaa; }
 tr
 	{ background:lightyellow } /* or lemonchiffon} */
-.visible   
-	{ color:black; 
+.visible
+	{ color:black;
 	  border-left: 1px solid #aaa;
 	  border-right: 1px solid #aaa;
 	  border-top: 1px solid #aaa;
 	  border-bottom: none;
 	}
-.invisible 
-	{ color:lightyellow; 	
+.invisible
+	{ color:lightyellow;
 	  border-left: 1px solid #aaa;
 	  border-right: 1px solid #aaa;
 	  border-top: none;
 	  border-bottom: none;
 	}
-.counter   
+.counter
 	{ color:black; background:white;
 	  border-left: 1px solid #aaa;
 	  border-right: none;
 	  border-top: 1px solid #aaa;
 	  border-bottom: none;
 	}
-.bold	
+.bold
 	{ font-weight:bold; }
-dt	
+dt
 	{ font-weight:bold; }
 tt
 	{ font-family:Courier; }
 th
 	{ background-color:palegreen; } /* or lightcyan, lightgreen */
+.sticky
+	{ position: -webkit-sticky;
+	  position: sticky;
+	  top: 0; }
 body
 	{ background-color:white; }

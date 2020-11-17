@@ -67,11 +67,12 @@
             </xs:choice>
         </xs:sequence>
         <xs:attribute name="conn"           type="xs:NCName"    />
-        <xs:attribute name="debug"          type="xs:unsignedShort"    />
+        <xs:attribute name="debug"          type="xs:unsignedShort" />
         <xs:attribute name="encoding"       type="xs:string"    />
+        <xs:attribute name="execsql"        type="xs:unsignedShort" />
         <xs:attribute name="headers"        type="db:BoolType"  />
         <xs:attribute name="javascript"     type="xs:string"    />
-        <xs:attribute name="lang"           type="db:LangType"     />
+        <xs:attribute name="lang"           type="db:LangType"  />
         <xs:attribute name="manner"         type="db:MannerType"/>
         <xs:attribute name="mode"           type="xs:NCName"    />
         <xs:attribute name="stylesheet"     type="xs:string"    />

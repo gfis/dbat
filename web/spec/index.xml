@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
     @(#) $Id$
+    2020-11-17: vertical scrollbar
     2020-11-05: &lang init de in upper when part
     2016-02-09: order by subdir, name
     2013-01-05: aligned with spec/test/index.xml
@@ -19,9 +20,7 @@
     <choose>
     <when name="lang" match="de"> 
         <ht:a href="servlet?spec=index&amp;lang=en"><ht:img src="img/en_flag.png" align="right" title="English" /></ht:a>
- 
         <ht:h3>Alle <ht:a href="index.html">Dbat</ht:a>-Spezifikationen</ht:h3>
-        
         <select group="subdir">
             <col name="subdir" label="Bereich" href="servlet?&amp;spec=&amp;dummy=" style="visible">
                 subdir || '.index' || '=' || subdir
@@ -40,8 +39,10 @@
     <otherwise><!-- lang="en" -->
         <ht:a href="servlet?spec=index&amp;lang=de"><ht:img src="img/de_flag.png" align="right" title="Deutsch" /></ht:a>
         <ht:h3>All <ht:a href="index.html">Dbat</ht:a> Specifications</ht:h3>
-        
+    <!--
         <select group="subdir">
+    -->
+        <select scroll="800px,400px">
             <col name="subdir" label="Area" href="servlet?&amp;spec=&amp;dummy=" style="visible">
                 subdir || '.index' || '=' || subdir
             </col>

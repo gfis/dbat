@@ -1321,8 +1321,9 @@ public class SQLAction implements Serializable {
      *  @param tbMetaData meta data for the table as far as they are alreay known
      *  @param selectSql SQL statement which returned the result set, for debugging
      *  @param stResults result set from JDBC execute
+     *  @throws Exception any exception is passed through
      */
-    private void serializeQueryResults(TableMetaData tbMetaData, String selectSql, ResultSet stResults) 
+    private void serializeQueryResults(TableMetaData tbMetaData, String selectSql, ResultSet stResults)
             throws Exception {
         String value = "";
         TableColumn column = null;
@@ -1497,7 +1498,7 @@ public class SQLAction implements Serializable {
         } // while iw
         return result;
     } // getSQLVerb
-    
+
     /** Execute a single SQL statement.
      *  SQL Comments starting with "--" were removed previously by the caller.
      *  @param tbMetaData meta data for the table as far as they are alreay known

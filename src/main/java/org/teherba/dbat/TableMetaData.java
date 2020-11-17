@@ -1,6 +1,7 @@
 /*  TableMetaData - array list of {@link TableColumn}s and associated methods
     @(#) $Id$
- *  2017-05-27: javadoc 1.8
+    2020-11-14: scrollArea="0,0"
+    2017-05-27: javadoc 1.8
     2012-01-25: fetchTarget = null | "parm"
     2011-09-30: if (column.getRemark() == null) { column.setRemark(stLabel);
     2011-08-25: addColumn(name, value)
@@ -318,6 +319,21 @@ public class TableMetaData {
         this.fetchTarget = fetchTarget;
     } // setFetchTarget
 
+    /** Attributes for tables with vertical and horizontal scrolling: width x height or 0,0 */
+    private String scrollArea;
+    /** Gets the scroll area
+     *  @return CSS "width,height" specification (in pixels, cm, %) or "0,0" if no scrolling
+     */
+    public String getScrollArea() {
+        return scrollArea;
+    } // getScrollArea
+    /** Sets the scroll area attribute
+     *  @param ScrollArea CSS "width,height" specification (in pixels, cm, %) or "0,0" if no scrolling
+     */
+    public void setScrollArea(String scrollArea) {
+        this.scrollArea = scrollArea != null ? scrollArea : "0,0";
+    } // setScrollArea
+
     /** Schema (user, qualifier) part of the table's name */
     private String schema;
     /** Base name of the table (without schema) */
@@ -410,6 +426,7 @@ public class TableMetaData {
         setCounterDesc          (null); // default = not set
         setIdentifier           (null);
         setFillState            (0); // empty
+        setScrollArea           ("0,0"); // no scrolling
         setAggregateIndex       (AGGR_NOT_SET);   // feature not set
         groupColumns            = null; // feature not set
         numHeadingColumns       = 1;

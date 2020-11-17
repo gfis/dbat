@@ -76,6 +76,7 @@ public class Messages implements Serializable {
 
     /** Sets the application-specific error message texts
      *  @param basePage reference to the hash for message texts
+     *  @param config object for configuration parameters
      */
     public static void addMessageTexts(BasePage basePage, Configuration config) {
         String appLink = "<a title=\"main\" href=\"index.html\">" + basePage.getAppName() + "</a>";

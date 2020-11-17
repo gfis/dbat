@@ -503,6 +503,7 @@ public class Configuration implements Serializable {
     /** Name of a file with user defineable properties (related to the connection) */
     private String  lastPropsName;
     /** Gets the name of the last properties file which was read
+     *  @return for example "dbat.properties"
      */
     public String getLastPropsName() {
         return lastPropsName;

@@ -1,5 +1,6 @@
 /*  Generator for an HTML table
     @(#) $Id$
+    2020-11-16: scrollArea="width,height"; endTable; <div> around the table
     2020-05-04: attribute target= in <col>
     2017-05-27: javadoc
     2016-12-09: avoid empty Javascrpt function calls
@@ -90,6 +91,8 @@ public class HTMLTable extends XMLTable {
 
     /** Whether a table should be sortable via sorttable.js */
     private boolean isSortable;
+    /** Whether table headers should be sticky */
+    private boolean isSticky;
     /** The natural language for messages and internationalized text portions */
     private String language;
 
@@ -104,6 +107,7 @@ public class HTMLTable extends XMLTable {
         String encoding     = getTargetEncoding();
         String javascript   = null;
         language            = "en"; // default
+        isSortable          = false;
         String stylesheet   = "stylesheet.css";
         String target       = null;
         String title        = "dbat";
@@ -299,23 +303,57 @@ public class HTMLTable extends XMLTable {
     /** local copy of the table's id */
     private String tableId;
     
-    /** Initializes a table
+    /** Initializes a table - with meta data, 
      *  @param tableName name of the table
+     *  @param tbMetaData meta data of the table
      */
-    public void startTable(String tableName) {
+    public void startTable(String tableName, TableMetaData tbMetaData) {
         try {
             tableId = tableName;
             tableSeqNo ++;
             tableRowNo = 0;
-            charWriter.print("<table id=\"" + tableId + "\"");
+            String divStyle = "";
+            String scroll = tbMetaData.getScrollArea();
+            if (scroll != null && ! scroll.equals("0,0")) { // do scroll and sticky headers
+                isSticky = true;
+                divStyle = " style=\"display: inline-block;";
+                String[] area = scroll.split("\\,");
+                String width  = "";
+                String height = "";
+                if (area.length == 1) { // height only
+                    divStyle += " height: " + area[0] + ";";
+                } else { // both "width,height" or ",height" or "width,"
+                    if (area[1].length() > 0) {
+                        divStyle += " height: " + area[1] + ";";
+                    }
+                    if (area[0].length() > 0) {
+                        divStyle += " width: "  + area[0] + ";";
+                    }
+                } // both
+                divStyle += " overflow: auto\"";
+            } // do scroll
+            charWriter.println("<div" + divStyle + ">");
+            String tableClass = ""; // default: no classes
             if (isSortable) {
-                charWriter.print(" class=\"sortable\"");
+                tableClass += " class=\"sortable\"";
             }
-            charWriter.println(">");
+            charWriter.println("<table id=\"" + tableId + "\"" + tableClass + ">");
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
         }
     } // startTable
+
+    /** Terminates a table
+     */
+    public void endTable() {
+        isSticky = false; // back to default
+        try {
+            charWriter.println("</table>");
+            charWriter.println("</div>");
+        } catch (Exception exc) {
+            log.error(exc.getMessage(), exc);
+        }
+    } // endTable
 
     /** Writes the number of selected rows, and a description of the object represented by the rows.
      *  A "+" is added behind the number if there would have been more rows, but the
@@ -533,6 +571,9 @@ public class HTMLTable extends XMLTable {
                             header = "&nbsp;";
                         }
                         result.append("<th");
+                        if (isSticky) {
+                            result.append(" class=\"sticky\"");
+                        }
                         String remark = column.getRemark();
                         if (false) {
                         } else if (isSortable) {
