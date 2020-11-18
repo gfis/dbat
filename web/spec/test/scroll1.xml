@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Dbat specification - scroll bars
+    @(#) $Id$
+    2020-11-18: Georg Fischer
+-->
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang="en"
+        conn="worddb"
+        title="scroll1"
+        >
+    <comment lang="en">Single table with both scrollbars</comment>
+    <comment lang="de">Einzelne Tabelle mit beiden Scrollbalken</comment>
+
+    <ht:h3>Single table with both scrollbars</ht:h3>
+    <ht:form method="get">
+        <ht:input label="Name" name="name" maxsize="20" size="10" init="%" />
+        <ht:input type="submit" value="Submit" />
+    </ht:form>
+    <select limit="2048" scroll="200px,200px">
+        <col label="Name"       >a.name</col>
+        <col label="University" >a.univ</col>
+        <col label="Year"  align="right">a.year</col>
+        <col label="Gender"     >a.gender</col>
+        <col label="Birthdate"  >a.birth</col>
+        <from>c01 a, c01 b</from>
+         <where>a.name like '<parm name="name" />%'
+        </where>
+        <counter desc="Record,s"/>
+    </select>
+</dbat>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Dbat specification - scroll bars
+    @(#) $Id$
+    2020-11-18: Georg Fischer
+-->
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang="en"
+        conn="worddb"
+        title="scrollpc"
+        >
+    <comment lang="en">Test table with both scrollbars</comment>
+    <comment lang="de">Test-Tabelle mit beiden Scrollbalken</comment>
+
+    <ht:h3>Tables with scrollbars (size in mm)</ht:h3>
+    <ht:form method="get">
+        <ht:input label="Name" name="name" maxsize="20" size="10" init="%" />
+        <ht:input type="submit" value="Submit" />
+        &#xa; &#xa;-&gt; <ht:a href="servlet?spec=test.scrollpx">scroll areas in px</ht:a>
+    </ht:form>
+
+    <ht:h4>both scrollbars</ht:h4>
+    <select limit="2048" scroll="80mm,80mm">
+        <col label="Name"       >a.name</col>
+        <col label="University" >a.univ</col>
+        <col label="Year"  align="right">a.year</col>
+        <col label="Gender"     >a.gender</col>
+        <col label="Birthdate"  >a.birth</col>
+        <from>c01 a, c01 b</from>
+        <where>a.name like '<parm name="name" />%'
+        </where>
+        <counter desc="Record,s"/>
+    </select>
+
+    <ht:h4>vertical scrollbar only</ht:h4>
+    <select limit="2048" scroll="50mm">
+        <col label="Name"       >a.name</col>
+        <col label="University" >a.univ</col>
+        <col label="Year"  align="right">a.year</col>
+        <col label="Gender"     >a.gender</col>
+        <col label="Birthdate"  >a.birth</col>
+        <from>c01 a, c01 b</from>
+        <where>a.name like '<parm name="name" />%'
+        </where>
+        <counter desc="Record,s"/>
+    </select>
+
+    <ht:h4>horizontal scrollbar only</ht:h4>
+    <select limit="2048" scroll="50mm,0">
+        <col label="Name"       >a.name</col>
+        <col label="University" >a.univ</col>
+        <col label="Year"  align="right">a.year</col>
+        <col label="Gender"     >a.gender</col>
+        <col label="Birthdate"  >a.birth</col>
+        <from>c01 a</from>
+        <where>a.name like '<parm name="name" />%'
+        </where>
+        <counter desc="Record,s"/>
+    </select>
+</dbat>

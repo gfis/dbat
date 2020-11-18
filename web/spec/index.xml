@@ -39,10 +39,7 @@
     <otherwise><!-- lang="en" -->
         <ht:a href="servlet?spec=index&amp;lang=de"><ht:img src="img/de_flag.png" align="right" title="Deutsch" /></ht:a>
         <ht:h3>All <ht:a href="index.html">Dbat</ht:a> Specifications</ht:h3>
-    <!--
         <select group="subdir">
-    -->
-        <select scroll="800px,400px">
             <col name="subdir" label="Area" href="servlet?&amp;spec=&amp;dummy=" style="visible">
                 subdir || '.index' || '=' || subdir
             </col>

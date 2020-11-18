@@ -323,10 +323,10 @@ public class HTMLTable extends XMLTable {
                 if (area.length == 1) { // height only
                     divStyle += " height: " + area[0] + ";";
                 } else { // both "width,height" or ",height" or "width,"
-                    if (area[1].length() > 0) {
+                    if (area[1].length() > 0 && ! area[1].equals("0")) {
                         divStyle += " height: " + area[1] + ";";
                     }
-                    if (area[0].length() > 0) {
+                    if (area[0].length() > 0 && ! area[0].equals("0")) {
                         divStyle += " width: "  + area[0] + ";";
                     }
                 } // both
