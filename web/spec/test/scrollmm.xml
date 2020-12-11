@@ -9,12 +9,13 @@
         encoding="UTF-8"
         lang="en"
         conn="worddb"
-        title="scrollpc"
+        javascript="../sorttable.js"
+        title="scrollmm"
         >
-    <comment lang="en">Test table with both scrollbars</comment>
-    <comment lang="de">Test-Tabelle mit beiden Scrollbalken</comment>
+    <comment lang="en">Sortable tables with both scrollbars</comment>
+    <comment lang="de">Sortierbare Tabellen mit beiden Scrollbalken</comment>
 
-    <ht:h3>Tables with scrollbars (size in mm)</ht:h3>
+    <ht:h3>Sortable tables with scrollbars (size in mm)</ht:h3>
     <ht:form method="get">
         <ht:input label="Name" name="name" maxsize="20" size="10" init="%" />
         <ht:input type="submit" value="Submit" />

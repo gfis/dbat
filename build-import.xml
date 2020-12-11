@@ -2,6 +2,7 @@
 <!--
     ant-buildfile for commandline, web application and web service
     @(#) $Id$
+    2020-12-11: delete expand/META-INF/MSFTSIG.{SF|RSA} - otherwise: "main class org.teherba.dbat.Dbat cannot be loaded"
     2016-09-16: manifest("-core"), core.jar, manifest("") for dbat.Configuration.versionString
     2016-09-12: fill.lib depends on clean
     2016-08-29: 'clean' does no longer delete in openlib (check manually if necessary)
@@ -162,6 +163,7 @@
 
         <delete failonerror="false" quiet="true" verbose="true">
             <fileset dir="${build.expand}/META-INF" includes="SUN_MICR.*" />
+            <fileset dir="${build.expand}/META-INF" includes="MSFTSIG.*" />
         </delete>
         <available property="wrong.COM.ibm" filepath="${build.expand}/COM/ibm/db2/app" file="Blob.class" />
         <antcall target="wrong.clean.COM" />
@@ -241,6 +243,9 @@
         <manifest file="${etc.home}/META-INF/MANIFEST.MF">
             <attribute name="Built-By" value="${user.name}"/>
             <attribute name="Main-Class" value="${app.main-class}"/>
+            <!-- 2020-12-11, Georg Fischer
+                <attribute name="Class-Path" value="."/> 
+            -->
             <!--Caution, the following are read by ../web/MetaInfPage.getVersionString, 
                 be careful with changing!
                 for appl-core.jar, the property ${core} must be set to "-core"
