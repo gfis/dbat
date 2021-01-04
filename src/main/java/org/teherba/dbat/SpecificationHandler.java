@@ -1,6 +1,7 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
-    2020-11-16: <select scroll="w,h">
+    2021-01-04: &execsql=0 only if there is no user http request parameter
+    2020-11-16: &execsql=1|0, <select scroll="w,h">
     2020-05-04: attribute target= in <col>
     2017-09-16: default for Excel was mode=xls, now xlsx
     2017-05-27: javadoc 1.8
@@ -238,6 +239,27 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         } // while key
         return result.toString();
     } // dumpMap
+
+    /** Determines whether the parameterMap contains user parameter keys.
+     *  @param map map to be investigated.
+     *  @return true if there is a key different from execsql,lang,mode,spec,view; false otherwise.
+     */
+    private boolean hasUserParameters(Map<String, String[]> map) {
+        boolean result = false; // assume failure
+        Iterator<String> piter = map.keySet().iterator();
+        while (! result && piter.hasNext()) {
+            String key = piter.next();
+            if (   ! key.equals("execsql")
+                && ! key.equals("lang")
+                && ! key.equals("mode")
+                && ! key.equals("spec")
+                && ! key.equals("view")
+                ) {
+                    result = true;
+            }
+        } // while in keySet
+        return result;
+    } // hasUserParameters
 
     /** the remote user calling the web interface,
      *  returned from the Web Server (Apache, mod_auth_sspi, mod_jk, TomCat)
@@ -778,7 +800,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 ) { // with validation
             String value = values[0];
             if (debug >= 1) {
-                tbSerializer.writeMarkup("<h4>Validation problem for field " + name 
+                tbSerializer.writeMarkup("<h4>Validation problem for field " + name
                         + ", value " + value + " =~ "
                         + validPattern + " => " + value.matches(validPattern)
                         + "</h4>");
@@ -885,7 +907,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     private static final String SERVLET_SPEC = "servlet?spec=";
 
     /** Dbat Root element tag */
-    public  static final String ROOT_TAG    = "dbat"    ; // target= title= lang=en conn=dbat headers=true 
+    public  static final String ROOT_TAG    = "dbat"    ; // target= title= lang=en conn=dbat headers=true
                                                           // encoding=UTF-8
                                                           // javascript=http_request.js
                                                           // xslt=
@@ -1163,10 +1185,13 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 }
                 //--------
                 String execsqlAttr  = attrs.getValue  ("execsql");
-                Object 
+                Object
                 obj                 = parameterMap.get("execsql");
                 if (obj != null) {
                     execsqlAttr     = ((String[]) obj)[0]; // override it from the HttpRequest
+                }
+                if (hasUserParameters(parameterMap)) {
+                    execsqlAttr = "1"; // overwrite any 0 when there is a user parameter
                 }
                 int execSQL = 1;
                 try {
@@ -1183,7 +1208,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     config.setWithHeaders(true);
                 } else {
                     config.setWithHeaders(headers.matches("[yYjJtT].*"));
-                }                   
+                }
                 //--------
                 String language     = attrs.getValue  ("lang");
                 obj                 = parameterMap.get("lang");

@@ -870,6 +870,12 @@ HTTP spec=area
 
 TEST ES2 execsql=1
 HTTP spec=area&subdir=&execsql=1
+
+TEST ES3 execsql=0, no user parameter
+HTTP spec=area&execsql=0&mode=html&lang=de
+
+TEST ES4 execsql=0, with user parameter
+HTTP spec=area&subdir=test
 #--------------------------
 # aggregation, pivot and grouping
 TEST C02 create pivot table

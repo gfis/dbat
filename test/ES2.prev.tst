@@ -30,6 +30,7 @@ WHERE lang   = 'en'
               AND  subdir = '' 
 ORDER BY subdir,name;
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="subdir || '.' || name">Specification</th><th title="'<strong>' || title || '</strong> — ' || comment">Description</th><th title="params">Parameters with defaults</th></tr>
 <tr><td><a href="servlet?&amp;spec=.area">.area</a></td><td><strong>area</strong> — specifications in one area</td><td>&amp;lang=de &amp;subdir=</td></tr>
@@ -37,6 +38,7 @@ ORDER BY subdir,name;
 <tr><td><a href="servlet?&amp;spec=.index">.index</a></td><td><strong>index</strong> — all specifications</td><td>&amp;lang=de</td></tr>
 <tr><td class="counter" colspan="3">3 Specifications</td></tr>
 </table>
+</div>
 
     
     
