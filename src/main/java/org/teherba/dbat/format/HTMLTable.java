@@ -1,5 +1,6 @@
 /*  Generator for an HTML table
     @(#) $Id$
+    2021-01-04: max-width,max-height instead
     2020-11-16: scrollArea="width,height"; endTable; <div> around the table
     2020-05-04: attribute target= in <col>
     2017-05-27: javadoc
@@ -321,13 +322,13 @@ public class HTMLTable extends XMLTable {
                 String width  = "";
                 String height = "";
                 if (area.length == 1) { // height only
-                    divStyle += " height: " + area[0] + ";";
+                    divStyle += " max-height: " + area[0] + ";";
                 } else { // both "width,height" or ",height" or "width,"
                     if (area[1].length() > 0 && ! area[1].equals("0")) {
-                        divStyle += " height: " + area[1] + ";";
+                        divStyle += " max-height: " + area[1] + ";";
                     }
                     if (area[0].length() > 0 && ! area[0].equals("0")) {
-                        divStyle += " width: "  + area[0] + ";";
+                        divStyle += " max-width: "  + area[0] + ";";
                     }
                 } // both
                 divStyle += " overflow: auto\"";
