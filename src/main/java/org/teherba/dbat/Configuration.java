@@ -1,5 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$ 2016-04-16 14:43:35
+ *  2021-02-15: set|getTrailer
  *  2020-11-06: set|getExecSQL, default 1
  *  2018-02-13: set|getEmailAddress
  *  2018-01-19: loadContextEnvironment()
@@ -609,6 +610,21 @@ public class Configuration implements Serializable {
         this.tableSerializer = tableSerializer;
     } // setTableSerializer
     //--------
+    /** Trailer output elements */
+    private String  trailerElements;
+    /** Gets the trailer output elements
+     *  @return "out time dbat script xls more" or a subset thereof
+     */
+    public String getTrailerElements() {
+        return this.trailerElements;
+    } // getTrailerElements
+    /** Sets the trailer output elements
+     *  @param trailerElements "out time dbat script xls more" or a subset thereof
+     */
+    public void setTrailerElements(String trailerElements) {
+        this.trailerElements = trailerElements;
+    } // setTrailerElements
+    //--------
     /** how to trim CHAR and VARCHAR column values */
     private int trimSides;
     /** Tells how CHARs and VARCHARs should be trimmed by INSERT and SELECT
@@ -717,6 +733,7 @@ public class Configuration implements Serializable {
         result += "rdbmsId="            + getRdbmsId()              + "\n";
         result += "separator="          + getSeparator()            + "\n";
     //  result += "tableSerializer="    + getTableSerializer().getDescription(getLanguage()) + "\n";
+        result += "trailerElements="    + getTrailerElements()      + "\n";
         result += "trimSides="          + getTrimSides()            + "\n";
         result += "verbose="            + getVerbose()              + "\n";
         result += "withHeaders="        + isWithHeaders()           + "\n";
@@ -784,6 +801,7 @@ public class Configuration implements Serializable {
         setManner       (JDBC_MANNER);
         setMaxCommit    (getFetchLimit()); // very high - never reached
         setNullText     (1); // write "null"
+        setTrailerElements("out time dbat script xls more"); // default: all
         setTrimSides    (2); // trim on both sides
         setParameterMap (new HashMap<String, String[]>());
         setProcSeparator(null); // no default
@@ -820,6 +838,7 @@ public class Configuration implements Serializable {
         setDefaultSchema   (props.getProperty("schema"   , ""   ).trim());
         setEmailAddress    (props.getProperty("email"    , "punctum@punctum.com").trim());
         setExecSQL         (1);
+        setTrailerElements (props.getProperty("trailer"  , "out time dbat script xls more").trim());
         String prop = null;
         try {
             prop =          props.getProperty("commit"   , "250").trim();

@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+    2021-02-15: with Config.getTrailerElements
     2021-01-04: &execsql=0 only if there is no user http request parameter
     2020-11-16: &execsql=1|0, <select scroll="w,h">
     2020-05-04: attribute target= in <col>
@@ -323,7 +324,6 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
      */
     private String trailerSelect;
     /** default value for {@link #trailerSelect} */
-    private static final String TRAILER_ALL = " out time dbat script xls more";
 
     /** Abbreviation for a complicated test during parsing:
      *  this variable is normally 0, but -1 for the static serializers which
@@ -396,7 +396,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     private String getTrailer(String trailerSelect, String language, String specName) {
         String result = "";
         if (trailerSelect == null) { // missing => all, empty => none, separated by ","
-            trailerSelect = TRAILER_ALL;
+            trailerSelect = " " + config.getTrailerElements(); // TRAILER_ALL;
         } else if (trailerSelect.length() == 0) {
             trailerSelect = " none";
         } else {
@@ -1158,7 +1158,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 colBuffer.setLength(0); // start character assembly for all subordinate elements
 
             } else if (qName.equals(ROOT_TAG    )) {
-                trailerSelect       = TRAILER_ALL; // assume that there will be no <trailer /> element
+                trailerSelect       = " " + config.getTrailerElements(); // assume that there will be no <trailer /> element
                 //--------
                 String debugAttr    = attrs.getValue("debug");
                 debug = 0;
