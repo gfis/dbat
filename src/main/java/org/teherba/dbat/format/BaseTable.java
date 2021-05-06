@@ -390,7 +390,7 @@ public abstract class BaseTable {
         setMimeType         ("text/plain");
         setDescription      ("en", format.toUpperCase());
         newline             = System.getProperty("line.separator");
-        pseudoAttributes    = new StringBuffer(64);
+//GF        pseudoAttributes    = new StringBuffer(64);
     } // Constructor(format)
 
     //===================
@@ -486,59 +486,59 @@ public abstract class BaseTable {
         String result = nextLobURL;
         return result;
     } // replaceClobByURL
-    //---------------------------------
-    /** Attributes for the next real cell, from an SQL column with <code>pseudo="attr"</code> attribute,
-     *  used to accumulate style, title and other attributes and to apply them on the next real cell
-     */
-    private StringBuffer pseudoAttributes;
-    /** Gets the remembered attributes string
-     *  @return concatenated attributes in the form <pre> attr1="val1" attr2="val2"</pre>
-     */
-    protected String getPseudoAttrs() {
-        return pseudoAttributes.toString();
-    } // getPseudoAttrs
-    /** Append an attribute for the next real cell
-     *  @param name attribute name, taken from the col element's name
-     *  @param value attribute value
-     */
-    protected void appendPseudoAttr(String name, String value) {
-        pseudoAttributes.append(" ");
-        pseudoAttributes.append(name);
-        pseudoAttributes.append("=\"");
-        pseudoAttributes.append(value);
-        pseudoAttributes.append("\"");
-    } // appendPseudoAttr
-    /** Clears the remembered attributes string
-     */
-    protected void clearPseudoAttrs() {
-        pseudoAttributes.setLength(0);
-    } // clearPseudoAttrs
-    //---------------------------------
-    /** Parameters for the next real cell, from an SQL column with <code>pseudo="parm"</code> attribute,
-     *  used as the HTTP parameters in the query string of a link on the next real cell
-     */
-    private StringBuffer pseudoParameters;
-    /** Gets the remembered parameters string
-     *  @return concatenated parameters in the form <pre>&amp;parm1=val1&amp;parm2=val2</pre>
-     */
-    protected String getPseudoParms() {
-        return pseudoParameters.toString();
-    } // getPseudoParms
-    /** Append a parameter for the next real cell
-     *  @param name parameter name, taken from the col element's name
-     *  @param value parameter value
-     */
-    protected void appendPseudoParm(String name, String value) {
-        pseudoParameters.append("&amp;");
-        pseudoParameters.append(name);
-        pseudoParameters.append("=");
-        pseudoParameters.append(value);
-    } // appendPseudoParm
-    /** Clears the remembered parameters string
-     */
-    protected void clearPseudoParms() {
-        pseudoParameters.setLength(0);
-    } // clearPseudoParms
+//GF    //---------------------------------
+//GF    /** Attributes for the next real cell, from an SQL column with <code>pseudo="attr"</code> attribute,
+//GF     *  used to accumulate style, title and other attributes and to apply them on the next real cell
+//GF     */
+//GF    private StringBuffer pseudoAttributes;
+//GF    /** Gets the remembered attributes string
+//GF     *  @return concatenated attributes in the form <pre> attr1="val1" attr2="val2"</pre>
+//GF     */
+//GF    protected String getPseudoAttrs() {
+//GF        return pseudoAttributes.toString();
+//GF    } // getPseudoAttrs
+//GF    /** Append an attribute for the next real cell
+//GF     *  @param name attribute name, taken from the col element's name
+//GF     *  @param value attribute value
+//GF     */
+//GF    protected void appendPseudoAttr(String name, String value) {
+//GF        pseudoAttributes.append(" ");
+//GF        pseudoAttributes.append(name);
+//GF        pseudoAttributes.append("=\"");
+//GF        pseudoAttributes.append(value);
+//GF        pseudoAttributes.append("\"");
+//GF    } // appendPseudoAttr
+//GF    /** Clears the remembered attributes string
+//GF     */
+//GF    protected void clearPseudoAttrs() {
+//GF        pseudoAttributes.setLength(0);
+//GF    } // clearPseudoAttrs
+//GF    //---------------------------------
+//GF    /** Parameters for the next real cell, from an SQL column with <code>pseudo="parm"</code> attribute,
+//GF     *  used as the HTTP parameters in the query string of a link on the next real cell
+//GF     */
+//GF    private StringBuffer pseudoParameters;
+//GF    /** Gets the remembered parameters string
+//GF     *  @return concatenated parameters in the form <pre>&amp;parm1=val1&amp;parm2=val2</pre>
+//GF     */
+//GF    protected String getPseudoParms() {
+//GF        return pseudoParameters.toString();
+//GF    } // getPseudoParms
+//GF    /** Append a parameter for the next real cell
+//GF     *  @param name parameter name, taken from the col element's name
+//GF     *  @param value parameter value
+//GF     */
+//GF    protected void appendPseudoParm(String name, String value) {
+//GF        pseudoParameters.append("&amp;");
+//GF        pseudoParameters.append(name);
+//GF        pseudoParameters.append("=");
+//GF        pseudoParameters.append(value);
+//GF    } // appendPseudoParm
+//GF    /** Clears the remembered parameters string
+//GF     */
+//GF    protected void clearPseudoParms() {
+//GF        pseudoParameters.setLength(0);
+//GF    } // clearPseudoParms
     //---------------------------------
     /** Style for next real column, from a column with <code>pseudo="style"</code> attribute,
      *  used to apply font styles and colors on cell contents

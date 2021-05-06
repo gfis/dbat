@@ -1,5 +1,6 @@
 /*  Generator for an HTML table
     @(#) $Id$
+    2021-05-06: pseudo="sort"
     2021-01-04: max-width,max-height instead
     2020-11-16: scrollArea="width,height"; endTable; <div> around the table
     2020-05-04: attribute target= in <col>
@@ -565,7 +566,7 @@ public class HTMLTable extends XMLTable {
                         column.setStyle(VISIBLE);
                     }
                     pseudo = column.getPseudo();
-                    if (pseudo != null && pseudo.equals("style")) {
+                    if (pseudo != null && (pseudo.equals("sort") || pseudo.equals("style"))) {
                         nextStyle = null;
                     } else { // non-pseudo
                         if (header == null) {
@@ -637,8 +638,10 @@ public class HTMLTable extends XMLTable {
                             result.append(column.getValue());
                         }
                         result.append("</td>");
+                    } else if (pseudo.equals("sort")) {
+                        // ignore, documentation only
                     } else if (pseudo.equals("style")) {
-                        nextStyle = column.getValue();
+                        nextLobURL = column.getValue();
                 /*
                     } else if (pseudo.equals("url")) {
                         nextLobURL = column.getValue();
@@ -690,6 +693,8 @@ public class HTMLTable extends XMLTable {
                         result.append('>');
                         result.append(column.getValue());
                         result.append("</td>");
+                    } else if (pseudo.equals("sort")) {
+                        // ignore, documentation only
                     } else if (pseudo.equals("style")) {
                         nextStyle = column.getValue();
                 /*

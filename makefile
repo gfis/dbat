@@ -22,8 +22,6 @@ DBAW=java -cp dist/dbat.jar org.teherba.dbat.Dbat  -c worddb.properties  -e UTF-
 DIFF=diff -y --suppress-common-lines --width=160
 DIFF=diff -w -rs -C0
 SRC=src/main/java/org/teherba/dbat
-TOMC=c:/var/lib/tomcat/webapps/dbat
-TOMC=/var/lib/tomcat/webapps/dbat
 METHOD=post
 LANG=en
 TAB=relatives
@@ -34,6 +32,8 @@ TEST="%"
 # for Windows, SUDO should be empty
 SUDO=sudo
 SUDO=
+TOMC=c:/var/lib/tomcat/webapps/dbat
+TOMC=/var/lib/tomcat/webapps/dbat
 
 all: regression
 #----
