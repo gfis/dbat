@@ -25,12 +25,14 @@ SELECT name
 FROM c01 
 WHERE name like 'Ma%%';
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="name">Name</th></tr>
 <tr><td>Maria</td></tr>
 <tr><td>Martha</td></tr>
 <tr><td class="counter" colspan="1">2 rows</td></tr>
 </table>
+</div>
 
 
     <!-- SQL:
@@ -38,12 +40,14 @@ SELECT name
 FROM c01 
 WHERE name like 'Ma%%';
 :SQL -->
+<div>
 <table id="table2">
 <tr><th title="name">Name</th></tr>
 <tr><td>Maria</td></tr>
 <tr><td>Martha</td></tr>
 <tr><td class="counter" colspan="1">2 Persons</td></tr>
 </table>
+</div>
 
 
     <!-- SQL:
@@ -51,12 +55,14 @@ SELECT name
 FROM c01 
 WHERE name like 'Ma%%';
 :SQL -->
+<div>
 <table id="table3">
 <tr><th title="name">Name</th></tr>
 <tr><td>Maria</td></tr>
 <tr><td>Martha</td></tr>
 <tr><td class="counter" colspan="1">2 Persons</td></tr>
 </table>
+</div>
 
 
     <!-- SQL:
@@ -64,12 +70,14 @@ SELECT name
 FROM c01 
 WHERE name like 'Ma%%';
 :SQL -->
+<div>
 <table id="table4">
 <tr><th title="name">Name</th></tr>
 <tr><td>Maria</td></tr>
 <tr><td>Martha</td></tr>
 <tr><td class="counter" colspan="1">2 known Persons</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/counter01.xml" type="text/plain">test/counter01</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;name=Ma%25&amp;spec=test%2Fcounter01&amp;lang=en">Excel</a>,

@@ -26,6 +26,7 @@ FROM en1
 WHERE lang = 'eng' 
 ORDER BY 1;
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="seq">seq</th><th title="code">code</th><th title="display">display</th></tr>
 <tr><td>1</td><td>M</td><td>male</td></tr>
@@ -33,6 +34,7 @@ ORDER BY 1;
 <tr><td>3</td><td>N</td><td>neuter</td></tr>
 <tr><td class="counter" colspan="3">3 codes</td></tr>
 </table>
+</div>
 
 
     <!-- SQL:

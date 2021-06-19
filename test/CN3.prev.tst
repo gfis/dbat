@@ -25,11 +25,13 @@ SELECT name
 FROM c01 
 WHERE name like 'Ilse%';
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="name">Name</th></tr>
 <tr><td>Ilse</td></tr>
 <tr><td class="counter" colspan="1">1 row</td></tr>
 </table>
+</div>
 
 
     <!-- SQL:
@@ -37,11 +39,13 @@ SELECT name
 FROM c01 
 WHERE name like 'Ilse%';
 :SQL -->
+<div>
 <table id="table2">
 <tr><th title="name">Name</th></tr>
 <tr><td>Ilse</td></tr>
 <tr><td class="counter" colspan="1">1 Person</td></tr>
 </table>
+</div>
 
 
     <!-- SQL:
@@ -49,11 +53,13 @@ SELECT name
 FROM c01 
 WHERE name like 'Ilse%';
 :SQL -->
+<div>
 <table id="table3">
 <tr><th title="name">Name</th></tr>
 <tr><td>Ilse</td></tr>
 <tr><td class="counter" colspan="1">1 Person</td></tr>
 </table>
+</div>
 
 
     <!-- SQL:
@@ -61,11 +67,13 @@ SELECT name
 FROM c01 
 WHERE name like 'Ilse%';
 :SQL -->
+<div>
 <table id="table4">
 <tr><th title="name">Name</th></tr>
 <tr><td>Ilse</td></tr>
 <tr><td class="counter" colspan="1">1 Person</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/counter01.xml" type="text/plain">test/counter01</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;name=Ilse&amp;spec=test%2Fcounter01&amp;lang=en">Excel</a>,

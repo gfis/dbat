@@ -25,6 +25,7 @@ SELECT 'showImage,' || imagefile || ',100'
 FROM im1 
 ORDER BY 1;
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="'showImage,' || imagefile || ',100'">Image</th><th title="imagename">Name</th><th title="bytesize">Size</th><th title="description">Verbatim Description</th></tr>
 <tr><td><script type="text/javascript">showImage("img/flowers/120px-Flower_in_Georgia.jpg","100");</script></td><td>120px-Flower_in_Georgia</td><td align="right">4964</td><td><span class="F">blue</span> flower</td>
@@ -41,6 +42,7 @@ ORDER BY 1;
 <script type="text/javascript">with(document.getElementById("table1").rows[6]){className="pagebreak";}</script></tr>
 <tr><td class="counter" colspan="5">6 Flowers</td></tr>
 </table>
+</div>
 
     <p>
         The images were copied from

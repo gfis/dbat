@@ -22,12 +22,14 @@ SELECT univ
 FROM c01
         	where univ like 'L%';
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td class="visible">Lübars</td><td>$</td><td>1909-02-09</td></tr>
 <tr><td class="invisible"></td><td>$</td><td>1910-02-07</td></tr>
 <tr><td class="invisible"></td><td>'</td><td>1887-07-09</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/visible05.xml" type="text/plain">test/visible05</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test%2Fvisible05&amp;lang=en">Excel</a>,

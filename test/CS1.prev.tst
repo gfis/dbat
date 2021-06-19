@@ -18,10 +18,12 @@
 SELECT count(*) 
 FROM c01;
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="count(*)">Number of Rows</th></tr>
 <tr><td align="right">8</td></tr>
 </table>
+</div>
 
 
     <h3>Switch to connection <em>mysql</em></h3>
@@ -30,10 +32,12 @@ FROM c01;
 SELECT count(*) 
 FROM c01;
 :SQL -->
+<div>
 <table id="table2">
 <tr><th title="count(*)">Number of Rows</th></tr>
 <tr><td align="right">8</td></tr>
 </table>
+</div>
 
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/switchconn.xml" type="text/plain">test/switchconn</a>,

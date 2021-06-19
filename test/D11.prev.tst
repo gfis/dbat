@@ -26,7 +26,7 @@
         <field name="gender" key="" label="Gender" init="" type="char" size="1" valid=".*" remark="M or F" />
         <field name="place" key="" label="Place" init="" type="char" size="40" valid=".*" remark="Town" />
         <field name="decease" key="" label="Decease" init="" align="right" type="int" size="10" valid=".*" remark="Decease Year" />
-        <field name="changed" key="" label="Changed" init="CURRENT_TIMESTAMP" type="timestamp" size="19" valid=".*" remark="last update time" />
+        <field name="changed" key="" label="Changed" init="current_timestamp()" type="timestamp" size="19" valid=".*" remark="last update time" />
         <field name="user" key="" label="User" init="" type="char" size="8" valid=".*" remark="of last change" />
         <where></where>
         <order by="1" />

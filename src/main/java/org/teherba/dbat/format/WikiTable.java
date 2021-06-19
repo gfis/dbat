@@ -323,6 +323,15 @@ public class WikiTable extends BaseTable {
                         if (align != null && ! align.equals("left")) {
                             result.append("align=\"" + align + "\"|");
                         }
+                    /*
+                        String style = column.getStyle();
+                        if (false) {
+                        } else if (nextStyle != null && nextStyle.length() > 0) {
+                            result.append(" class=\"" + nextStyle + "\"");
+                        } else if (style     != null && style    .length() > 0) {
+                            result.append(" class=\"" + style + "\"");
+                        }
+                    */
                         nextStyle = null;
                         result.append(column.getValue());
                     } // pseudo == null

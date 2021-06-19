@@ -26,8 +26,10 @@ WHERE name = 'Teherba'
         and family = 'Ritter'
         and gender = '';
 :SQL -->
+<div>
 <table id="table1">
 </table>
+</div>
 
     <form method="post" action="servlet?spec=test/crud03.iv"><input name="spec" type="hidden" value="test/crud03.iv" />
 

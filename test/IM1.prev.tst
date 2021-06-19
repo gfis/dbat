@@ -24,6 +24,7 @@ SELECT 'showImage,' || imagefile || ',100'
 FROM im1 
 ORDER BY 1;
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="'showImage,' || imagefile || ',100'">Image</th><th title="imagename">Name</th><th title="bytesize">Size</th><th title="description">Verbatim Description</th></tr>
 <tr><td><script type="text/javascript">showImage("img/flowers/120px-Flower_in_Georgia.jpg","100");</script></td><td>120px-Flower_in_Georgia</td><td align="right">4964</td><td><span class="F">blue</span> flower</td></tr>
@@ -34,6 +35,7 @@ ORDER BY 1;
 <tr><td><script type="text/javascript">showImage("img/flowers/90px-Flower_in_Georgia.jpg","100");</script></td><td>90px-Flower_in_Georgia</td><td align="right">5426</td><td><em>rose<br />flower</em></td></tr>
 <tr><td class="counter" colspan="4">6 Flowers</td></tr>
 </table>
+</div>
 
     <p>
         The images were copied from

@@ -31,6 +31,7 @@ FROM relatives
 WHERE name    like '%' 
 ORDER BY name;
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="name">Name</th><th title="family">Family</th><th title="gender">Gender</th><th title="birth">Birthdate</th><th title="decease">Decease</th></tr>
 <tr><td><a href="servlet?spec=test/uml01&amp;name=C%C3%A4cilie">Cäcilie</a></td><td>Fischer</td><td align="center">F</td><td>1919-11-17</td><td>1999</td></tr>
@@ -44,6 +45,7 @@ ORDER BY name;
 <tr><td><a href="servlet?spec=test/uml01&amp;name=Martha">Martha</a></td><td>Fischer</td><td align="center">F</td><td>1909-11-17</td><td>1999</td></tr>
 <tr><td><a href="servlet?spec=test/uml01&amp;name=Teherba">Teherba</a></td><td>Ritter</td><td align="center">F</td><td>1886-02-04</td><td>1968</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/uml01.xml" type="text/plain">test/uml01</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;search_name=C%C3%A4cilie&amp;spec=test.uml01&amp;lang=en&amp;name=%25">Excel</a>,

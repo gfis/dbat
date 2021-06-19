@@ -20,10 +20,12 @@
         <input type="submit" value="Submit"></input>
     </form>
 
-    <table id="x00">
+    <div>
+<table id="x00">
 <tr><th>Name</th><th>Count</th><th>Last</th></tr>
 <tr><td></td><td>8</td><td>Martha</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/callproc.xml" type="text/plain">test/callproc</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test%2Fcallproc&amp;lang=en&amp;part=&amp;update_count=1">Excel</a>,

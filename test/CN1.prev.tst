@@ -25,9 +25,11 @@ SELECT name
 FROM c01 
 WHERE name like 'x%';
 :SQL -->
+<div>
 <table id="table1">
 <tr><td class="counter" colspan="1">0 rows</td></tr>
 </table>
+</div>
 
 
     <!-- SQL:
@@ -35,9 +37,11 @@ SELECT name
 FROM c01 
 WHERE name like 'x%';
 :SQL -->
+<div>
 <table id="table2">
 <tr><td class="counter" colspan="1">0 Persons</td></tr>
 </table>
+</div>
 
 
     <!-- SQL:
@@ -45,8 +49,10 @@ SELECT name
 FROM c01 
 WHERE name like 'x%';
 :SQL -->
+<div>
 <table id="table3">
 </table>
+</div>
 
 
     <!-- SQL:
@@ -54,9 +60,11 @@ SELECT name
 FROM c01 
 WHERE name like 'x%';
 :SQL -->
+<div>
 <table id="table4">
 <tr><td class="counter" colspan="1">no Persons known</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/counter01.xml" type="text/plain">test/counter01</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;lang=en&amp;name=x&amp;spec=test%2Fcounter01">Excel</a>,

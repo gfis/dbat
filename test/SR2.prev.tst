@@ -31,6 +31,7 @@ SELECT year
 FROM c01 
 WHERE name like '%%';
 :SQL -->
+<div>
 <table id="table1" class="sortable">
 <thead>
 <tr><th title="Klick =&gt; Sort">Year</th><th title="Klick =&gt; Sort">Name</th><th title="Klick =&gt; Sort">University</th><th title="Klick =&gt; Sort">Gender</th><th title="Klick =&gt; Sort">Birthdate</th></tr>
@@ -55,6 +56,7 @@ WHERE name like '%%';
 <tr><td class="counter" colspan="6">8 Persons</td></tr>
 </tfoot>
 </table>
+</div>
 
 <br />Ausgabe am yyyy-mm-dd hh:mm:ss durch <a href="index.html">Dbat</a>-Skript <a target="_blank" href="spec/test/color07.xml" type="text/plain">test/color07</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;lang=de&amp;spec=test%2Fcolor07&amp;name=%25">Excel</a>,

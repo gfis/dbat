@@ -28,11 +28,13 @@ SELECT name
 FROM c01 
 WHERE name like '%r%' ORDER by birth limit 2;
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td>Fritz</td><td>Waldshut</td><td align="right">1995</td><td>&lt;</td><td>1907-08-08</td></tr>
 <tr><td>Martha</td><td>Freiburg</td><td align="right">1999</td><td>&amp;</td><td>1909-11-17</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/order02.xml" type="text/plain">test/order02</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test%2Forder02&amp;lang=en&amp;name=%25r">Excel</a>,

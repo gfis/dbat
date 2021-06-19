@@ -31,6 +31,7 @@ SELECT case when year < 1980 then 'gry' else 'wht' end
 , birth 
 FROM c01;
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="Year of Decease">Year</th><th title="Family Name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right" class="wht"><a href="servlet?spec=test/selec01&amp;name=Martha&amp;year=1999">1999</a></td><td class="blu"><a href="servlet?spec=test/selec01&amp;year=1999&amp;name=Martha">Martha</a></td><td class="lye">Freiburg</td><td>&amp;</td><td>1909-11-17</td></tr>
@@ -43,6 +44,7 @@ FROM c01;
 <tr><td align="right" class="wht"><a href="servlet?spec=test/selec01&amp;name=Lucie&amp;year=1984">1984</a></td><td class="wht"><a href="servlet?spec=test/selec01&amp;year=1984&amp;name=Lucie">Lucie</a></td><td class="red">Lübars</td><td>'</td><td>1887-07-09</td></tr>
 <tr><td class="counter" colspan="8">8 persons</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./web/spec/test/color04.xml" type="text/plain">web/spec/test/color04.xml</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;lang=en&amp;name=%25r">Excel</a>,

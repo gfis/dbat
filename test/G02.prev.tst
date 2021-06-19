@@ -12,6 +12,7 @@
 <!-- SQL:
 select sp1, sp2, sp3 from pivot order by 1, 2, 3;
 :SQL -->
+<div>
 <table id="table_not_specified">
 <tr><th>sp1</th><th>sp2</th><th>sp3</th></tr>
 <tr><td></td><td>c1</td><td>S1</td></tr>
@@ -44,4 +45,5 @@ select sp1, sp2, sp3 from pivot order by 1, 2, 3;
 <tr><td>D</td><td>c4</td><td>D4</td></tr>
 <tr><td>D</td><td>c5</td><td>D5</td></tr>
 </table>
+</div>
 </body></html>

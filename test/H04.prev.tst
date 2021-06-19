@@ -45,6 +45,7 @@ Aufruf:
 Optionen und Aktionen werden von links nach rechts abgearbeitet.
 SQL-Anweisungen muessen ein Leerzeichen enthalten und in doppelte Anf.zeichen eingeschlossen werden. Dateinamen duerfen keine Leerzeichen enthalten. '-' ist STDIN.
 Eingebundene JDBC-Treiber:
+  SQLServerDriver:1 V8.2
   com.mysql.jdbc.Driver V5.1
 Implementierte Ausgabeformate (-m):
   html      HTML

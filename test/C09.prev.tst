@@ -27,6 +27,7 @@ SELECT year
 FROM c01 
 WHERE name like '%';
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1999</td><td class="red">Martha</td><td>Freiburg</td><td>&amp;</td><td>1909-11-17</td></tr>
@@ -38,6 +39,7 @@ WHERE name like '%';
 <tr><td align="right">1985</td><td class="blu">Dorothea</td><td>Lübars</td><td>$</td><td>1910-02-07</td></tr>
 <tr><td align="right">1984</td><td class="blu">Lucie</td><td>Lübars</td><td>'</td><td>1887-07-09</td></tr>
 </table>
+</div>
 
 
 	<a name="block1"></a>
@@ -52,6 +54,7 @@ SELECT year
 FROM c01 
 WHERE name like '%';
 :SQL -->
+<div>
 <table id="table2">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1999</td><td>Martha</td><td>Freiburg</td><td>&amp;</td><td>1909-11-17</td>
@@ -71,6 +74,7 @@ WHERE name like '%';
 <tr><td align="right">1984</td><td>Lucie</td><td>Lübars</td><td>'</td><td>1887-07-09</td>
 <script type="text/javascript">with(document.getElementById("table2").rows[8]){className="blu";}</script></tr>
 </table>
+</div>
 
 
 	<a name="block2"></a>
@@ -85,6 +89,7 @@ SELECT year
 FROM c01 
 WHERE name like '%';
 :SQL -->
+<div>
 <table id="table3">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1999</td><td style="color:white;background-color:red">Martha</td><td>Freiburg</td><td>&amp;</td><td>1909-11-17</td></tr>
@@ -96,6 +101,7 @@ WHERE name like '%';
 <tr><td align="right">1985</td><td style="color:black;background-color:lightblue">Dorothea</td><td>Lübars</td><td>$</td><td>1910-02-07</td></tr>
 <tr><td align="right">1984</td><td style="color:black;background-color:lightblue">Lucie</td><td>Lübars</td><td>'</td><td>1887-07-09</td></tr>
 </table>
+</div>
 
 
 	<a name="block3"></a>
@@ -110,6 +116,7 @@ SELECT year
 FROM c01 
 WHERE name like '%';
 :SQL -->
+<div>
 <table id="table4">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1999</td><td>Martha</td><td>Freiburg</td><td>&amp;</td><td>1909-11-17</td>
@@ -129,6 +136,7 @@ WHERE name like '%';
 <tr><td align="right">1984</td><td>Lucie</td><td>Lübars</td><td>'</td><td>1887-07-09</td>
 <script type="text/javascript">with(document.getElementById("table4").rows[8].style){color="black";backgroundColor="lightblue";}</script></tr>
 </table>
+</div>
 
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/color09.xml" type="text/plain">test/color09</a>,

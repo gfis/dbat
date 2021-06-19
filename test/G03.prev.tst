@@ -22,6 +22,7 @@ SELECT sp1
 FROM pivot 
 ORDER BY 1,2,3;
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="sp1">Column 1</th><th title="sp2">Column 2</th><th title="sp3">Column 3</th></tr>
 <tr><td></td><td>c1</td><td>S1</td></tr>
@@ -55,6 +56,7 @@ ORDER BY 1,2,3;
 <tr><td>D</td><td>c5</td><td>D5</td></tr>
 <tr><td class="counter" colspan="3">25 rows</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/grouping.xml" type="text/plain">test/grouping</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test%2Fgrouping&amp;lang=en">Excel</a>,

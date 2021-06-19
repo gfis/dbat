@@ -46,6 +46,7 @@ Options and actions are evaluated from left to right.
 SQL statements must contain a space. Enclose them in double quotes.
 Filenames may not contain spaces. '-' is STDIN.
 Included JDBC drivers:
+  SQLServerDriver:1 V8.2
   com.mysql.jdbc.Driver V5.1
 Implemented output formats (-m):
   html      HTML

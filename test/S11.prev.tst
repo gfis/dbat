@@ -12,6 +12,7 @@
 <!-- SQL:
 SELECT * FROM c01;
 :SQL -->
+<div>
 <table id="c01">
 <tr><th>name</th><th>univ</th><th>year</th><th>gender</th><th>birth</th></tr>
 <tr><td>Martha</td><td>Freiburg</td><td>1999</td><td>&amp;</td><td>1909-11-17</td></tr>
@@ -23,4 +24,5 @@ SELECT * FROM c01;
 <tr><td>Dorothea</td><td>Lübars</td><td>1985</td><td>$</td><td>1910-02-07</td></tr>
 <tr><td>Lucie</td><td>Lübars</td><td>1984</td><td>'</td><td>1887-07-09</td></tr>
 </table>
+</div>
 </body></html>

@@ -25,10 +25,12 @@
 SELECT count(*) 
 FROM c01;
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="count(*)">Number of Rows</th></tr>
 <tr><td>8</td></tr>
 </table>
+</div>
 
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/minusconn.xml" type="text/plain">test/minusconn</a>,

@@ -31,6 +31,7 @@ SELECT concat(name, concat('*', cast(year as char)))
 FROM c01 
 WHERE name like '%';
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="concat(name, concat('*', cast(year as char)))">Year</th><th title="concat(cast(year as char), concat('=', name))">Name</th><th title="concat(cast(year as char), concat('=e.', cast(year as char)))">Year</th><th title="name || '=f.' || name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right"><a href="servlet?spec=test/selec01&amp;name=Martha&amp;year=1999">1999</a></td><td><a href="servlet?spec=test/selec01&amp;year=1999&amp;name=Martha">Martha</a></td><td><a href="servlet?spec=test/selec01&amp;year=1999&amp;name=e.1999">e.1999</a></td><td><a href="servlet?spec=test/selec01&amp;name=Martha&amp;year=f.Martha">f.Martha</a></td><td>Freiburg</td><td align="center">&amp;</td><td>1909-11-17</td></tr>
@@ -43,6 +44,7 @@ WHERE name like '%';
 <tr><td align="right"><a href="servlet?spec=test/selec01&amp;name=Lucie&amp;year=1984">1984</a></td><td><a href="servlet?spec=test/selec01&amp;year=1984&amp;name=Lucie">Lucie</a></td><td><a href="servlet?spec=test/selec01&amp;year=1984&amp;name=e.1984">e.1984</a></td><td><a href="servlet?spec=test/selec01&amp;name=Lucie&amp;year=f.Lucie">f.Lucie</a></td><td>Lübars</td><td align="center">'</td><td>1887-07-09</td></tr>
 <tr><td class="counter" colspan="7">8 persons</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/column02.xml" type="text/plain">test/column02</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test%2Fcolumn02&amp;lang=en&amp;name=%25">Excel</a>,

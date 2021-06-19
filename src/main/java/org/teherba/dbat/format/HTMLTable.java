@@ -642,6 +642,7 @@ public class HTMLTable extends XMLTable {
                     } else if (pseudo.equals("sort")) {
                         // ignore, documentation only
                     } else if (pseudo.equals("style")) {
+                        nextStyle = column.getValue();
                         nextLobURL = column.getValue();
                 /*
                     } else if (pseudo.equals("url")) {

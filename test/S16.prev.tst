@@ -28,6 +28,7 @@ SELECT name
 FROM c01 
 WHERE name like '%r%';
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td><a href="servlet?spec=test/selec03&amp;name=Martha">Martha</a></td><td>Freiburg</td><td align="right">1999</td><td>&amp;</td><td>1909-11-17</td></tr>
@@ -37,6 +38,7 @@ WHERE name like '%r%';
 <tr><td><a href="servlet?spec=test/selec03&amp;name=Dorothea">Dorothea</a></td><td>Lübars</td><td align="right">1985</td><td>$</td><td>1910-02-07</td></tr>
 <tr><td class="counter" colspan="5">5 Persons</td></tr>
 </table>
+</div>
 
 
     <h3>2nd Select from test table <em>c01</em> - with linked values</h3>
@@ -51,6 +53,7 @@ SELECT concat(name, concat('*', cast(year as char)))
 FROM c01 
 WHERE birth like '%';
 :SQL -->
+<div>
 <table id="table2">
 <tr><th title="concat(name, concat('*', cast(year as char)))">Year</th><th title="concat(cast(year as char), concat('=', name))">Name</th><th title="concat(cast(year as char), concat('=e.', cast(year as char)))">Year</th><th title="concat(name, concat('=f.', name))">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right"><a href="servlet?spec=test/selec03&amp;name=Martha&amp;year=1999">1999</a></td><td><a href="servlet?spec=test/selec03&amp;year=1999&amp;name=Martha">Martha</a></td><td align="right"><a href="servlet?spec=spec1&amp;prefix=1999&amp;prefix2=e.1999">e.1999</a></td><td><a href="servlet?spec=spec1&amp;prefix=Martha&amp;prefix2=f.Martha">f.Martha</a></td><td>Freiburg</td><td>&amp;</td><td><a href="servlet?spec=test.selec03&amp;birth=1909-11-17">1909-11-17</a></td></tr>
@@ -63,6 +66,7 @@ WHERE birth like '%';
 <tr><td align="right"><a href="servlet?spec=test/selec03&amp;name=Lucie&amp;year=1984">1984</a></td><td><a href="servlet?spec=test/selec03&amp;year=1984&amp;name=Lucie">Lucie</a></td><td align="right"><a href="servlet?spec=spec1&amp;prefix=1984&amp;prefix2=e.1984">e.1984</a></td><td><a href="servlet?spec=spec1&amp;prefix=Lucie&amp;prefix2=f.Lucie">f.Lucie</a></td><td>Lübars</td><td>'</td><td><a href="servlet?spec=test.selec03&amp;birth=1887-07-09">1887-07-09</a></td></tr>
 <tr><td class="counter" colspan="7">8 Persons</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="./web/spec/test/selec03.xml" type="text/plain">web/spec/test/selec03.xml</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;lang=en&amp;name=%25r">Excel</a>,

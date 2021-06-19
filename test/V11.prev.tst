@@ -93,6 +93,7 @@ WHERE name like '%'
         and gender like '%' 
 ORDER BY name,family;
 :SQL -->
+<div>
 <table id="table2">
 <tr><th title="update">Upd.</th><th title="delete">Del.</th><th title="name">Name</th><th title="family">Family</th><th title="gender">Gender</th><th title="birth">Birthdate</th><th title="place">Place</th><th title="decease">Died</th></tr>
 <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Dorothea&amp;family=Fischer&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Dorothea&amp;family=Fischer&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Dorothea</td><td>Fischer</td><td align="center">F</td><td>1910-02-07</td><td>Berlin</td><td align="right">1985</td></tr>
@@ -106,6 +107,7 @@ ORDER BY name,family;
 <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Teherba&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=&amp;search_family=&amp;search_gender=&amp;name=Teherba&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Teherba</td><td>Ritter</td><td align="center">F</td><td>1886-02-04</td><td>Oranienburg</td><td align="right">1968</td></tr>
 <tr><td class="counter" colspan="8">9 Persons</td></tr>
 </table>
+</div>
 
   
     <h3>Help text follows here</h3>

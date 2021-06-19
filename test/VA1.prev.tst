@@ -28,6 +28,7 @@ FROM relatives
 WHERE name like  ? 
 ORDER BY 1;
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="name">Name</th><th title="family">Family</th><th title="birth">Birthdate</th></tr>
 <tr><td>Dorothea</td><td>Fischer</td><td>1910-02-07</td></tr>
@@ -40,6 +41,7 @@ ORDER BY 1;
 <tr><td>Martha</td><td>Fischer</td><td>1909-11-17</td></tr>
 <tr><td>Teherba</td><td>Ritter</td><td>1886-02-04</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/var01.xml" type="text/plain">test/var01</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;name=%25&amp;spec=test.var01&amp;lang=en">Excel</a>,

@@ -40,6 +40,7 @@ FROM c01
 WHERE substr(name, 1, 1) in ('M', 'L') 
 ORDER BY 3;
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="birth">Birthdate</th></tr>
 <tr><td>Lucie</td><td>Lübars</td><td>1887-07-09</td></tr>
@@ -47,6 +48,7 @@ ORDER BY 3;
 <tr><td>Maria</td><td>Hermsdorf</td><td>1914-09-17</td></tr>
 <tr><td class="counter" colspan="3">3 Persons</td></tr>
 </table>
+</div>
 
 
 	<h3>Test with list of int years</h3>
@@ -58,12 +60,14 @@ FROM c01
 WHERE year(birth) in (1887, 1914) 
 ORDER BY 3;
 :SQL -->
+<div>
 <table id="table2">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="birth">Birthdate</th></tr>
 <tr><td>Lucie</td><td>Lübars</td><td>1887-07-09</td></tr>
 <tr><td>Maria</td><td>Hermsdorf</td><td>1914-09-17</td></tr>
 <tr><td class="counter" colspan="3">2 Persons</td></tr>
 </table>
+</div>
 
 
 	<h3>Test with list of char years</h3>
@@ -75,12 +79,14 @@ FROM c01
 WHERE cast(year(birth) as char) in ('1910', '1911') 
 ORDER BY 3;
 :SQL -->
+<div>
 <table id="table3">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="birth">Birthdate</th></tr>
 <tr><td>Dorothea</td><td>Lübars</td><td>1910-02-07</td></tr>
 <tr><td>Johannes</td><td>Schramberg</td><td>1911-06-03</td></tr>
 <tr><td class="counter" colspan="3">2 Persons</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/listbox.xml" type="text/plain">test/listbox</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test%2Flistbox&amp;lang=en&amp;namebox=M&amp;namebox=L&amp;birthint=1887+1914&amp;birthchar=1910+1911">Excel</a>,

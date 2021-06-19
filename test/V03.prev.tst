@@ -94,12 +94,14 @@ WHERE name like 'M%'
         and gender like '%' 
 ORDER BY name,family;
 :SQL -->
+<div>
 <table id="table2">
 <tr><th title="update">Upd.</th><th title="delete">Del.</th><th title="name">Name</th><th title="family">Family</th><th title="gender">Gender</th><th title="birth">Birthdate</th><th title="place">Place</th><th title="decease">Died</th></tr>
 <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=M&amp;search_family=&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=M&amp;search_family=&amp;search_gender=&amp;name=Maria&amp;family=Ritter&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Maria</td><td>Ritter</td><td align="center">F</td><td>1914-09-17</td><td>Hermsdorf</td><td align="right">1999</td></tr>
 <tr><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=M&amp;search_family=&amp;search_gender=&amp;name=Martha&amp;family=Fischer&amp;gender=F&amp;view=upd"><img src="img/upd.png" /></a></td><td align="center"><a href="servlet?spec=test/crud03&amp;search_name=M&amp;search_family=&amp;search_gender=&amp;name=Martha&amp;family=Fischer&amp;gender=F&amp;view=del"><img src="img/del.png" /></a></td><td>Martha</td><td>Fischer</td><td align="center">F</td><td>1909-11-17</td><td>Freiburg</td><td align="right">1999</td></tr>
 <tr><td class="counter" colspan="8">2 Persons</td></tr>
 </table>
+</div>
 
   
     <h3>Help text follows here</h3>

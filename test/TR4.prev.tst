@@ -18,6 +18,7 @@ SELECT name
 , year 
 FROM c01;
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="name">Name</th><th title="year">Year</th></tr>
 <tr><td>Martha</td><td align="right">1999</td></tr>
@@ -29,6 +30,7 @@ FROM c01;
 <tr><td>Dorothea</td><td align="right">1985</td></tr>
 <tr><td>Lucie</td><td align="right">1984</td></tr>
 </table>
+</div>
 
     
 <br />Output by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/trail04.xml" type="text/plain">test/trail04</a>,

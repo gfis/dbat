@@ -27,10 +27,12 @@ SELECT year
 FROM c01 
 WHERE name like 'Johannes%';
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1992</td><td class="red">Johannes</td><td>Schramberg</td><td>&lt;</td><td>1911-06-03</td></tr>
 </table>
+</div>
 
 
 	<a name="block1"></a>
@@ -45,11 +47,13 @@ SELECT year
 FROM c01 
 WHERE name like 'Johannes%';
 :SQL -->
+<div>
 <table id="table2">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1992</td><td>Johannes</td><td>Schramberg</td><td>&lt;</td><td>1911-06-03</td>
 <script type="text/javascript">with(document.getElementById("table2").rows[1]){className="red";}</script></tr>
 </table>
+</div>
 
 
 	<a name="block2"></a>
@@ -64,10 +68,12 @@ SELECT year
 FROM c01 
 WHERE name like 'Johannes%';
 :SQL -->
+<div>
 <table id="table3">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1992</td><td style="color:white;background-color:red">Johannes</td><td>Schramberg</td><td>&lt;</td><td>1911-06-03</td></tr>
 </table>
+</div>
 
 
 	<a name="block3"></a>
@@ -82,11 +88,13 @@ SELECT year
 FROM c01 
 WHERE name like 'Johannes%';
 :SQL -->
+<div>
 <table id="table4">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1992</td><td>Johannes</td><td>Schramberg</td><td>&lt;</td><td>1911-06-03</td>
 <script type="text/javascript">with(document.getElementById("table4").rows[1].style){color="white";backgroundColor="red";}</script></tr>
 </table>
+</div>
 
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/color09.xml" type="text/plain">test/color09</a>,

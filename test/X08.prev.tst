@@ -9,8 +9,10 @@
 <title>dbat</title>
 <link rel="stylesheet" type="text/css" href="stylesheet.css" />
 </head><body>
+<div>
 <table id="x07">
 <tr><th>in1</th><th>out:DECIMAL2</th><th>out:DECIMAL3</th><th>out:DATE4</th><th>out:TIME5</th><th>out:TIMESTAMP6</th></tr>
 <tr><td>row2</td><td>194706290530000000</td><td>194706.290</td><td>1981-08-09</td><td>11:30:00</td><td>1981-08-09 11:30:00.000</td></tr>
 </table>
+</div>
 </body></html>

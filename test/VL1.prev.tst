@@ -30,6 +30,7 @@ FROM c01
 WHERE year BETWEEN 1900 AND 2000 
 ORDER BY 1,3;
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td>Dorothea</td><td>Lübars</td><td align="right">1985</td><td>$</td><td>1910-02-07</td></tr>
@@ -42,6 +43,7 @@ ORDER BY 1,3;
 <tr><td>Martha</td><td>Freiburg</td><td align="right">1999</td><td>&amp;</td><td>1909-11-17</td></tr>
 <tr><td class="counter" colspan="5">8 Persons</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/selvalid.xml" type="text/plain">test/selvalid</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test.selvalid&amp;lang=en&amp;start=1900&amp;end=2000">Excel</a>,

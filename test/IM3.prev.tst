@@ -30,6 +30,7 @@ SELECT concat(cast(year as char), concat('=', name))
 FROM c01 
 WHERE name like '%';
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="concat(cast(year as char), concat('=', name))">Name</th><th title="univ">University</th><th title="'mailtoLink,' || (case 
             when year >= 1990 then name || '@' || univ || '.de'
@@ -44,6 +45,7 @@ WHERE name like '%';
 <tr><td><a href="servlet?spec=test/selec01&amp;year=1984&amp;name=Lucie">Lucie</a></td><td>Lübars</td><td></td></tr>
 <tr><td class="counter" colspan="3">8 persons</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/selec06.xml" type="text/plain">test/selec06</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test.selec06&amp;lang=en&amp;name=%25">Excel</a>,

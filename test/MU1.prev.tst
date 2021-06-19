@@ -32,6 +32,7 @@ SELECT year
 FROM c01 
 WHERE name like '%%';
 :SQL -->
+<div>
 <table id="table1" class="sortable">
 <thead>
 <tr><th title="Click =&gt; Sort">Year</th><th title="Click =&gt; Sort">Name</th><th title="Click =&gt; Sort">University</th><th title="Click =&gt; Sort">Gender</th><th title="Click =&gt; Sort">Birthdate</th></tr>
@@ -56,6 +57,7 @@ WHERE name like '%%';
 <tr><td class="counter" colspan="6">8 Persons</td></tr>
 </tfoot>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/multijs.xml" type="text/plain">test/multijs</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test%2Fmultijs&amp;lang=en&amp;name=%25">Excel</a>,

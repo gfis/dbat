@@ -31,6 +31,7 @@ SELECT year
 FROM c01 
 WHERE name like '%%';
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="year">Year</th><th title="name">Name</th><th title="univ">University</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td align="right">1999</td><td>Martha</td><td>Freiburg</td><td>&amp;</td><td>1909-11-17</td>
@@ -51,6 +52,7 @@ WHERE name like '%%';
 <script type="text/javascript">with(document.getElementById("table1").rows[8]){className="blu";}</script></tr>
 <tr><td class="counter" colspan="6">8 Persons</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/multicss.xml" type="text/plain">test/multicss</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test%2Fmulticss&amp;lang=en&amp;name=%25">Excel</a>,

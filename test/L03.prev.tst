@@ -56,12 +56,14 @@ FROM c01
 WHERE substr(name, 1, 1) in ('D', 'F', 'J') 
 ORDER BY name;
 :SQL -->
+<div>
 <table id="table2">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="birth">Birthdate</th></tr>
 <tr><td>Dorothea</td><td>Lübars</td><td>1910-02-07</td></tr>
 <tr><td>Fritz</td><td>Waldshut</td><td>1907-08-08</td></tr>
 <tr><td>Johannes</td><td>Schramberg</td><td>1911-06-03</td></tr>
 </table>
+</div>
 
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/listboxmult.xml" type="text/plain">test/listboxmult</a>,

@@ -29,6 +29,7 @@ SELECT name
 FROM c01 
 WHERE name like '%r%';
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td>Martha</td><td>Freiburg</td><td align="right">1999</td><td>&amp;</td><td>1909-11-17</td></tr>
@@ -38,6 +39,7 @@ WHERE name like '%r%';
 <tr><td>Dorothea</td><td>Lübars</td><td align="right">1985</td><td>$</td><td>1910-02-07</td></tr>
 <tr><td class="counter" colspan="5">5 Persons</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/stylesheet1.xml" type="text/plain">test/stylesheet1</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test%2Fstylesheet1&amp;lang=en&amp;name=%25r">Excel</a>,

@@ -12,6 +12,7 @@
 <!-- SQL:
 select fill1 from de1;
 :SQL -->
+<div>
 <table id="table_not_specified">
 <tr><th>fill1</th></tr>
 <tr><td></td></tr>
@@ -19,4 +20,5 @@ select fill1 from de1;
 <tr><td></td></tr>
 <tr><td>G</td></tr>
 </table>
+</div>
 </body></html>

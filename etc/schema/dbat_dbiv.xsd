@@ -2,6 +2,7 @@
 <!--
     dbat_dbiv.xsd - Schema for Dbat and Dbiv specifications
     @(#) $Id$
+    2021-06-12: <col label2="..." span2="...>
     2020-05-05: <col target="...">
     2016-05-24: <connect to="..." />; <div> allowed at many places
     2014-11-11: WrapType "verbatim"
@@ -136,11 +137,13 @@
         <xs:attribute name="href"   type="xs:string" />
         <xs:attribute name="key"    type="xs:unsignedShort" />
         <xs:attribute name="label"  type="xs:string" />
+        <xs:attribute name="label2" type="xs:string" />
         <xs:attribute name="link"   type="xs:string" />
         <xs:attribute name="name"   type="xs:NCName" />
         <xs:attribute name="pseudo" type="xs:string" />
         <xs:attribute name="remark" type="xs:string" />
         <xs:attribute name="sep"    type="xs:string" />
+        <xs:attribute name="span2"  type="xs:string" />
         <xs:attribute name="sql"    type="xs:string" /><!-- same as "expr" -->
         <xs:attribute name="style"  type="xs:string" />
         <xs:attribute name="target" type="db:TargetType" />
@@ -157,14 +160,17 @@
         <xs:element name="href"     type="xs:string" />
         <xs:element name="key"      type="xs:unsignedShort" />
         <xs:element name="label"    type="xs:string" />
+        <xs:element name="label2"   type="xs:string" />
         <xs:element name="link"     type="xs:string" />
         <xs:element name="name"     type="xs:NCName" />
         <xs:element name="pseudo"   type="xs:string" />
-        <xs:element name="read"     type="db:ReadType"           />
+        <xs:element name="read"     type="db:ReadType" />
         <xs:element name="remark"   type="xs:string" />
         <xs:element name="sep"      type="xs:string" />
+        <xs:element name="span2"    type="xs:string" />
         <xs:element name="sql"      type="xs:string" /><!-- same as "expr" -->
         <xs:element name="style"    type="xs:string" />
+        <xs:element name="target"   type="db:TargetType" />
         <xs:element name="type"     type="db:TypeType" />
         <xs:element name="width"    type="xs:unsignedShort" />
         <xs:element name="wrap"     type="db:WrapType"  />

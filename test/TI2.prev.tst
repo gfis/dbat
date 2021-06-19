@@ -33,6 +33,7 @@ SELECT name
 FROM c01 
 ORDER BY name;
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="name">Name</th><th title="REPLACE(UPPER(univ),UPPER('ajax'), '<span style=&quot;background: lightsalmon;&quot;>' || UPPER('ajax') || '</span>')">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td>Dorothea</td><td>LÜBARS</td><td align="right">1985</td><td>$</td><td>1910-02-07</td></tr>
@@ -45,6 +46,7 @@ ORDER BY name;
 <tr><td>Martha</td><td>FREIBURG</td><td align="right">1999</td><td>&amp;</td><td>1909-11-17</td></tr>
 <tr><td class="counter" colspan="5">8 Persons</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/highlight.xml" type="text/plain">test/highlight</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;keyword=ajax&amp;spec=test%2Fhighlight&amp;lang=en">Excel</a>,

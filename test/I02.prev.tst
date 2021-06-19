@@ -34,6 +34,7 @@ SELECT name
 FROM c01 
 WHERE name like '%';
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td>Martha</td><td>Freiburg</td><td align="right">1999</td><td>&amp;</td><td>1909-11-17</td></tr>
@@ -46,6 +47,7 @@ WHERE name like '%';
 <tr><td>Lucie</td><td>Lübars</td><td align="right">1984</td><td>'</td><td>1887-07-09</td></tr>
 <tr><td class="counter" colspan="5">8 Persons</td></tr>
 </table>
+</div>
 
     <p>
     	Now the nested include reference
@@ -61,6 +63,7 @@ SELECT name
 FROM c01 
 WHERE name like '%';
 :SQL -->
+<div>
 <table id="table2">
 <tr><th title="name">Name</th><th title="birth">Birthdate</th></tr>
 <tr><td>Martha</td><td>1909-11-17</td></tr>
@@ -73,6 +76,7 @@ WHERE name like '%';
 <tr><td>Lucie</td><td>1887-07-09</td></tr>
 <tr><td class="counter" colspan="2">8 Persons</td></tr>
 </table>
+</div>
 
 
 
@@ -92,6 +96,7 @@ SELECT name
 FROM c01 
 WHERE name like '%';
 :SQL -->
+<div>
 <table id="table3">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td>Martha</td><td>Freiburg</td><td align="right">1999</td><td>&amp;</td><td>1909-11-17</td></tr>
@@ -104,6 +109,7 @@ WHERE name like '%';
 <tr><td>Lucie</td><td>Lübars</td><td align="right">1984</td><td>'</td><td>1887-07-09</td></tr>
 <tr><td class="counter" colspan="5">8 Persons</td></tr>
 </table>
+</div>
 
     <p>
     	Now the nested include reference
@@ -119,6 +125,7 @@ SELECT name
 FROM c01 
 WHERE name like '%';
 :SQL -->
+<div>
 <table id="table4">
 <tr><th title="name">Name</th><th title="birth">Birthdate</th></tr>
 <tr><td>Martha</td><td>1909-11-17</td></tr>
@@ -131,6 +138,7 @@ WHERE name like '%';
 <tr><td>Lucie</td><td>1887-07-09</td></tr>
 <tr><td class="counter" colspan="2">8 Persons</td></tr>
 </table>
+</div>
 
 
 
@@ -150,6 +158,7 @@ SELECT name
 FROM c01 
 WHERE name like '%';
 :SQL -->
+<div>
 <table id="table5">
 <tr><th title="name">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td>Martha</td><td>Freiburg</td><td align="right">1999</td><td>&amp;</td><td>1909-11-17</td></tr>
@@ -162,6 +171,7 @@ WHERE name like '%';
 <tr><td>Lucie</td><td>Lübars</td><td align="right">1984</td><td>'</td><td>1887-07-09</td></tr>
 <tr><td class="counter" colspan="5">8 Persons</td></tr>
 </table>
+</div>
 
     <p>
     	Now the nested include reference
@@ -177,6 +187,7 @@ SELECT name
 FROM c01 
 WHERE name like '%';
 :SQL -->
+<div>
 <table id="table6">
 <tr><th title="name">Name</th><th title="birth">Birthdate</th></tr>
 <tr><td>Martha</td><td>1909-11-17</td></tr>
@@ -189,6 +200,7 @@ WHERE name like '%';
 <tr><td>Lucie</td><td>1887-07-09</td></tr>
 <tr><td class="counter" colspan="2">8 Persons</td></tr>
 </table>
+</div>
 
 
 

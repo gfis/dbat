@@ -30,11 +30,13 @@ FROM c01
 WHERE name like 'Mar%' 
 ORDER BY 1;
 :SQL -->
+<div>
 <table id="table1">
 <tr><th title="concat(concat(concat(          name, '  '), '='), name)">Name</th><th title="univ">University</th><th title="year">Year</th><th title="gender">Gender</th><th title="birth">Birthdate</th></tr>
 <tr><td><a href="servlet?spec=test.order02&amp;name=Maria&amp;name=Maria">Maria</a></td><td>Hermsdorf</td><td align="right">1999</td><td>#</td><td>1914-09-17</td></tr>
 <tr><td><a href="servlet?spec=test.order02&amp;name=Martha&amp;name=Martha">Martha</a></td><td>Freiburg</td><td align="right">1999</td><td>&amp;</td><td>1909-11-17</td></tr>
 </table>
+</div>
 
 <br />Output on yyyy-mm-dd hh:mm:ss by <a href="index.html">Dbat</a> script <a target="_blank" href="spec/test/order01.xml" type="text/plain">test/order01</a>,
 <a target="_blank" href="servlet?&amp;mode=xlsx&amp;spec=test%2Forder01&amp;lang=en&amp;name=Mar">Excel</a>,
