@@ -1,5 +1,6 @@
 /*  TableColumn - bean with properties of an abstract column
     @(#) $Id$
+    2021-06-12: attributes <col label2="..." span2="1">
     2020-05-04: attribute target= in <col>
     2019-07-12: output NULL for nullText != 0
     2017-10-02: no message for "Fragmented"
@@ -83,6 +84,7 @@ public class TableColumn implements Cloneable {
         index       = 0;
         key         = "";
         label       = "";
+        label2      = "";
         name        = "";
         pseudo      = "";
         remark      = "";
@@ -96,6 +98,7 @@ public class TableColumn implements Cloneable {
         expr        = "";
         wrappedValue  = null;
         nullable    = true;
+        span2       = "1";
         style       = "";
         target      = null; // no target attribute
         typeName    = "";
@@ -133,14 +136,16 @@ public class TableColumn implements Cloneable {
         result.dir          = this.dir;
         result.expr         = this.expr     ;
         result.href         = this.href      ;
-        result.wrappedValue    = this.wrappedValue;
+        result.wrappedValue = this.wrappedValue;
         result.index        = this.index    ;
         result.key          = this.key      ;
         result.label        = this.label    ;
+        result.label2       = this.label2   ;
         result.name         = this.name     ;
         result.nullable     = this.nullable ;
         result.pseudo       = this.pseudo   ;
         result.remark       = this.remark    ;
+        result.span2        = this.span2    ;
         result.style        = this.style    ;
         result.target       = this.target   ;
         result.typeName     = this.typeName ;
@@ -379,6 +384,36 @@ public class TableColumn implements Cloneable {
     public void setLabel(String label) {
         this.label = label;
     } // setLabel
+    //----------------
+    /** Label for 2nd table header */
+    private String label2;
+    /** Gets the label2
+     *  @return string to be displayed in 2nd table header
+     */
+    public String getLabel2() {
+        return label2;
+    } // getLabel2
+    /** Sets the label2
+     *  @param label2 string to be displayed in 2nd table header
+     */
+    public void setLabel2(String label2) {
+        this.label2 = label2;
+    } // setLabel2
+    //----------------
+    /** Colspan for a 2nd table header field */
+    private String span2;
+    /** Gets span2
+     *  @return number of columns to be spanned by a label2 attribute
+     */
+    public String getSpan2() {
+        return span2;
+    } // getSpan2
+    /** Sets the colspan for a 2nd table header field
+     *  @param span2 number of columns to be spanned by a label2 attribute
+     */
+    public void setSpan2(String span2) {
+        this.span2 = span2;
+    } // setSpan2
     //----------------
     /** name of the column */
     private String name;

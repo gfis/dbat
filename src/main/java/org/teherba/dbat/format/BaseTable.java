@@ -122,6 +122,7 @@ public abstract class BaseTable {
     /** Indicates the type of a row to be output by {@link #writeGenericRow} */
     public static enum RowType
             { HEADER    // header row
+            , HEADER2   // 2nd header *above* the normal HEADER
             , DATA      // primary data row
             , DATA2     // secondary data row
             , ROW1      // 1 vertical row with headers prefixed
@@ -1041,6 +1042,23 @@ public abstract class BaseTable {
         boolean first = true;
         String separator = getSeparator();
         switch (rowType) {
+            case HEADER2:
+                first = true;
+                while (icol < ncol) {
+                    column = columnList.get(icol);
+                    pseudo = column.getPseudo();
+                    if (pseudo == null) {
+                        if (first) {
+                            first = false;
+                        } else {
+                            charWriter.print(separator);
+                        }
+                        charWriter.print(columnList.get(icol).getLabel2());
+                    } // ! pseudo
+                    icol ++;
+                } // while icol
+                charWriter.println();
+                break;
             case HEADER:
                 first = true;
                 while (icol < ncol) {

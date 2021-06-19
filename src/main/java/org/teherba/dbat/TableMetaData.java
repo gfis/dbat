@@ -1,5 +1,6 @@
 /*  TableMetaData - array list of {@link TableColumn}s and associated methods
     @(#) $Id$
+    2021-06-12: property hasLabel2
     2020-11-14: scrollArea="0,0"
     2017-05-27: javadoc 1.8
     2012-01-25: fetchTarget = null | "parm"
@@ -152,6 +153,7 @@ public class TableMetaData {
     public void setAggregationSeparator(String separator) {
         this.aggregationSeparator = separator;
     } // setAggregationSeparator
+
     /** Tells whether we want pivot matrix output
      *  @return true if a pivot matrix is desired, false if not
      */
@@ -319,6 +321,21 @@ public class TableMetaData {
         this.fetchTarget = fetchTarget;
     } // setFetchTarget
 
+    /** Property for the 2nd header line */
+    private boolean isHeader2;
+    /** Sets the property for the 2nd header line above the normal header
+     *  @param present true if a 2nd header is present, false (default) if not
+     */
+    public void setHeader2(boolean present) {
+        isHeader2 = present;
+    } // setHeader2
+    /** Tells whether there is a 2nd header line above the normal header
+     *  @return true if there is a 2nd header, false if not
+     */
+    public boolean hasHeader2() {
+        return isHeader2;
+    } // hasHeader2
+
     /** Attributes for tables with vertical and horizontal scrolling: width x height or 0,0 */
     private String scrollArea;
     /** Gets the scroll area
@@ -424,6 +441,7 @@ public class TableMetaData {
         setAggregationSeparator (",");
         setAggregateIndex       (this.AGGR_NOT_SET);
         setCounterDesc          (null); // default = not set
+        setHeader2              (false);
         setIdentifier           (null);
         setFillState            (0); // empty
         setScrollArea           ("0,0"); // no scrolling
@@ -455,6 +473,7 @@ public class TableMetaData {
         try {
             ResultSet results = dbMetaData.getColumns(null, schema, tableBaseName, "%"); // all columns
             int icol = 0;
+            boolean has2nd = false;
             while (results.next()) { // get all columns
                 // TableColumn column = this.addColumn(icol);
                 TableColumn column = icol < columnList.size()
@@ -462,9 +481,13 @@ public class TableMetaData {
                 : this.addColumn(icol);
                 ;
                 column.completeColumn(results);
+                if (column.getLabel2() != null) {
+                	has2nd = true;
+                }
                 icol ++;
             } // while all columns
             results.close();
+            setHeader2(has2nd);
             setFillState(2);
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);

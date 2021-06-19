@@ -1,5 +1,6 @@
 /*  Generator for an HTML table
     @(#) $Id$
+    2021-06-12: attributes <col label2="..." span2="1">
     2021-05-06: pseudo="sort"
     2021-01-04: max-width,max-height instead
     2020-11-16: scrollArea="width,height"; endTable; <div> around the table

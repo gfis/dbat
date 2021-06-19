@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+    2021-06-12: attributes <col label2="..." span2="1">
     2021-02-15: with Config.getTrailerElements
     2021-01-04: &execsql=0 only if there is no user http request parameter
     2020-11-16: &execsql=1|0, <select scroll="w,h">
@@ -939,10 +940,12 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         private static final String JAVASCRIPT_TAG  = "javascript"  ;
         private static final String KEY_TAG         = "key"         ;
         private static final String LABEL_TAG       = "label"       ;
+        private static final String LABEL2_TAG      = "label2"      ;
         private static final String LINK_TAG        = "link"        ;
         private static final String NAME_TAG        = "name"        ;
         private static final String PSEUDO_TAG      = "pseudo"      ;
         private static final String REMARK_TAG      = "remark"      ;
+        private static final String SPAN2_TAG       = "span2"       ;
         private static final String SQL_TAG         = "sql"         ;
         private static final String STYLE_TAG       = "style"       ;
         private static final String TARGET_TAG      = "target"      ;
@@ -1154,7 +1157,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             */
             if ((chooseStack[chooseTop] & CHOOSE_THIS) == zeroAndNotEcho) {
                 // ignore all normal start tags
-            } else if (inColumn) { // align= dir= href= label= link= name= pseudo= remark= style= target= type= wrap=
+            } else if (inColumn) { // align= dir= href= label= label2= link= name= pseudo= remark= span2= style= target= type= wrap=
                 colBuffer.setLength(0); // start character assembly for all subordinate elements
 
             } else if (qName.equals(ROOT_TAG    )) {
@@ -1374,6 +1377,10 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 if (label != null && label.length() > 0) {
                     column.setLabel(label);
                 }
+                String label2 = attrs.getValue("label2");
+                if (label2 != null && label2.length() > 0) {
+                    column.setLabel2(label2);
+                }
                 String link = attrs.getValue("link");
                 if (link != null && link.length() > 0) {
                     column.setHref(SERVLET_SPEC + link);
@@ -1385,6 +1392,10 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 String remark = attrs.getValue("remark");
                 if (remark != null && remark.length() > 0) {
                     column.setRemark(remark);
+                }
+                String span2 = attrs.getValue("span2");
+                if (span2 != null && span2.length() > 0) {
+                    column.setSpan2(span2);
                 }
                 String style = attrs.getValue("style");
                 if (style != null && style.length() > 0) {
@@ -1862,7 +1873,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 // /COLUMN_TAG
 
             } else if (inColumn) {
-                // align= dir= href= label= link= name= pseudo= remark= style= type= wrap=
+                // align= dir= href= label= label2= link= name= pseudo= remark= span2= style= type= wrap=
                 if (false) {
                 } else if (qName.equals(ALIGN_TAG   )) {
                     column.setAlign     (colBuffer.toString().trim());
@@ -1876,6 +1887,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     column.setKey       (colBuffer.toString().trim());
                 } else if (qName.equals(LABEL_TAG   )) {
                     column.setLabel     (colBuffer.toString().trim());
+                } else if (qName.equals(LABEL2_TAG  )) {
+                    column.setLabel2    (colBuffer.toString().trim());
                 } else if (qName.equals(LINK_TAG    )) {
                     column.setHref      (SERVLET_SPEC + colBuffer.toString().trim());
                 } else if (qName.equals(NAME_TAG    )) {
@@ -1884,6 +1897,8 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                     column.setPseudo    (colBuffer.toString().trim());
                 } else if (qName.equals(REMARK_TAG  )) {
                     column.setRemark    (colBuffer.toString().trim());
+                } else if (qName.equals(SPAN2_TAG   )) {
+                    column.setSpan2     (colBuffer.toString().trim());
                 } else if (qName.equals(STYLE_TAG   )) {
                     column.setStyle     (colBuffer.toString().trim());
                 } else if (qName.equals(TYPE_TAG    )) {
