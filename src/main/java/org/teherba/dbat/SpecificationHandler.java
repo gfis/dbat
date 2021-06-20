@@ -1380,6 +1380,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
                 String label2 = attrs.getValue("label2");
                 if (label2 != null && label2.length() > 0) {
                     column.setLabel2(label2);
+                    tbMetaData.setHeader2(true);
                 }
                 String link = attrs.getValue("link");
                 if (link != null && link.length() > 0) {

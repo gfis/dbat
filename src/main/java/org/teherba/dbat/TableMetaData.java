@@ -83,9 +83,9 @@ public class TableMetaData {
     private static final String PARAM    = "param";
 
     /** Base array for columns' properties (of type {@link TableColumn}) */
-    public ArrayList/*<1.5*/<TableColumn>/*1.5>*/ columnList;
+    public ArrayList<TableColumn> columnList;
     /** Array for column values of previous row, for group (control change) and aggregate features */
-    public ArrayList/*<1.5*/<TableColumn>/*1.5>*/ oldValueList;
+    public ArrayList<TableColumn> oldValueList;
     /** State of the attributes; 0 = empty, 1 = partially filled, 2 = complete */
     private int fillState;
     /** Number of leading <em>groupColumn</em>s (if any) which cause a new header line, default = 1 */
@@ -433,7 +433,7 @@ public class TableMetaData {
      */
     public TableMetaData() {
         log = Logger.getLogger(TableMetaData.class.getName());
-        columnList              = new ArrayList/*<1.5*/<TableColumn>/*1.5>*/(16); // empty so far
+        columnList              = new ArrayList<TableColumn>(16); // empty so far
         schema                  = "";
         tableBaseName           = UNDEFINED_TABLE;
         tableName               = tableBaseName;
@@ -473,21 +473,16 @@ public class TableMetaData {
         try {
             ResultSet results = dbMetaData.getColumns(null, schema, tableBaseName, "%"); // all columns
             int icol = 0;
-            boolean has2nd = false;
             while (results.next()) { // get all columns
                 // TableColumn column = this.addColumn(icol);
                 TableColumn column = icol < columnList.size()
-                ? columnList.get(icol)
-                : this.addColumn(icol);
+                        ? columnList.get(icol)
+                        : this.addColumn(icol);
                 ;
                 column.completeColumn(results);
-                if (column.getLabel2() != null) {
-                	has2nd = true;
-                }
                 icol ++;
             } // while all columns
             results.close();
-            setHeader2(has2nd);
             setFillState(2);
         } catch (Exception exc) {
             log.error(exc.getMessage(), exc);
@@ -692,7 +687,7 @@ public class TableMetaData {
     private void initOldValues() {
         if (oldValueList == null) { // not filled so far
             int icol = 0;
-            oldValueList = new ArrayList/*<1.5*/<TableColumn>/*1.5>*/(16); // empty so far
+            oldValueList = new ArrayList<TableColumn>(16); // empty so far
             while (icol < columnList.size()) {
                 oldValueList.add(new TableColumn(icol));
                 icol ++;
@@ -868,7 +863,7 @@ public class TableMetaData {
         }
         lastColumnCount = oldValueList.size();
         if (withHeaders && rowCount <= 0) {
-            tbSerializer.writeGenericRow(BaseTable.RowType.HEADER, this, this.oldValueList);
+            tbSerializer.writeGenericRow(hasHeader2() ? BaseTable.RowType.HEADER2 : BaseTable.RowType.HEADER , this, this.oldValueList);
         }
         if (! isPivot() || rowCount > 0) {
             tbSerializer.writeGenericRow(BaseTable.RowType.DATA  , this, this.oldValueList);

@@ -2,7 +2,7 @@
 <!--
     dbat_dbiv.xsd - Schema for Dbat and Dbiv specifications
     @(#) $Id$
-    2021-06-12: <col label2="..." span2="...>
+    2021-06-12: <col label2="..." span2="...>; <select scroll="w,h">
     2020-05-05: <col target="...">
     2016-05-24: <connect to="..." />; <div> allowed at many places
     2014-11-11: WrapType "verbatim"
@@ -352,6 +352,7 @@
         <xs:attribute name="id"         type="xs:ID"        />
         <xs:attribute name="into"       type="db:IntoParmType" />
         <xs:attribute name="limit"      type="xs:string"    />
+        <xs:attribute name="scroll"     type="xs:string"    /> <!-- width,height or 0,0 (default, no scrolling) -->
         <xs:attribute name="with"       type="xs:string"    />
     </xs:complexType>
 

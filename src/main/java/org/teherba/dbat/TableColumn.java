@@ -84,7 +84,6 @@ public class TableColumn implements Cloneable {
         index       = 0;
         key         = "";
         label       = "";
-        label2      = "";
         name        = "";
         pseudo      = "";
         remark      = "";
@@ -97,8 +96,9 @@ public class TableColumn implements Cloneable {
         setDir('o'); // assume "out" parameter
         expr        = "";
         wrappedValue  = null;
+        label2      = null;
         nullable    = true;
-        span2       = "1";
+        span2       = null;
         style       = "";
         target      = null; // no target attribute
         typeName    = "";

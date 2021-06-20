@@ -552,13 +552,32 @@ public class HTMLTable extends XMLTable {
         String pseudo = null;
         int ncol = columnList.size();
         int icol = 0;
-        StringBuffer result = new StringBuffer(256);
+        boolean withHeader2 = false;
+        StringBuffer result  = new StringBuffer(256);
+        StringBuffer result2 = new StringBuffer(256);
         switch (rowType) {
+            case HEADER2:
+                withHeader2 = true;
+                // fall through
             case HEADER:
+                if (! withHeader2) {
+                    charWriter.println("<!-- withHeader2 is false -->");
+                    while (icol < ncol) { // check whether there is a 2nd header
+                        if (columnList.get(icol).getLabel2() != null) {
+                            withHeader2 = true;
+                        }
+                        icol ++;
+                    } // while 2nd
+                }
                 if (isSortable) {
                     charWriter.println("<thead>");
                 }
                 result.append("<tr>");
+                if (withHeader2) {
+                    result2.append("<tr>");
+                }
+                int span2Limit = 0;
+                icol = 0;
                 while (icol < ncol) {
                     column = columnList.get(icol);
                     String header = column.getLabel();
@@ -573,37 +592,68 @@ public class HTMLTable extends XMLTable {
                         if (header == null) {
                             header = "&nbsp;";
                         }
-                        result.append("<th");
+
+                        StringBuffer restag = new StringBuffer(64);
+                        restag.append("<th");
                         if (isSticky) {
-                            result.append(" class=\"sticky\"");
+                            restag.append(" class=\"sticky\"");
                         }
                         String remark = column.getRemark();
                         if (false) {
                         } else if (isSortable) {
-                            result.append(" title=\"");
-                            result.append(Messages.getSortTitle(language)); // "Click => Sort"
-                            result.append("\"");
+                            restag.append(" title=\"");
+                            restag.append(Messages.getSortTitle(language)); // "Click => Sort"
+                            restag.append("\"");
                         } else if (remark != null && remark.length() > 0) {
-                            result.append(" title=\"");
-                            result.append(remark); // should not contain quotes and apostrophes
-                            result.append("\"");
+                            restag.append(" title=\"");
+                            restag.append(remark); // should not contain quotes and apostrophes
+                            restag.append("\"");
                         } else {
                             String expr = column.getExpr();
                             if (expr != null && expr.length() > 0) {
-                                result.append(" title=\"");
-                                result.append(expr
-                                        .replaceAll("\"", "&quot;")
-                                //      .replaceAll("\'", "&apos;")
-                                        );
-                                result.append("\"");
+                                restag.append(" title=\"");
+                                restag.append(expr.replaceAll("\"", "&quot;"));
+                                restag.append("\"");
                             }
                         }
-                        result.append('>');
+
+                        if (withHeader2 && icol >= span2Limit) {
+                            StringBuffer restag2 = new StringBuffer(64);
+                            restag2.append(restag.toString());
+                            String span2 = column.getSpan2();
+                            int ispan2 = 1;
+                            if (span2 != null) {
+                                try {
+                                    ispan2 = Integer.parseInt(span2);
+                                } catch (Exception exc) {
+                                }
+                            }
+                            span2Limit = icol + ispan2;
+                            if (ispan2 > 1) {
+                                restag2.append(" colspan=\"" + ispan2 + "\"");
+                            }
+                            restag2.append('>');
+                            result2.append(restag2.toString());
+                            String label2 = column.getLabel2();
+                            if (label2 != null) {
+                                result2.append(label2);
+                            } else {
+                                result2.append("&nbsp;");
+                            }
+                            result2.append("</th>");
+                        } else {
+                        }
+                        restag.append('>');
+                        result.append(restag.toString());
                         result.append(header);
                         result.append("</th>");
-                    }
+                    } // non-pseudo
                     icol ++;
                 } // while icol
+                if (withHeader2) {
+                    result2.append("</tr>");
+                    charWriter.println(result2.toString());
+                }
                 result.append("</tr>");
                 charWriter.println(result.toString());
                 if (isSortable) {

@@ -283,6 +283,7 @@ public class WikiTable extends BaseTable {
         int ncol = columnList.size();
         int icol = 0;
         switch (rowType) {
+            case HEADER2:
             case HEADER:
                 while (icol < ncol) {
                     column = columnList.get(icol);
