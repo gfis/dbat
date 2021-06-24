@@ -1,6 +1,5 @@
 /*  Base class for file format representing table descriptions or results sets
  *  @(#) $Id$
- *  2021-06-12: RowType HEADER2
  *  2017-05-27: javadoc
  *  2017-02-11: input* methods for -r in SQLAction
  *  2016-12-09: getDescription with fallback to "en"
@@ -123,7 +122,6 @@ public abstract class BaseTable {
     /** Indicates the type of a row to be output by {@link #writeGenericRow} */
     public static enum RowType
             { HEADER    // header row
-            , HEADER2   // 2 header lines, the upper for label2=/span2=
             , DATA      // primary data row
             , DATA2     // secondary data row
             , ROW1      // 1 vertical row with headers prefixed
@@ -1043,7 +1041,6 @@ public abstract class BaseTable {
         boolean first = true;
         String separator = getSeparator();
         switch (rowType) {
-            case HEADER2:
             case HEADER:
                 first = true;
                 while (icol < ncol) {

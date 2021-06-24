@@ -100,7 +100,7 @@ public class HTMLTable extends XMLTable {
     private String language;
 
     /** Starts a file that may contain several table descriptions and/or a SELECT result sets
-     *  @param attributes array of 0 or more pairs of strings (name1, value1, name2, value2 and so on) 
+     *  @param attributes array of 0 or more pairs of strings (name1, value1, name2, value2 and so on)
      *  which specify features in the header of the file to be generated.
      *  The possible attribute names are described in {@link BaseTable#writeStart}.
      *  @param parameterMap map of request parameters to values
@@ -305,8 +305,8 @@ public class HTMLTable extends XMLTable {
 
     /** local copy of the table's id */
     private String tableId;
-    
-    /** Initializes a table - with meta data, 
+
+    /** Initializes a table - with meta data,
      *  @param tableName name of the table
      *  @param tbMetaData meta data of the table
      */
@@ -393,7 +393,7 @@ public class HTMLTable extends XMLTable {
      *    as "&amp;amp;", "&amp;lt;" and "&amp;gt;" respectively</li>
      *  <li>2 = "&amp;apos;" is replaced by "&amp;amp;apos;"</li>
      *  <li>3 = combination of rule 1 and rule 2</li>
-     *  <li>4 = like 1, but internally check column.expr for start of tag ('&lt;')</li>
+     *  <li>4 = like 1, but internally check column.expr for start of tag ("&lt;")</li>
      *  </ul>
      */
     public int getEscapingRule() {
@@ -552,31 +552,19 @@ public class HTMLTable extends XMLTable {
         String pseudo = null;
         int ncol = columnList.size();
         int icol = 0;
-        boolean withHeader2 = false;
-        StringBuilder result  = new StringBuilder(256);
-        StringBuilder result2 = new StringBuilder(256);
+        StringBuilder result = new StringBuilder(256);
         switch (rowType) {
-            case HEADER2:
-                withHeader2 = true;
-                // fall through
             case HEADER:
-                if (! withHeader2) {
-                    // charWriter.println("<!-- withHeader2 is false -->");
-                    while (icol < ncol) { // check whether there is a 2nd header
-                        if (columnList.get(icol).getLabel2() != null) {
-                            withHeader2 = true;
-                        }
-                        icol ++;
-                    } // while 2nd
-                }
+                boolean has2ndHeader = false;
+                StringBuilder resultU = new StringBuilder(256); // upper line, carries label=, or label2= if present
+                StringBuilder resultL = new StringBuilder(256); // lower line, carries &nbsp;  or label if label is present or spanning
+                    // we always build 2 lines, but we may print the upper only
                 if (isSortable) {
                     charWriter.println("<thead>");
                 }
-                result.append("<tr>");
-                if (withHeader2) {
-                    result2.append("<tr>");
-                }
-                int span2Limit = 0;
+                resultU.append("<tr>");
+                resultL.append("<tr>");
+                int thColSpanU = 0;
                 icol = 0;
                 while (icol < ncol) {
                     column = columnList.get(icol);
@@ -588,86 +576,105 @@ public class HTMLTable extends XMLTable {
                         if (style != null && style.endsWith(INVISIBLE)) {
                             column.setStyle(VISIBLE);
                         }
-                        StringBuilder thTag = new StringBuilder(64);
-                        thTag.append("<th");
+                        StringBuilder thElemU = new StringBuilder(64); // tag for upper line
+                        StringBuilder thElemL = new StringBuilder(64); // tag for lower line
+                        thElemU.append("<th");
                         if (isSticky) {
-                            thTag.append(" class=\"sticky\"");
+                            thElemU.append(" class=\"sticky\"");
                         }
                         String remark = column.getRemark();
                         if (false) {
                         } else if (isSortable) {
-                            thTag.append(" title=\"");
-                            thTag.append(Messages.getSortTitle(language)); // "Click => Sort"
-                            thTag.append("\"");
+                            thElemU.append(" title=\"");
+                            thElemU.append(Messages.getSortTitle(language)); // "Click => Sort"
+                            thElemU.append("\"");
                         } else if (remark != null && remark.length() > 0) {
-                            thTag.append(" title=\"");
-                            thTag.append(remark); // should not contain quotes and apostrophes
-                            thTag.append("\"");
+                            thElemU.append(" title=\"");
+                            thElemU.append(remark); // should not contain quotes and apostrophes
+                            thElemU.append("\"");
                         } else {
                             String expr = column.getExpr();
                             if (expr != null && expr.length() > 0) {
-                                thTag.append(" title=\"");
-                                thTag.append(expr.replaceAll("\"", "&quot;"));
-                                thTag.append("\"");
+                                thElemU.append(" title=\"");
+                                thElemU.append(expr.replaceAll("\"", "&quot;"));
+                                thElemU.append("\"");
                             }
                         }
-                        String label = column.getLabel();
-                        if (label == null) {
-                            label = "&nbsp;";
-                        }
-                        if (withHeader2) {
-                            String label2 = column.getLabel2();
-                            StringBuilder thTag2 = new StringBuilder(64);
-                            thTag2.append(thTag);
-                            String span2 = column.getSpan2();
-                            int ispan2 = 1;
+                        thElemL.append(thElemU); // copy tag for upper to lower line
+                        String label2 = column.getLabel2();
+                        if (label2 != null) { // with label2="..."
+                            has2ndHeader = true; // there are 2 lines
+                            String span2 = column.getSpan2(); // examine the colspan="..." attribute also
                             if (span2 != null) {
+                                thColSpanU = 1; // how many columns are occupied by any label2="..." attribute
                                 try {
-                                    ispan2 = Integer.parseInt(span2);
+                                    thColSpanU = Integer.parseInt(span2);
                                 } catch (Exception exc) {
                                 }
-                            }
-                            if (ispan2 > 1) {
-                                thTag2.append(" colspan=\"" + ispan2 + "\"");
-                            }
-                            thTag2.append('>');
-                            
-                            if (icol >= span2Limit) {
-                                result2.append(thTag2);
-                                if (label2 != null) {
-                                    result2.append(label2);
-                                } else {
-                                    result2.append(label);
-                                    label = "&nbsp;";
+                                if (thColSpanU > 1) {
+                                    thElemU.append(" colspan=\"" + thColSpanU + "\"");
                                 }
-                                result2.append("</th>");
-                            } else {
-                            }
-                            thTag.append('>');
-                            result.append(thTag);
-                            result.append(label);
-                            result.append("</th>");
-                            span2Limit = icol + ispan2;
+                            } // with span2="..."
+                            // if label2 present
                         } else {
-                            thTag.append('>');
-                            result.append(thTag);
-                            result.append(label);
-                            result.append("</th>");
+                            // thColSpanU --;
                         }
+                        String label1 = column.getLabel();
+/*
+                        if (false) {
+                            thElemU.append(" label2=\"" 
+                                    + (label2 == null ? "null" : label2)  + "\", label1=\"" 
+                                    + (label1 == null ? "null" : label1)  + "\", thColSpanU=\""
+                                    + thColSpanU + "\"");
+                        }
+*/
+                        thElemU.append('>');
+                        thElemL.append('>');
+                        /*  Now we have the following cases:
+                                                       Upper  | Lower header line
+                                                       -------+------
+                            label1 and no label2       label1 | nbsp
+                            label2 and no label1 (?)   label2 | nbsp
+                            label2 and label1          label2 | label1
+                            span2  and no label1 (?)   span   | nbsp
+                            span2, and label1          span   | label1
+                        */
+                        if (false) {
+                        } else if (label2 != null) {
+                            thElemU.append(label2);
+                            thElemL.append(label1 == null ? "&nbsp;" : label1);
+                            thElemL.append("</th>");
+                            thElemU.append("</th>");
+                        } else {
+                            if (thColSpanU > 0) {
+                                thElemU.setLength(0); // omit the upper element altogether
+                                thElemL.append(label1 == null ? "&nbsp;" : label1);
+                                thElemL.append("</th>");
+                            } else { // label2 == null && thColSpanU <= 1
+                                thElemU.append(label1 == null ? "&nbsp;" : label1);
+                                thElemL.append("&nbsp;");
+                                thElemL.append("</th>");
+                                thElemU.append("</th>");
+                            }
+                        }
+                        resultU.append(thElemU);
+                        resultL.append(thElemL);
+                        thColSpanU --;
                     } // non-pseudo
                     icol ++;
                 } // while icol
-                if (withHeader2) {
-                    result2.append("</tr>");
-                    charWriter.println(result2.toString());
+                resultU.append("</tr>"); // output 1st header in any case
+                charWriter.println(resultU.toString());
+                if (has2ndHeader) { // output optional 2nd header
+                    resultL.append("</tr>");
+                    charWriter.println(resultL.toString());
                 }
-                result.append("</tr>");
-                charWriter.println(result.toString());
                 if (isSortable) {
                     charWriter.println("</thead>");
                 }
                 tableRowNo ++;
                 break;
+
             case DATA:
                 result.append("<tr>");
                 while (icol < ncol) {
@@ -722,9 +729,11 @@ public class HTMLTable extends XMLTable {
                 charWriter.println(result.toString());
                 tableRowNo ++;
                 break;
+
             case DATA2:
                 // ignore
                 break;
+
             case ROW1:
                 while (icol < ncol) {
                     result.append("<tr>");

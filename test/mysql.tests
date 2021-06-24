@@ -1059,6 +1059,16 @@ HTTPZ spec=test.aggr01 mode=xlsx
 TEST AG9 Web aggregation test with fetchLimit
 HTTP spec=test.aggr01 fetch=3
 #-------------------
+# Double-line table headers
+TEST LA1 double header
+HTTP spec=test/label2
+
+TEST LA2 double header with scrolling
+HTTP spec=test/label2scroll
+
+TEST LA3 double header with sortable (does not work)
+HTTP spec=test/label2sort
+#-------------------
 # Pivot tables
 TEST P03 aggregation test with HTML
 CALL Dbat -a sp2 -sa "pivot" -m html "select sp1, sp2, sp3 from pivot order by 1, 2"

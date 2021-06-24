@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    @(#) $Id$
+    2021-06-24: Dr. Georg Fischer, copied from selec09.xml
+-->
+<dbat   xmlns   ="http://www.teherba.org/2007/dbat"
+        xmlns:ht="http://www.w3.org/1999/xhtml"
+        encoding="UTF-8"
+        lang="en" 
+        conn="worddb" 
+        javascript="../sorttable.js"
+        title="label2sort"
+        >
+    <comment lang="en">Select from test table - with double line header and sorting</comment>
+    <comment lang="de">Abfrage der Test-Tabelle mit zwei Kopfzeilen und Spaltensort</comment>
+
+    <ht:h3>Select from test table <ht:em>relatives</ht:em> - with double line header and sorting</ht:h3>
+    
+    <select>
+        <col label="first" label2="Name"  span2="2">name </col>
+        <col label="last"                          >family </col>
+        <col label="Gender"          align="center">gender </col>
+        <col label="birth" label2="Dates" span2="3">birth</col>
+        <col label="decease"        align="center" >decease</col>
+        <col label="changed"                       >changed</col>
+        <col label="Place"                         >place  </col>
+        <col label="User"                          >user   </col>
+        <from>relatives</from>
+        <order by="birth" />
+        <counter desc="person,s"/>
+    </select>
+</dbat>

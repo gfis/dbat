@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
     @(#) $Id$
-    2021-19-06: Dr. Georg Fischer, copied from selec08.xml
+    2021-06-19: Dr. Georg Fischer, copied from selec08.xml
 -->
 <dbat   xmlns   ="http://www.teherba.org/2007/dbat"
         xmlns:ht="http://www.w3.org/1999/xhtml"
         encoding="UTF-8"
         lang="en" 
         conn="worddb" 
-        title="selec09"
+        title="label2"
         >
-    <!-- copy of selec05 -->
     <comment lang="en">Select from test table - with double line header</comment>
     <comment lang="de">Abfrage der Test-Tabelle mit zwei Kopfzeilen</comment>
 
     <ht:h3>Select from test table <ht:em>relatives</ht:em> - with double line header</ht:h3>
     
     <select>
-        <col label2="Name"  label="first" span2="2">name </col>
-        <col label="last"                >family </col>
-        <col label="Gender" align="center">gender </col>
+        <col label="first" label2="Name"  span2="2">name </col>
+        <col label="last"                          >family </col>
+        <col label="Gender"          align="center">gender </col>
         <col label="birth" label2="Dates" span2="3">birth</col>
-        <col label="decease" align="center" >decease</col>
-        <col label="changed"             >changed</col>
-        <col label="Place"               >place  </col>
-        <col label="User"                >user   </col>
+        <col label="decease"        align="center" >decease</col>
+        <col label="changed"                       >changed</col>
+        <col label="Place"                         >place  </col>
+        <col label="User"                          >user   </col>
         <from>relatives</from>
         <order by="birth" />
         <counter desc="person,s"/>
