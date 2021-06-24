@@ -427,7 +427,7 @@ public class HTMLTable extends XMLTable {
      *  @return string content of a cell
      */
     public String getFlatValue(TableColumn column) {
-        StringBuffer result = new StringBuffer(128);
+        StringBuilder result = new StringBuilder(128);
         String target       = column.getTarget();
         String value        = column.getValue();
         String wrap         = column.getWrap();
@@ -492,7 +492,7 @@ public class HTMLTable extends XMLTable {
      *  </pre>
      */
     private String getStyleOrClass(boolean js, String styleOrClass) {
-        StringBuffer result = new StringBuffer(64);
+        StringBuilder result = new StringBuilder(64);
         int colonPos = styleOrClass.indexOf(':');
         if (js) {
             if (colonPos < 0) { // class
@@ -553,15 +553,15 @@ public class HTMLTable extends XMLTable {
         int ncol = columnList.size();
         int icol = 0;
         boolean withHeader2 = false;
-        StringBuffer result  = new StringBuffer(256);
-        StringBuffer result2 = new StringBuffer(256);
+        StringBuilder result  = new StringBuilder(256);
+        StringBuilder result2 = new StringBuilder(256);
         switch (rowType) {
             case HEADER2:
                 withHeader2 = true;
                 // fall through
             case HEADER:
                 if (! withHeader2) {
-                    charWriter.println("<!-- withHeader2 is false -->");
+                    // charWriter.println("<!-- withHeader2 is false -->");
                     while (icol < ncol) { // check whether there is a 2nd header
                         if (columnList.get(icol).getLabel2() != null) {
                             withHeader2 = true;
@@ -580,46 +580,45 @@ public class HTMLTable extends XMLTable {
                 icol = 0;
                 while (icol < ncol) {
                     column = columnList.get(icol);
-                    String header = column.getLabel();
-                    String style  = column.getStyle();
-                    if (style != null && style.endsWith(INVISIBLE)) {
-                        column.setStyle(VISIBLE);
-                    }
                     pseudo = column.getPseudo();
                     if (pseudo != null && (pseudo.equals("sort") || pseudo.equals("style"))) {
                         nextStyle = null;
                     } else { // non-pseudo
-                        if (header == null) {
-                            header = "&nbsp;";
+                        String style  = column.getStyle();
+                        if (style != null && style.endsWith(INVISIBLE)) {
+                            column.setStyle(VISIBLE);
                         }
-
-                        StringBuffer restag = new StringBuffer(64);
-                        restag.append("<th");
+                        StringBuilder thTag = new StringBuilder(64);
+                        thTag.append("<th");
                         if (isSticky) {
-                            restag.append(" class=\"sticky\"");
+                            thTag.append(" class=\"sticky\"");
                         }
                         String remark = column.getRemark();
                         if (false) {
                         } else if (isSortable) {
-                            restag.append(" title=\"");
-                            restag.append(Messages.getSortTitle(language)); // "Click => Sort"
-                            restag.append("\"");
+                            thTag.append(" title=\"");
+                            thTag.append(Messages.getSortTitle(language)); // "Click => Sort"
+                            thTag.append("\"");
                         } else if (remark != null && remark.length() > 0) {
-                            restag.append(" title=\"");
-                            restag.append(remark); // should not contain quotes and apostrophes
-                            restag.append("\"");
+                            thTag.append(" title=\"");
+                            thTag.append(remark); // should not contain quotes and apostrophes
+                            thTag.append("\"");
                         } else {
                             String expr = column.getExpr();
                             if (expr != null && expr.length() > 0) {
-                                restag.append(" title=\"");
-                                restag.append(expr.replaceAll("\"", "&quot;"));
-                                restag.append("\"");
+                                thTag.append(" title=\"");
+                                thTag.append(expr.replaceAll("\"", "&quot;"));
+                                thTag.append("\"");
                             }
                         }
-
-                        if (withHeader2 && icol >= span2Limit) {
-                            StringBuffer restag2 = new StringBuffer(64);
-                            restag2.append(restag.toString());
+                        String label = column.getLabel();
+                        if (label == null) {
+                            label = "&nbsp;";
+                        }
+                        if (withHeader2) {
+                            String label2 = column.getLabel2();
+                            StringBuilder thTag2 = new StringBuilder(64);
+                            thTag2.append(thTag);
                             String span2 = column.getSpan2();
                             int ispan2 = 1;
                             if (span2 != null) {
@@ -628,25 +627,33 @@ public class HTMLTable extends XMLTable {
                                 } catch (Exception exc) {
                                 }
                             }
-                            span2Limit = icol + ispan2;
                             if (ispan2 > 1) {
-                                restag2.append(" colspan=\"" + ispan2 + "\"");
+                                thTag2.append(" colspan=\"" + ispan2 + "\"");
                             }
-                            restag2.append('>');
-                            result2.append(restag2.toString());
-                            String label2 = column.getLabel2();
-                            if (label2 != null) {
-                                result2.append(label2);
+                            thTag2.append('>');
+                            
+                            if (icol >= span2Limit) {
+                                result2.append(thTag2);
+                                if (label2 != null) {
+                                    result2.append(label2);
+                                } else {
+                                    result2.append(label);
+                                    label = "&nbsp;";
+                                }
+                                result2.append("</th>");
                             } else {
-                                result2.append("&nbsp;");
                             }
-                            result2.append("</th>");
+                            thTag.append('>');
+                            result.append(thTag);
+                            result.append(label);
+                            result.append("</th>");
+                            span2Limit = icol + ispan2;
                         } else {
+                            thTag.append('>');
+                            result.append(thTag);
+                            result.append(label);
+                            result.append("</th>");
                         }
-                        restag.append('>');
-                        result.append(restag.toString());
-                        result.append(header);
-                        result.append("</th>");
                     } // non-pseudo
                     icol ++;
                 } // while icol
@@ -722,9 +729,9 @@ public class HTMLTable extends XMLTable {
                 while (icol < ncol) {
                     result.append("<tr>");
                     column = columnList.get(icol);
-                    String header = column.getLabel();
+                    String label = column.getLabel();
                     result.append("<th align=\"left\" class=\"vert\">");
-                    result.append(header);
+                    result.append(label);
                     result.append("</th>");
 
                     pseudo = column.getPseudo();

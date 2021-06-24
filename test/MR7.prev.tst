@@ -39,7 +39,7 @@ Input Value:</td>
 </table>
 </form>
 <p>
-Regular Expressions are described in the Java API documentation: class <tt><a href="http://docs.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html">java.util.regex.Pattern</a></tt>.
+Regular Expressions are described in the Java API documentation: class <tt><a href="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">java.util.regex.Pattern</a></tt>.
 </p>
 Special characters and functions are escaped with a <em>single</em> backslash, like in Perl.
 <br />

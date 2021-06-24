@@ -1,6 +1,7 @@
 /*  Generator for a MediaWiki table
     @(#) $Id$
- *  2017-05-27: javadoc
+    2021-06-24: external links updated
+    2017-05-27: javadoc
     2014-11-10: s|getHrefValue -> s|getWrappedValue
     2014-03-04: ignore pseudo columns
     2012-06-25: writeTrailer removed
@@ -39,13 +40,13 @@ import  java.util.HashMap;
 {| style="color:black; background-color:#ffffcc;" cellpadding="4" cellspacing="0" border="1"
 !DB-System!!Werkzeug
 |-
-|DB2||[http://publib.boulder.ibm.com/infocenter/dzichelp/v2r2/topic/com.ibm.db29.doc.apsg/db2z_executesqlspufi.htm SPUFI] (z/OS), [http://publib.boulder.ibm.com/infocenter/db2luw/v9r5/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0010409.html db2] (Windows/Unix)
+|DB2||[https://www.ibm.com/docs/en/db2-for-zos/12?topic=commands-spufi-dsn SPUFI] (z/OS), [https://www.ibm.com/docs/en/db2/11.1?topic=clp-db2-invocation db2] (Windows/Unix)
 |-
-|MySql||[http://dev.mysql.com/doc/refman/5.1/en/mysql.html mysql]
+|MySql||[https://dev.mysql.com/doc/refman/8.0/en/mysql.html mysql]
 |-
-|Oracle||[http://www.oracle.com/technology/docs/tech/sql_plus/index.html sqlplus]
+|Oracle||[https://www.oracle.com/technology/docs/tech/sql_plus/ SQL*Plus]
 |-
-|SQLite3||[http://www.sqlite.org/sqlite.html sqlite3]
+|SQLite3||[https://www.sqlite.org/index.html sqlite3]
 |-
 |versch.||henplus, sqlline
 |}

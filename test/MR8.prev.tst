@@ -39,7 +39,7 @@ Valeur entrée:</td>
 </table>
 </form>
 <p>
-La construction d'expressions régulières est décrite dans la documentation de l'API Java: Classe <tt><a href="http://docs.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html">java.util.regex.Pattern</a></tt>.
+La construction d'expressions régulières est décrite dans la documentation de l'API Java: Classe <tt><a href="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">java.util.regex.Pattern</a></tt>.
 </p>
 Caractères spéciaux et des fonctions spéciales sont annulés avec un <em>single</em> backslash - comme en Perl.
 <br />Cette représentation est nécessaire pour l'attribut <tt>valid="..."</tt>

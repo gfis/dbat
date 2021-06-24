@@ -385,7 +385,7 @@ public class MorePage {
             } else {
                 out.write("Regular Expressions are described in the Java API documentation: class");
             }
-            out.write(" <tt><a href=\"http://docs.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html\""
+            out.write(" <tt><a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html\""
                     + ">java.util.regex.Pattern</a></tt>.\n</p>\n");
             if (false) {
             } else if (language.equals("de")) {
