@@ -24,7 +24,8 @@ import  java.io.IOException;
 import  java.io.PrintWriter;
 import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** Prints a list of the configuration parameters of Dbat
  *  @author Dr. Georg Fischer
@@ -39,7 +40,7 @@ public class ConfigurationPage {
     /** No-argument constructor
      */
     public ConfigurationPage() {
-        log = Logger.getLogger(ConfigurationPage.class.getName());
+        log = LogManager.getLogger(ConfigurationPage.class.getName());
     } // Constructor()
 
     /** Shows an input form for SQL command execution

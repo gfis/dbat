@@ -40,7 +40,8 @@ import  org.teherba.dbat.format.HTMLTable; // this is the default
 import  java.util.ArrayList;
 import  java.util.Iterator;
 import  java.util.StringTokenizer;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** Selects a specific table output format, and iterates over the descriptions
  *  of all table formats and their codes.
@@ -74,7 +75,7 @@ public class TableFactory {
     /** No-args Constructor
      */
     public TableFactory() {
-        log = Logger.getLogger(TableFactory.class.getName());
+        log = LogManager.getLogger(TableFactory.class.getName());
         try {
             serializers = new ArrayList<BaseTable>(32);
             addSerializer("HTMLTable"         );

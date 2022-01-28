@@ -26,7 +26,8 @@ import  java.nio.channels.Channels;
 import  java.nio.channels.WritableByteChannel;
 import  org.xml.sax.Attributes;
 import  org.xml.sax.SAXException;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** Pseudo transformer which accepts a SAX stream of events,
  *  passes them to the following serialier, and 
@@ -62,7 +63,7 @@ public class TeeFilter extends CharTransformer {
         setFormatCodes("tee");
         setDescription("duplicate the output");
         setFileExtensions("xml");
-        log = Logger.getLogger(TeeFilter.class.getName());
+        log = LogManager.getLogger(TeeFilter.class.getName());
         duplName = fileName;
         isInitialized = false;
     } // Constructor

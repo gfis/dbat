@@ -33,7 +33,8 @@ import  java.sql.DatabaseMetaData;
 import  java.sql.ResultSet;
 import  java.sql.ResultSetMetaData;
 import  java.util.ArrayList;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** Bean for an array list of {@link TableColumn}s
  *  which is used to map database (SQL) columns to presentation (HTML, XML) table columns.
@@ -416,7 +417,7 @@ public class TableMetaData {
     /** No-args Constructor
      */
     public TableMetaData() {
-        log = Logger.getLogger(TableMetaData.class.getName());
+        log = LogManager.getLogger(TableMetaData.class.getName());
         columnList              = new ArrayList<TableColumn>(16); // empty so far
         schema                  = "";
         tableBaseName           = UNDEFINED_TABLE;

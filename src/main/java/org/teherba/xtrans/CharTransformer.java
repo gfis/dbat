@@ -28,7 +28,8 @@ import  java.io.BufferedReader;
 import  org.xml.sax.Attributes;
 import  org.xml.sax.SAXException;
 import  org.xml.sax.SAXParseException;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** Base class for character file format transformers 
  *  defining common properties and methods.
@@ -53,7 +54,7 @@ public abstract class CharTransformer extends BaseTransformer {
      */
     public void initialize() {
         super.initialize();
-        log = Logger.getLogger(CharTransformer.class.getName());
+        log = LogManager.getLogger(CharTransformer.class.getName());
     } // initialize
     
     /** Tells that this specific format is a binary format

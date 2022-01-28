@@ -32,7 +32,8 @@ import  org.teherba.dbat.TableMetaData;
 import  java.util.ArrayList;
 import  java.util.regex.Matcher;
 import  java.util.regex.Pattern;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** This output format first reads a sequential "template" file (a block of text)
  *  which was specified 
@@ -73,7 +74,7 @@ public class TayloredTable extends BaseTable {
      */
     public TayloredTable() {
         super();
-        log = Logger.getLogger(TayloredTable.class.getName());
+        log = LogManager.getLogger(TayloredTable.class.getName());
         setFormatCodes("taylor");
         setDescription("en", "File Tayloring");
         setDescription("de", "Variablenersetzung");

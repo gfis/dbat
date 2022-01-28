@@ -63,7 +63,8 @@ import  javax.xml.transform.sax.SAXSource;
 import  javax.xml.transform.sax.SAXTransformerFactory;
 import  javax.xml.transform.sax.TransformerHandler;
 import  javax.xml.transform.stream.StreamSource;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** Selects a specific transformer, and iterates over the descriptions
  *  of all transformers and their codes.
@@ -113,7 +114,7 @@ public class XtransFactory {
      *  all instantiated here, even if only two of them are really used.
      */
     public XtransFactory() {
-        log        = Logger.getLogger(XtransFactory.class.getName());
+        log        = LogManager.getLogger(XtransFactory.class.getName());
         realPath   = "";
         saxFactory = getSAXFactory();
         try {

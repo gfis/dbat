@@ -2,6 +2,7 @@
 
 # Collection of Testcases for Dbat with MySQL driver
 # @(#) $Id: all.tca 955 2012-06-05 07:22:59Z gfis $
+# 2022-01-28: B00=DROP all test tables; create relatives earlier
 # 2020-11-06: ES1, ES2 for execSQL
 # 2020-05-04: <col target="..."> attribute: TA1
 # 2017-02-11: -r: load from Excel
@@ -47,6 +48,25 @@ HTTP spec=test/parmlink
 TEST A04 Web parameterized link with parameters
 HTTP spec=test/parmlink name=F year=2013
 #-------------------
+TEST B00 drop all existing test tables
+DATA --
+  DROP TABLE IF EXISTS b01;
+  DROP TABLE IF EXISTS b04;
+  DROP TABLE IF EXISTS c01;
+  DROP TABLE IF EXISTS c11;
+  DROP TABLE IF EXISTS de1;
+  DROP TABLE IF EXISTS en1;
+  DROP TABLE IF EXISTS im1;
+  DROP TABLE IF EXISTS pivot;
+  COMMIT;
+  DROP TABLE IF EXISTS product_order;
+  COMMIT;
+  DROP TABLE IF EXISTS product;
+  COMMIT;
+  DROP TABLE IF EXISTS relatives;
+  COMMIT;
+CALL Dbat -f $(DATA)
+
 TEST B01 create table with BLOB
 DATA --
   drop table if exists b01 ;
@@ -152,6 +172,40 @@ DATA # same structure as c01
   ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
   COMMIT;
   SELECT COUNT(*) FROM c11;
+CALL Dbat -f $(DATA)
+# 2nd layer: DBIV script generation and testing
+TEST V01 create table for DBIV tests
+DATA -- create table
+  DROP TABLE if exists relatives;
+  CREATE TABLE relatives
+  ( name    VARCHAR(40) NOT NULL    COMMENT 'Christian Name'
+  , family  varchar(40) not null    COMMENT 'Family Name'
+  , birth   DATE
+  , gender  CHAR(1)                 COMMENT 'M or F'
+  , place   VARCHAR(40)             COMMENT 'Town'
+  , decease int                     COMMENT 'Decease Year'
+  , changed TIMESTAMP   -- DEFAULT NOW()
+                                    COMMENT 'last update time'
+  , user    VARCHAR(8)              COMMENT 'of last change'
+  , PRIMARY KEY (name, family)
+  ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
+  commit;
+  SELECT COUNT(*) FROM relatives;
+CALL Dbat -f $(DATA)
+
+TEST V02 initial data for DBIV tests
+DATA -- fill table
+    DELETE FROM relatives;
+    INSERT INTO relatives VALUES('Martha'   , 'Fischer' , '1909-11-17', 'F' , 'Freiburg'        , 1999, {ts'2012-06-28 19:47:06'}, 'testuser');
+    INSERT INTO relatives VALUES('Johannes' , 'Fischer' , '1911-06-03', 'M' , 'Schramberg'      , 1992, {ts'2012-06-28 19:47:06'}, 'testuser');
+    INSERT INTO relatives VALUES('Eberhard' , 'Fischer' , '1912-11-17', 'M' , 'Groß-Gerau'      , 1945, {ts'2012-06-28 19:47:06'}, 'testuser');
+    INSERT INTO relatives VALUES('Fritz'    , 'Fischer' , '1907-08-08', 'M' , 'Waldshut'        , 1995, {ts'2012-06-28 19:47:06'}, 'testuser');
+    INSERT INTO relatives VALUES('Maria'    , 'Ritter'  , '1914-09-17', 'F' , 'Hermsdorf'       , 1999, {ts'2012-06-28 19:47:06'}, 'testuser');
+    INSERT INTO relatives VALUES('Ilse'     , 'Ritter'  , '1909-02-09', 'F' , 'Lübars'          , 1983, {ts'2012-06-28 19:47:06'}, 'testuser');
+    INSERT INTO relatives VALUES('Dorothea' , 'Fischer' , '1910-02-07', 'F' , 'Berlin'          , 1985, {ts'2012-06-28 19:47:06'}, 'testuser');
+    INSERT INTO relatives VALUES('Lucie'    , 'Ritter'  , '1887-07-09', 'F' , 'Lübars'          , 1984, {ts'2012-06-28 19:47:06'}, 'testuser');
+    COMMIT;
+    SELECT * FROM relatives;
 CALL Dbat -f $(DATA)
 #-------------------
 # help page
@@ -1295,41 +1349,6 @@ HTTP spec=test.xslt_brackets mode=html
 TEST TW3 Web XSLT with URL parameter overriding attribute
 HTTP spec=test.xslt_brackets mode=trans xslt=/var/lib/tomcat/webapps/dbat/spec/test/formed.xsl
 #-------------------
-# 2nd layer: DBIV script generation and testing
-TEST V01 create table for DBIV tests
-DATA -- create table
-  DROP TABLE if exists relatives;
-  CREATE TABLE relatives
-  ( name    VARCHAR(40) NOT NULL    COMMENT 'Christian Name'
-  , family  varchar(40) not null    COMMENT 'Family Name'
-  , birth   DATE
-  , gender  CHAR(1)                 COMMENT 'M or F'
-  , place   VARCHAR(40)             COMMENT 'Town'
-  , decease int                     COMMENT 'Decease Year'
-  , changed TIMESTAMP   -- DEFAULT NOW()
-                                    COMMENT 'last update time'
-  , user    VARCHAR(8)              COMMENT 'of last change'
-  , PRIMARY KEY (name, family)
-  ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_bin;
-  commit;
-  SELECT COUNT(*) FROM relatives;
-CALL Dbat -f $(DATA)
-
-TEST V02 initial data for DBIV tests
-DATA -- fill table
-    DELETE FROM relatives;
-    INSERT INTO relatives VALUES('Martha'   , 'Fischer' , '1909-11-17', 'F' , 'Freiburg'        , 1999, {ts'2012-06-28 19:47:06'}, 'testuser');
-    INSERT INTO relatives VALUES('Johannes' , 'Fischer' , '1911-06-03', 'M' , 'Schramberg'      , 1992, {ts'2012-06-28 19:47:06'}, 'testuser');
-    INSERT INTO relatives VALUES('Eberhard' , 'Fischer' , '1912-11-17', 'M' , 'Groß-Gerau'      , 1945, {ts'2012-06-28 19:47:06'}, 'testuser');
-    INSERT INTO relatives VALUES('Fritz'    , 'Fischer' , '1907-08-08', 'M' , 'Waldshut'        , 1995, {ts'2012-06-28 19:47:06'}, 'testuser');
-    INSERT INTO relatives VALUES('Maria'    , 'Ritter'  , '1914-09-17', 'F' , 'Hermsdorf'       , 1999, {ts'2012-06-28 19:47:06'}, 'testuser');
-    INSERT INTO relatives VALUES('Ilse'     , 'Ritter'  , '1909-02-09', 'F' , 'Lübars'          , 1983, {ts'2012-06-28 19:47:06'}, 'testuser');
-    INSERT INTO relatives VALUES('Dorothea' , 'Fischer' , '1910-02-07', 'F' , 'Berlin'          , 1985, {ts'2012-06-28 19:47:06'}, 'testuser');
-    INSERT INTO relatives VALUES('Lucie'    , 'Ritter'  , '1887-07-09', 'F' , 'Lübars'          , 1984, {ts'2012-06-28 19:47:06'}, 'testuser');
-    COMMIT;
-    SELECT * FROM relatives;
-CALL Dbat -f $(DATA)
-
 TEST V03 search for M
 HTTP spec=test.crud03 view=sear search_name=M family=Ritter birth= gender=M place= decease=
 

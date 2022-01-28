@@ -35,7 +35,8 @@ import  java.util.ArrayList;
 import  java.util.StringTokenizer;
 import  java.util.regex.Matcher;
 import  java.util.regex.Pattern;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** Commandline and SQL tokenizing, and some additional, strange conversion 
  *  (we do not comment it).
@@ -45,7 +46,7 @@ public class CommandTokenizer implements Serializable {
     public final static String CVSID = "@(#) $Id$";
 
     /** log4j logger (category) */
-    private static Logger log = Logger.getLogger(CommandTokenizer.class.getName());;
+    private static Logger log = LogManager.getLogger(CommandTokenizer.class.getName());;
 
     /** Splits a commandline into single arguments: words, options, numbers, strings (which were
      *  single or double quoted)                    
@@ -211,7 +212,7 @@ public class CommandTokenizer implements Serializable {
      *  </ul> 
      */
     public static void main(String args[]) {
-        Logger log = Logger.getLogger(CommandTokenizer.class.getName());;
+        Logger log = LogManager.getLogger(CommandTokenizer.class.getName());;
         int iarg = 0;
         int itok = 0;
         String[] tokens = null;

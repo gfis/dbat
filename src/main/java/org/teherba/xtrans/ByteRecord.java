@@ -19,7 +19,8 @@ import  org.teherba.xtrans.BaseRecord;
 import  org.teherba.xtrans.Field;
 import  java.io.InputStream;
 import  java.io.OutputStream;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /**
  * Class for
@@ -67,7 +68,7 @@ public class ByteRecord extends BaseRecord {
     */
    public ByteRecord(int bsize) {
        buffer = new byte[bsize];
-       log = Logger.getLogger(ByteRecord.class.getName());
+       log = LogManager.getLogger(ByteRecord.class.getName());
 		padChar = (byte) ' ';
 		encoding = "ISO-8859-1";
    } // ByteRecord

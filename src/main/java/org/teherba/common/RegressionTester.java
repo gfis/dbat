@@ -60,7 +60,8 @@ import  java.util.HashMap;
 import  java.util.regex.Matcher;
 import  java.util.regex.Pattern;
 import  java.text.SimpleDateFormat;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 /*
 HttpEntity entity = MultipartEntityBuilder
     .create()
@@ -162,7 +163,7 @@ public class RegressionTester {
     /** No-args Constructor
      */
     public RegressionTester() {
-        log          = Logger.getLogger(RegressionTester.class.getName());
+        log          = LogManager.getLogger(RegressionTester.class.getName());
         timestamp    = (new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss")).format(new java.util.Date());
         macros       = new HashMap<String, String>(16);
         requestProps = new HashMap<String, String>(16);

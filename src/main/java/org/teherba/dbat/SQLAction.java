@@ -76,7 +76,8 @@ import  java.util.HashMap;
 import  java.util.TreeMap;
 // import  com.ibm.db2.jcc.DB2Diagnosable;
 // import  com.ibm.db2.jcc.DB2Sqlca;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** This class contains properties and methods closely related to the
  *  JDBC database access layer. Preparation and execution of SQL statements
@@ -297,7 +298,7 @@ public class SQLAction implements Serializable {
     /** No-args Constructor
      */
     public SQLAction() {
-        log = Logger.getLogger(SQLAction.class.getName());
+        log = LogManager.getLogger(SQLAction.class.getName());
         batchInsert         = false;        // -b
         setMaxCommit(250);
         setConsoleAccess(Configuration.CONSOLE_NONE);

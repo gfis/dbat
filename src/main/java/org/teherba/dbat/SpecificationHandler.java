@@ -92,7 +92,8 @@ import  org.xml.sax.Attributes;
 import  org.xml.sax.InputSource;
 import  org.xml.sax.SAXException;
 import  org.xml.sax.helpers.AttributesImpl;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** XML SAX Parser for {@link Dbat} specifications of query forms.
  *  The handler combines XML, HTML and SQL technologies.
@@ -359,7 +360,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     /** No-argument constructor (not used from outside)
      */
     private SpecificationHandler() {
-        log = Logger.getLogger(SpecificationHandler.class.getName());
+        log = LogManager.getLogger(SpecificationHandler.class.getName());
         zeroAndNotEcho  = 0; // normal output serializer
         specPath        = "/not_found";
         specUrl         = "spec/";

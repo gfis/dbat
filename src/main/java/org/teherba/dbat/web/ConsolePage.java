@@ -34,7 +34,8 @@ import  java.util.LinkedHashMap;
 import  javax.sql.DataSource;
 import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** Prints a form for the selection of
  *  <ul>
@@ -58,7 +59,7 @@ public class ConsolePage {
     /** No-argument constructor
      */
     public ConsolePage() {
-        log = Logger.getLogger(ConsolePage.class.getName());
+        log = LogManager.getLogger(ConsolePage.class.getName());
     } // Constructor()
 
     /** Shows an input form for SQL command execution

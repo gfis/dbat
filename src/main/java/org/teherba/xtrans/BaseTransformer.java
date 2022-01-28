@@ -80,7 +80,8 @@ import  org.xml.sax.XMLReader;
 import  org.xml.sax.helpers.AttributesImpl;
 import  org.xml.sax.ext.DefaultHandler2;
 import  org.xml.sax.ext.LexicalHandler;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** Base class for file format transformers
  *  defining common properties and methods.
@@ -209,7 +210,7 @@ public class BaseTransformer
     /** Constructor with no arguments, initializes the local variables.
      */
     public BaseTransformer() {
-        log = Logger.getLogger(BaseTransformer.class.getName());
+        log = LogManager.getLogger(BaseTransformer.class.getName());
         setFormatCodes("xml");
         setDescription("XML");
         setFileExtensions("xml");

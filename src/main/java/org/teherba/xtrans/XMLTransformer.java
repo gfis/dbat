@@ -31,7 +31,8 @@ import  org.xml.sax.InputSource;
 import  org.xml.sax.SAXException;
 import  org.xml.sax.XMLReader;
 import  org.xml.sax.helpers.XMLReaderFactory;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 import  org.apache.xml.serializer.Serializer;
 import  org.apache.xml.serializer.SerializerFactory;
 import  org.apache.xml.serializer.OutputPropertiesFactory;
@@ -61,7 +62,7 @@ public class XMLTransformer extends CharTransformer {
      */
     public void initialize() {
         super.initialize();
-        log = Logger.getLogger(XMLTransformer.class.getName());
+        log = LogManager.getLogger(XMLTransformer.class.getName());
         serializer = null;
         handler    = null;
     //  mustAmpEscape = false; // true activates the Xalan-J serializer

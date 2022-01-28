@@ -57,7 +57,8 @@ import  java.util.HashMap;
 import  java.util.Map;
 import  java.util.Iterator;
 import  java.util.TreeMap;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** Base class defining common properties and methods
  *  for the external representation (formatting) of:
@@ -379,7 +380,7 @@ public abstract class BaseTable {
      *  @param format code for desired output format
      */
     public BaseTable(String format) {
-        log = Logger.getLogger(BaseTable.class.getName());
+        log = LogManager.getLogger(BaseTable.class.getName());
         descriptionMap      = new HashMap<String, String>(4);
         setSeparator        ("\t");
         setTargetEncoding   ("UTF-8"); // default for XML

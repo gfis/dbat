@@ -26,7 +26,8 @@ import  javax.naming.directory.InitialDirContext;
 import  javax.naming.directory.SearchControls;
 import  javax.naming.directory.SearchResult;
 import  java.util.Hashtable;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** Initializes a connection to an LDAP server, and runs a query.
  */
@@ -38,7 +39,7 @@ public class LDAPSearch {
     /** No-args Constructor
      */
     public LDAPSearch() {
-        log = Logger.getLogger(LDAPSearch.class.getName());
+        log = LogManager.getLogger(LDAPSearch.class.getName());
     } // Constructor
 
     /** Search with a filter, and print the values for the specified attributes

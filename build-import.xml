@@ -2,6 +2,7 @@
 <!--
     ant-buildfile for commandline, web application and web service
     @(#) $Id$
+    2022-01-28: for dbat, prepare, also copy etc/*.xml into the classpath; JDK 1.8
     2020-12-11: delete expand/META-INF/MSFTSIG.{SF|RSA} - otherwise: "main class org.teherba.dbat.Dbat cannot be loaded"
     2016-09-16: manifest("-core"), core.jar, manifest("") for dbat.Configuration.versionString
     2016-09-12: fill.lib depends on clean
@@ -75,7 +76,7 @@
     <property name="test.home"          value="${basedir}/test" />
     <property name="javac.debug"        value="on" />
     <property name="javac.debuglevel"   value="lines,vars,source" />
-    <property name="jdk.version"        value="1.6" />
+    <property name="jdk.version"        value="1.8" />
 
     <path id="compile.classpath">
         <fileset dir="${dist.home}">
@@ -194,6 +195,7 @@
         <copy todir="${build.classes}">
             <fileset dir="${etc.home}">
                 <include name="*.properties"/>
+                <include name="*.xml"/>
             </fileset>
             <fileset dir="${app.path}">
                 <include name="LICENSE.txt"/>

@@ -19,7 +19,8 @@
  */
 package org.teherba.dbat;
 import  org.teherba.common.URIReader;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 import  java.io.File;
 import  java.io.FileOutputStream;
 import  java.io.InputStream;
@@ -88,7 +89,7 @@ public class StaticMirror implements Serializable {
     /** No-args Constructor
      */
     public StaticMirror() {
-        log        = Logger.getLogger(StaticMirror.class.getName());
+        log        = LogManager.getLogger(StaticMirror.class.getName());
         newPathMap = new HashMap<String, String>(512);
         pairQueue  = new LinkedList<String>();
         setStaticBase("mirror");
@@ -506,7 +507,7 @@ public class StaticMirror implements Serializable {
      *  </ul>
      */
     public static void main(String[] args) {
-        Logger log = Logger.getLogger(StaticMirror.class.getName());
+        Logger log = LogManager.getLogger(StaticMirror.class.getName());
         StaticMirror mirror = new StaticMirror();
         boolean withZip = false;
         String specURL  = "http://localhost:8080/dbat/servlet?spec=migr/index";

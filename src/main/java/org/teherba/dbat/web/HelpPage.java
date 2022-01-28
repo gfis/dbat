@@ -32,7 +32,8 @@ import  java.io.IOException;
 import  java.io.PrintWriter;
 import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** This class prints the language-specific commandline help text.
  *  The code is extracted from the former <em>help.jsp</em>.
@@ -48,7 +49,7 @@ public class HelpPage {
     /** No-argument constructor
      */
     public HelpPage() {
-        log = Logger.getLogger(HelpPage.class.getName());
+        log = LogManager.getLogger(HelpPage.class.getName());
     } // Constructor()
 
     /** Shows usage information for the commandline utility

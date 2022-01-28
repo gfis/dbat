@@ -55,7 +55,8 @@ import  java.util.Iterator;
 import  java.util.Map;
 import  java.util.zip.ZipEntry;
 import  java.util.zip.ZipInputStream;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** This reader reads from the following sources:
  *  <ol>
@@ -174,7 +175,7 @@ public class URIReader extends InputStream {
     /** No-args Constructor - not really usable
      */
     public URIReader() {
-        log = Logger.getLogger(URIReader.class.getName());
+        log = LogManager.getLogger(URIReader.class.getName());
         this.encoding = "UTF-8";
     } // Constructor
 
@@ -224,7 +225,7 @@ public class URIReader extends InputStream {
      */
     public URIReader(String parmURI, String enc, Map<String,String> propMap, String[] args) {
         isOpened = true;
-        log = Logger.getLogger(URIReader.class.getName());
+        log = LogManager.getLogger(URIReader.class.getName());
         if (enc != null && (enc.equals("binary") || enc.equals("byte"))) {
             enc = null;
         }
@@ -760,7 +761,7 @@ public class URIReader extends InputStream {
      */
     public static void main(String[] args) {
         System.setProperty("jdk.net.registerGopherProtocol", "true"); // does not work, not soon enough?
-        Logger log = Logger.getLogger(URIReader.class.getName());
+        Logger log = LogManager.getLogger(URIReader.class.getName());
         int iarg = 0;
         try {
             if (args.length == 0) { // without an argument, several protocols are checked

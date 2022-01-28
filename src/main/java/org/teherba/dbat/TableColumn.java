@@ -44,7 +44,8 @@ import  java.net.URLEncoder;
 import  java.sql.ResultSet;
 import  java.sql.Types;
 import  java.util.regex.Pattern;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** Bean with properties of an column of an abstract (internal) table definition
  *  (or for the parameter of a Stored Procedure),
@@ -653,7 +654,7 @@ public class TableColumn implements Cloneable {
                 System.err.println("TableColumn.completeColumn: " + toString());
             }
         } catch (Exception exc) {
-            Logger.getLogger(TableColumn.class.getName()).error(exc.getMessage(), exc);
+            LogManager.getLogger(TableColumn.class.getName()).error(exc.getMessage(), exc);
         }
     } // completeColumn
 

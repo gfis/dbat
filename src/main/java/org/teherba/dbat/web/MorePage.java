@@ -41,7 +41,8 @@ import  java.util.Map;
 import  java.util.TreeMap;
 import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** This class prints a detailed form which contains all parameters
  *  and options for table output, together with links to 
@@ -62,7 +63,7 @@ public class MorePage {
     /** No-argument constructor
      */
     public MorePage() {
-        log = Logger.getLogger(MorePage.class.getName());
+        log = LogManager.getLogger(MorePage.class.getName());
     } // Constructor()
     
     /** Shows the detailed input form for the activation of a Dbat specification

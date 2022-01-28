@@ -21,7 +21,8 @@ import  java.sql.Timestamp;
 import  java.text.SimpleDateFormat;
 import  org.xml.sax.Attributes;
 import  org.xml.sax.SAXException;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /**
  * Abstract

@@ -85,7 +85,8 @@ import  javax.servlet.http.HttpSession;
 import  javax.sql.DataSource;
 import  javax.xml.transform.sax.SAXResult;
 import  javax.xml.transform.sax.TransformerHandler;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** Database administration tool for JDBC compatible relational databases.
  *  The servlet (SAX-) parses an XML file with descriptions for SQL SELECT statements,
@@ -124,7 +125,7 @@ public class DbatServlet extends HttpServlet {
      *  @throws ServletException if a Servlet error occurs
      */
     public void init() throws ServletException {
-        log = Logger.getLogger(DbatServlet.class.getName());
+        log = LogManager.getLogger(DbatServlet.class.getName());
         basePage = new BasePage(APP_NAME);
 
         config = new Configuration();

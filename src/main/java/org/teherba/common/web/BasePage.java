@@ -36,7 +36,8 @@ import  java.util.regex.Pattern;
 import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;
 import  javax.servlet.http.HttpSession;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 import  org.apache.commons.fileupload.FileItem;
 import  org.apache.commons.fileupload.FileItemFactory;
 import  org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -94,7 +95,7 @@ public class BasePage {
      *  @param applicationName name of the application
      */
     public BasePage(String applicationName) {
-        log       = Logger.getLogger(BasePage.class.getName());
+        log       = LogManager.getLogger(BasePage.class.getName());
         out       = null;
         textMap   = new TreeMap<String, String>();
         formMap   = new TreeMap<String, String>();

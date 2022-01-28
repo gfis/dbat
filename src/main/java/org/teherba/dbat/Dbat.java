@@ -1,5 +1,6 @@
 /*  Dbat.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2022-01-28: Log4j V2.17; Dbat.processArguments had private access
  *  2019-01-14: connId.toLowerCase()
  *  2018-01-19: unused code removed
  *  2017-05-27: javadoc 1.8
@@ -40,7 +41,7 @@
  *  2003-05-21, Dr. Georg Fischer: yet another implementation
  *
  *  to do:
- *  Manifest implementation version from SVN revision number, and not from build.number
+ *  Manifest implementation version from git checksum, and not from build.number
  *  batch insert
  */
 /*
@@ -87,7 +88,8 @@ import  org.xml.sax.InputSource;
 import  org.xml.sax.SAXParseException;
 import  org.xml.sax.XMLReader;
 // import  org.xml.sax.helpers.XMLReaderAdapter;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** Database application tool for JDBC compatible relational databases.
  *  The tool executes a single SQL statement (SELECT, INSERT, CREATE TABLE ...) provided on
@@ -106,7 +108,7 @@ public class Dbat implements Serializable {
     /** No-args Constructor
      */
     public Dbat() {
-        log = Logger.getLogger(Dbat.class.getName());
+        log = LogManager.getLogger(Dbat.class.getName());
     } // Constructor
 
     //======================================
@@ -731,7 +733,7 @@ public class Dbat implements Serializable {
      *  @param writer PrintWriter for result output
      *  @param args command line arguments: options, strings, table- or filenames
      */
-    private void processArguments(PrintWriter writer, String[] args) {
+    public void processArguments(PrintWriter writer, String[] args) {
         TableMetaData tbMetaData = new TableMetaData();
         int karg = evaluateOptions(args, config, tbMetaData);
         // System.err.println("main action=" + mainAction + ", argsSql=" + argsSql);
@@ -748,7 +750,7 @@ public class Dbat implements Serializable {
      *  @param args command line arguments: options, strings, table- or filenames
      */
     public static void main(String[] args) {
-        Logger log = Logger.getLogger(Dbat.class.getName());
+        Logger log = LogManager.getLogger(Dbat.class.getName());
         Dbat dbat = new Dbat();
         if (args.length == 0) {
             args = new String[] { "-h" }; // usage message

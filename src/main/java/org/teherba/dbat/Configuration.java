@@ -61,7 +61,8 @@ import  java.util.Locale;
 import  java.util.Map;
 import  java.util.Properties;
 import  javax.sql.DataSource;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** This bean encapsulates the JDBC database connection, its properties
  *  and other user defineable properties related with it.
@@ -768,7 +769,7 @@ public class Configuration implements Serializable {
     /** No-args Constructor
      */
     public Configuration() {
-        log = Logger.getLogger(Configuration.class.getName());
+        log = LogManager.getLogger(Configuration.class.getName());
     } // Constructor
 
     /** Initializes the class for the 1st (or 2nd, 3rd etc) call.
@@ -1125,7 +1126,7 @@ public class Configuration implements Serializable {
      *  @param args command line arguments: options, strings, table- or filenames
      */
     public static void main(String[] args) {
-        Logger log = Logger.getLogger(Configuration.class.getName());
+        Logger log = LogManager.getLogger(Configuration.class.getName());
         Configuration config = new Configuration();
         try {
             config.configure(Configuration.CLI_CALL);

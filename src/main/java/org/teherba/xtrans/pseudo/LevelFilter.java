@@ -23,7 +23,8 @@ package org.teherba.xtrans.pseudo;
 import  org.teherba.xtrans.CharTransformer;
 import  org.xml.sax.Attributes;
 import  org.xml.sax.helpers.AttributesImpl;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** Pseudo transformer which accepts a SAX stream of events,
  *  adds a level attribute to all elements, and outputs XML.
@@ -56,7 +57,7 @@ public class LevelFilter extends CharTransformer {
      */
     public void initialize() {
         super.initialize();
-        log = Logger.getLogger(LevelFilter.class.getName());
+        log = LogManager.getLogger(LevelFilter.class.getName());
     } // initialize
 
     /** Transforms from the specified format to XML

@@ -29,7 +29,8 @@ import  java.sql.Time;
 import  java.sql.Timestamp;
 import  java.sql.Types;
 import  java.util.ArrayList;
-import  org.apache.log4j.Logger;
+import  org.apache.logging.log4j.Logger;
+import  org.apache.logging.log4j.LogManager;
 
 /** Bean for an array list of {@link Placeholder}s to be replaced
  *  for the question marks in a prepared or callable statement template.
@@ -54,7 +55,7 @@ public class PlaceholderList {
     /** No-args Constructor
      */
     public PlaceholderList() {
-        log = Logger.getLogger(PlaceholderList.class.getName());
+        log = LogManager.getLogger(PlaceholderList.class.getName());
         placeholderList = new ArrayList/*<1.5*/<Placeholder>/*1.5>*/(16); // empty so far
     } // no-args Constructor
 
