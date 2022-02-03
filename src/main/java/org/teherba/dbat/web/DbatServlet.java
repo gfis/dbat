@@ -1,5 +1,6 @@
 /*  DbatServlet.java - Database administration tool for JDBC compatible RDBMSs.
  *  @(#) $Id$
+ *  2022-02-03: log4j 2.17.1, test of .gitattributes ident
  *  2018-02-13: read etc/dbat.properties only; lang and connId via session again
  *  2018-01-11: property "console=none|SELECT|UPDATE"; ConfigurationPage
  *  2017-06-17: StaticMirror
