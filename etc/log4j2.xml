@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- log4j2.xml Console appender
     Example from https://howtodoinjava.com/log4j2/log4j2-xml-configuration-example/
+    2022-02-03: level="info" -> "error"
     2022-01-28, Georg Fischer
 -->
 <Configuration status="WARN" monitorInterval="30">
@@ -15,7 +16,7 @@
     </Appenders>
  
     <Loggers>
-        <Root level="info">
+        <Root level="error">
             <AppenderRef ref="console"/>
         </Root>
     </Loggers>

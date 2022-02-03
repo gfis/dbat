@@ -330,7 +330,7 @@ public class TableMetaData {
         return scrollArea;
     } // getScrollArea
     /** Sets the scroll area attribute
-     *  @param ScrollArea CSS "width,height" specification (in pixels, cm, %) or "0,0" if no scrolling
+     *  @param scrollArea CSS "width,height" specification (in pixels, cm, %) or "0,0" if no scrolling
      */
     public void setScrollArea(String scrollArea) {
         this.scrollArea = scrollArea != null ? scrollArea : "0,0";

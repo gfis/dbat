@@ -65,6 +65,9 @@ ORDER BY subdir,name;
 <tr><td><a href="servlet?&amp;spec=test.image02">test.image02</a></td><td><strong>image01</strong> — Select from a Table with Pagebreaks</td><td></td></tr>
 <tr><td><a href="servlet?&amp;spec=test.includer">test.includer</a></td><td><strong>includer</strong> — tests the inclusion of system entities</td><td>&amp;name=</td></tr>
 <tr><td><a href="servlet?&amp;spec=test.index">test.index</a></td><td><strong>Test Specifications</strong> — List of the Specifications for Dbat Test Cases</td><td></td></tr>
+<tr><td><a href="servlet?&amp;spec=test.label2">test.label2</a></td><td><strong>label2</strong> — Select from test table - with double line header</td><td></td></tr>
+<tr><td><a href="servlet?&amp;spec=test.label2scroll">test.label2scroll</a></td><td><strong>label2scroll</strong> — Select from test table - with double line header and scrolling</td><td></td></tr>
+<tr><td><a href="servlet?&amp;spec=test.label2sort">test.label2sort</a></td><td><strong>label2sort</strong> — Select from test table - with double line header and sorting</td><td></td></tr>
 <tr><td><a href="servlet?&amp;spec=test.listbox">test.listbox</a></td><td><strong>listbox</strong> — List Box and List Parameter Test</td><td>&amp;birthchar= &amp;birthint= &amp;namebox=</td></tr>
 <tr><td><a href="servlet?&amp;spec=test.listbox2">test.listbox2</a></td><td><strong>listbox</strong> — List Box and List Parameter Test</td><td>&amp;birthchar= &amp;birthint= &amp;namebox=</td></tr>
 <tr><td><a href="servlet?&amp;spec=test.listboxmult">test.listboxmult</a></td><td><strong>listboxmult</strong> — List Box and List Parameter Test - multiple choice</td><td></td></tr>
@@ -80,6 +83,9 @@ ORDER BY subdir,name;
 <tr><td><a href="servlet?&amp;spec=test.pivot03">test.pivot03</a></td><td><strong>pivot03</strong> — Pivot matrix output with linked values</td><td>&amp;name=%r</td></tr>
 <tr><td><a href="servlet?&amp;spec=test.pivot04">test.pivot04</a></td><td><strong>pivot04</strong> — Pivot matrix output with linked values</td><td>&amp;name=%r</td></tr>
 <tr><td><a href="servlet?&amp;spec=test.rewrite">test.rewrite</a></td><td><strong>rewrite</strong> — Rewriting of Parameters</td><td>&amp;DBSYS=</td></tr>
+<tr><td><a href="servlet?&amp;spec=test.scroll1">test.scroll1</a></td><td><strong>scroll1</strong> — Single table with both scrollbars</td><td>&amp;name=%</td></tr>
+<tr><td><a href="servlet?&amp;spec=test.scrollmm">test.scrollmm</a></td><td><strong>scrollmm</strong> — Sortable tables with both scrollbars</td><td>&amp;name=%</td></tr>
+<tr><td><a href="servlet?&amp;spec=test.scrollpx">test.scrollpx</a></td><td><strong>scrollpx</strong> — Test table with both scrollbars</td><td>&amp;name=%</td></tr>
 <tr><td><a href="servlet?&amp;spec=test.selec01">test.selec01</a></td><td><strong>selec01</strong> — Select from test table</td><td>&amp;name=%r</td></tr>
 <tr><td><a href="servlet?&amp;spec=test.selec02">test.selec02</a></td><td><strong>selec02</strong> — Select from test table - with linked values</td><td>&amp;name=%</td></tr>
 <tr><td><a href="servlet?&amp;spec=test.selec03">test.selec03</a></td><td><strong>selec03</strong> — Two SELECTs from test table</td><td>&amp;birth= &amp;name=%r</td></tr>
@@ -87,6 +93,7 @@ ORDER BY subdir,name;
 <tr><td><a href="servlet?&amp;spec=test.selec05">test.selec05</a></td><td><strong>selec05</strong> — Select from test table - with <read> element</td><td>&amp;name=%</td></tr>
 <tr><td><a href="servlet?&amp;spec=test.selec06">test.selec06</a></td><td><strong>selec06</strong> — Select from test table - sometimes with Javascript</td><td>&amp;name=%</td></tr>
 <tr><td><a href="servlet?&amp;spec=test.selec07">test.selec07</a></td><td><strong>selec07</strong> — Select from test table - with target="_blank" attribute</td><td>&amp;name=%</td></tr>
+<tr><td><a href="servlet?&amp;spec=test.selec08">test.selec08</a></td><td><strong>selec08</strong> — Select from test table - with pseudo="sort" attribute</td><td></td></tr>
 <tr><td><a href="servlet?&amp;spec=test.selecde1">test.selecde1</a></td><td><strong>selecde1</strong> — Select with date, decimal, and timestamp</td><td></td></tr>
 <tr><td><a href="servlet?&amp;spec=test.selnull">test.selnull</a></td><td><strong>selnull</strong> — Select with NULL values</td><td></td></tr>
 <tr><td><a href="servlet?&amp;spec=test.selvalid">test.selvalid</a></td><td><strong>selvalid</strong> — Select with input field validation</td><td>&amp;end=2000 &amp;start=1900</td></tr>
@@ -107,7 +114,7 @@ ORDER BY subdir,name;
 <tr><td><a href="servlet?&amp;spec=test.visible05">test.visible05</a></td><td><strong>visible05</strong> — Select from test table - suppress subsequent column values in groups</td><td></td></tr>
 <tr><td><a href="servlet?&amp;spec=test.with_cte">test.with_cte</a></td><td><strong>with_cte</strong> — test the SQL &lt;with&gt; Syntax for Common Table Expressions</td><td>&amp;prefix=backe</td></tr>
 <tr><td><a href="servlet?&amp;spec=test.xslt_brackets">test.xslt_brackets</a></td><td><strong>xslt_brackets</strong> — Select from test table with XSLT</td><td>&amp;name=%r</td></tr>
-<tr><td class="counter" colspan="3">74 Specifications</td></tr>
+<tr><td class="counter" colspan="3">81 Specifications</td></tr>
 </table>
 </div>
 

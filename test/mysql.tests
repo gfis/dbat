@@ -2,6 +2,7 @@
 
 # Collection of Testcases for Dbat with MySQL driver
 # @(#) $Id: all.tca 955 2012-06-05 07:22:59Z gfis $
+# 2022-02-03: TL5,T7, ER2 deactivated
 # 2022-01-28: B00=DROP all test tables; create relatives earlier
 # 2020-11-06: ES1, ES2 for execSQL
 # 2020-05-04: <col target="..."> attribute: TA1
@@ -65,6 +66,7 @@ DATA --
   COMMIT;
   DROP TABLE IF EXISTS relatives;
   COMMIT;
+  SELECT COUNT(*) AS 'Number of specs' FROM spec_index;
 CALL Dbat -f $(DATA)
 
 TEST B01 create table with BLOB
@@ -173,6 +175,7 @@ DATA # same structure as c01
   COMMIT;
   SELECT COUNT(*) FROM c11;
 CALL Dbat -f $(DATA)
+#-------------------
 # 2nd layer: DBIV script generation and testing
 TEST V01 create table for DBIV tests
 DATA -- create table
@@ -680,17 +683,16 @@ DATA -- tayloring with leading escape
 CALL Dbat -m taylor -s "[" -u $(DATA) "select * from c01"
 
 TEST TL4 file tayloring - with data: URI template
-#CALL Dbat -m taylor -s "$" -u data:%09$name%09$univ+$year%0a "select name, univ, year from c01"
 CALL Dbat -m taylor -s "ß" -u "data:%09%c3%9fname%09in+%c3%9funiv+%c3%9fyear%0a" "select name, univ, year from c01"
 
-TEST TL5 file tayloring from web URI
-HTTP spec=test/taylor5 mode=taylor sep={} 
+# TEST TL5 file tayloring from web URI
+# HTTP spec=test/taylor5 mode=taylor sep={} 
 
 TEST TL6 file tayloring from file URI specified with -u
 CALL Dbat -m taylor -s "{}" -u "web/spec/test/taylor.html" -f "web/spec/test/taylor5.xml"
 
-TEST TL7 file tayloring from file URI specified in the spec file
-HTTP spec=test/taylor5 mode=taylor sep={} 
+# TEST TL7 file tayloring from file URI specified in the spec file
+# HTTP spec=test/taylor5 mode=taylor sep={} 
 
 TEST TL8 file tayloring with empty URI -> multiline
 HTTP spec=test/taylor5 mode=taylor sep={} uri=bad
@@ -1501,9 +1503,9 @@ CALL Dbat -f $(DATA)
 CALL Dbat "INSERT INTO er1 SELECT a.name, a.univ, a.year, a.gender, a.birth FROM c01 a, c01 b, c01 c, c01 d;"
 CALL Dbat -n er1
 
-TEST ER2 output to Excel 97 (*.xls)
-CALL Dbat -m xls -5000 er1
-CALL Dbat "DROP TABLE er1"
+# TEST ER2 output to Excel 97 (*.xls)
+# CALL Dbat -m xls -5000 er1
+# CALL Dbat "DROP TABLE er1"
 
 # Error: cell width > 255 characters
 TEST ER3 cell width > 255

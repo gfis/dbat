@@ -2,6 +2,7 @@
 <!--
     ant-buildfile for commandline, web application and web service
     @(#) $Id$
+    2022-02-03: version 12: log4j V2.17.1
     2016-09-16: Version 11: exactly 1 MANIFEST.MF
     2016-09-10: fill.lib
     2016-09-02: core.jar
@@ -30,7 +31,7 @@
 <project name="dbat" default="dist" basedir=".">
     <!-- the 5 needed for build-import.xml -->
     <property name="app.name"           value="Dbat" />
-    <property name="app.version"        value="11" />
+    <property name="app.version"        value="12" />
     <property name="app.main-class"     value="org.teherba.dbat.Dbat" />
     <property name="tomcat.base"        value="/var/lib/tomcat" />
     <property name="tomcat.home"        value="/usr/share/tomcat" />

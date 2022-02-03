@@ -9,6 +9,7 @@
 <title>crud01</title>
 <link rel="stylesheet" type="text/css" href="./web/spec/test/stylesheet.css" />
 </head><body>
+yyyy-mm-ddThh:mm:ss.sss+zzzz ERROR BaseTransformer: The content of elements must consist of well-formed character data or markup.
 
     <!--Show entries for editing-->
     <!--Anzeige der editierbaren Einträge-->

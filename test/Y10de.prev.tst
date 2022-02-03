@@ -9,6 +9,7 @@
 <title>crud01</title>
 <link rel="stylesheet" type="text/css" href="./web/spec/test/stylesheet.css" />
 </head><body>
+yyyy-mm-ddThh:mm:ss.sss+zzzz ERROR BaseTransformer: Der Content von Elementen muss aus ordnungsgem�� formatierten Zeichendaten oder Markups bestehen.
 
     <!--Show entries for editing-->
     <!--Anzeige der editierbaren Einträge-->

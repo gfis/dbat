@@ -407,6 +407,7 @@ public class DbatServlet extends HttpServlet {
                     tbSerializer.close();
                 } // found
             } catch (Exception exc) {
+                log.error("Dbat error: spec=" + specName + ", conn=" + connectionId, ", lang=" + lang + ", mode=" + mode);
                 log.error(exc.getMessage(), exc);
                 throw new IOException(exc.getMessage());
             } finally {
