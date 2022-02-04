@@ -184,13 +184,14 @@
     <!-- ============= prepare =========================================
     -->
     <target name="prepare">
+<!--
         <propertyfile file="build.number">
             <entry key="build.name"   value="${ant.project.name}" />
             <entry key="build.number" type="int"  value="1"   operation="+" />
             <entry key="build.date"   type="date" value="now" pattern="yyyy-MM-dd HH.mm.ss" />
             <entry key="build.jdk"                value="for JDK ${jdk.version}" />
         </propertyfile>
-
+-->
         <!-- copy any properties (especially log4j.properties) to build directory -->
         <copy todir="${build.classes}">
             <fileset dir="${etc.home}">
@@ -240,26 +241,27 @@
     <!-- ============= manifest =========================================
     -->
     <target name="manifest">
-        <loadproperties srcFile="build.number" />
+        <exec executable="perl.exe" output="build.number">
+            <arg line="etc/util/update_version.pl" />
+        </exec>
+        <loadproperties srcFile="build.number" /> <!-- as written by etc/util/update_version.pl -->
         <delete failonerror="false" file="${build.classes}/META-INF/MANIFEST.MF" />
         <manifest file="${etc.home}/META-INF/MANIFEST.MF">
             <attribute name="Built-By" value="${user.name}"/>
             <attribute name="Main-Class" value="${app.main-class}"/>
-            <!-- 2020-12-11, Georg Fischer
-                <attribute name="Class-Path" value="."/> 
-            -->
-            <!--Caution, the following are read by ../web/MetaInfPage.getVersionString, 
-                be careful with changing!
-                for appl-core.jar, the property ${core} must be set to "-core"
+            <!--For appl-core.jar, the property ${core} must be set to "-core";
                 for appl.jar     , the property ${core} must be set to ""      
+            -->
+            <!--Caution, the following attributes are read by ../web/MetaInfPage.getVersionString(), 
+                be careful with changing!
             -->
             <section name="${ant.project.name}">
                 <attribute name="Specification-Title"       value="${ant.project.name}${core}"/>
-                <attribute name="Specification-Version"     value="${app.version} ${build.jdk}"/>
+                <attribute name="Specification-Version"     value="${build.version} for JDK ${jdk.version}"/>
                 <attribute name="Specification-Vendor"      value="Dr. Georg Fischer, D-79341 Kenzingen, Germany"/>
                 <attribute name="Implementation-Title"      value="teherba.org/${ant.project.name}${core}"/>
                 <attribute name="Implementation-Version"    value="${build.number} ${build.date}"/>
-                <attribute name="Implementation-Vendor"     value="www.teherba.org"/>
+                <attribute name="Implementation-Vendor"     value="punctum.com"/>
             </section>
         </manifest>
         <copy todir="${build.classes}/META-INF">

@@ -1,5 +1,6 @@
 /*  MetaInfPage.java - show meta data from META-INF/MANIFEST.MF, version String, License and NOTICE file
  *  @(#) $Id$
+ *  2022-02-04: force buildNo to leading 4 digits
  *  2017-05-27: javadoc
  *  2016-12-11: language specific heading
  *  2016-10-10: throws IOException
@@ -228,12 +229,12 @@ Implementation-Vendor: www.teherba.org
                     } else if (line.startsWith("Implementation-Version:")) {
                         if (parts.length >= 4) {
                             String buildNo = parts[1].replaceAll("\\.", "");
-                            if (false) { // force buildNo to 4 digits
+                            if (false) { // force buildNo to leading 4 digits
                             } else if (buildNo.length() > 4) {
-                                buildNo = buildNo.substring(buildNo.length() - 4);
+                                buildNo = buildNo.substring(0, 4);
                             } else if (buildNo.length() < 4) {
                                 buildNo = ("0000".substring(buildNo.length())) + buildNo;
-                            }
+                            } // force 4
                             result += "." + buildNo + "/" + parts[2];
                         } // >= 4 parts
                     } // Implementation-Version
