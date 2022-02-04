@@ -1,5 +1,6 @@
 /*  Messages.java - Static help texts and other language specific messages for Dbat. äöüÄÖÜ
  *  @(#) $Id$ 
+ *  2022-02-04: major version to be edited here, minor from CVSID = git checksum,  compile date from MANIFEST.MF
  *  2018-02-13: emailAddress from Configuration
  *  2018-01-11: property "console=none|select|update"
  *  2017-05-27: javadoc
@@ -64,6 +65,7 @@ import  org.xml.sax.helpers.AttributesImpl;
  *  @author Dr. Georg Fischer
  */
 public class Messages implements Serializable {
+    public final static String majorVersion = "12";
     public final static String CVSID = "@(#) $Id$";
 
     /** EMail address for meta pages */
@@ -305,7 +307,7 @@ public class Messages implements Serializable {
                 + "Les noms de fichiers ne doivent pas contenir d'espaces. '-' est STDIN.\n"
                 + "Pilotes JDBC inclus:\n"
                 ;
-    /** Get the tools version, the explanation of the options and
+    /** Get the Dbat's version, the explanation of the options and
      *  the available JDBC drivers.
      *  @param language 2-letter code en, de, fre
      *  @param config all configuration properties
@@ -316,8 +318,13 @@ public class Messages implements Serializable {
     public static String getHelpText(String language, Configuration config, TableFactory tableFactory) throws IOException {
         StringBuffer help = new StringBuffer(2048);
         final String SPACE2 = "  ";
-        help.append("Dbat " + (new MetaInfPage()).getVersionString(tableFactory, "dbat") 
-                + " - DataBase Application Tool\n");
+        String version = (new MetaInfPage()).getVersionString(tableFactory, "dbat")
+            .replaceAll("V\\d+", "V" + majorVersion);
+        int checkPos = CVSID.indexOf(": ");
+        if (checkPos >= 0) {
+            version = version.replaceAll("\\.\\w+", "." + CVSID.substring(checkPos + 2, checkPos + 6)); // @(#) $Id$;
+        }
+        help.append("Dbat " + version + " - DataBase Application Tool\n");
         if (false) {
         } else if (language.startsWith("de")) {
             help.append(deHelpText);
