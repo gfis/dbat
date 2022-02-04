@@ -1,6 +1,6 @@
 /*  Messages.java - Static help texts and other language specific messages for Dbat. äöüÄÖÜ
  *  @(#) $Id$ 
- *  2022-02-04: major version to be edited here, minor from CVSID = git checksum,  compile date from MANIFEST.MF
+ *  2022-02-04: major version must be edited here, minor version from CVSID = git checksum,  compile date from MANIFEST.MF
  *  2018-02-13: emailAddress from Configuration
  *  2018-01-11: property "console=none|select|update"
  *  2017-05-27: javadoc
