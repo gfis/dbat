@@ -2,6 +2,7 @@
 
 # Build a file build.number with a major version, git's commit hash and the current date
 # @(#) $Id$
+# 2022-02-07: V14, edit in github Repository only!
 # 2022-02-04, Georg Fischer: 12
 #
 # Usage: (in ant task "prepare")
@@ -13,7 +14,7 @@ use strict;
 use warnings;
 use integer;
 
-    my $major_version = "12";
+    my $major_version = "14";
     my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime (time);
     my $timestamp = sprintf ("%04d-%02d-%02d %02d.%02d.%02d", $year + 1900, $mon + 1, $mday, $hour, $min, $sec);
     my $githash = `git show-ref refs/heads/master`;
