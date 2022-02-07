@@ -1,5 +1,6 @@
 /*  Run many test cases through a regression test with result file comparision 
  *  @(#) $Id$
+ *  2022-02-07: SHELL command -> RegressionTester.cmd
  *  2017-05-27: javadoc
  *  2016-10-13: less imports
  *  2016-09-15: curl syntax for URIReader's file upload constructor
@@ -131,6 +132,7 @@ Dbat Vx.hhhh/yyyy-mm-dd - DataBase Application Tool
  *  <tr><td>EXIT    </td><td>immediately stop execution of test commands</td></tr>
  *  <tr><td>HTTP    </td><td>get a Web page from an URL</td></tr>
  *  <tr><td>MAKE    </td><td>calls some target in a <em>makefile</em> with the <em>make</em> utility</td></tr>
+ *  <tr><td>RUN     </td><td>pass the all arguments directly to the shell</td></tr>
  *  <tr><td>SORT    </td><td>sort a file</td></tr>
  *  <tr><td>TEST    </td><td>start of a test case with description</td></tr>
  *  <tr><td>XSLT    </td><td>execute an XSLT stylesheet</td></tr>
@@ -155,7 +157,7 @@ public class RegressionTester {
     /** maps names of request properties to values */
     private HashMap<String, String> requestProps;
 
-    /** System-specific line separator (CR, LF for Unix or CR/LF for Windows)*/
+    /** System-specific line separator (LF for Unix or CR/LF for Windows)*/
     private static final String nl      = System.getProperty("line.separator");
     /** System-specific file separator ("/" for Unix, "\" for Windows */
     private static final String slash   = "/"; // System.getProperty("file.separator");
@@ -266,7 +268,9 @@ public class RegressionTester {
     public void runShellCommand(String cmd) {
         try {
             String logText = cmd;
-            realStdOut.println(logText);
+            if (! cmd.startsWith("RegressionTester")) {
+                realStdOut.println(logText);
+            }
             Process process = runtime.exec(cmd);
 
             BufferedReader
@@ -676,6 +680,19 @@ public class RegressionTester {
 
                         } else if (verb.equals("MAKE")) {
                             runShellCommand(makePrefix + " " + rest.trim());
+
+                        } else if (verb.equals("SHELL")) {
+                            boolean unix = nl.equals("\n");
+                            String cmdName = "RegressionTester." + (unix ? "sh" : "cmd");
+                            PrintStream shellStream = new PrintStream(cmdName, tcaEncoding);
+                            if (unix) {
+                                shellStream.println("#!/bin/sh");
+                            } else {
+                                shellStream.println("@echo off");
+                            }
+                            shellStream.println(rest.trim());
+                            shellStream.close();
+                            runShellCommand((unix ? "./" : "") + cmdName);
 
                         } else if (verb.equals("SORT")) {
                             runShellCommand(sortPrefix + " " + rest.trim());
