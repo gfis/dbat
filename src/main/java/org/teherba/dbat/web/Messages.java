@@ -1,5 +1,6 @@
 /*  Messages.java - Static help texts and other language specific messages for Dbat. äöüÄÖÜ
  *  @(#) $Id$ 
+ *  2022-02-07, V13: RegressionTester with SHELL verb
  *  2018-02-13: emailAddress from Configuration
  *  2018-01-11: property "console=none|select|update"
  *  2017-05-27: javadoc
@@ -64,7 +65,7 @@ import  org.xml.sax.helpers.AttributesImpl;
  *  @author Dr. Georg Fischer
  */
 public class Messages implements Serializable {
-    public final static String majorVersion = "12";
+    public final static String majorVersion = "13";
     public final static String CVSID = "@(#) $Id$";
 
     /** EMail address for meta pages */
