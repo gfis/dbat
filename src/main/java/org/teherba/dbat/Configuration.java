@@ -1,5 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$ 2016-04-16 14:43:35
+ *  2022-03-26: set|getSpecPath; message(exc)
  *  2021-02-15: set|getTrailer
  *  2020-11-06: set|getExecSQL, default 1
  *  2018-02-13: set|getEmailAddress
@@ -596,6 +597,21 @@ public class Configuration implements Serializable {
         this.procSeparator = separator;
     } // setProcSeparator
     //--------
+    /** Path and name of the specification file (without extension) */
+    private String specPathName;
+    /** Gets the path name
+     *  @return Path and name of the specification file (without extension) 
+     */
+    public String getSpecPathName() {
+        return specPathName;
+    } // getSpecPathName
+    /** Sets the path name
+     *  @param specPathName Path and name of the specification file (without extension) 
+     */
+    public void setSpecPathName(String specPathName) {
+        this.specPathName = specPathName;
+    } // setSpecPathName
+    //--------
     /** Output format serializer */
     private BaseTable tableSerializer;
     /** Gets the output format serializer
@@ -757,11 +773,20 @@ public class Configuration implements Serializable {
                     result += "properties=" + urlst;
                 } // while resEnum
             } catch (Exception exc) {
-                log.error(exc.getMessage(), exc);
+                log.error(this.message(exc), exc);
             }
         } // debug
         return result;
     } // toString
+    
+    /** Modify the message text to be logged by adding 
+     *  the connection id and the spec path and name
+     *  @param exc Exception to be logged
+     *  @return message String -&gt; 1st parameter of log.error()
+     */
+    public String message(Exception exc) {
+        return exc.getMessage() + " in " + getSpecPathName() + ", connection " + getConnectionId();
+    } // message
 
     //================================
     // Constructor and initialization
@@ -912,7 +937,7 @@ public class Configuration implements Serializable {
                 setLastPropsName("jar:file:" + path + propsName);
             }
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(this.message(exc), exc);
         }
         // (2) add properties from file with same name in the current directory
         try {
@@ -924,7 +949,7 @@ public class Configuration implements Serializable {
                 setLastPropsName("./" + propsName);
             } // load from current dir
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(this.message(exc), exc);
         }
         String driverURL = props.getProperty("url");
         if (driverURL != null) {
@@ -993,7 +1018,7 @@ public class Configuration implements Serializable {
             } // while ipair
             // envContext.close(); - caused an exception: context is not writeable
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(this.message(exc), exc);
         }
     } // loadContextEnvironment
 
@@ -1023,7 +1048,7 @@ public class Configuration implements Serializable {
                     log.error("connection id " + connectionId + " is not known");
                 }
             } catch (Exception exc) {
-                log.error(exc.getMessage(), exc);
+                log.error(this.message(exc), exc);
                 // wasCommitted = true; // avoid a final COMMIT
                 throw new IllegalArgumentException(exc);
             }
@@ -1077,7 +1102,7 @@ public class Configuration implements Serializable {
                     result.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
                 }
             } catch (Exception exc) {
-                log.error(exc.getMessage(), exc);
+                log.error(this.message(exc), exc);
                 throw new IllegalArgumentException(exc);
             }
         }
@@ -1096,7 +1121,7 @@ public class Configuration implements Serializable {
                 con = null;
             }
         } catch (Exception exc) { // could not commit or close
-            log.error(exc.getMessage(), exc);
+            log.error(this.message(exc), exc);
             try { // try rollback
                 con.rollback();
                 con.close();
@@ -1133,7 +1158,7 @@ public class Configuration implements Serializable {
             Connection con = config.openConnection();
             config.closeConnection();
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
         } finally {
         }
     } // main

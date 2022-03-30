@@ -158,7 +158,7 @@ public class DbatServlet extends HttpServlet {
                 try {
                     log.info("driverURL=" + ds.getConnection().getMetaData().getURL());
                 } catch (Exception exc) {
-                    log.error(exc.getMessage(), exc);
+                    log.error(config.message(exc), exc);
                 }
             } // while miter
         } // debugging
@@ -254,7 +254,7 @@ public class DbatServlet extends HttpServlet {
             response.setCharacterEncoding(encoding);
      /*
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
      */
         }
         return result;
@@ -409,7 +409,7 @@ public class DbatServlet extends HttpServlet {
                 } // found
             } catch (Exception exc) {
                 log.error("Dbat error: spec=" + specName + ", conn=" + connectionId, ", lang=" + language + ", mode=" + mode);
-                log.error(exc.getMessage(), exc);
+                log.error(config.message(exc), exc);
                 throw new IOException(exc.getMessage());
             } finally {
             }

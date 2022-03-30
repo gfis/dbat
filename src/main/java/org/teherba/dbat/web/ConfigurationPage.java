@@ -1,5 +1,6 @@
-/*  ConfigurationPage.java - Show Dbat's configuration variiables
+/*  ConfigurationPage.java - Show Dbat's configuration variables
  *  @(#) $Id$
+ *  2022-03-28: try/catch again
  *  2018-01-11, Georg Fischer: copied from ConsolePage.java
  */
 /*
@@ -56,7 +57,7 @@ public class ConfigurationPage {
             , String language
             , Configuration config
             ) throws IOException {
-        if (true) { // try {
+        try {
             PrintWriter out = basePage.writeHeader(request, response, language);
             String configWord = " ";
             if (false) {
@@ -75,6 +76,8 @@ public class ConfigurationPage {
             out.write(config.toString());
             out.write("</pre>\n");
             basePage.writeTrailer(language, "back,quest");
+        } catch (Exception exc) {
+            log.error(config.message(exc), exc);
         }
     } // showConfiguration
 

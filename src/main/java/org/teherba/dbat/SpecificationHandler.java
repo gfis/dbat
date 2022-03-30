@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+    2022-03-26: config.set|getSpecPath -> error messages
     2021-06-12: attributes <col label2="..." span2="1">
     2021-02-15: with Config.getTrailerElements
     2021-01-04: &execsql=0 only if there is no user http request parameter
@@ -319,6 +320,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
         this.specPath   = specPath;
         this.specUrl    = specUrl;
         this.specName   = name;
+        config.setSpecPathName(specPath + specName);
     } // setSpecPaths
 
     /** whitespace separated list of keywords:
@@ -1783,7 +1785,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             }
         } catch (Exception exc) {
             disabled = true; // disable all further SAX event processing
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             tbSerializer.writeMarkup("<h3 class=\"error\">Specification parsing error: "
                     + exc.getMessage() + "</h3><pre class=\"error\">"
                     + qName
@@ -2169,7 +2171,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             }
         } catch (Exception exc) {
             disabled = true; // disable all further SAX event processing
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             tbSerializer.writeMarkup("<h3 class=\"error\">Specification parsing error: "
                     + exc.getMessage() + "</h3><pre class=\"error\">"
                     + qName
@@ -2197,7 +2199,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             }
         } catch (Exception exc) {
             disabled = true; // disable all further SAX event processing
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             tbSerializer.writeMarkup("<h3 class=\"error\">Specification parsing error: "
                     + exc.getMessage() + "</h3><pre class=\"error\">"
                     + new String(ch, start, length)
@@ -2243,7 +2245,7 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
             }
             // log.info("resolveEntity(\"" + publicId + "\", \"" + systemId + "\") -> " + url);
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
         }
         return result;
     } // resolveEntity(2)

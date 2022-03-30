@@ -353,7 +353,7 @@ public class SQLAction implements Serializable {
             } // while substrings
             clob.free();
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             printSQLError(exc);
         }
     } // fetchClob
@@ -375,7 +375,7 @@ public class SQLAction implements Serializable {
             } // while reading chunks
             clob.free();
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             printSQLError(exc);
         }
     } // storeClob
@@ -397,7 +397,7 @@ public class SQLAction implements Serializable {
             blobStream.close();
             blob.free();
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             printSQLError(exc);
         }
     } // fetchBlob
@@ -419,7 +419,7 @@ public class SQLAction implements Serializable {
             blobStream.close();
             blob.free();
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             printSQLError(exc);
         }
     } // storeBlob
@@ -532,7 +532,7 @@ public class SQLAction implements Serializable {
                     } // sqlca != null
                 } catch (Exception exc) {
                     // bad luck, error in error processing
-                    log.error(exc.getMessage(), exc);
+                    log.error(config.message(exc), exc);
                 }
             } // sqle instanceof DB2Diagnosable
             sqle=((SQLException) sqle).getNextException();     // Retrieve next SQLException
@@ -642,7 +642,7 @@ public class SQLAction implements Serializable {
             }
             tbSerializer.describeProcedureColumns(schema, procedureName, procedureType, procSeparator, cstRows);
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             printSQLError(exc);
             // setCommitted(true); // avoid a final COMMIT
         }
@@ -671,7 +671,7 @@ public class SQLAction implements Serializable {
                 icol ++;
             } // while all columns
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             printSQLError(exc);
             // setCommitted(true); // avoid a final COMMIT
         }
@@ -707,7 +707,7 @@ public class SQLAction implements Serializable {
             cstRows.put(cstKey, cstRow); // add a fictitious row for the last group change
             tbSerializer.describePrimaryKey(tbMetaData.getTableName(), cstRows);
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             printSQLError(exc);
             // setCommitted(true); // avoid a final COMMIT
         }
@@ -760,7 +760,7 @@ public class SQLAction implements Serializable {
             cstRows.put(cstKey, cstRow); // add a fictitious row for the last group change
             tbSerializer.describeIndexes(tbMetaData.getTableName(), cstRows);
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             printSQLError(exc);
             // setCommitted(true); // avoid a final COMMIT
         }
@@ -892,7 +892,7 @@ public class SQLAction implements Serializable {
             instructionSum ++;
             manipulatedSum ++;
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             printSQLError(exc);
             // setCommitted(true); // avoid a final COMMIT
         }
@@ -971,7 +971,7 @@ public class SQLAction implements Serializable {
                 } // while results
             } // procedures
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             printSQLError(exc);
             setCommitted(true); // avoid a final COMMIT
         } finally {
@@ -1202,7 +1202,7 @@ public class SQLAction implements Serializable {
             }
             mess.append(");");
             log.error(mess);
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             printSQLError(exc);
             tbSerializer.writeMarkup("<h3 class=\"error\">SQL Error in SQLAction.callStoredProcdure: "
                     + exc.getSQLState() + " "
@@ -1217,7 +1217,7 @@ public class SQLAction implements Serializable {
             setCommitted(true); // avoid a final COMMIT
         } catch (Exception exc) {
             result = 0;
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             tbSerializer.writeMarkup("<h3 class=\"error\">Error in SQLAction.callStoredProcdure: "
                     + exc.getMessage() + "</h3><pre class=\"error\">");
             tbSerializer.writeMarkup(callSql.toString());
@@ -1310,7 +1310,7 @@ public class SQLAction implements Serializable {
                     break;
             } // switch Types
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             printSQLError(exc);
             setCommitted(true); // avoid a final COMMIT
         }
@@ -1463,7 +1463,7 @@ public class SQLAction implements Serializable {
                 pstmt.setString(parameterIndex, value);
             }
         } catch(Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
         }
     } // setPlaceholder
 
@@ -1597,7 +1597,7 @@ public class SQLAction implements Serializable {
                 }
             } // statement non-empty
         } catch (SQLException exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             printSQLError(exc);
             tbSerializer.writeMarkup("<h3 class=\"error\">SQL Error in SQLAction.execSQLStatement: "
                     + exc.getSQLState() + " "
@@ -1659,7 +1659,7 @@ public class SQLAction implements Serializable {
             } // batchInsert
             execCommitStatement();
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             printSQLError(exc);
             // setCommitted(true); // avoid a final COMMIT
         }
@@ -1718,7 +1718,7 @@ public class SQLAction implements Serializable {
             }
             lineReader.close();
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
             System.err.println("Exception: line no. = " + lineNo);
             printSQLError(exc);
             this.setCommitted(true); // avoid a final COMMIT

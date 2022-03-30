@@ -203,6 +203,14 @@ public class TableMetaData {
         return setAggregateColumn(this.aggregationName, this.aggregationSeparator);
     } // setAggregateColumn
 
+    private Configuration config;
+    /** Sets the configuration 
+     *  @param config configuration
+     */
+    public void setConfiguration(Configuration config) {
+        this.config = config;
+    }
+    
     /** descriptive text for count of rows: [0] is singular, [1] is plural (also for 0 rows)*/
     private String  counterDesc[]; // always 3 elements: 0 = singular, 1 = plural, 0 = zero rows
 
@@ -369,7 +377,7 @@ public class TableMetaData {
                 }
             }
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
         }
     } // parseTableName
 
@@ -442,6 +450,7 @@ public class TableMetaData {
     public TableMetaData(Configuration config) {
         this();
         setWithHeaders(config.isWithHeaders());
+        setConfiguration(config);
     } // Constructor
 
     //==========================
@@ -469,7 +478,7 @@ public class TableMetaData {
             results.close();
             setFillState(2);
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
         }
     } // fillColumns
 
@@ -479,7 +488,7 @@ public class TableMetaData {
         try {
             columnList.clear();
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
         }
     } // clear
 
@@ -635,7 +644,7 @@ public class TableMetaData {
             } // while icol
             setFillState(1);
         } catch (Exception exc) {
-            log.error(exc.getMessage(), exc);
+            log.error(config.message(exc), exc);
         }
     } // putAttributes(stResults)
 

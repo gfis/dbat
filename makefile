@@ -2,6 +2,7 @@
 
 # Test Dbat functions with MySQL, and other utility targets
 # @(#) $Id$
+# 2022-03-28: rename.pl("log.error(getMessage(exc),")
 # 2017-04-27: spec_index for LANG=en,de,fr
 # 2016-05-24: validate with entity (included file) replacement
 # 2016-04-16: unique parameters in generated SQL of target spec_index; $(SUDO)
@@ -261,3 +262,11 @@ style-test:
 	$(DBAW) -f temp/cal2017.sql
 	$(DBAW) -n calwork_temp
 	$(DBAW) -m xlsx -4000 calwork_temp > temp/calwork_temp.xlsx
+#----------------
+rename:
+	echo "DbatServlet"          >   $@.tmp
+	echo "SpecificationHandler" >>  $@.tmp
+	echo "SQLAction"            >>  $@.tmp
+	echo "Configuration"        >>  $@.tmp
+	echo "TableMetaData"        >>  $@.tmp
+	find src -iname "*.java" | grep -Ef $@.tmp | xargs -innn perl ../common/etc/rename.pl nnn
