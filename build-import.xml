@@ -2,6 +2,7 @@
 <!--
     ant-buildfile for commandline, web application and web service
     @(#) $Id$
+    2022-04-29: MANIFEST.MF: Multi-Release=true
     2022-01-28: for dbat, prepare, also copy etc/*.xml into the classpath; JDK 1.8
     2020-12-11: delete expand/META-INF/MSFTSIG.{SF|RSA} - otherwise: "main class org.teherba.dbat.Dbat cannot be loaded"
     2016-09-16: manifest("-core"), core.jar, manifest("") for dbat.Configuration.versionString
@@ -249,6 +250,7 @@
         <manifest file="${etc.home}/META-INF/MANIFEST.MF">
             <attribute name="Built-By" value="${user.name}"/>
             <attribute name="Main-Class" value="${app.main-class}"/>
+            <attribute name="Multi-Release" value="true"/>
             <!--For appl-core.jar, the property ${core} must be set to "-core";
                 for appl.jar     , the property ${core} must be set to ""      
             -->
