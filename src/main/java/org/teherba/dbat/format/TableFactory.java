@@ -1,6 +1,7 @@
 /*  Selects the applicable table generator
     @(#) $Id$
- *  2017-05-27: javadoc
+    2022-07-13: NoClassDefFound is Error, not Exception
+    2017-05-27: javadoc
     2016-09-17: size()
     2016-08-09: former name DefaultSpecTable -> SpecDescription, + ViewDescription; reordered
     2016-05-12: ExcelStream with Apache POI replaces ExcelTable
@@ -65,6 +66,9 @@ public class TableFactory {
         try {
             BaseTable serializer = (BaseTable) Class.forName("org.teherba.dbat.format." + serializerName).newInstance();
             serializers.add(serializer);
+        } catch (NoClassDefFoundError err) {
+            // ignore any error almost silently - this output format will not be known
+            result = false;
         } catch (Exception exc) {
             // ignore any error almost silently - this output format will not be known
             result = false;
@@ -131,7 +135,7 @@ public class TableFactory {
      *  Table class.
      *  @param baseTable the table formatter to be tested
      *  @param format code for the desired format
-     *  @return whether the formatter class can handle the desired format 
+     *  @return whether the formatter class can handle the desired format
      */
     public boolean isApplicable(BaseTable baseTable, String format) {
         boolean result = false;

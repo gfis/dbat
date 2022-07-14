@@ -52,6 +52,34 @@
         </jar>
     </target>
 
+    <target name="lite.jar">
+        <!-- without libraries, without web files, and only a few formats: HTML, XML, csv -->
+        <jar jarfile="${dist.home}/${ant.project.name}-lite.jar"
+                basedir="${build.classes}"
+                manifest="${build.classes}/META-INF/MANIFEST.MF"
+                >
+            <fileset dir="${build.expand}">
+                <exclude name="**/xtrans/" />
+                <exclude name="**/*Servlet.class" />
+                <exclude name="**/dbat/format/ExcelStream.class" />
+                <exclude name="**/dbat/format/TransformedTable.class" />
+                <exclude name="**/microsoft/**" />
+                <exclude name="**/javax/**" />
+                <exclude name="**/mssql/**" />
+                <exclude name="**/mariadb/**" />
+                <exclude name="**/org/apache/poi/**" />
+                <exclude name="**/org/apache/xmlbeans/**" />
+                <exclude name="**/org/apache/xml/**" />
+                <exclude name="**/org/apache/tomcat/**" />
+                <exclude name="**/org/apache/commons/codec/**" />
+                <exclude name="**/org/etsi/uri/**" />
+                <exclude name="**/org/w3/**" />
+                <exclude name="**/openxmlformats/**" />
+                <exclude name="**/schemaorg_apache_xmlbeans/**" />
+            </fileset>
+        </jar>
+    </target>
+
     <target name="fill.lib">
         <copy todir="${lib.home}">
             <fileset dir="${tomcat.base}/openlib">
