@@ -1,5 +1,6 @@
 /*  (Pseudo-abstract) class for file format transformers
     @(#) $Id$
+    2023-04-18: remove Boolean(boolean)
  *  2017-05-27: javadoc 1.8
     2016-10-13: less imports
     2016-09-07: public setMimeType, getOption, getIntOption
@@ -1336,7 +1337,7 @@ public class BaseTransformer
      */
     public void setFeature(String name, boolean value)
             throws SAXNotRecognizedException, SAXNotSupportedException {
-        this.featureMap.put(name, new Boolean(value));
+        this.featureMap.put(name, value);
     }
 
     /**

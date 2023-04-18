@@ -1,5 +1,6 @@
 /*  Selects the applicable transformer, and creates transformation pipelines
     @(#) $Id$
+    2023-04-18: .getDeclaredConstructor().newInstance()
  *  2017-05-27: javadoc 1.8
     2016-10-16: less imports; TeeFilter
     2016-09-17: dynamic ArrayList of transformers; MutiFormatFactory removed
@@ -97,7 +98,7 @@ public class XtransFactory {
     private void addClass(String transformerName) {
         try {
             BaseTransformer transformer = (BaseTransformer) Class.forName("org.teherba.xtrans."
-                    + transformerName).newInstance();
+                    + transformerName).getDeclaredConstructor().newInstance();
             if (transformer != null) {
                 // transformer.initialize();
                 transformers.add(transformer);

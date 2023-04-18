@@ -1,5 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$ 2016-04-16 14:43:35
+ *  2023-04-18: .getDeclaredConstructor().newInstance()
  *  2022-03-26: set|getSpecPath; message(exc)
  *  2021-02-15: set|getTrailer
  *  2020-11-06: set|getExecSQL, default 1
@@ -1082,7 +1083,7 @@ public class Configuration implements Serializable {
             }
 
             try {
-                Class.forName(driver).newInstance();
+                Class.forName(driver).getDeclaredConstructor().newInstance();
                 result = DriverManager.getConnection(driverURL, user, password);
             } catch (Exception exc) {
                 log.error("Dbat.openConnection"

@@ -1,5 +1,6 @@
 /*  Messages.java - Static help texts and other language specific messages for Dbat. äöüÄÖÜ
  *  @(#) $Id$ 
+ *  2023-04-18: .getDeclaredConstructor().newInstance()
  *  2022-02-07, V13: RegressionTester with SHELL verb
  *  2018-02-13: emailAddress from Configuration
  *  2018-01-11: property "console=none|select|update"
@@ -328,9 +329,9 @@ public class Messages implements Serializable {
         } else {
             help.append(enHelpText);
         }
-        try { Class.forName("com.ibm.db2.jcc.DB2Driver" ).newInstance(); } catch (Exception exc) { }
-        try { Class.forName("com.mysql.jdbc.Driver"     ).newInstance(); } catch (Exception exc) { }
-        try { Class.forName("org.sqlite.JDBC"           ).newInstance(); } catch (Exception exc) { }
+        try { Class.forName("com.ibm.db2.jcc.DB2Driver" ).getDeclaredConstructor().newInstance(); } catch (Exception exc) { }
+        try { Class.forName("com.mysql.jdbc.Driver"     ).getDeclaredConstructor().newInstance(); } catch (Exception exc) { }
+        try { Class.forName("org.sqlite.JDBC"           ).getDeclaredConstructor().newInstance(); } catch (Exception exc) { }
         try {
             Enumeration<Driver> drivers = DriverManager.getDrivers();
             while (drivers.hasMoreElements()) {

@@ -2,6 +2,7 @@
 <!--
     ant-buildfile for commandline, web application and web service
     @(#) $Id$
+    2023-04-18: do not call update-version.pl
     2022-04-29: MANIFEST.MF: Multi-Release=true
     2022-01-28: for dbat, prepare, also copy etc/*.xml into the classpath; JDK 1.8
     2020-12-11: delete expand/META-INF/MSFTSIG.{SF|RSA} - otherwise: "main class org.teherba.dbat.Dbat cannot be loaded"
@@ -242,9 +243,11 @@
     <!-- ============= manifest =========================================
     -->
     <target name="manifest">
+    <!--
         <exec executable="perl.exe" output="build.number">
             <arg line="etc/util/update_version.pl" />
         </exec>
+    -->
         <loadproperties srcFile="build.number" /> <!-- as written by etc/util/update_version.pl -->
         <delete failonerror="false" file="${build.classes}/META-INF/MANIFEST.MF" />
         <manifest file="${etc.home}/META-INF/MANIFEST.MF">

@@ -1,5 +1,6 @@
 /*  Selects the applicable table generator
     @(#) $Id$
+    2023-04-18: .getDeclaredConstructor().newInstance()
     2022-07-13: NoClassDefFound is Error, not Exception
     2017-05-27: javadoc
     2016-09-17: size()
@@ -64,7 +65,7 @@ public class TableFactory {
     private boolean addSerializer(String serializerName) {
         boolean result = true; // assume that class is found
         try {
-            BaseTable serializer = (BaseTable) Class.forName("org.teherba.dbat.format." + serializerName).newInstance();
+            BaseTable serializer = (BaseTable) Class.forName("org.teherba.dbat.format." + serializerName).getDeclaredConstructor().newInstance();
             serializers.add(serializer);
         } catch (NoClassDefFoundError err) {
             // ignore any error almost silently - this output format will not be known
