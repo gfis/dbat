@@ -1,5 +1,6 @@
 /*  Configuration.java - DataSource and user defineable properties for a JDBC connection
  *  @(#) $Id$ 2016-04-16 14:43:35
+ *  2024-12-23: email addresses
  *  2023-04-18: .getDeclaredConstructor().newInstance()
  *  2022-03-26: set|getSpecPath; message(exc)
  *  2021-02-15: set|getTrailer
@@ -28,7 +29,7 @@
  *  2011-05-06, Dr. Georg Fischer: extracted from Dbat.java
  */
 /*
- * Copyright 2011 Dr. Georg Fischer <punctum at punctum dot kom>
+ * Copyright 2011 Dr. Georg Fischer <dr dot georg dot fischer at gmail dot kom>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -819,7 +820,7 @@ public class Configuration implements Serializable {
         setDefaultSchema("");
         setNamespacePrefix("");
         setWithHeaders  (true);
-        setEmailAddress ("punctum@punctum.com");
+        setEmailAddress ("Dr.Georg.Fischer@gmail.com");
         setFetchLimit   (1947062906); // very high
         encoding        = new String[2]; // [0] = input, [1] = output
         setEncoding     (0, "ISO-8859-1"); // -e default for input and output
@@ -863,7 +864,7 @@ public class Configuration implements Serializable {
         // (3) evaluate non-JDBC oriented properties
         setDecimalSeparator(props.getProperty("decimal"  , "."  ).trim());
         setDefaultSchema   (props.getProperty("schema"   , ""   ).trim());
-        setEmailAddress    (props.getProperty("email"    , "punctum@punctum.com").trim());
+        setEmailAddress    (props.getProperty("email"    , "Dr.Georg.Fischer@gmail.com").trim());
         setExecSQL         (1);
         setTrailerElements (props.getProperty("trailer"  , "out time dbat script xls more").trim());
         String prop = null;

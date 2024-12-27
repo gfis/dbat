@@ -6,7 +6,7 @@
     2007-03-29, Georg Fischer: copied from SwiftTransformer
 */
 /*
- * Copyright 2006 Dr. Georg Fischer <punctum at punctum dot kom>
+ * Copyright 2006 Dr. Georg Fischer <dr dot georg dot fischer at gmail dot kom>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,12 +25,12 @@ package org.teherba.xtrans;
 import  org.teherba.xtrans.CharTransformer;
 import  org.teherba.xtrans.DummyEntityResolver;
 import  java.util.Properties;
+import  javax.xml.parsers.SAXParserFactory;
 import  org.xml.sax.Attributes;
 import  org.xml.sax.ContentHandler;
 import  org.xml.sax.InputSource;
 import  org.xml.sax.SAXException;
 import  org.xml.sax.XMLReader;
-import  org.xml.sax.helpers.XMLReaderFactory;
 import  org.apache.logging.log4j.Logger;
 import  org.apache.logging.log4j.LogManager;
 import  org.apache.xml.serializer.Serializer;
@@ -74,7 +74,8 @@ public class XMLTransformer extends CharTransformer {
     public boolean generate() {
         try {
             // log.error("XMLTransformer cannot be used as generator");
-            XMLReader parser = XMLReaderFactory.createXMLReader();
+            // XMLReader parser = XMLReaderFactory.createXMLReader();
+            XMLReader parser = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
             parser.setContentHandler(getContentHandler());
             parser.setErrorHandler  (getErrorHandler());
             parser.setEntityResolver(new DummyEntityResolver());

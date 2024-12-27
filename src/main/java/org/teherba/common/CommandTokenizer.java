@@ -12,7 +12,7 @@
  *  tokenizeSQL and echoFormattedSQL are not yet finished
 */
 /*
- * Copyright 2010 Dr. Georg Fischer <punctum at punctum dot kom>
+ * Copyright 2010 Dr. Georg Fischer <dr dot georg dot fischer at gmail dot kom>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -83,7 +83,7 @@ public class CommandTokenizer implements Serializable {
                     case StreamTokenizer.TT_EOL:
                         break;
                     case StreamTokenizer.TT_NUMBER:
-                        result.add(String.valueOf(new Double(tokenizer.nval).longValue()));
+                        result.add(String.valueOf(tokenizer.nval));
                         break;
                     case StreamTokenizer.TT_WORD:
                         result.add(              (tokenizer.sval));

@@ -1,5 +1,6 @@
 /*  SpecificationHandler.java - Parser and processor for Dbat XML specifications
     @(#) $Id$
+    2024-12-23: setContext() removed
     2022-03-26: config.set|getSpecPath -> error messages
     2021-06-12: attributes <col label2="..." span2="1">
     2021-02-15: with Config.getTrailerElements
@@ -52,7 +53,7 @@
     2007-01-06, Georg Fischer: copied from xtrans
 */
 /*
- * Copyright 2006 Dr. Georg Fischer <punctum at punctum dot kom>
+ * Copyright 2006 Dr. Georg Fischer <dr dot georg dot fischer at gmail dot kom>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -86,7 +87,6 @@ import  java.util.Iterator;
 import  java.util.LinkedHashMap;
 import  java.util.Map;
 import  java.util.TreeSet;
-import  javax.servlet.ServletContext;
 import  javax.servlet.http.HttpServletRequest;
 import  javax.servlet.http.HttpServletResponse;
 import  org.xml.sax.Attributes;
@@ -134,16 +134,6 @@ public class SpecificationHandler extends BaseTransformer { // DefaultHandler2 {
     public void setConfiguration(Configuration config) {
         this.config = config;
     } // setConfiguration
-
-    /** Local reference to servlet context with init parameters */
-    private ServletContext context;
-    /** Remembers the servlet's context
-     *  @param context context to be saved locally
-     *  @deprecated
-     */
-    private void setContext(ServletContext context) {
-        this.context = context;
-    } // setContext
 
     /** local copy of the output encoding */
     private String targetEncoding;

@@ -3,7 +3,7 @@
  *  2017-06-17, Dr. Georg Fischer. Kein Feiertag mehr
  */
 /*
- * Copyright 2017 Dr. Georg Fischer <punctum at punctum dot kom>
+ * Copyright 2017 Dr. Georg Fischer <dr dot georg dot fischer at gmail dot kom>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ import  java.util.LinkedList;
 import  java.util.regex.Matcher;
 import  java.util.regex.Pattern;
 // for StAX - JSR 173
+import  javax.xml.stream.events.Namespace;
 import  javax.xml.namespace.QName;
 import  javax.xml.stream.XMLEventFactory;
 import  javax.xml.stream.XMLEventReader;
@@ -179,7 +180,7 @@ public class StaticMirror implements Serializable {
      *  @return modified event
      */
     private XMLEvent modifyAttribute(String attrName, QName qName, XMLEvent revent) {
-        Iterator niter  = revent.asStartElement().getNamespaces();
+        Iterator<? extends Namespace> niter  = revent.asStartElement().getNamespaces();
         Iterator aiter  = revent.asStartElement().getAttributes();
         ArrayList<Attribute> attrs = new ArrayList<Attribute>();
         while (aiter.hasNext()) {
